@@ -1,0 +1,22 @@
+label {
+    display: flex;
+    
+}
+
+.inp div {
+
+    width: fit-content;
+    text-align: center;
+    margin: auto auto 15px;
+}
+
+
+.inp input {
+    border-radius: 12px;
+    font-size: large;
+    
+}
+
+.email {
+    
+}

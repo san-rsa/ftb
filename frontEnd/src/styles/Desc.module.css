@@ -1,0 +1,190 @@
+
+.rtea h1{
+    text-align: center;
+    margin-bottom: 0;
+    font-size: xx-large;
+}
+ 
+ .desc {
+    text-align: left;
+}
+
+
+
+.quan {
+
+}
+
+.tea {
+    display: grid;
+    grid-template-columns: auto 50%;
+}
+
+.count {
+    display: inline;
+   border: 1px #F2F2F2 solid;
+   border-radius: 9px;
+   padding: 19px 13px 0;
+   font-size: large;
+   text-align: center;
+
+
+}
+
+.weight h3 {
+    margin: 20px auto;
+}
+
+.count ::-webkit-outer-spin-button, .count ::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.count input {
+    width: 20%;    
+    color: #B8FFD0;
+    border: none;
+ 
+    background-color: inherit;
+    text-align: center;
+    font-size: xxx-large;
+}
+
+
+
+
+.count button, .weightb {
+    padding: 0;
+    margin: 0;
+    background-color: inherit;
+    border: none;
+    box-shadow: none;
+    color: #B8FFD0;
+    font-weight: bolder;
+    font-size: xxx-large;
+    width: auto;
+    display: inline-flex;
+}
+
+
+/* price  & weight */
+
+.price {
+    color: #2DF064;
+    display: inline-flex;
+    margin:auto 25px;
+    font-size: xx-large;
+}
+
+.weightb {
+    margin: auto 5% auto auto;
+    border: 1px #F2F2F2 solid;
+    border-radius: 7px;
+    padding: 5px 10px;
+    width: 80px;
+
+}
+
+
+
+.active {
+    border: 2px #2bff00 solid;
+    border-radius: 10px;
+    background-color: #03200b;
+
+}
+
+/* pc */
+
+.imgD img {
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    border-radius: 15px;
+    /* object-fit: contain; */
+
+    min-height: 400px;
+    max-height: 500px;
+
+}
+
+.imgD {
+    margin: 5% 10%;
+    position: relative;
+    height:400px;    
+    overflow: hidden;
+
+}
+
+.imgD button {
+    background: inherit;
+    border: none;
+    position: absolute;
+    margin: 0;
+    font-size: xxx-large;
+    bottom: 30px;
+    background: rgb(29, 88, 27);
+    font-weight: lighter;
+    float: right;
+    color: #f2faf4;
+    right: 15px;
+
+}
+
+
+.details, .ingredient, .quan, .others {
+    margin: 4%
+}
+
+.cartB {
+    width: 100%;
+    margin: 10% 0%;
+    box-shadow: 2px 11px 4px rgba(0, 0, 0, 0.25); 
+    border-radius: 53px; 
+    border: 2px #00FF94 solid; 
+    padding-left: 0;
+}
+
+
+
+
+/* mobile */
+
+@media (max-width: 600px) {
+
+    .weight button {
+     font-size: x-large;
+    }
+ 
+ .imgD img{
+    width: 100%;
+}
+
+    .tea {
+        display: block;
+    }
+
+    .quan {
+        font-size: large;
+    }
+
+    .price, .count input , .count button  {
+        font-size: larger;
+    }
+
+    .count {
+        padding: 10px;
+    }
+ }
+
+
+ /* others */
+
+ .others h3 {
+    margin-bottom: 0;
+ }
+
+ .card {
+    display: inline-grid;
+    padding:  3%;
+    margin: 2% auto auto;
+ }

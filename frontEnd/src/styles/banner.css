@@ -1,0 +1,93 @@
+.banner {
+    position: relative;
+    height: 550px;
+    overflow: hidden;
+}
+.banner img{
+
+    width: 100%;
+    min-height: 550px;
+}
+
+
+.sbanner {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+    margin: 20% 10px;
+}
+.sbanner img{
+
+    width: 100%;
+    min-height: 150px;
+}
+
+ .banner h2, .sbanner h2 {
+    position: sticky;
+    display: inline;
+
+    bottom: 20px;
+    margin: auto;
+    padding: 5px 15px;
+    margin-bottom: 2%;
+    background: rgb(23, 34, 26); 
+
+}
+
+
+.banner p,  .sbanner p {
+    position: sticky;
+    display: inline;
+    bottom: 95px;
+    margin: auto;
+    padding: 5px 15px;
+    margin-bottom: 2%;
+    background: rgb(69, 71, 69);
+
+
+}
+
+
+
+.sbanner .text {
+    text-align: center;
+    position: sticky;
+    display: inline;
+
+    bottom: 95px;
+    margin: auto;
+    padding: 5px 15px;
+    margin-bottom: 2%;
+    background: rgb(69, 71, 69); 
+}
+
+.sbanner .text2{
+    position: sticky;
+    bottom: 20px;
+    margin: auto;
+    padding: 5px 15px;
+    margin-bottom: 2%;
+    background: rgb(69, 71, 69); 
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+
+    .banner {
+        height: 350px;
+    }
+    .banner img{
+    
+        width: 100%;
+        min-height: 350px;
+    }
+
+    .sbanner {
+        height: 350px;
+    }
+    .sbanner img{
+    
+        width: 100%;
+        min-height: 350px;
+    }
+ }

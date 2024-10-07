@@ -1,0 +1,24 @@
+.alert {
+    text-align: center;
+    display: inline-block;
+    position: static;
+    top: 150px;
+
+}
+
+.success, .fail {
+
+    border-radius: 11px;
+    padding: 8px;
+    margin: 0 auto 10px;
+    position: relative;
+    top: 50px;
+}
+
+.fail {
+    background: rgb(134, 5, 5);
+}
+
+.success {
+    background: rgb(3, 109, 12);
+}

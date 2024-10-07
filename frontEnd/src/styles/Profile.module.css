@@ -1,0 +1,231 @@
+
+.right h1{
+    text-align: center;
+    margin-bottom: 0;
+    font-size: xx-large;
+}
+ 
+ .profile {
+    text-align: left;
+}
+
+
+.section {
+    display: grid;
+    grid-template-columns: auto 60%;
+}
+
+#info {display: block;}
+#order {display: none;}
+#wishlist {display: none; text-align: left;}
+
+
+
+.left button {
+    padding: 10px;
+    margin: 2%;
+    background-color: inherit;
+    border: none;
+    box-shadow: none;
+    color: #B8FFD0;
+    width: auto;
+}
+
+
+.active button {
+    margin: auto 2%;
+    border: 1px #2DF064 solid;
+    border-radius: 7px;
+    padding: 5px;
+
+}
+
+/* pc */
+
+.imgD img {
+    width: 200px;
+    height: 200px;    
+    border-radius: 150px;
+}
+
+.imgD {
+    margin: 3%;
+    text-align: center;
+
+}
+
+
+.details, .quan, .others {
+    margin: 4%
+}
+
+.cartB {
+    width: 100%;
+    margin: 10% 2%;
+    box-shadow: 2px 11px 4px rgba(0, 0, 0, 0.25); 
+    border-radius: 53px; 
+    border: 2px #00FF94 solid; 
+}
+
+.tabs {
+    text-align: left;
+}
+
+.tabs * {
+    display: block;
+}
+
+
+
+.other {
+    text-align: left;
+}
+
+label {
+    margin: auto 4%;
+}
+
+.other input , .name input{
+    font-size: large;
+    text-align: left;
+    width: 100%;
+    margin: 3%;
+    padding: 0 2%;
+    border-radius: 11px;
+}
+#password {
+    display: none;
+}
+
+ .contact {
+    display: flex;
+    text-align: left;
+    margin: 2%;
+  
+}
+
+ .contact input {
+    margin: 3%;
+    font-size: large;
+    border-radius: 11px;
+    padding: 0 5%;
+}
+
+ .contact div {
+    padding-right: 7%;
+}
+
+
+input::placeholder {
+    color: #5d6960;
+    padding: 6px;
+}
+
+input:disabled {
+    color: #ffffff;
+    background-color: #075f3a;
+}
+
+
+#save {display: none;}
+#edit {display: block; background-color: rgb(3, 102, 64);}
+#edit:hover {
+    background-color: #5d6960;
+}
+
+/* logout */
+
+#logout button{
+    color: rgb(255, 0, 0);
+    
+
+
+}
+
+#logout2 {
+    background-color: red;
+    display: none;
+    margin: auto;
+}
+
+#logout2 button{
+    background-color: rgb(99, 13, 13);
+    color: aliceblue;
+    border: 2px red solid;
+
+}
+
+
+/* mobile */
+
+@media (max-width: 600px) {
+    .other input {
+        font-size: medium;
+        width: 100%;
+        border-radius: 11px;
+
+    }
+
+    #logout2{
+        display: contents;
+    }
+    
+    .name, .contact {
+        display: block;
+        text-align: left;
+        margin: 0;
+       
+      
+    }
+    
+    .name input, .contact input {
+        font-size: medium;
+        border-radius: 11px;
+        
+    
+    }
+    
+    .name div, .contact div {
+       
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+    .tabs div {
+     display: none;
+    }
+    #info {display: block;}
+    #order {display: block;}
+    #wishlist {display: block;}
+
+ 
+ .imgD img{
+
+}
+
+    .section {
+        display: block;
+    }
+ }
+
+
+ /* others */
+
+ .others h3 {
+    margin-bottom: 0;
+ }
+
+ .card {
+    display: inline-grid;
+    padding:  3%;
+    margin: 2% auto auto;
+ }

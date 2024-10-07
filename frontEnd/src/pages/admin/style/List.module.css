@@ -1,0 +1,17 @@
+h3 {
+    margin: 0;
+    color: #98cc79;
+
+}
+
+#delete {
+    background: #b61e1e;
+    border: 3px #ff3e24 solid; 
+    margin: 5px;
+  }
+
+#edit {
+    margin: 5px;
+    background: #1b2017;
+}
+

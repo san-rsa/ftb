@@ -1,0 +1,193 @@
+.cart {
+    text-align: left;
+
+}
+.cartlist {
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.item {
+    background-color: #1F1B4E;
+    display: inline-flex;
+    grid-template-columns: auto 70%;
+    width: 100%;
+    height: 120px;
+    box-shadow: 2px 11px 4px rgba(0, 0, 0, 0.20); 
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.name {
+    margin: auto 25px;
+}
+
+.delete {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+}
+
+
+.count, .weight {
+    display: ruby;
+    border: none;
+    text-align: center;   
+   border-radius: 15px;
+   background-color: #2D4135;
+   margin: auto auto auto 4%;
+   padding: 3px;
+   position: relative;
+   left: 15px;
+   
+
+
+}
+
+.price h2, .name h2 {
+    margin: 8px auto 0;
+}
+
+
+.count ::-webkit-outer-spin-button, .count ::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.count input {
+    width: 50%;  
+    color: #B8FFD0;
+    border: none;
+    background-color: inherit;
+    text-align: center;
+
+}
+
+
+
+
+.count button, .weight select {
+
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    background-color: inherit;
+    border: none;
+    box-shadow: none;
+    color: #B8FFD0;
+    font-weight: bolder;
+    width: auto;
+}
+
+
+/* price  & weight */
+
+.price {
+    color: #2DF064;
+    display: block;
+    margin:auto 25px;
+}
+
+.cartlist a {
+    height: 120px;
+    width: 184px;
+    overflow: hidden;
+}
+
+
+/* pc */
+
+ .img img {
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+}
+
+
+.details, .quantity {
+    margin: 4%
+}
+
+
+/* btn */
+
+.cartbtn {
+    display: block;
+    text-align: center;
+}
+
+
+.more, .checkout {
+    display: block;
+    margin: 50px auto auto;
+
+}
+
+
+.more {
+    background-color: inherit;
+    color: #14FF00;
+    border: 2px #05FF00 solid;
+}
+
+.checkout {
+    border: 2px #05FF00 solid;
+    
+}
+
+.del {
+    background: none;
+
+    border: none;
+    padding: 0px;
+    margin: 5px 9px;
+
+}
+
+
+
+/* mobile */
+
+@media (max-width: 600px) {
+ 
+
+    .img {
+        height: 100%;
+    }
+
+    .item {
+        height: 80px;
+    }
+
+    .price h2, .name h2 {
+        margin: 0 auto;
+    }
+
+    .weight {display: none;}
+
+    .price h2, .name h2, .item {
+        font-size: medium;
+    }
+
+    .count{
+        left: 4px;
+        top: 5px;
+    }
+
+    .cartlist a {
+        height: 80px;
+        width: 45px;
+        overflow: hidden;
+    }
+    
+
+ }
+
+
+
+
+
+
+
+
