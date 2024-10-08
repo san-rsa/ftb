@@ -1,0 +1,61 @@
+ .news {
+    text-align: center;
+}
+
+
+.news1 {
+    display: grid;
+    grid-template-columns: auto 35%;
+    border: 2px #2bff00 solid;
+    width: 95%;
+    text-align: left;
+    margin: auto;
+}
+
+
+/* img */
+
+.img1 img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+
+}
+
+.img1 {
+    margin: 0;
+    position: relative;
+    height:100%;    
+    overflow: hidden;
+
+}
+
+
+
+/* text */
+
+.text1 {
+    margin: 90px 10px auto 20px;
+}
+
+.head1 {
+    margin-bottom: 60px;
+}
+
+
+
+
+/* mobile */
+
+@media (max-width: 600px) {
+
+    .body1 {
+        display: none;
+    }
+
+    .news1 {
+        display: block;
+    }
+ }
+
+

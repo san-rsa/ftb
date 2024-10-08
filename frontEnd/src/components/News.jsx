@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import List  from "../components/sub component/list/List";
 import Style from "../styles/News.module.css"
-import Nav from "../components/sub component/Nav"
+import Nav from "./sub component/Nav"
+import Newslist from "./sub component/list/Newslist"
+
 import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
@@ -295,85 +297,8 @@ const Description = ({}) => {
 
     return (
         <div>
-         <Nav />
-            <div className={Style.desc}>
-
-
-            <div className={Style.tea}>
-            <div className={Style.imgD}>
-            <img src={info?.imgUrl} alt=""/>
-            <button name="set" className={''} value={set} onClick={wish} ><FontAwesomeIcon icon={wishlist}/> </button>
-
-        </div>
-
-            <div className={Style.rtea}>
-            <h1>{info.name}</h1>
-
-<form>
-<div className={Style.quan}>
-<div className={Style.count}>
-    <button onClick={minus} value={quan}> - </button>
-    <input type="number" min={0} name="qty" onChange={qty} value={quan} max={99} maxLength={2} />
-    <button onClick={add} value={quan}> + </button>
-</div>
-
-<div className={Style.price}>
-    <h2> £ {price} </h2>
-</div>
-
-<div className={Style.weight}>
-    <h3> WEIGHT</h3>
-
-    {info.size?.map((project, id) => (
-    
-
-        <button onClick={wght} name={id} value={weight} id={"weight"+id} className={Style.weightb}> {project.weight} </button>
-
-
-
-        )   )   }
-
-
-    {/* <button onClick={wght} name="size1"> {info.size[0]['weight']} </button>
-    <button onClick={wght} name="size2"> {info.size[1]['weight']} </button>
-    <button onClick={wght} name="size3"> {info.size[2]['weight']} </button> */}
-
-</div>
-
-<button className={Style.cartB} onClick={addToCart}>ADD TO CART</button>
-</div>
-</form>
-            </div>
-            </div>
-
-
-        <div className={Style.details}>
-            <h3>DETAILS</h3>
-            <p>{info.description}.</p>
-        </div>
-
-        <div className={Style.others}>
-            <h3>YOU MIGHT ALSO LIKE</h3>
-           
-            {product.slice(0, 4).map((project) => (
-
-                <div className="card" key={project._id}> 
-
-                <List
-                    id={project._id}
-                    price={project.size[0].price}
-                    size={project.size[0]._id}
-                    name={project.name}
-                    img={project.imgUrl}
-                    />    
-                    </div>
-
-
-                )   )   }
-        </div>
-
-
-     </div>
+   
+            <Newslist />
         </div>
 
     )
