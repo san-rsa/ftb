@@ -4,7 +4,7 @@ import Nav from "../components/sub component/Nav";
 import Trending from "../components/Trending";
 import Category from "../components/Category"
 import Slist from "../components/Slist";
-import News from "../components/News"
+import News, {News2} from "../components/News"
 import Carousel from "../components/sub component/Carousel"
 import "../styles/style.css"
 
@@ -19,6 +19,13 @@ function App() {
         <Coming/>
 
         <News />
+      <div className="dd">
+      <News2 />
+        <News2 />
+        <News2 />
+        <News2 />
+      </div>
+
         {/* <Banner /> */}
 
         
@@ -29,9 +36,9 @@ function App() {
 {/* 
             <Banner /> */}
 
-              <Category />
+              {/* <Category /> */}
 
-              <Slist />
+              {/* <Slist /> */}
 
     </div>
   );

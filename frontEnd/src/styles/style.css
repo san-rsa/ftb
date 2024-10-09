@@ -7,6 +7,23 @@ body {
   font-family:  serif;
 }
 
+ .ddd {
+  display: flex;
+  text-align: left;
+  display: inline-flex;
+  word-break: break-all;
+  word-wrap: break-word;
+  margin-bottom: 30px;
+
+  margin: 15px;
+}
+
+.dd {
+  text-align: left;
+  margin-top: 10px;
+}
+
+
 a {
   text-decoration: none;
   color: white;

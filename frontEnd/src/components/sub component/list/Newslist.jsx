@@ -49,7 +49,7 @@ const Mininews = () => {
 
 
     return (
-        <div className={Style.news}>
+        <div className={Style.newsm}>
             <div className={Style.news2}>
 
 

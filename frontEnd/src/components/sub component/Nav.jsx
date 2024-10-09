@@ -65,20 +65,20 @@ const Nav = () => {
             <a ><FontAwesomeIcon icon={faBars} size="1x"/> </a> 
         </div> */}
              <Link to={"/"}><h1 id={Style.navh1}>AGBEDIAN LEAGUE</h1></Link>
-                   <div className={Style.rnav}>
+                   {/* <div className={Style.rnav}>
 <Link className={Style.navr}to={"/login"}  onClick={login} ><FontAwesomeIcon icon={faUser}/> </Link>
         
          <Link className={Style.navr} to={"/cart"}><FontAwesomeIcon icon={faCartShopping}/> </Link>
 
-            {/* <form id={Style.form} action="/search">
+            <form id={Style.form} action="/search">
                 <Search name="order" type={"text"} onchange={handleChange} value={data.order} class={Style.order} />  
             </form>
 
 
 
             <button id={Style.search} name="navbtn" onClick={hide}><FontAwesomeIcon icon={faSearch}/> </button>
-    */}
-        </div>
+   
+        </div> */}
 
     </nav>
     )
