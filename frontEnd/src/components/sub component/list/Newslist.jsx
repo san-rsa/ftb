@@ -76,5 +76,66 @@ const Mininews = () => {
 
 
 
+
+const Mininews2 = () => {
+
+
+    return (
+        <div className={Style.newsm}>
+            <div className={Style.news3}>
+
+
+ 
+            <div className={Style.img3} >
+                <img src="https://image-service.onefootball.com/transform?w=620&h=348&dpr=2&image=https%3A%2F%2Fwp-images.onefootball.com%2Fwp-content%2Fuploads%2Fsites%2F10%2F2024%2F10%2FFBL-ENG-PR-ARSENAL-SOUTHAMPTON-1728373020-1000x750.jpg"/>
+           </div>
+
+             
+           <div className={Style.text3} >
+                 
+                <div className={Style.head3}>
+                    <h2 >  Premier League Player of the Week: The smiling assassin</h2>
+                </div>
+
+            </div>
+
+
+     </div>
+        </div>
+
+    )
+}
+
+
+
+const Minivideo = () => {
+
+
+    return (
+        <div className={Style.newsm}>
+            <div className={Style.news3}>
+
+
+ 
+            <div className={Style.img3} >
+                <img src="https://image-service.onefootball.com/transform?w=620&h=348&dpr=2&image=https%3A%2F%2Fwp-images.onefootball.com%2Fwp-content%2Fuploads%2Fsites%2F10%2F2024%2F10%2FFBL-ENG-PR-ARSENAL-SOUTHAMPTON-1728373020-1000x750.jpg"/>
+           </div>
+
+             
+           <div className={Style.text3} >
+                 
+                <div className={Style.head3}>
+                    <h2 >  Premier League Player of the Week: The smiling assassin</h2>
+                </div>
+
+            </div>
+
+
+     </div>
+        </div>
+
+    )
+}
+
 export default News
-export {Mininews}
+export {Mininews, Mininews2, Minivideo}

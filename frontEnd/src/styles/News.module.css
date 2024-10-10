@@ -1,3 +1,8 @@
+ .top {
+    text-align: left;
+    margin: 15px;
+ }
+ 
  .news {
     text-align: left;
 }
@@ -23,7 +28,7 @@
     display: grid;
     grid-template-columns: auto 40%;
     border: 2px #2bff00 solid;
-    width: 95%;
+    width: 100%;
     text-align: left;
     margin: auto;
 }
@@ -49,24 +54,23 @@
 
 /* 2 */
 
-.news2 {
-    display: ;
+.news2, .news3 {
     text-align: left;
-    margin: 10px;
+    margin: 10px 15px 10px 0;
 
 }
 
 
 /* img */
 
-.img2 img, .news2 img {
+.img2 img, .news2 img, .img3 img {
     object-fit: cover;
     width: 100%;
     height: 100%;
 
 }
 
-.img2 {
+.img2, .img3 {
     margin: auto;
     position: relative;
     height:100%;
@@ -81,16 +85,16 @@
 
 /* text */
 
-.text1, .text2 {
+.text1, .text2, .text3 {
     margin: 90px 10px auto 20px;
     font-size: smaller;
 }
 
-.head1, .head2 {
+.head1, .head2, .head3 {
     margin-bottom: 60px;
 }
 
-.text2 {
+.text2, .text3 {
     margin: auto;
 }
 
@@ -136,6 +140,14 @@
         width:  150px;
         height: 100px;
     }
+
+    .img3 {
+        float: left;
+        width:  150px;
+        height: 100px;
+    }
+
+    
 
     
 

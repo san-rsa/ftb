@@ -7,6 +7,7 @@ import Slist from "../components/Slist";
 import News, {News2} from "../components/News"
 import Carousel from "../components/sub component/Carousel"
 import "../styles/style.css"
+import TopNews from "../components/Topnews";
 
 
 
@@ -17,6 +18,8 @@ function App() {
            
         <Nav />
         <Coming/>
+
+        <TopNews />
 
         <News />
       <div className="dd">
