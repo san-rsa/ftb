@@ -7,3 +7,63 @@ li {
 ul {
     margin: 5px auto;
 }
+
+
+
+
+
+/* TABLE */
+.table h2 {
+    text-align: left;
+}
+.head {
+    display: block;
+    text-align: end;
+    margin-left: auto;
+}
+.head div {
+    display: inline-flex;
+    margin: auto 5px;
+    justify-self: end;
+
+}
+
+.teams li {
+    display: flex;
+}
+
+.teams div {
+    display: inline-flex;
+}
+
+.team img {
+    width: 20px;
+    margin-right: 5px;
+
+}
+
+.dot div {
+    border: 2px green solid;
+    border-radius: 100%;
+    width: 10px;
+    height: 10px;
+    text-align: center;
+}
+
+.pos, .dot, .team {
+    justify-self: start;
+    margin-right:10px ;
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+/* PLAYER */
