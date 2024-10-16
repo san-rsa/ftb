@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import List  from "../components/sub component/list/List";
 import Style from "../styles/News.module.css"
 import Nav from "./sub component/Nav"
-import Newslist, {Mininews} from "./sub component/list/Newslist"
+import Newslist, {Mininews, Mininews2, Mininews3} from "./sub component/list/Newslist"
 
 import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
@@ -299,6 +299,7 @@ const News1 = ({}) => {
         <div>
    
             <Newslist />
+
         </div>
 
     )
@@ -603,6 +604,7 @@ function qty(params) {
       <div className={Style.perone}>
  
           <Mininews />
+
       </div>
 
   )

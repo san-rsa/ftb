@@ -16,17 +16,26 @@ ul {
 .table h2 {
     text-align: left;
 }
-.head {
+.head, .head2 {
     display: block;
     text-align: end;
     margin-left: auto;
 }
-.head div {
+.head div, .head2 div {
     display: inline-flex;
     margin: auto 5px;
-    justify-self: end;
+    width: 30px;
+    text-align: center;
 
 }
+
+.head div *, .head2 abbr {
+    text-align: center;
+    margin: auto;
+}
+
+
+
 
 .teams li {
     display: flex;
@@ -48,6 +57,8 @@ ul {
     width: 10px;
     height: 10px;
     text-align: center;
+    position: relative;
+    top: 4px;
 }
 
 .pos, .dot, .team {
@@ -60,9 +71,34 @@ ul {
 
 
 
+/* 
+.head2 .played {
+    width: 11px;
+}
 
+.head2 .win {
+    width: 11px;
+}
 
+.head2 .draw {
+    width: 11px;
+}
 
+.head2 .loss {
+    width: 11px;
+}
+
+.head2 .gd {
+    width: 11px;
+}
+
+.head2 .pts {
+    width: 11px;
+}
+
+.head2 .played {
+    width: 11px;
+} */
 
 
 
