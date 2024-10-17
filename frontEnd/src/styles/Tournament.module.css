@@ -12,6 +12,8 @@ ul {
 
 
 
+
+
 /* TABLE */
 .table h2 {
     text-align: left;
@@ -70,36 +72,84 @@ ul {
 
 
 
+@media (max-width: 500px) {
 
-/* 
-.head2 .played {
-    width: 11px;
-}
+    #draw , #loss, #win {
+        display: none;
+        width: 0;
+    }
 
-.head2 .win {
-    width: 11px;
-}
 
-.head2 .draw {
-    width: 11px;
-}
-
-.head2 .loss {
-    width: 11px;
-}
-
-.head2 .gd {
-    width: 11px;
-}
-
-.head2 .pts {
-    width: 11px;
-}
-
-.head2 .played {
-    width: 11px;
-} */
+ }
 
 
 
 /* PLAYER */
+
+
+
+
+
+
+
+
+
+/* fixtures */
+.fixtures span {
+    display: inline-flex;
+    height: max-content;
+}
+
+time {
+    border:  2px bisque solid;
+    padding: 5px;
+}
+
+.date {
+    font-size: larger;
+    font-weight: bold;
+    color: #d4cbff;
+    display: block;
+}
+
+.fixtures {
+    text-align: left;
+    margin: auto;
+}
+
+.list {
+    text-align: center;
+    margin: auto;
+}
+
+.logo img{
+    width: 30px;
+}
+
+.home {
+    text-align: right;
+    margin: auto 10px auto auto;
+
+}
+
+.away {
+    text-align: left;
+    margin: auto auto auto 10px;
+
+
+}
+.name, .score  {
+    padding: 0 6px;
+    font-weight: bolder;
+    font-size: larger;
+}
+
+
+
+/* result */
+
+.score {
+    border:  2px rgb(212, 196, 255) solid;
+    padding: 5px 15px;
+    background-color: rgb(10, 92, 92);
+}
