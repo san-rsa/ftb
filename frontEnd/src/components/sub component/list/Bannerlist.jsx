@@ -13,14 +13,14 @@ const Banner = ({ text, img }) => {
 
 
 
-const SBanner = ({ text, img, button }) => {
+const SBanner = ({ body, img, head }) => {
 
     return (
     <div className="sbanner">
         <img src={img} alt="tea banner"/>
 
         <div className="text">
-        <p>
+        <p>  {body}
 Traffic
 
 Feed layout
@@ -46,7 +46,7 @@ Traffic incident
 
         
         <div className="text2">
-             <h2>COMING SOON</h2>
+             <h2>COMING SOON {head} </h2>
         </div>
 
  

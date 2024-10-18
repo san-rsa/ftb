@@ -188,22 +188,7 @@ const edit = (e) => { // vvv
   };
 
 
-          //  console.log(product) xxx
 
-    
-    //    const api = fetch('http://localhost:8000/getall/product', {
-    //     })
-        
-    //     .then((res) => {
-    //           console.log(res)       
-    //     }).then(
-    //       data => console.log(data))
-        
-    //     .catch((e) => {
-    //       console.log(e);
-    //       let msg = "fail"
-    //     })
-    
     
 
      

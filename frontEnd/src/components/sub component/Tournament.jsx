@@ -7,7 +7,9 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 
 
-const Table = () => {
+
+
+const Tablehead = () => {
 
 
     return (
@@ -26,7 +28,27 @@ const Table = () => {
                         <div className={Style.pts} id={Style.pts}>  <abbr > PTS </abbr> </div>
 
                     </li>
-                 
+
+                </ul>
+
+
+
+
+
+     </div>
+        </div>
+
+    )
+}
+
+const Table = () => {
+
+
+    return (
+        <div className={Style.table}>
+            <div className={Style.standings}>
+
+                <ul >                 
 
                  <div className={Style.teams}> 
                     <li >  
@@ -76,7 +98,7 @@ const Fixtures = () => {
         <div className={Style.fixtures}>
             <div className={Style.matchday}>
 
-                <h2> Matchday 3</h2>
+                {/* <h2> Matchday 3</h2> */}
 
                 <ul  className={Style.list}>
                 
@@ -121,8 +143,8 @@ const Result = () => {
     return (
         <div className={Style.fixtures}>
             <div className={Style.matchday}>
-
-                <h2> Matchday 3</h2>
+{/* 
+                <h2> Matchday 3</h2> */}
 
                 <ul  className={Style.list}>
                 
@@ -160,4 +182,4 @@ const Result = () => {
 
     )
 }
-export {Table, Fixtures, Result}
+export {Table, Fixtures, Result, Tablehead}

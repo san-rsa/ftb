@@ -4,7 +4,7 @@ import Style from "../styles/Tournament.module.css"
 import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
-import { Fixtures, Result, Table } from "./sub component/Tournament";
+import { Fixtures, Result, Table, Tablehead } from "./sub component/Tournament";
 
 
 
@@ -25,11 +25,34 @@ const App = () => {
                 </ul>
 
 
-                <Table />
 
-                <Fixtures />
+                
+              <Tablehead />
+              <Table />
+              <Table />
+              <Table />
+              <Table />
+              <Table />
+              <Table />
+              <Table />
 
-                <Result />
+
+              <Fixtures />
+              <Fixtures />
+              <Fixtures />
+              <Fixtures />
+              <Fixtures />
+              <Fixtures />
+              <Fixtures />
+
+              <Result />
+              <Result />
+              <Result />
+              <Result />
+              <Result />
+              <Result />
+              <Result />
+              <Result />
 
 
 
