@@ -4,12 +4,34 @@ import Style from "../styles/Tournament.module.css"
 import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
-import { Fixtures, Result, Table, Tablehead } from "./sub component/Tournament";
+import { Fixtures, Results, Standing } from "./sub component/Tournament";
 
 
 
 
 const App = () => {
+
+    
+    const [mode, setInputs] = useState({table: true, fixtures: false, results: false, players: false});
+
+
+
+
+    const handleChange = (event) => {
+        const name = event.target.innerHTML.toLowerCase();
+
+        setInputs({table: false, fixtures: false, results: false, players: false})
+    
+        
+
+
+        console.log(name,);
+        
+        setInputs(values => ({...values, [name]: true}))
+      }
+    
+      console.log(mode);
+
 
 
     return (
@@ -17,42 +39,30 @@ const App = () => {
             <div className={Style.Nav}>
 
                 <ul >
-                    <li > Table</li>
-                    <li >Fixtures</li>
-                    <li >Result</li>
-                    <li >Players</li>
+                    <li onClick={handleChange} name={"eee"} id={'h'}>Table</li>
+                    <li onClick={handleChange} name={"eee"}>Fixtures</li>
+                    <li onClick={handleChange} name={"eee"}>Results</li>
+                    <li onClick={handleChange} name={"eee"}>Players</li>
 
                 </ul>
 
 
 
                 
-              <Tablehead />
-              <Table />
-              <Table />
-              <Table />
-              <Table />
-              <Table />
-              <Table />
-              <Table />
+             { mode.table && <Standing />}
+          
+             { mode.fixtures && <Fixtures />}
+
+             { mode.results &&  <Results />}
+
+     
+     
 
 
-              <Fixtures />
-              <Fixtures />
-              <Fixtures />
-              <Fixtures />
-              <Fixtures />
-              <Fixtures />
-              <Fixtures />
-
-              <Result />
-              <Result />
-              <Result />
-              <Result />
-              <Result />
-              <Result />
-              <Result />
-              <Result />
+              
+      
+             
+     
 
 
 
