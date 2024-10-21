@@ -1,5 +1,4 @@
 require('dotenv').config()
-const Product = require('../models/product')
 const Category = require('../models/category')
 const Banner = require('../models/banner')
 const express = require('express')
@@ -12,8 +11,6 @@ const {auth, role} = require('../middleware/mid')
 const otpGenerator = require("otp-generator");
 const User = require('../models/user')
 const Wishlist = require('../models/wishlist')
-const Cart = require('../models/cart')
-const  Order  = require('../models/order')
 // const Product = require('../models/product')
 // const Auth = require('../middleware/mid')
 
@@ -30,21 +27,6 @@ const banner = await Banner.find({})
       })
 })
 
-router.get('/cart', auth, async(req, res)=> {
-  const user = req.userId
-  const data = await Cart.findOne({userId: user}).populate({path: "products", populate: {path: "productId"}})
-
-  if (data && data.products.length > 0) {
-     res.status(200).json({
-        success: true,
-       data: data
-      })
-  } else {
-    res.send(null);
-  }
- 
-
-})
 
 
 router.get('/category', async(req, res)=> {
@@ -67,28 +49,8 @@ router.get('/category/:id', async(req, res)=> {
         })
   
   })
-router.get('/order', auth, async(req, res)=> {
-  const user = req.userId
 
   
-  const data = await Order.findOne({userId: user})
-      res.status(200).json({
-        success: true,
-       data: data
-      })
-
-})
-
-router.get('/product', async(req, res)=> {
-    
-const product = await Product.find({})
-      res.status(200).json({
-        success: true,
-       data: product
-      })
-
-})
-
 
 router.get('/wishlist', auth, async(req, res)=> {
   const user = req.userId

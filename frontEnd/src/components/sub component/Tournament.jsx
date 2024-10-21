@@ -40,7 +40,7 @@ const Results = () => {
 
     return (
         <div className={Style.news}>
-            <div className={Style.Nav}>
+            <div className={Style.result}>
 
 
             <h2 > Results</h2>
@@ -71,7 +71,7 @@ const Fixtures = () => {
 
     return (
         <div className={Style.news}>
-            <div className={Style.Nav}>
+            <div className={Style.fix}>
 
 
             <h2> Fixtures</h2>

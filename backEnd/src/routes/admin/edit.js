@@ -1,5 +1,4 @@
 require('dotenv').config()
-const Product = require('../../models/product')
 const Category = require('../../models/category')
 const Banner = require('../../models/banner')
 const express = require('express')
@@ -17,104 +16,6 @@ const User = require('../../models/user')
 
 
  
-
-
-
-
-router.post('/product/:id', auth, role(process.env.ADMIN), async(req, res)=> {
-    const id = req.params.id
-    try {
-
-
-
-        const data = JSON.parse(req.body.data)
-        const file = req.files.img    
-        const imgUrl = []
-
-        console.log(file.length)
-        
-        if (!req.files) {
-            // No file was uploaded
-            return res.status(400).json({ error: "No file uploaded" });
-          }
-    
-    
-    
-          if (file.length > 1) {
-    
-                for (const i in file){
-                  const image = await cloudinary.uploader.upload(
-                    file[i].tempFilePath,
-                    { folder: 'Banner' },
-    
-                );
-    
-                imgUrl.push({url: image.secure_url,  imgId: image.puplic_id})
-                console.log(image);
-                }
-              
-                
-          } else {
-    
-                 const image = await cloudinary.uploader.upload(
-            file.tempFilePath,
-            { folder: 'Banner' },
-    
-          );
-    
-    
-            imgUrl.push({url: image.secure_url,  imgId: image.puplic_id})
-    
-                          console.log(image)
-    
-    
-          }
-            console.log(imgUrl, )
-        const {name, description, categoryId, small, sprice, medium, mprice, large, lprice}= data
-
-        console.log(name, imgUrl, description, categoryId, small, sprice, medium, mprice, large, lprice )
-        // Check if All Details are there or not
-
-		if (!name || !imgUrl ) {
-			return res.status(403).json({
-				success: false,
-				message: "All Fields are required",
-			});
-		}
-
-        //check if use already exists?
-        const existingItem = await Product.findOne({name})
-        if(existingItem){
-            return res.status(400).json({
-                success: false,
-                message: "product already exists"
-            })
-        }
-
-    
-
-
-        const product = await Product.create({
-            name, imgUrl, description, size:[{weight: small, price: sprice}, {weight: medium, price: mprice}, {weight: large, price: lprice}]
-
-        })
-
-        return res.status(200).json({
-            success: true,
-            product,
-            message: "user created successfully ✅"
-           
-        })  
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({
-            success: false,
-            message : "product registration failed"
-        })
-       
-   }  
-})
-
 
 
 
@@ -195,60 +96,6 @@ router.post('/product/:id', auth, role(process.env.ADMIN), async(req, res)=> {
 
 
 
-    router.patch('/product/:id' , auth, role(process.env.ADMIN), async (req, res, next) => {
-
-        try {
-
-            const update = JSON.parse(req.body.data)
-            const file = req.files?.img    
-            const imgUrl = []
-       
-        
-        
-              if (file.length > 1) {
-        
-                    for (const i in file){
-                      const image = await cloudinary.uploader.upload(
-                        file[i].tempFilePath,
-                        { folder: 'Banner' },
-        
-                    );
-        
-                    imgUrl.push({url: image.secure_url,  imgId: image.puplic_id})
-                    console.log(image);
-                    }
-                  
-                    
-              } else {
-        
-                     const image = await cloudinary.uploader.upload(
-                file.tempFilePath,
-                { folder: 'Product' },
-        
-              );
-        
-        
-                imgUrl.push({url: image.secure_url,  imgId: image.puplic_id})
-        
-                              console.log(image)
-        
-        
-              }
-                console.log(imgUrl, )
-            const {name,  description, categoryId, small, sprice, medium, mprice, large, lprice}= update
-
-            console.log(name, imgUrl, description, categoryId, small, sprice, medium, mprice, large, lprice )
-          
-
-            const data = await Product.findOneAndUpdate({name: req.params.id}, {
-             name,  imgUrl, description, categoryId, size:[{weight: small, price: sprice}, {weight: medium, price: mprice}, {weight: large, price: lprice}]
-            }, { new: true });
-            res.json(data);
-            console.log(data, " updated successfully!");
-        } catch (error) {
-            return next(error);
-        }
-    });
 
 
     router.patch('/user/:id' , auth, role(process.env.ADMIN), async (req, res, next) => {

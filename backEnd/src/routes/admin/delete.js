@@ -60,16 +60,7 @@ router.delete('/banner', auth, role(process.env.ADMIN), async (req, res, next) =
 
 
 
-router.delete('/cart/:id', auth, role(process.env.ADMIN), async (req, res, next) => {
-    try {
-        const data = await Banner.findByIdAndDelete(req.params.id);
-        res.status(200).json({
-            msg: data,
-        });
-    } catch (error) {
-        return next(error);
-    }
-});
+
 
 
 
@@ -96,29 +87,9 @@ router.delete('/category', auth, role(process.env.ADMIN), async (req, res, next)
 });
 
 
-router.delete('/order/:id', auth, role(process.env.ADMIN), async (req, res, next) => {
-    try {
-        const data = await Banner.findByIdAndRemove(req.params.id);
-        res.status(200).json({
-            msg: data,
-        });
-    } catch (error) {
-        return next(error);
-    }
-});
 
 
-router.delete('/product/', auth, role(process.env.ADMIN), async (req, res, next) => {
-    try {
-        const id = req.body.productId
-        const data = await Product.findOneAndDelete({name: id});
-        res.status(200).json({
-            msg: data,
-        });
-    } catch (error) {
-        return next(error);
-    }
-});
+
 
 
 router.delete('/user/:id', auth, role(process.env.ADMIN), async (req, res, next) => {

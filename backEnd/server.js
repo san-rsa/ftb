@@ -4,7 +4,7 @@
 
 const mongoose = require("mongoose");
 
-    const uri = 'mongodb+srv://sanrsa:rahman417@cluster0.w7dwc.mongodb.net/ateaDB' // process.env.MONGO_URI ;
+    const uri = 'mongodb+srv://sanrsa:rahman417@cluster0.w7dwc.mongodb.net/footballDB' // process.env.MONGO_URI ;
 
      mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, // useCreateIndex: true
       })
@@ -261,11 +261,9 @@ const adminedit = require('./src/routes/admin/edit');
 const admindel = require('./src/routes/admin/delete');
 const getall = require('./src/routes/getall');
 const getone = require('./src/routes/getone');
-const cart = require('./src/routes/cart');
 const add = require('./src/routes/add');
 const edit = require('./src/routes/edit');
 const del = require('./src/routes/del');
-const payment = require('./src/routes/payment')
 
 
 const router = express.Router()
@@ -289,11 +287,9 @@ app.use('/admin/edit', adminedit)
 app.use('/admin/del', admindel)
 app.use("/getall/", getall)
 app.use("/getone", getone)
-app.use("/cart", cart)
 app.use("/add", add)
 app.use("/edit", edit)
 app.use("/del", del)
-app.use("/payment", payment)
 
 
 

@@ -1,6 +1,5 @@
 require('dotenv').config()
 const User = require('../models/user')
-const Cart = require('../models/cart')
 const express = require('express')
 const router = express.Router()
 const bycrypt = require('bcrypt')
@@ -18,6 +17,10 @@ router.post('/register', async(req, res)=> {
         const {fname, lname, email, password, phone, address,}= req.body
         const name = fname + ' ' + lname
         const role = 'user'
+
+
+        console.log(fname, lname, email, password, phone, address);
+        
 
         // Check if All Details are there or not
 
@@ -41,6 +44,8 @@ router.post('/register', async(req, res)=> {
         const user = await User.create({
             name, email, password, role,  phone, address 
         })
+
+        user.save()
             // res.redirect("/login")
         console.log(name, password, email, address )
 
@@ -88,24 +93,8 @@ router.post('/login', async(req, res)=> {
                 message: "You have to Signup First"
             })
         }
-
-        let cart = await Cart.findOne({ userId: user._id });
-        console.log(cart, req.session)
-        // if there is a cart session and user has no cart, save it to the user's cart in db
-        if (req.session?.cart && !cart) {
-          const cart = new Cart(req.session.cart);
-          cart.user = user._id;
-          await cart.save();
-        }
-        // if user has a cart in db, load it to session
-        if (cart) {
-         // req.session.cart = cart;
-        }
-
-        //verify password and generate a JWt token 🔎
-
-
-
+   
+        
 
        user.comparePassword(password, async function(err, isMatch) {
         

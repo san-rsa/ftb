@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
             }
         }},
 
-    imgUrl: {url: {type: String, required: true}, imgId: {type: String, required: true} },
+    imgUrl: {url: {type: String}, imgId: {type: String} },
 
 
     password: {type: String, required: true, minLength: 8,
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
         },
         
         
-    phone: {type:Number, required: true},
+    phone: {type:Number},
 
 
     // tokens: [{ token: {type: String, required: true }}],
@@ -51,9 +51,7 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.generateAuthToken = async function () {
     const user = this;
     const payload ={
-        email: user.email,
         id: user._id.toString(),
-        role: user.role,
     }
 
 
@@ -104,7 +102,7 @@ userSchema.pre('save', async function(next) {
     if (!user.isModified('password')) return next();
 
     // generate a salt
-    await bcrypt.genSalt(10, function(err, salt) {
+     bcrypt.genSalt(10, function(err, salt) {
         if (err) return next(err);
 
         // hash the password using our new salt

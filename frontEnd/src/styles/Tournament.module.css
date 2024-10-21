@@ -15,8 +15,9 @@ ul {
 
 
 /* TABLE */
-.table h2 {
+.table h2, .result h2, .fix h2 {
     text-align: left;
+    margin: 10px;
 }
 .head, .head2 {
     display: block;
