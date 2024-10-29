@@ -503,7 +503,7 @@ const edit = (e) => { // vvv
 
                     <Bannerlist
                     id={data._id}
-                    name={data.text}
+                    name={data.head}
                     img={data.imgUrl?.url}
                     data={setbanner}
                     />    

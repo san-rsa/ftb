@@ -6,8 +6,6 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 
-var i ="https://image-service.onefootball.com/transform?w=620&h=348&dpr=2&image=https%3A%2F%2Fwp-images.onefootball.com%2Fwp-content%2Fuploads%2Fsites%2F10%2F2024%2F10%2FFBL-ENG-PR-ARSENAL-SOUTHAMPTON-1728373020-1000x750.jpg"
-
 
 
 const News = ({img, head, body, id}) => {
@@ -19,7 +17,7 @@ const News = ({img, head, body, id}) => {
             <div className={Style.news1}>
 
                 <div className={Style.img1} >
-                    <img src={  img +i } />
+                    <img src={  img } />
                 </div>
 
                 
@@ -57,7 +55,7 @@ const Mininews = ({img, head, id}) => {
 
  
                     <div className={Style.img2} >
-                        <img src={i + img} />
+                        <img src={img} />
                     </div>
 
                     
@@ -92,7 +90,7 @@ const Mininews2 = ({img, head, id}) => {
 
  
             <div className={Style.img3} >
-                <img src={i + img} />
+                <img src={ img} />
             </div>
 
             
@@ -157,7 +155,7 @@ const Mininews3 = ({img, head, id}) => {
 
             
                 <div className={Style.img3} >
-                     <img src={i + img} />
+                     <img src={img} />
                 </div>
 
                 

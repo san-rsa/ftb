@@ -22,7 +22,7 @@ const TopNews = () => {
          <div className={Style.top}> 
 
             <h1> TOP NEWS</h1>  
-          {banner.slice(1, 2).map((project) => (
+          {banner.slice(-1).map((project) => (
 
             <div className='' key={project._id}> 
             
@@ -38,7 +38,7 @@ const TopNews = () => {
 
 
 
-                {banner.map((project) => (
+                {banner.slice(-2, -7).map((project) => (
 
                 <div className={Style.perone} key={project._id}> 
 

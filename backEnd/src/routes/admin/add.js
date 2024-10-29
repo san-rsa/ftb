@@ -62,7 +62,7 @@ router.post('/banner', auth,  role(process.env.ADMIN), async (req, res)=> {
      
 
     try {
-        const {text}= data
+        const {head, body}= data
         const imgUrl = []
 
         const image = await cloudinary.uploader.upload(
@@ -77,9 +77,10 @@ router.post('/banner', auth,  role(process.env.ADMIN), async (req, res)=> {
  
       
 
-        // Check if All Details are there or not
 
-		if (!text || !imgUrl ) {
+        console.log(data)
+
+		if (!head || !imgUrl ) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",
@@ -87,7 +88,7 @@ router.post('/banner', auth,  role(process.env.ADMIN), async (req, res)=> {
 		}
 
         //check if use already exists?
-        const existingItem = await Banner.findOne({text})
+        const existingItem = await Banner.findOne({head})
         if(existingItem){
             return res.status(400).json({
                 success: false,
@@ -96,7 +97,7 @@ router.post('/banner', auth,  role(process.env.ADMIN), async (req, res)=> {
         }
 
         const banner = await Banner.create({
-            text, imgUrl: imgUrl[0]
+            head, body, imgUrl: imgUrl[0]
         })
             // res.redirect("/login")
 

@@ -28,7 +28,7 @@ const Edit = () => {
       
 
           useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/banner/"+ link,{
+            fetch(process.env.REACT_APP_API_LINK  + "getone/news/"+ link,{
               method: "GET",
               credentials: "include",
               headers: {'Content-Type': 'application/json'},
@@ -60,7 +60,7 @@ const Edit = () => {
 
 
 
-    fetch(process.env.REACT_APP_API_LINK + 'admin/edit/banner/' + link, {
+    fetch(process.env.REACT_APP_API_LINK + 'admin/edit/news/' + link, {
       method: 'PATCH',
       credentials: "include",    
     body: formData

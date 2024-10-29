@@ -20,12 +20,12 @@ const Banner = ({ text, img}) => {
     return (
 
          <div> 
-          {banner.slice(0, 1).map((project) => (
+          {banner.slice(0, -1).map((project) => (
 
             <div className='' key={project._id}> 
             
               <Bannerlist
-                  text={project.text}
+                  text={project.head}
                   img={project.imgUrl.url}
                 />    
                 </div>

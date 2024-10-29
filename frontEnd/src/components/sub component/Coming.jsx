@@ -20,13 +20,14 @@ const Banner = () => {
     return (
 
          <div> 
-          {banner.slice(1, 2).map((project) => (
+          {banner.slice(-1).map((project) => (
 
             <div className='' key={project._id}> 
             
               <SBanner
-                  text={project.text}
+                  head={project.head}
                   img={project.imgUrl.url}
+                  body={project.body}
                 />    
                 </div>
             

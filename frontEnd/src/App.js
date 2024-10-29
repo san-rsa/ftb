@@ -14,6 +14,8 @@ import Addadmin from "./pages/admin/sub/admin/Add";
 import Search from "./pages/admin/sub/ResultAdmin";
 import Addbanner from "./pages/admin/sub/banner/Add";
 import Editbanner from "./pages/admin/sub/banner/Edit";
+import Addnews from "./pages/admin/sub/news/Add";
+import Editnews from "./pages/admin/sub/news/Edit";
 import Addcategory from "./pages/admin/sub/category/Add";
 import Editcategory from "./pages/admin/sub/category/Edit";
 import ForgetPassword from "./pages/user/Forgetpassword";
@@ -51,6 +53,8 @@ function App() {
         
         <Route path="/admin/addtea/" element={<Addtea />}/>
         <Route path="/admin/edittea/:id" element={<Edittea />}/>
+        <Route path="/admin/addnews/" element={<Addnews />}/>
+        <Route path="/admin/editnews/:id" element={<Editnews />}/>
         <Route path="/admin/addadmin" element={<Addadmin />}/>
         <Route path="/search" element={<Search />}/>
         <Route path="/admin/editbanner/:id" element={<Editbanner />}/>

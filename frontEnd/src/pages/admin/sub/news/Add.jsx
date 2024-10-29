@@ -42,7 +42,7 @@ const Add = ({ }) => {
 
 
 
-   const api = fetch(process.env.REACT_APP_API_LINK + 'admin/add/banner/', {
+   const api = fetch(process.env.REACT_APP_API_LINK + 'admin/add/news/', {
     method: 'POST',
     credentials: "include",
    // headers: {'Content-Type': "application/json", },
