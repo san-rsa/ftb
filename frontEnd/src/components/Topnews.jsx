@@ -6,13 +6,13 @@ import News, {Mininews} from "./sub component/list/Newslist"
 
 const TopNews = () => {
 
-    const [banner, setbanner] = useState([])
+    const [news, setnews] = useState([])
 
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getall/banner")
+        fetch(process.env.REACT_APP_API_LINK + "getall/news")
         .then((res) =>  res.json())
-        .then((data) => setbanner(data.data));
+        .then((data) => setnews(data.data));
     }, []);
 
 
@@ -22,12 +22,12 @@ const TopNews = () => {
          <div className={Style.top}> 
 
             <h1> TOP NEWS</h1>  
-          {banner.slice(-1).map((project) => (
+          {news.slice(-1).map((project) => (
 
             <div className='' key={project._id}> 
             
               <News
-                  text={project.text}
+                  head={project.head}
                   img={project.imgUrl.url}
                 />    
                 </div>
@@ -38,12 +38,12 @@ const TopNews = () => {
 
 
 
-                {banner.slice(-2, -7).map((project) => (
+                {news.slice(-5, -2).map((project) => (
 
                 <div className={Style.perone} key={project._id}> 
 
                 <Mininews
-                    text={project.text}
+                    head={project.head}
                     img={project.imgUrl.url}
                     />    
                     </div>

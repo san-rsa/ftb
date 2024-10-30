@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const newsSchema = new mongoose.Schema({
   head: {type: String, required: true
   },
@@ -18,6 +17,6 @@ const newsSchema = new mongoose.Schema({
 }
 );
 
-const Banner = mongoose.model("Banner", newsSchema);
+const News = mongoose.model("News", newsSchema);
 
-module.exports = Banner
+module.exports = News

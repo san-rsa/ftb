@@ -41,7 +41,7 @@ const Tablehead = () => {
     )
 }
 
-const Table = () => {
+const Table = ({pos, w, d, l, pts, name, logo, pl, gd}) => {
 
 
     return (
@@ -102,7 +102,7 @@ const Fixture = () => {
 
                 <ul  className={Style.list}>
                 
-                    <li >
+                    <li className={Style.fixture}>
                         <div className={Style.container} >
                             <span className={Style.teams}>
 
@@ -137,18 +137,18 @@ const Fixture = () => {
 
 
 
-const Result = () => {
+const Result = ({h}) => {
 
 
     return (
-        <div className={Style.fixtures}>
+        <div className={Style.results}>
             <div className={Style.matchday}>
 {/* 
                 <h2> Matchday 3</h2> */}
 
                 <ul  className={Style.list}>
                 
-                    <li >
+                    <li className={Style.result}>
                         <div className={Style.container} >
                             <span className={Style.teams}>
 

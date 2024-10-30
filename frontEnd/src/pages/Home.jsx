@@ -23,7 +23,7 @@ function App() {
 
         <TopNews />
 
-         <Highlight />
+         {/* <Highlight /> */}
         <Awards />
 
         <Homet />
@@ -31,7 +31,7 @@ function App() {
         
            
        
-                          <Carousel />
+                          {/* <Carousel /> */}
 
 {/* 
             <Banner /> */}

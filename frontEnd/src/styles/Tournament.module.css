@@ -14,6 +14,7 @@ ul {
 
 
 
+
 /* TABLE */
 .table h2, .result h2, .fix h2 {
     text-align: left;
@@ -72,6 +73,9 @@ ul {
 
 
 
+.teams li:hover {
+    background-color: rgb(71, 69, 65);
+}
 
 @media (max-width: 500px) {
 
@@ -145,7 +149,9 @@ time {
     font-size: larger;
 }
 
-
+ .fixtures:hover {
+    background-color: rgb(71, 69, 65);
+}
 
 /* result */
 
@@ -153,4 +159,8 @@ time {
     border:  2px rgb(212, 196, 255) solid;
     padding: 5px 15px;
     background-color: rgb(10, 92, 92);
+}
+
+.results:hover {
+    background-color: rgb(71, 69, 65);
 }

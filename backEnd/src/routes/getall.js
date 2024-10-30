@@ -11,6 +11,7 @@ const {auth, role} = require('../middleware/mid')
 const otpGenerator = require("otp-generator");
 const User = require('../models/user')
 const Wishlist = require('../models/wishlist')
+const News = require('../models/news')
 // const Product = require('../models/product')
 // const Auth = require('../middleware/mid')
 
@@ -51,6 +52,16 @@ router.get('/category/:id', async(req, res)=> {
   })
 
   
+
+  router.get('/news', async(req, res)=> {
+
+    const news = await News.find({})
+    
+         res.status(200).json({
+            success: true,
+           data: news
+          })
+    })
 
 router.get('/wishlist', auth, async(req, res)=> {
   const user = req.userId

@@ -13,6 +13,7 @@ const jwt= require('jsonwebtoken')
  const {auth, role, uploadMiddleware} = require('../../middleware/mid')
  // const cloudinary = require("cloudinary");
 const cloudinary = require('../../connection/cloudinary')
+const News = require('../../models/news')
 
 
 
@@ -194,6 +195,76 @@ router.post('/category', auth, role(process.env.ADMIN), async (req, res)=> {
 })
 
 
+
+
+
+router.post('/news', auth,  role(process.env.ADMIN), async (req, res)=> {
+
+    const data = JSON.parse(req.body.data)
+    const file = req.files.img  
+      
+    
+    if (!req.files) {
+        // No file was uploaded
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+     
+
+    try {
+        const {head, body}= data
+        const imgUrl = []
+
+        const image = await cloudinary.uploader.upload(
+        file.tempFilePath,
+        { folder: 'Banner' },
+
+      );
+
+
+      imgUrl.push({url: image.secure_url,  imgId: image.public_id})
+
+ 
+      
+
+
+        console.log(data)
+
+		if (!head || !imgUrl ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+        //check if use already exists?
+        const existingItem = await News.findOne({head})
+        if(existingItem){
+            return res.status(400).json({
+                success: false,
+                message: "banner already exists"
+            })
+        }
+
+        const banner = await News.create({
+            head, body, imgUrl: imgUrl[0]
+        })
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+            banner,
+            message: "banner created successfully ✅"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "banner registration failed"
+        })
+       
+   }  
+})
 
 
 
