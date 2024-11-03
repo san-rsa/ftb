@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const playerSchema = new mongoose.Schema({
 
-    name: {type: String, required: true, trim: true
+    name: {type: String, required: true, trim: true, unique: true
     },
 
     picture: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
@@ -12,7 +12,7 @@ const playerSchema = new mongoose.Schema({
     description: {type: String, required: true
      },
 
-     teamId: {type: mongoose.Schema.Types.String, ref: "Player", 
+     teamId: {type: mongoose.Schema.Types.String, ref: "Team", 
       },
 
       position: {type: String, required: true, trim: true
@@ -20,12 +20,7 @@ const playerSchema = new mongoose.Schema({
 
       number: {type: Number},
 
-    size: [{ weight: {type: Number, required: true
-    },
-            price: {type: Number, required: true
-    }
 
-}]
 }, {
     timestamps: true
 })

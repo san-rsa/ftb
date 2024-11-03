@@ -2,17 +2,17 @@
 const mongoose = require('mongoose')
 // const ObjectID = mongoose.Schema.Types.ObjectId
 
-const teamSchema = new mongoose.Schema({
+const Schema = new mongoose.Schema({
 
     name: {type: String, required: true, trim: true, unique: true
     },
 
     logo: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
 
-    description: {type: String, },
+    description: {type: String,
+     },
 
-     playerId: [{type: mongoose.Schema.Types.String, ref: "Player", 
-      }],
+
 
 
 
@@ -20,6 +20,6 @@ const teamSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Team = mongoose.model('Team', teamSchema)
+const Competition  = mongoose.model('Competition ', Schema)
 
-module.exports = Team
+module.exports = Competition  

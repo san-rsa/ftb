@@ -4,19 +4,14 @@ const mongoose = require('mongoose')
 
 const Schema = new mongoose.Schema({
 
-    name: {type: String, required: true, trim: true
+    competition: { type: mongoose.Schema.Types.String, ref: "Competition",
     },
 
-    logo: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
-
-    description: {type: String, required: true
-     },
-
-
+    year : {type: Date , required: true, unique: true} ,
 
     fixture: [{ matchday: {type: Number, required: true},
         teams: [{home :{type: mongoose.Schema.Types.String, ref: "Team",  required: true }, 
-                time: {type: String , required: true},  
+                time: {type: Date , required: true},  
                 away :{type: mongoose.Schema.Types.String, ref: "Team",  required: true }}
          ]
 
