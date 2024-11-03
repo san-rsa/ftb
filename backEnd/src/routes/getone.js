@@ -1,7 +1,6 @@
 require('dotenv').config()
-const Category = require('../models/category')
 const Wishlist = require('../models/wishlist')
-const Banner = require('../models/banner')
+const Banner = require('../models/news/banner')
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
@@ -47,12 +46,6 @@ router.get('/banner/:id', auth, async (req, res, next) => {
       
       })
   
-              router.get('/category/:id', async(req, res)=> {
-    
-                const data = await Category.findById(req.params.id)
-                      res.status(200).json(data)
-                
-                })
 
 
 

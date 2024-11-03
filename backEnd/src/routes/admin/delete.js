@@ -1,7 +1,5 @@
 require('dotenv').config()
-const Product = require('../../models/product')
-const Category = require('../../models/category')
-const Banner = require('../../models/banner')
+const Banner = require('../../models/news/banner')
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
@@ -63,28 +61,6 @@ router.delete('/banner', auth, role(process.env.ADMIN), async (req, res, next) =
 
 
 
-
-router.delete('/category', auth, role(process.env.ADMIN), async (req, res, next) => {
-
-    const id = req.body.productId
-
-    try {
-
-        const data = await Category.findById(id);
-
-
-        await cloudinary.uploader.destroy(data.imgUrl.imgId);
-
-        data.remove()
-
-
-        res.status(200).json({
-            msg: data,
-        });
-    } catch (error) {
-        return next(error);
-    }
-});
 
 
 

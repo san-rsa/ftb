@@ -6,8 +6,8 @@ const mongoose = require("mongoose");
 
     const uri = 'mongodb+srv://sanrsa:rahman417@cluster0.w7dwc.mongodb.net/footballDB' // process.env.MONGO_URI ;
 
-     mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, // useCreateIndex: true
-      })
+     mongoose.connect(uri, // {useNewUrlParser: true, useUnifiedTopology: true, // useCreateIndex: true }
+      )
 
       .catch((error) => console.log(error));
 
@@ -170,7 +170,6 @@ const app = express();
 const session = require("express-session");
 const passport = require("passport");
 const flash = require("connect-flash");
-const Category = require("./src/models/category");
 var MongoStore = require("connect-mongo");
 const connectDB = require("./src/connection/db");
 const cors = require("cors");

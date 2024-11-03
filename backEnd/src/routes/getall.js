@@ -1,6 +1,5 @@
 require('dotenv').config()
-const Category = require('../models/category')
-const Banner = require('../models/banner')
+const Banner = require('../models/news/banner')
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
@@ -11,7 +10,7 @@ const {auth, role} = require('../middleware/mid')
 const otpGenerator = require("otp-generator");
 const User = require('../models/user')
 const Wishlist = require('../models/wishlist')
-const News = require('../models/news')
+const News = require('../models/news/news')
 // const Product = require('../models/product')
 // const Auth = require('../middleware/mid')
 
@@ -30,26 +29,6 @@ const banner = await Banner.find({})
 
 
 
-router.get('/category', async(req, res)=> {
-
-const category = await Category.find({})
-
-      res.status(200).json({
-        success: true,
-       data: category
-      })
-
-})
-
-router.get('/category/:id', async(req, res)=> {
-    
-  const data = await Product.find({categoryId: req.params.id})
-        res.status(200).json({
-          success: true,
-         data: data
-        })
-  
-  })
 
   
 

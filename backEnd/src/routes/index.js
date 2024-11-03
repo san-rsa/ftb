@@ -1,7 +1,6 @@
 const express = require("express");
 const csrf = require("csurf");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
-const Category = require("../models/category");
 const middleware = require("../middleware/mid");
 // const router = express.Router();
 const router = new express.Router()

@@ -1,6 +1,5 @@
 require('dotenv').config()
-const Category = require('../../models/category')
-const Banner = require('../../models/banner')
+const Banner = require('../../models/news/banner')
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
@@ -57,42 +56,6 @@ const User = require('../../models/user')
     });
 
 
-
-
-
-    router.patch('/category/:id' , auth, role(process.env.ADMIN), async (req, res, next) => {
-        try {
-
-            const update = JSON.parse(req.body.data)
-            const file = req.files?.img    
-            const imgUrl = []
-    
-
-            // await cloudinary.uploader.destroy(data.imgUrl.imgId);
-
-            
-            if (req.files) {
-                // No file was uploaded
-   
-                const image = await cloudinary.uploader.upload(
-                file.tempFilePath,
-                { folder: 'Category' },
-        
-              );        
-                imgUrl.push({url: image.secure_url,  imgId: image.puplic_id})        
-            }
-        
-        
-
-            const data = await Category.findByIdAndUpdate(req.params.id, {
-                $set: update, imgUrl: imgUrl[0]
-            }, { new: true });
-            res.json(data);
-            console.log(data, req.body, " updated successfully!");
-        } catch (error) {
-            return next(error);
-        }
-    });
 
 
 

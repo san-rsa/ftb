@@ -1,6 +1,6 @@
 require('dotenv').config()
 const User = require('../../models/user')
-const Banner = require('../../models/banner')
+const Banner = require('../../models/news/banner')
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
@@ -11,7 +11,7 @@ const jwt= require('jsonwebtoken')
  const {auth, role, uploadMiddleware} = require('../../middleware/mid')
  // const cloudinary = require("cloudinary");
 const cloudinary = require('../../connection/cloudinary')
-const News = require('../../models/news')
+const News = require('../../models/news/news')
 
 
 
