@@ -7,12 +7,12 @@ const Schema = new mongoose.Schema({
     competition: { type: mongoose.Schema.Types.String, ref: "Competition",
     },
 
-    year : {type: Date , required: true, unique: true} ,
+    year : {type: Date , required: true, } ,
 
     fixture: [{ matchday: {type: Number, required: true},
-        teams: [{home :{type: mongoose.Schema.Types.String, ref: "Team",  required: true }, 
-                time: {type: Date , required: true},  
-                away :{type: mongoose.Schema.Types.String, ref: "Team",  required: true }}
+        teams: [{home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",   }, 
+                time: [{date: {type: String , required: true}, time: {type: String , required: true},}],  
+                away :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  }}
          ]
 
 }]

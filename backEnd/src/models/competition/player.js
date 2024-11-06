@@ -20,6 +20,8 @@ const playerSchema = new mongoose.Schema({
 
       number: {type: Number},
 
+      
+
 
 }, {
     timestamps: true
