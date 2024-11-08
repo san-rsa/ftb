@@ -4,30 +4,29 @@ const mongoose = require('mongoose')
 
 const resultSchema = new mongoose.Schema({
 
-    competition: { type: mongoose.Schema.Types.String, ref: "Competition",
+    competition: { type: mongoose.Schema.Types.ObjectId, ref: "Competition",
     },
 
-    year : {type: Date , required: true, unique: true},
+    year : {type: Date , required: true, },
 
 
 
       result: [{ matchday: {type: Number, required: true},
-        teams: [{home :{type: mongoose.Schema.Types.String, ref: "Team",  required: true },
+        teams: [{home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  required: true },
 
                 homeScore: {type: Number , required: true},  
                 awayScore: {type: Number , required: true},  
 
-                away :{type: mongoose.Schema.Types.String, ref: "Team",  required: true },
+                away :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  required: true },
             
             
                 
-                time: {type: Date , required: true},  
+                time: { date: {type: String , required: true}, time: {type: String , required: true}},  
 
           
             },
 
-
-
+            
          ]
         }]
 }, {

@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "nodemon server.js",
+    "dev": "supervisor server.js",
     "build": "npm run"
   },
   "keywords": [],
@@ -48,7 +48,6 @@
     "morgan": "",
     "nodemailer": "",
     "nodemailer-express-handlebars": "",
-    "nodemon": "",
     "otp-generator": "^4.0.1",
     "passport": "",
     "passport-local": "",
@@ -59,6 +58,10 @@
     "slugify": "",
     "stripe": "^16.9.0",
     "styled-components": "",
+    "supervisor": "^0.12.0",
     "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }

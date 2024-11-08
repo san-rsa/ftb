@@ -11,7 +11,7 @@ const Schema = new mongoose.Schema({
 
     fixture: [{ matchday: {type: Number, required: true},
         teams: [{home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",   }, 
-                time: [{date: {type: String , required: true}, time: {type: String , required: true},}],  
+                time: { date: {type: String , required: true}, time: {type: String , required: true},},  
                 away :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  }}
          ]
 
