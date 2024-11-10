@@ -12,12 +12,12 @@ const resultSchema = new mongoose.Schema({
 
 
       result: [{ matchday: {type: Number, required: true},
-        teams: [{home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  required: true },
+        teams: [{home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  },
 
-                homeScore: {type: Number , required: true},  
-                awayScore: {type: Number , required: true},  
+                homeScore: {type: Number , },  
+                awayScore: {type: Number , },  
 
-                away :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  required: true },
+                away :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  },
             
             
                 

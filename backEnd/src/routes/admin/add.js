@@ -8,7 +8,7 @@ const jwt= require('jsonwebtoken')
 //const OTP = require('../../models/OTP')
 // const Product = require('../models/product')
 // const Product = require('../models/product')
- const {auth, role, uploadMiddleware} = require('../../middleware/mid')
+ const {auth, role, uploadMiddleware, deleteFixture, updateStanding} = require('../../middleware/mid')
  // const cloudinary = require("cloudinary");
 const cloudinary = require('../../connection/cloudinary')
 const News = require('../../models/news/news')
@@ -17,6 +17,7 @@ const Team = require('../../models/competition/team')
 const Player = require('../../models/competition/player')
 const Fixture = require('../../models/competition/fixture')
 const Result = require('../../models/competition/result')
+const Standing = require('../../models/competition/standing')
 
 
 
@@ -230,15 +231,9 @@ router.post('/fixtures',  async (req, res)=> {
             if (existing) {
                 //---- Check if index exists ----
 
-                const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
-
-
-                const ddd = isEmpty(existing.fixture[Foundmatchday].teams)
-
-                console.log(ddd);
-                
-                // const FoundHome = existing.fixture[Foundmatchday].teams.findIndex(item => item.home == home);
-                // const Foundaway = existing.fixture[Foundmatchday].teams.findIndex(item => item.away == away);
+                 const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
+                 const FoundHome = existing.fixture[Foundmatchday].teams.findIndex(item => item.home == home);
+                 const Foundaway = existing.fixture[Foundmatchday].teams.findIndex(item => item.away == away);
 
     
     
@@ -254,7 +249,7 @@ router.post('/fixtures',  async (req, res)=> {
 
 
                    if (FoundHome == -1 && Foundaway == -1) {
-                        existing.fixture[Foundmatchday].teams.push({teams} ) 
+                        existing.fixture[Foundmatchday].teams.push(teams) 
 
    
                     }
@@ -478,58 +473,18 @@ router.post('/result',  async (req, res)=> {
         const {fixtureId, competitionId, matchday, homeScore, awayScore}= data
 
 
+
         const existingFix = await Fixture.findById(competitionId)
+
+        
 
         const FoundmatchdayF = existingFix.fixture.findIndex(item => item.matchday == matchday);
        const Foundtime = existingFix.fixture[FoundmatchdayF].teams.findIndex(item => item._id == fixtureId);
 
 
 
-  
-
-
-        async function deleteFixture() {
-            const deleteFix = existingFix.fixture[FoundmatchdayF]?.teams?.length
-            const deleteAllFix = existingFix.fixture.length
-
-
-            
-            existingFix.fixture[FoundmatchdayF]?.teams.pull(fixtureId)
-
-
-
-                console.log(deleteFix, deleteAllFix);
-
-
-                if (deleteFix === undefined || deleteFix == 0 || !Array.isArray(deleteFix) || !deleteFix) {
-                    const id = existingFix.fixture[FoundmatchdayF]?._id
-                        existingFix.fixture.pull(id)
-
-                        console.log(id);
-     
-
-                }
-
-
-
-                
-                 if (deleteAllFix === undefined || deleteAllFix == 0 || !Array.isArray(deleteAllFix) || !deleteAllFix) {
-                        const id = existingFix._id
-
-                   await Fixture.findByIdAndDelete(id)
-
-                    console.log(id);
-                }
-
-               existingFix.save()
-
-        }
-
-
-        
-
-
         const {time, home, away} = existingFix.fixture[FoundmatchdayF].teams[Foundtime]
+
         const {competition, year} = existingFix
 
         
@@ -545,11 +500,14 @@ router.post('/result',  async (req, res)=> {
 
 
 
-
         const existing = await Result.findOne({competition, year})
 
 
-        const teams = {home, homeScore, time: time, awayScore, away }
+        const teams =     {
+                home: String(home), homeScore: Number(homeScore), 
+                time: {date: String(time.date), time: String(time.time)}, 
+                awayScore: Number(awayScore), away: String(away) 
+            }
 
                     const result =  [{ matchday,
                     teams: teams    // teams: [{home, time: [{date, time,}], away } ]
@@ -580,15 +538,23 @@ router.post('/result',  async (req, res)=> {
                     
                     existing.result.push(result)
 
+
+                     updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+
                 }
 
                 if (Foundmatchday !== -1) {
 
 
                    if (FoundHome == -1 && Foundaway == -1) {
-                        existing.result[Foundmatchday].teams.push({teams }) 
+
+                    console.log(FoundHome, teams );
+                    
+                        existing.result[Foundmatchday].teams.push(teams ) 
 
 
+
+                        //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res)
 
 
    
@@ -603,7 +569,7 @@ router.post('/result',  async (req, res)=> {
   
                     })
                    }
-                   console.log(existing, 'tt', );
+                   console.log(existing.result[Foundmatchday].teams, 'tt', );
                    
 
                 }
@@ -616,7 +582,10 @@ router.post('/result',  async (req, res)=> {
                 const save = await existing.save();
 
 
-                    deleteFixture()
+                    deleteFixture(existingFix, FoundmatchdayF, Fixture, fixtureId)
+
+
+                    updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
 
 
 
@@ -645,7 +614,9 @@ router.post('/result',  async (req, res)=> {
                     // res.redirect("/login")
 
                    
-                    deleteFixture()
+                    deleteFixture(existingFix, FoundmatchdayF, Fixture, fixtureId)
+                    updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+
         
                 return res.status(200).json({
                     success: true,

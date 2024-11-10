@@ -10,20 +10,23 @@ const Schema = new mongoose.Schema({
     year : {type: Date , required: true},
 
 
-     playerId: [{type: mongoose.Schema.Types.String, ref: "Player", 
-      }],
-
     standing: [{ teams: {type: mongoose.Schema.Types.String, ref: "Team",  },
-            stats: [{
-                win: {type: Number, required: true, default: 0   },
-                loss: {type: Number, required: true, default: 0   },
-                draw: {type: Number, required: true, default: 0   },
-                gd: {type: Number, required: true, default: 0   },
-                point: {type: Number, required: true, default: 0   },
-                play: {type: Number, required: true, default: 0   },
+            stats: {
+                win: {type: Number,  default: 0   },
+                loss: {type: Number, default: 0   },
+                draw: {type: Number,  default: 0   },
+                gd: {type: Number,  default: 0   },
+                points: {type: Number, default: 0   },
+                gs: {type: Number, default: 0   },
+                ga: {type: Number, default: 0   },
+                played: {type: Number, default: 0   },
+
+                form: [ {type: String, enum: ['W', 'L', 'D'] }]
+
+
                 
 
-            }]
+            }
 
 }]
 }, {
