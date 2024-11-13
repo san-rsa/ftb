@@ -11,6 +11,12 @@ const otpGenerator = require("otp-generator");
 const User = require('../models/user')
 const Wishlist = require('../models/wishlist')
 const News = require('../models/news/news')
+const Team = require('../models/competition/team')
+const Fixture = require('../models/competition/fixture')
+const _ = require('lodash')
+const Standing = require('../models/competition/standing')
+const Result = require('../models/competition/result')
+
 // const Product = require('../models/product')
 // const Auth = require('../middleware/mid')
 
@@ -26,6 +32,107 @@ const banner = await Banner.find({})
        data: banner
       })
 })
+
+
+
+router.get('/:link/fixtures', async(req, res)=> {
+
+
+ const {link} = req.params
+
+ let year = '2022' // new date().getFullYear()
+
+ 
+  const data = await Fixture.findOne({competition: link, year})
+
+
+  if (!data) {
+    year = year -1 ;
+
+    const data = await Fixture.findOne({competition: link, year})
+
+    const sort = _.sortBy(data.fixture, ['matchday']);
+    data.fixture = sort
+
+        
+    return  res.status(200).json({
+      success: true,
+     data: data
+    })
+ 
+
+  } else {
+       const sort = _.sortBy(data.fixture, ['matchday']);
+   data.fixture = sort
+ 
+  }
+   
+      return  res.status(200).json({
+          success: true,
+         data: data
+        })
+
+  })
+
+
+
+  router.get('/:link/:team/fixtures', async(req, res)=> {
+
+
+    const { link, team} = req.params
+   
+    let year = '2022' // new date().getFullYear()
+
+    const data = []
+    
+     const db = await Fixture.findOne({competition: link, year})
+
+     if (!data) {
+      year = year -1
+
+      const data = await Fixture.findOne({competition: link, year})
+
+    for (let i = 0; i < db.fixture.length; i++) {
+
+      const Foundmatch = db.fixture[i].teams.findIndex(item => item.home == team || item.away == team);
+
+      if (Foundmatch !== -1 ) {
+
+        data.push({
+          matchday: i + 1,
+          match: db.fixture[i].teams[Foundmatch]
+        })
+      }    
+    }
+
+     } else {
+      
+    for (let i = 0; i < db.fixture.length; i++) {
+
+      const Foundmatch = db.fixture[i].teams.findIndex(item => item.home == team || item.away == team);
+
+      if (Foundmatch !== -1 ) {
+
+        data.push({
+          matchday: i + 1,
+          match: db.fixture[i].teams[Foundmatch]
+        })
+      }
+
+    }
+   
+     }
+
+
+      const sort = _.sortBy(data.fixture, ['matchday']);
+      data.fixture = sort
+
+
+          res.status(200).json({
+             success: true,
+            data: data
+           })
+     })
 
 
 
@@ -65,6 +172,189 @@ router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {
    data: data
   })
 })
+
+
+
+
+
+
+
+
+router.get('/:link/results', async(req, res)=> {
+
+
+  const {link} = req.params
+
+  let year = '2022' // new date().getFullYear()
+ 
+  
+   const data = await Result.findOne({competition: link, year})
+ 
+ 
+   if (!data) {
+     year = year -1 ;
+ 
+     const data = await Result.findOne({competition: link, year})
+ 
+     const sort = _.sortBy(data.result, ['matchday']);
+     data.result = sort
+  
+        return  res.status(200).json({
+           success: true,
+          data: data
+         })
+
+   } else {
+        const sort = _.sortBy(data.result, ['matchday']);
+    data.result = sort
+
+        
+    return  res.status(200).json({
+      success: true,
+     data: data
+    })
+  
+   }
+    
+
+   })
+
+
+
+
+
+
+
+
+
+
+   router.get('/:link/:team/result', async(req, res)=> {
+
+
+    const { link, team} = req.params
+   
+    let year = '2022' // new date().getFullYear()
+
+    const data = []
+    
+     const db = await Result.findOne({competition: link, year})
+
+     if (!data) {
+      year = year -1
+
+      const data = await Result.findOne({competition: link, year})
+
+    for (let i = 0; i < db.result.length; i++) {
+
+      const Foundmatch = db.result[i].teams.findIndex(item => item.home == team || item.away == team);
+
+      if (Foundmatch !== -1 ) {
+
+        data.push({
+          matchday: i + 1,
+          match: db.result[i].teams[Foundmatch]
+        })
+      }    
+    }
+     
+
+     } else {
+      
+    for (let i = 0; i < db.result.length; i++) {
+
+      const Foundmatch = db.result[i].teams.findIndex(item => item.home == team || item.away == team);
+
+      if (Foundmatch !== -1 ) {
+
+        data.push({
+          matchday: i + 1,
+          match: db.result[i].teams[Foundmatch]
+        })
+      }
+
+    }
+
+     }
+           const sort = _.sortBy(data.result, ['matchday']);
+      data.result = sort
+     
+          res.status(200).json({
+             success: true,
+            data: data
+           })
+     })
+
+
+
+
+router.get('/:link/:year/standing', async(req, res)=> {
+
+
+  const {year, link} = req.params
+ 
+  
+ 
+ 
+   const data = await Standing.findOne({competition: link, year})
+   
+  
+    if (!data) {
+
+      const year = new Date().getFullYear() - 1
+
+      const data = await Standing.findOne({competition: link, year})
+
+
+      const sort = _.orderBy(data.standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);
+
+
+      data.standing = sort
+   
+   
+     
+     
+          res.status(200).json({
+             success: true,
+            data: data
+           })
+
+
+      
+    } else {
+          const sort = _.orderBy(data.standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);
+
+
+    data.standing = sort
+ 
+ 
+   
+   
+        res.status(200).json({
+           success: true,
+          data: data
+         })
+    }
+   })
+
+
+
+
+router.get('/team', async(req, res)=> {
+
+  const data = await Team.find().sort("name")
+  
+       res.status(200).json({
+          success: true,
+         data: data
+        })
+  })
+
+
+
+
+
+
+
 
 router.get('/user', auth, async(req, res)=> {
 

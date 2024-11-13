@@ -7,7 +7,7 @@ const Schema = new mongoose.Schema({
     competition: { type: mongoose.Schema.Types.String, ref: "Competition",
     },
 
-    year : {type: Date , required: true},
+    year : {type: Number  , required: true},
 
 
     standing: [{ teams: {type: mongoose.Schema.Types.String, ref: "Team",  },

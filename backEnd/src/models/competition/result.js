@@ -4,10 +4,10 @@ const mongoose = require('mongoose')
 
 const resultSchema = new mongoose.Schema({
 
-    competition: { type: mongoose.Schema.Types.ObjectId, ref: "Competition",
+    competition: { type: mongoose.Schema.Types.String, ref: "Competition",
     },
 
-    year : {type: Date , required: true, },
+    year : {type: Number  , required: true, },
 
 
 

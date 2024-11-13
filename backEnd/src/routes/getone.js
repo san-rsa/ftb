@@ -10,6 +10,8 @@ const otpGenerator = require("otp-generator");
 const User = require('../models/user')
 // const Product = require('../models/product')
 const {auth} = require('../middleware/mid')
+const Fixture = require('../models/competition/fixture')
+const _ = require('lodash')
 
 
 
@@ -30,22 +32,69 @@ router.get('/banner/:id', auth, async (req, res, next) => {
     })
 
 
-    router.get('/checkout', auth, async(req, res)=> {
-        const user = req.userId
-        const data = await Cart.findOne({userId: user}).populate({path: "products", populate: {path: "productId"}})
-      
-        if (data && data.products.length > 0) {
-           res.status(200).json({
-              success: true,
-             data: data
+    router.get('/:link/fixtures/:id', async(req, res)=> {
+
+
+        const { link, id} = req.params
+       
+        let year = '2022' // new date().getFullYear()
+    
+        const data = {}
+        
+         const db = await Fixture.findOne({competition: link, year})
+    
+         if (!data) {
+          year = year -1
+    
+          const data = await Fixture.findOne({competition: link, year})
+    
+        for (let i = 0; i < db.fixture.length; i++) {
+    
+          const Foundmatch = db.fixture[i].teams.findIndex(item => item._id == id);
+    
+          if (Foundmatch !== -1 ) {
+    
+            data.push({
+              matchday: i + 1,
+              match: db.fixture[i].teams[Foundmatch]
             })
-        } else {
-          res.send(null);
+          }    
+        }
+    
+         } else {
+          
+        for (let i = 0; i < db.fixture.length; i++) {
+    
+            const Foundmatch = db.fixture[i].teams.findIndex(item => item._id == id);
+    
+          if (Foundmatch !== -1 ) {
+    
+        //     data.push({
+        //       matchday: i + 1,
+        //       match: db.fixture[i].teams[Foundmatch]
+        //     })
+
+
+
+        data.matchday = i + 1,
+        data.match = db.fixture[i].teams[Foundmatch]
+
+
+
+       }
+    
         }
        
-      
-      })
-  
+         }
+    
+    
+              res.status(200).json({
+                 success: true,
+                data: data
+               })
+         })
+
+
 
 
 

@@ -219,10 +219,10 @@ router.post('/fixtures',  async (req, res)=> {
 
         const teams = {home, time: {date, time}, away }
 
-                    const fixture =  [{ matchday,
+                    const fixture =  { matchday,
                     teams: teams   // teams: [{home, time: [{date, time,}], away } ]
     
-    }]
+    }
 
 
             
@@ -232,8 +232,7 @@ router.post('/fixtures',  async (req, res)=> {
                 //---- Check if index exists ----
 
                  const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
-                 const FoundHome = existing.fixture[Foundmatchday].teams.findIndex(item => item.home == home);
-                 const Foundaway = existing.fixture[Foundmatchday].teams.findIndex(item => item.away == away);
+
 
     
     
@@ -246,7 +245,8 @@ router.post('/fixtures',  async (req, res)=> {
                 }
 
                 if (Foundmatchday !== -1) {
-
+                 const FoundHome = existing.fixture[Foundmatchday].teams.findIndex(item => item.home == home);
+                 const Foundaway = existing.fixture[Foundmatchday].teams.findIndex(item => item.away == away);
 
                    if (FoundHome == -1 && Foundaway == -1) {
                         existing.fixture[Foundmatchday].teams.push(teams) 
@@ -525,8 +525,8 @@ router.post('/result',  async (req, res)=> {
                 //---- Check if index exists ----
 
                 const Foundmatchday = existing.result.findIndex(item => item.matchday == matchday);
-                const FoundHome = existing.result[Foundmatchday].teams.findIndex(item => item.home == home);
-                const Foundaway = existing.result[Foundmatchday].teams.findIndex(item => item.away == away);
+                const FoundHome = existing.result[Foundmatchday].teams.findIndex(item => item.home == String(home));
+                const Foundaway = existing.result[Foundmatchday].teams.findIndex(item => item.away == String(away));
 
 
     
@@ -565,7 +565,7 @@ router.post('/result',  async (req, res)=> {
                     
                    return  res.status(400).json({
                         type: "failed",
-                        mgs: "team added choose different team",
+                        mgs: "result added choose different fixtures ",
   
                     })
                    }
