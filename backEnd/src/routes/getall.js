@@ -35,7 +35,7 @@ const banner = await Banner.find({})
 
 
 
-router.get('/:link/fixtures', async(req, res)=> {
+router.get('/:link/fixtures/:year', async(req, res)=> {
 
 
  const {link} = req.params
@@ -76,7 +76,7 @@ router.get('/:link/fixtures', async(req, res)=> {
 
 
 
-  router.get('/:link/:team/fixtures', async(req, res)=> {
+  router.get('/:link/:team/fixtures/:year', async(req, res)=> {
 
 
     const { link, team} = req.params
@@ -149,17 +149,7 @@ router.get('/:link/fixtures', async(req, res)=> {
           })
     })
 
-router.get('/wishlist', auth, async(req, res)=> {
-  const user = req.userId
 
-  
-  const data = await Wishlist.findOne({userId: user}).populate({path: "products", populate: {path: "productId"}})
-      res.status(200).json({
-        success: true,
-       data: data
-      })
-
-})
 
 // user
 
@@ -180,7 +170,7 @@ router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {
 
 
 
-router.get('/:link/results', async(req, res)=> {
+router.get('/:link/results/year', async(req, res)=> {
 
 
   const {link} = req.params
@@ -228,7 +218,7 @@ router.get('/:link/results', async(req, res)=> {
 
 
 
-   router.get('/:link/:team/result', async(req, res)=> {
+   router.get('/:link/:team/results/:year', async(req, res)=> {
 
 
     const { link, team} = req.params
@@ -287,7 +277,7 @@ router.get('/:link/results', async(req, res)=> {
 
 
 
-router.get('/:link/:year/standing', async(req, res)=> {
+router.get('/:link/standing/:year', async(req, res)=> {
 
 
   const {year, link} = req.params

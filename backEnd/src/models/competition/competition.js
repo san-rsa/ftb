@@ -7,6 +7,10 @@ const Schema = new mongoose.Schema({
     name: {type: String, required: true, trim: true, unique: true
     },
 
+    type: {type: String, required: true, trim: true, unique: true
+    },
+
+
     logo: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
 
     description: {type: String,
