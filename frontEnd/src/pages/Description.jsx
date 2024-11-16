@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import List  from "../components/sub component/list/List";
 import Style from "../styles/Description.module.css"
 import Nav from "../components/sub component/Nav"
 import { useParams, Link } from "react-router-dom";
@@ -12,8 +11,7 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 const Description = ({}) => {
 
-    const [product, setproduct] = useState([])
-    const [info, setinfo] = useState({})
+    const [data, setData] = useState({})
     const [wishlist, setwish] = useState()
     const [set, setset] = useState('')
     const [priced, setpriced] = useState(Number())
@@ -24,74 +22,69 @@ const Description = ({}) => {
     
     const link = useParams().id
 
-   
 
-
-
-
-    
         useEffect(() => {
             fetch(process.env.REACT_APP_API_LINK  + "getone/product/"+ link)
             .then((res) =>  res.json())
-            .then((data) => setinfo(data));
+            .then((data) => setData(data));
         }, []);
 
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getall/product")
-            .then((res) =>  res.json())
-            .then((data) => setproduct(data.data));
-        }, []);
+        // useEffect(() => {
+        //     fetch(process.env.REACT_APP_API_LINK  + "getall/product")
+        //     .then((res) =>  res.json())
+        //     .then((data) => setproduct(data.data));
+        // }, []);
     
  
 
-     useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK  + "getone/wishlist/" + link, {
-            credentials: "include",
-            headers: { "Content-type": "application/json; charset=UTF-8", },
-        }).then((res) =>  res.json())
-        .then((data) =>  {
-            if (data.data == "true") {
-                setwish(faX)
-                setset("active")
-            } else {
-                setwish(faHeart)
-                setset("false")
-            }
-        } );
-    }, []);
-         function wish(e) {
-            e.preventDefault()
-            const  mood = wishlist.iconName
+    //  useEffect(() => {
+    //     fetch(process.env.REACT_APP_API_LINK  + "getone/wishlist/" + link, {
+    //         credentials: "include",
+    //         headers: { "Content-type": "application/json; charset=UTF-8", },
+    //     }).then((res) =>  res.json())
+    //     .then((data) =>  {
+    //         if (data.data == "true") {
+    //             setwish(faX)
+    //             setset("active")
+    //         } else {
+    //             setwish(faHeart)
+    //             setset("false")
+    //         }
+    //     } );
+    // }, []);
+    //      function wish(e) {
+    //         e.preventDefault()
+    //         const  mood = wishlist.iconName
 
 
-            if (mood == "heart") {
-                fetch(process.env.REACT_APP_API_LINK + "add/wishlist", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                  "Content-type": "application/json",
-                },
-                body: JSON.stringify({productId: info._id }),
-             }).then((res) =>  res.json())
-             .then( ()=> setwish(faX))
-
-
-
-            } else {
-                fetch(process.env.REACT_APP_API_LINK + "del/wishlist", {
-                    method: "DELETE",
-                    credentials: "include",
-                    headers: {
-                      "Content-type": "application/json",
-                    },
-                    body: JSON.stringify({productId: info._id }),
-                 }).then((res) =>  res.json())
-                 .then( ()=> setwish(faHeart))
-            }
+    //         if (mood == "heart") {
+    //             fetch(process.env.REACT_APP_API_LINK + "add/wishlist", {
+    //             method: "POST",
+    //             credentials: "include",
+    //             headers: {
+    //               "Content-type": "application/json",
+    //             },
+    //             body: JSON.stringify({productId: data._id }),
+    //          }).then((res) =>  res.json())
+    //          .then( ()=> setwish(faX))
 
 
 
-       }
+    //         } else {
+    //             fetch(process.env.REACT_APP_API_LINK + "del/wishlist", {
+    //                 method: "DELETE",
+    //                 credentials: "include",
+    //                 headers: {
+    //                   "Content-type": "application/json",
+    //                 },
+    //                 body: JSON.stringify({productId: data._id }),
+    //              }).then((res) =>  res.json())
+    //              .then( ()=> setwish(faHeart))
+    //         }
+
+
+
+    //    }
 
 
 

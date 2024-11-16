@@ -79,7 +79,7 @@ ul {
 
 @media (max-width: 500px) {
 
-    #draw , #loss, #win {
+    #draw , #loss, #win, #ga, #gs{
         display: none;
         width: 0;
     }
@@ -103,6 +103,11 @@ ul {
 .fixtures span {
     display: inline-flex;
     height: max-content;
+}
+
+.day {
+    text-align: left;
+    margin: auto 10px;
 }
 
 time {

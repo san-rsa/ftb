@@ -1,7 +1,6 @@
 import React from "react";
 import Style from "../../../styles/Search.module.css"
 
-import List  from "../../../components/sub component/list/List";
 import "../../../styles/style.css"
 import "../../../styles/menu.css"
 import Nav from "../../../components/sub component/Nav"

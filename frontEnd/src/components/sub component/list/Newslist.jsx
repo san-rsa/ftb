@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import List  from "./List";
 import Style from "../../../styles/News.module.css"
 import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'

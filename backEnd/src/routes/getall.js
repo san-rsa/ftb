@@ -38,18 +38,18 @@ const banner = await Banner.find({})
 router.get('/:link/fixtures/:year', async(req, res)=> {
 
 
- const {link} = req.params
+ const {link, year} = req.params
 
- let year = '2022' // new date().getFullYear()
+ // new date().getFullYear()
 
  
-  const data = await Fixture.findOne({competition: link, year})
+  const data = await Fixture.findOne({competition: link, year}).populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
 
 
   if (!data) {
-    year = year -1 ;
+   const years = year -1 ;
 
-    const data = await Fixture.findOne({competition: link, year})
+    const data = await Fixture.findOne({competition: link, year: years}).populate({path: "fixture.teams", populate: {path: "home"} }).populate({path: "fixture.teams", populate: {path: "away"}})
 
     const sort = _.sortBy(data.fixture, ['matchday']);
     data.fixture = sort
@@ -170,21 +170,22 @@ router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {
 
 
 
-router.get('/:link/results/year', async(req, res)=> {
+router.get('/:link/results/:year', async(req, res)=> {
 
 
-  const {link} = req.params
+  const {link, year} = req.params
 
-  let year = '2022' // new date().getFullYear()
- 
+
   
-   const data = await Result.findOne({competition: link, year})
+   const data = await Result.findOne({competition: link, year}).populate({path: "result.teams", populate: {path: "home"} }).populate({path: "result.teams", populate: {path: "away"}})
+
  
  
    if (!data) {
-     year = year -1 ;
+    const newyear = year -1 ;
  
-     const data = await Result.findOne({competition: link, year})
+     const data = await Result.findOne({competition: link, year: newyear}).populate({path: "result.teams", populate: {path: "home"} }).populate({path: "result.teams", populate: {path: "away"}})
+
  
      const sort = _.sortBy(data.result, ['matchday']);
      data.result = sort
@@ -285,14 +286,14 @@ router.get('/:link/standing/:year', async(req, res)=> {
   
  
  
-   const data = await Standing.findOne({competition: link, year})
+   const data = await Standing.findOne({competition: link, year}).populate({path: "standing", populate: {path: "teams"}})
    
   
     if (!data) {
 
-      const year = new Date().getFullYear() - 1
+      const years = year - 1
 
-      const data = await Standing.findOne({competition: link, year})
+      const data = await Standing.findOne({competition: link, year : years}).populate({path: "standing", populate: {path: "teams"}})
 
 
       const sort = _.orderBy(data.standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);

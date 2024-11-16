@@ -25,6 +25,9 @@ const Tablehead = () => {
                         <div className={Style.draw} id={Style.draw}>  <abbr > D </abbr> </div>
                         <div className={Style.loss} id={Style.loss}>  <abbr > L </abbr> </div>
                         <div className={Style.gd} id={Style.gd}>  <abbr > GD </abbr> </div>
+                        <div className={Style.gs} id={Style.gs}>  <abbr > GS </abbr> </div>
+                        <div className={Style.ga} id={Style.ga}>  <abbr > GA </abbr> </div>
+
                         <div className={Style.pts} id={Style.pts}>  <abbr > PTS </abbr> </div>
 
                     </li>
@@ -41,7 +44,7 @@ const Tablehead = () => {
     )
 }
 
-const Table = ({pos, w, d, l, pts, name, logo, pl, gd}) => {
+const Table = ({pos, w, d, l, pts, name, logo, pl, gd, ga, gs}) => {
 
 
     return (
@@ -52,21 +55,24 @@ const Table = ({pos, w, d, l, pts, name, logo, pl, gd}) => {
 
                  <div className={Style.teams}> 
                     <li >  
-                        <div className={Style.pos}> <span>1</span> </div>
+                        <div className={Style.pos}> <span>{pos}</span> </div>
                         <div className={Style.dot}> <div>  </div></div>
 
                         <div className={Style.team}>
-                            <span > <img src="https://image-service.onefootball.com/transform?w=64&dpr=2&image=https://images.onefootball.com/icons/teams/164/2.png"/> </span>
-                            <p> Arsenal</p>
+                            <span > <img src={logo}/> </span>
+                            <p> {name}</p>
                         </div>
 
                         <div className={Style.head2}>
-                        <div className={Style.played} id={Style.played}>  <abbr > 2  </abbr> </div>
-                        <div className={Style.win} id={Style.win}>  <abbr > 2 </abbr> </div>
-                        <div className={Style.draw} id={Style.draw}>  <abbr > 2 </abbr> </div>
-                        <div className={Style.loss} id={Style.loss}>  <abbr > 2 </abbr> </div>
-                        <div className={Style.gd} id={Style.gd}>  <abbr > 2 </abbr> </div>
-                        <div className={Style.pts} id={Style.pts}>  <abbr > 2 </abbr> </div>
+                        <div className={Style.played} id={Style.played}>  <abbr > {pl}  </abbr> </div>
+                        <div className={Style.win} id={Style.win}>  <abbr > {w} </abbr> </div>
+                        <div className={Style.draw} id={Style.draw}>  <abbr > {d} </abbr> </div>
+                        <div className={Style.loss} id={Style.loss}>  <abbr > {l} </abbr> </div>
+                        <div className={Style.gd} id={Style.gd}>  <abbr > {gd} </abbr> </div>
+                        <div className={Style.gs} id={Style.gs}>  <abbr > {gs} </abbr> </div>
+                        <div className={Style.ga} id={Style.ga}>  <abbr > {ga} </abbr> </div>
+
+                        <div className={Style.pts} id={Style.pts}>  <abbr > {pts} </abbr> </div>
                         </div>
 
 
@@ -91,7 +97,7 @@ const Table = ({pos, w, d, l, pts, name, logo, pl, gd}) => {
 
 
 
-const Fixture = () => {
+const Fixture = ({Hname, Hlogo, date, time, Alogo, Aname}) => {
 
 
     return (
@@ -107,15 +113,15 @@ const Fixture = () => {
                             <span className={Style.teams}>
 
                                 <span className={Style.home}>
-                                    <span className={Style.name} > aaa</span>
-                                    <span className={Style.logo}> <img src="https://image-service.onefootball.com/transform?w=64&dpr=2&image=https://images.onefootball.com/icons/teams/164/2.png"/>  </span>
+                                    <span className={Style.name} > {Hname}</span>
+                                    <span className={Style.logo}> <img src={Hlogo} />  </span>
                                 </span>
 
-                              <time dateTime="">  <span className={Style.date}> 18/8/2024  </span> <br/>  2:00 pm</time> 
+                              <time dateTime="">  <span className={Style.date}> {date}  </span> <br/> {time}</time> 
 
                                 <span className={Style.away}>
-                                    <span className={Style.logo}> <img src="https://image-service.onefootball.com/transform?w=64&dpr=2&image=https://images.onefootball.com/icons/teams/164/2.png"/>  </span>
-                                    <span className={Style.name} > aaa</span>
+                                    <span className={Style.logo}> <img src={Alogo} />  </span>
+                                    <span className={Style.name} > {Aname}</span>
                                 </span>
                             </span>
                         </div>
@@ -137,7 +143,7 @@ const Fixture = () => {
 
 
 
-const Result = ({h}) => {
+const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname}) => {
 
 
     return (
@@ -153,18 +159,18 @@ const Result = ({h}) => {
                             <span className={Style.teams}>
 
                                 <span className={Style.home}>
-                                    <span className={Style.name} > aaa</span>
-                                    <span className={Style.logo}> <img src="https://image-service.onefootball.com/transform?w=64&dpr=2&image=https://images.onefootball.com/icons/teams/164/2.png"/>  </span>
+                                    <span className={Style.name} > {Hname}</span>
+                                    <span className={Style.logo}> <img src={Hlogo}  />  </span>
                                 </span>
 
                                 <span className={Style.score}>
-                                    <span className={Style.h}> 2 </span>
+                                    <span className={Style.h}> {Hscore} </span>
                                     <span className={Style.div}> - </span>
-                                    <span className={Style.a}> 2 </span>
+                                    <span className={Style.a}> {Ascore} </span>
                                 </span>
                                 <span className={Style.away}>
-                                    <span className={Style.logo}> <img src="https://image-service.onefootball.com/transform?w=64&dpr=2&image=https://images.onefootball.com/icons/teams/164/2.png"/>  </span>
-                                    <span className={Style.name} > aaa</span>
+                                    <span className={Style.logo}> <img src={Alogo}  />  </span>
+                                    <span className={Style.name} > {Aname}</span>
                                 </span>
                             </span>
                         </div>

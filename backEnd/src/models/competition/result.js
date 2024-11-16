@@ -21,7 +21,22 @@ const resultSchema = new mongoose.Schema({
             
             
                 
-                time: { date: {type: String , required: true}, time: {type: String , required: true}},  
+                time: { date: {type: String , required: true}, time: {type: String , required: true}}, 
+                
+                
+
+                refree: {type: String, },
+                stadium: {type: String},
+
+                lineup: {
+                    home: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}],
+                    away: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}]
+
+                },
+
+                motm: {type: mongoose.Schema.Types.ObjectId, ref: "Player"},
+
+                timeline: {type: Array},
 
                 
 

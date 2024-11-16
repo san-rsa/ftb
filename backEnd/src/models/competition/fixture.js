@@ -12,8 +12,21 @@ const Schema = new mongoose.Schema({
     fixture: [{ matchday: {type: Number, required: true},
         teams: [{home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",   }, 
                 time: { date: {type: String , required: true}, time: {type: String , required: true},},  
-                away :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  }}
-         ]
+                away :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  },
+            
+            
+                refree: {type: String, },
+                stadium: {type: String},
+
+                lineup: {
+                    home: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}],
+                    away: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}]
+
+                }
+
+            },
+
+              ]
 
 }]
 }, {

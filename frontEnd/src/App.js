@@ -1,6 +1,5 @@
 import Home from "./pages/Home";
 import Description from "./pages/Description";
-import Menu from "./pages/Menu";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import * as React from 'react'
 
@@ -43,8 +42,6 @@ function App() {
     <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<Description />}/>
-        <Route path="/list" element={<Menu />}/>
-
         <Route path="/login" element={<Login />}/>
         <Route path="/register" element={<Register />}/>
         <Route path="/user" element={<Profile />}/>

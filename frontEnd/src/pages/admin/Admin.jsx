@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import List  from "./sub/List";
+import List  from "./sub/Bannerlist";
 import Bannerlist  from "./sub/Bannerlist";
 import Categorylist  from "./sub/Categorylist";
 

@@ -3,8 +3,6 @@ import Coming from "../components/sub component/Coming";
 import Nav from "../components/sub component/Nav";
 import Homet from "../components/HomeT";
 import {Highlight, Awards} from "../components/Category"
-import Slist from "../components/Slist";
-import News, {News2} from "../components/News"
 import Carousel from "../components/sub component/Carousel"
 import "../styles/style.css"
 import TopNews from "../components/Topnews";

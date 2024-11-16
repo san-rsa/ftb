@@ -1,6 +1,6 @@
 import React, { useState, useEffect,  } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import List  from "../../components/sub component/list/List";
+import List  from "../../components/sub component/list/Bannerlist";
 import Style from "../../styles/Profile.module.css"
 import Nav from "../../components/sub component/Nav"
 import Input from "./sub/Inputs";
