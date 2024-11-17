@@ -12,6 +12,10 @@ const resultSchema = new mongoose.Schema({
 
 
       result: [{ matchday: {type: Number, required: true},
+
+                 group: {type: String  },
+
+
         teams: [{home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  },
 
                 homeScore: {type: Number , },  

@@ -1,9 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 
-const Banner = ({ text, img }) => {
+const Banner = ({ text, img, link }) => {
 
     return (
+
     <div className="banner">
         <img src={img} alt="tea banner"/>
         <h2>{text}</h2>
@@ -13,7 +15,7 @@ const Banner = ({ text, img }) => {
 
 
 
-const SBanner = ({ body, img, head }) => {
+const SBanner = ({ body, img, head, link }) => {
 
     return (
     <div className="sbanner">
@@ -45,9 +47,9 @@ Traffic incident
         </div>
 
         
-        <div className="text2">
-             <h2>COMING SOON {head} </h2>
-        </div>
+       <Link to={link}> <div className="text2">
+             <h2>CODE OF CONDUCT {head} </h2>
+        </div> </Link>
 
  
     </div>

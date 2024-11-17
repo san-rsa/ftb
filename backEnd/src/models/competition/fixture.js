@@ -9,7 +9,12 @@ const Schema = new mongoose.Schema({
 
     year : {type: Number , required: true, } ,
 
+
+
+
     fixture: [{ matchday: {type: Number, required: true},
+                group: {type: String  },
+
         teams: [{home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",   }, 
                 time: { date: {type: String , required: true}, time: {type: String , required: true},},  
                 away :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  },

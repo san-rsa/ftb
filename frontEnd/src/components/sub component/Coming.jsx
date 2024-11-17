@@ -28,6 +28,8 @@ const Banner = () => {
                   head={project.head}
                   img={project.imgUrl.url}
                   body={project.body}
+                  link={"/code-of-conduct"}
+
                 />    
                 </div>
             

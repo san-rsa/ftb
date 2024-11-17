@@ -1,11 +1,20 @@
-import Home from "./pages/Home";
-import Description from "./pages/Description";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import * as React from 'react'
+
+
+import Home from "./pages/Home";
+import Description from "./pages/Description";
+import Codeofconduct from "./pages/Codeofconduct";
+
+
 
 import Login from "./pages/user/Login";
 import Register from "./pages/user/Register";
 import Profile from "./pages/user/Profile";
+import ForgetPassword from "./pages/user/Forgetpassword";
+import ResetPassword from "./pages/user/Resetpassword";
+
+
 import Admin from "./pages/admin/Admin";
 import Addtea from "./pages/admin/sub/tea/Add";
 import Edittea from "./pages/admin/sub/tea/Edit";
@@ -17,8 +26,6 @@ import Addnews from "./pages/admin/sub/news/Add";
 import Editnews from "./pages/admin/sub/news/Edit";
 import Addcategory from "./pages/admin/sub/category/Add";
 import Editcategory from "./pages/admin/sub/category/Edit";
-import ForgetPassword from "./pages/user/Forgetpassword";
-import ResetPassword from "./pages/user/Resetpassword";
 
 
   import 'react-toastify/dist/ReactToastify.css';
@@ -60,6 +67,8 @@ function App() {
         <Route path="/admin/addcategory" element={<Addcategory />}/>
         <Route path="/forgetpassword" element={<ForgetPassword />}></Route>
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/code-of-conduct" element={<Codeofconduct />} />
+
 
    
 

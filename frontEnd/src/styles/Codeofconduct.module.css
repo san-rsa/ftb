@@ -1,0 +1,27 @@
+.coc {
+
+}
+
+.coclist {
+    width: 100%;
+    text-align: left;
+
+}
+
+.coclist .section {
+    margin: 20px;
+    padding: 10px;
+
+}
+
+
+.section h3 {
+    background-color: blanchedalmond;
+    padding: 1px 20px;
+
+}
+
+.section p{
+    margin: 10px;
+    padding: 10px;
+}

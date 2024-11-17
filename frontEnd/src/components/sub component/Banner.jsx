@@ -27,6 +27,7 @@ const Banner = ({ text, img}) => {
               <Bannerlist
                   text={project.head}
                   img={project.imgUrl.url}
+                  link={"code-of-conduct"}
                 />    
                 </div>
             

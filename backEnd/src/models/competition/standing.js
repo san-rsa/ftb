@@ -10,7 +10,10 @@ const Schema = new mongoose.Schema({
     year : {type: Number  , required: true},
 
 
+
     standing: [{ teams: {type: mongoose.Schema.Types.String, ref: "Team",  },
+                group: {type: String  },
+
             stats: {
                 win: {type: Number,  default: 0   },
                 loss: {type: Number, default: 0   },
