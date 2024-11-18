@@ -1,5 +1,5 @@
 .coc {
-
+    transition: 2s;
 }
 
 .coclist {
@@ -14,10 +14,28 @@
 
 }
 
+.head h3 {
+    display: inline;
 
-.section h3 {
-    background-color: blanchedalmond;
+}
+
+.head svg{
+    float: right;
+    position: relative;
+    top: 3px;
+
+}
+
+
+.section .head {
+    background-color: rgb(12, 43, 48);
     padding: 1px 20px;
+
+}
+
+
+.section .active {
+    background-color: rgb(19, 97, 109);
 
 }
 

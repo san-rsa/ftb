@@ -21,11 +21,7 @@ const App = () => {
         const name = event.target.innerHTML.toLowerCase();
 
         setInputs({table: false, fixtures: false, results: false, players: false})
-    
-        
 
-
-        console.log(name,);
         
         setInputs(values => ({...values, [name]: true}))
       }
@@ -39,10 +35,10 @@ const App = () => {
             <div className={Style.Nav}>
 
                 <ul >
-                    <li onClick={handleChange} name={"eee"} id={'h'}>Table</li>
-                    <li onClick={handleChange} name={"eee"}>Fixtures</li>
-                    <li onClick={handleChange} name={"eee"}>Results</li>
-                    <li onClick={handleChange} name={"eee"}>Players</li>
+                    <li onClick={handleChange} id={'h'}>Table</li>
+                    <li onClick={handleChange} >Fixtures</li>
+                    <li onClick={handleChange}  >Results</li>
+                    <li onClick={handleChange}  >Players</li>
 
                 </ul>
 
