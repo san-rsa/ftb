@@ -40,11 +40,14 @@ const Codeofconduct = ({}) => {
 
             
             const name = e.target.children[0]?.innerText?.toLowerCase();
+            const name2 = e.target.innerText?.toLowerCase();
+
             const classlist = e.target?.classList[1]
+
 
             console.log(e);
 
-            if (classlist == "Codeofconduct_active__Fuymx") {
+            if (classlist == "Codeofconduct_active__Fuymx" ) {
 
                 setActive(values => ({...values, [name]: false}))
             } else {
@@ -78,7 +81,7 @@ const Codeofconduct = ({}) => {
                 <h2 > codes of conduct</h2>
 
 
-                <div className={`${Style.section} ` }>
+                <div className={`${Style.section} ` } >
 
                 <div className={`${Style.head} ${isActive.players && Style.active}`} onClick={activate}>
                     <h3 > Players</h3>

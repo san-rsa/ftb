@@ -3,6 +3,7 @@ nav {
     background: #c0c9c6;
     margin: 0;
     padding: 0;
+    
     width: 100%;
     position: relative;
     text-align: left;
@@ -15,6 +16,10 @@ nav #navh1 {
    
 }
 
+nav img {
+    width: 100px;
+    height: 45px;
+}
 .rnav {
     float: right;
     padding: 2px ;

@@ -20,7 +20,7 @@ const Banner = () => {
     return (
 
          <div> 
-          {banner.slice(-1).map((project) => (
+          {banner.slice(0, 1).map((project) => (
 
             <div className='' key={project._id}> 
             

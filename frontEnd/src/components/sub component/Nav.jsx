@@ -64,7 +64,10 @@ const Nav = () => {
         {/* <div className={Style.lnav}>
             <a ><FontAwesomeIcon icon={faBars} size="1x"/> </a> 
         </div> */}
-             <Link to={"/"}><h1 id={Style.navh1}>AGBEDIAN LEAGUE</h1></Link>
+             <Link to={"/"}>
+             {/* <img src={require("../../logo.png")} /> */}
+             <h1 id={Style.navh1}> AGBEDIAN LEAGUE</h1>
+             </Link>
                    {/* <div className={Style.rnav}>
 <Link className={Style.navr}to={"/login"}  onClick={login} ><FontAwesomeIcon icon={faUser}/> </Link>
         

@@ -24,7 +24,7 @@ const Description = ({}) => {
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/product/"+ link)
+            fetch(process.env.REACT_APP_API_LINK  + "getone/news/"+ link)
             .then((res) =>  res.json())
             .then((data) => setData(data));
         }, []);

@@ -22,7 +22,7 @@ const TopNews = () => {
          <div className={Style.top}> 
 
             <h1> TOP NEWS</h1>  
-          {news.slice(-1).map((project) => (
+          {news.slice(0, 1).map((project) => (
 
             <div className='' key={project._id}> 
             
@@ -38,7 +38,7 @@ const TopNews = () => {
 
 
 
-                {news.slice(-5, -2).map((project) => (
+                {news.slice(1, 5).map((project) => (
 
                 <div className={Style.perone} key={project._id}> 
 
