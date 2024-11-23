@@ -14,8 +14,9 @@ const News = require('../models/news/news')
 const Team = require('../models/competition/team')
 const Fixture = require('../models/competition/fixture')
 const _ = require('lodash')
-const Standing = require('../models/competition/standing')
+const Standing = require('../models/competition/standing/standing')
 const Result = require('../models/competition/result')
+const Codeofconduct = require('../models/news/codesofconduct')
 
 // const Product = require('../models/product')
 // const Auth = require('../middleware/mid')
@@ -25,14 +26,22 @@ const Result = require('../models/competition/result')
 
 router.get('/banner', async(req, res)=> {
 
-const banner = await Banner.find({})
-
+const banner = await Banner.find().sort([['updatedAt', 'desc']]);
      res.status(200).json({
         success: true,
        data: banner
       })
 })
 
+router.get('/codes-of-conduct', async(req, res)=> {
+
+  const data = await Codeofconduct.find({}) //.sort("title")
+  
+       res.status(200).json({
+          success: true,
+         data: data
+        })
+  })
 
 
 router.get('/:link/fixtures/:year', async(req, res)=> {
@@ -141,7 +150,7 @@ router.get('/:link/fixtures/:year', async(req, res)=> {
 
   router.get('/news', async(req, res)=> {
 
-    const news = await News.find({})
+    const news = await News.find({}).sort([['updatedAt', 'desc']]);
     
          res.status(200).json({
             success: true,

@@ -10,11 +10,12 @@ const resultSchema = new mongoose.Schema({
     year : {type: Number  , required: true, },
 
 
+    type : {type: String,  enum: [ 'league', 'cup'],  },
 
       result: [{ matchday: {type: Number, required: true},
 
-                 group: {type: String  },
-
+  
+                 
 
         teams: [{home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  },
 
@@ -28,6 +29,8 @@ const resultSchema = new mongoose.Schema({
                 time: { date: {type: String , required: true}, time: {type: String , required: true}}, 
                 
                 
+                group: {type: String  },
+                stage : {type: String,  enum: ['knockout', 'group'],  },
 
                 refree: {type: String, },
                 stadium: {type: String},

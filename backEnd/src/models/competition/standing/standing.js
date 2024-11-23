@@ -11,8 +11,8 @@ const Schema = new mongoose.Schema({
 
 
 
+
     standing: [{ teams: {type: mongoose.Schema.Types.String, ref: "Team",  },
-                group: {type: String  },
 
             stats: {
                 win: {type: Number,  default: 0   },

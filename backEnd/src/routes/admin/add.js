@@ -8,7 +8,7 @@ const jwt= require('jsonwebtoken')
 //const OTP = require('../../models/OTP')
 // const Product = require('../models/product')
 // const Product = require('../models/product')
- const {auth, role, uploadMiddleware, deleteFixture, updateStanding} = require('../../middleware/mid')
+ const {auth, role, uploadMiddleware, deleteFixture, updateStanding, updateCupStanding} = require('../../middleware/mid')
  // const cloudinary = require("cloudinary");
 const cloudinary = require('../../connection/cloudinary')
 const News = require('../../models/news/news')
@@ -17,7 +17,9 @@ const Team = require('../../models/competition/team')
 const Player = require('../../models/competition/player')
 const Fixture = require('../../models/competition/fixture')
 const Result = require('../../models/competition/result')
-const Standing = require('../../models/competition/standing')
+const Standing = require('../../models/competition/standing/standing')
+const Codeofconduct = require('../../models/news/codesofconduct')
+const CupStanding = require('../../models/competition/standing/cup')
 
 
 
@@ -124,10 +126,62 @@ router.post('/banner', auth,  role(process.env.ADMIN), async (req, res)=> {
 
 
 
+router.post('/codes-of-conduct', async (req, res)=> {
+
+    const data = req.body
+      
+    
+
+    try {
+        const {title, body}= data
+
+
+
+        console.log(data)
+
+		if (!title || !body ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+        //check if use already exists?
+        const existingItem = await Codeofconduct.findOne({title})
+
+        if(existingItem){
+            return res.status(400).json({
+                success: false,
+                message: " already exists"
+            })
+        }
+
+        const db = await Codeofconduct.create({
+            title, body,
+        })
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+            db,
+            message: " created successfully ✅"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : " registration failed"
+        })
+       
+   }  
+})
+
+
 router.post('/competition', async (req, res)=> {
 
     const data = req.body //JSON.parse(req.body.data)
-    const file = req.files.img  
+    const file = req.files.logo  
       
     
     if (!req.files) {
@@ -137,7 +191,7 @@ router.post('/competition', async (req, res)=> {
      
 
     try {
-        const {name, description}= data
+        const {name, description, type}= data
         const logo = []
 
         const image = await cloudinary.uploader.upload(
@@ -172,7 +226,7 @@ router.post('/competition', async (req, res)=> {
         }
 
         const save = await Competition.create({
-           name, description, logo: logo[0]
+           name, type, description, logo: logo[0]
         })
             // res.redirect("/login")
 
@@ -200,10 +254,13 @@ router.post('/fixtures',  async (req, res)=> {
     const data = req.body  //JSON.parse(req.body.data)
 
     try {
-        const {competition, year, matchday, home, time, date, away}= data
+        const {competition, year, matchday, home, time, date, away, group, referee, stadium, stage}= data
 
         
         console.log(data)
+
+
+
 
 		if (!year || !competition ) {
 			return res.status(403).json({
@@ -213,96 +270,168 @@ router.post('/fixtures',  async (req, res)=> {
 		}
 
 
+        const existingCompetition = await Competition.findOne({_id: competition})
+
+        console.log(existingCompetition);
+        
 
 
-        const existing = await Fixture.findOne({competition, year})
+     
+                const existing = await Fixture.findOne({competition, year})
 
-        const teams = {home, time: {date, time}, away }
-
-                    const fixture =  { matchday,
-                    teams: teams   // teams: [{home, time: [{date, time,}], away } ]
-    
-    }
-
-
+                const teams = {home, time: {date, time}, away, referee, stadium, group, stage }
+        
+                            const fixture =  { matchday,
+                            teams: teams   // teams: [{home, time: [{date, time,}], away } ]
             
-       
-    
-            if (existing) {
-                //---- Check if index exists ----
-
-                 const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
-
-
-    
-    
-                // console.log(FoundHome, Foundaway, Foundmatchday);
-                
-    
-                if (Foundmatchday == -1) {
+            }
+        
+        
                     
-                    existing.fixture.push(fixture)
-                }
-
-                if (Foundmatchday !== -1) {
-                 const FoundHome = existing.fixture[Foundmatchday].teams.findIndex(item => item.home == home);
-                 const Foundaway = existing.fixture[Foundmatchday].teams.findIndex(item => item.away == away);
-
-                   if (FoundHome == -1 && Foundaway == -1) {
-                        existing.fixture[Foundmatchday].teams.push(teams) 
-
-   
+               
+            
+                    if (existing) {
+                        //---- Check if index exists ----
+        
+                        if (String(existing.type) == "league") {      
+                            
+                            const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
+        
+        
+            
+            
+                        // console.log(FoundHome, Foundaway, Foundmatchday);
+                        
+            
+                        if (Foundmatchday == -1) {
+                            
+                            existing.fixture.push(fixture)
+                        }
+        
+                        if (Foundmatchday !== -1) {
+                         const FoundHome = existing.fixture[Foundmatchday].teams.findIndex(item => item.home == home);
+                         const Foundaway = existing.fixture[Foundmatchday].teams.findIndex(item => item.away == away);
+        
+                           if (FoundHome == -1 && Foundaway == -1) {
+                                existing.fixture[Foundmatchday].teams.push(teams) 
+        
+           
+                            }
+        
+        
+                        else if (FoundHome !== -1 || Foundaway !== -1  ) {
+                            
+                           return  res.status(400).json({
+                                type: "failed",
+                                mgs: "team added choose different team",
+          
+                            })
+                           }
+                           console.log(existing, 'tt', );
+                           
+        
+                        }
+                                    
+        
+        
+        
+        
+                        const save = await existing.save();
+                       return  res.status(200).json({
+                            type: "success",
+                            mgs: "Process successful",
+                            data: save
+                        })
+        
+        
+        
+                        
                     }
 
 
-                else if (FoundHome !== -1 || Foundaway !== -1  ) {
-                    
-                   return  res.status(400).json({
-                        type: "failed",
-                        mgs: "team added choose different team",
-  
-                    })
-                   }
-                   console.log(existing, 'tt', );
-                   
-
-                }
-                            
-
-
-
-
-                const save = await existing.save();
-               return  res.status(200).json({
-                    type: "success",
-                    mgs: "Process successful",
-                    data: save
-                })
-
-
-
-                
-            }
-            //------------ This creates a new cart and then adds the item to the cart that has been created------------
-            else {
-    
-    
-
         
-                const save = await Fixture.create({
-                    competition, year, fixture
-                })
-                    // res.redirect("/login")
         
-                return res.status(200).json({
-                    success: true,
-                    save,
-                    message: "created successfully ✅"
-                   
-                })  
             
                 
-            }
+                        else if (String(existing.type) == "cup") {
+                             const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
+        
+        
+            
+            
+                        // console.log(FoundHome, Foundaway, Foundmatchday);
+                        
+            
+                        if (Foundmatchday == -1) {
+                            
+                            existing.fixture.push(fixture)
+                        }
+        
+                        if (Foundmatchday !== -1) {
+                         const FoundHome = existing.fixture[Foundmatchday].teams.findIndex(item => item.home == home);
+                         const Foundaway = existing.fixture[Foundmatchday].teams.findIndex(item => item.away == away);
+        
+                           if (FoundHome == -1 && Foundaway == -1) {
+                                existing.fixture[Foundmatchday].teams.push(teams) 
+        
+           
+                            }
+        
+        
+                        else if (FoundHome !== -1 || Foundaway !== -1  ) {
+                            
+                           return  res.status(400).json({
+                                type: "failed",
+                                mgs: "team added choose different team",
+          
+                            })
+                           }
+                           console.log(existing, 'tt', );
+                           
+        
+                        }
+                                    
+        
+        
+        
+        
+                        const save = await existing.save();
+                       return  res.status(200).json({
+                            type: "success",
+                            mgs: "Process successful",
+                            data: save
+                        })
+        
+        
+        
+                        
+                    }
+                    //------------ This creates a new cart and then adds the item to the cart that has been created------------
+ 
+            
+
+
+        }
+                     else {
+            
+            
+        
+                
+                        const save = await Fixture.create({
+                            competition,  year, fixture, type: "cup" // String(existingCompetition.type)
+                        })
+                            // res.redirect("/login")
+                
+                        return res.status(200).json({
+                            success: true,
+                            save,
+                            message: "created successfully ✅"
+                           
+                        })  
+                    
+                        
+                    }
+            
 
 
     } catch (error) {
@@ -465,32 +594,32 @@ router.post('/player', auth,  role(process.env.ADMIN), async (req, res)=> {
 
 
 
-router.post('/result',  async (req, res)=> {
+router.post('/results',  async (req, res)=> {
 
     const data = req.body  //JSON.parse(req.body.data)
 
     try {
-        const {fixtureId, competitionId, matchday, homeScore, awayScore}= data
+        const {fixtureId, matchId, matchday, homeScore, awayScore}= data
 
 
 
-        const existingFix = await Fixture.findById(competitionId)
+        const existingFix = await Fixture.findById(fixtureId)
 
         
 
         const FoundmatchdayF = existingFix.fixture.findIndex(item => item.matchday == matchday);
-       const Foundtime = existingFix.fixture[FoundmatchdayF].teams.findIndex(item => item._id == fixtureId);
+       const Foundtime = existingFix.fixture[FoundmatchdayF].teams.findIndex(item => item._id == matchId);
 
 
 
-        const {time, home, away} = existingFix.fixture[FoundmatchdayF].teams[Foundtime]
+        const {time, home, away, group, stage, referee, stadium, lineup  } = existingFix.fixture[FoundmatchdayF].teams[Foundtime]
 
-        const {competition, year} = existingFix
+        const {competition, type, year} = existingFix
 
         
         console.log(data, time, home+'z', 'y'+away)
 
-		if (!competition || !fixtureId || !competitionId || !homeScore || !awayScore) {
+		if (!competition || !fixtureId || !matchId || !homeScore || !awayScore) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",
@@ -498,15 +627,13 @@ router.post('/result',  async (req, res)=> {
 		}
 
 
+            const existing = await Result.findOne({competition, year})
 
-
-        const existing = await Result.findOne({competition, year})
-
-
-        const teams =     {
+            const teams =     {
                 home: String(home), homeScore: Number(homeScore), 
                 time: {date: String(time.date), time: String(time.time)}, 
-                awayScore: Number(awayScore), away: String(away) 
+                awayScore: Number(awayScore), away: String(away), 
+                type: String(type), group: String(group), refree: String(referee), stadium: String(stadium), lineup: String(lineup), stage: String(stage), 
             }
 
                     const result =  [{ matchday,
@@ -516,119 +643,276 @@ router.post('/result',  async (req, res)=> {
 
 
 
-
-    
+                    
+               
             
-       
-    
-            if (existing) {
-                //---- Check if index exists ----
-
-                const Foundmatchday = existing.result.findIndex(item => item.matchday == matchday);
-                const FoundHome = existing.result[Foundmatchday].teams.findIndex(item => item.home == String(home));
-                const Foundaway = existing.result[Foundmatchday].teams.findIndex(item => item.away == String(away));
+                    if (existing) {
 
 
-    
-    
-                console.log(FoundHome, Foundaway, Foundmatchday);
-                
-    
-                if (Foundmatchday == -1) {
-                    
-                    existing.result.push(result)
+                        //---- Check if index exists ----
+                    if (String(existing.type) == "league") {
 
 
-                     updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
-
-                }
-
-                if (Foundmatchday !== -1) {
-
-
-                   if (FoundHome == -1 && Foundaway == -1) {
-
-                    console.log(FoundHome, teams );
-                    
-                        existing.result[Foundmatchday].teams.push(teams ) 
-
-
-
-                        //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res)
-
-
-   
-                    }
-
-
-                else if (FoundHome !== -1 || Foundaway !== -1  ) {
-                    
-                   return  res.status(400).json({
-                        type: "failed",
-                        mgs: "result added choose different fixtures ",
-  
-                    })
-                   }
-                   console.log(existing.result[Foundmatchday].teams, 'tt', );
-                   
-
-                }
+            //     const teams =     {
+            //             home: String(home), homeScore: Number(homeScore), 
+            //             time: {date: String(time.date), time: String(time.time)}, 
+            //             awayScore: Number(awayScore), away: String(away), 
+            //             type: String(type), referee: String(referee), stadium: String(stadium), lineup: String(lineup)
+            //         }
+        
+            //                 const result =  [{ matchday,
+            //                 teams: teams    // teams: [{home, time: [{date, time,}], away } ]
+            
+            // }]
+                        const Foundmatchday = existing.result.findIndex(item => item.matchday == matchday);
+                        const FoundHome = existing.result[Foundmatchday].teams.findIndex(item => item.home == String(home));
+                        const Foundaway = existing.result[Foundmatchday].teams.findIndex(item => item.away == String(away));
+        
+        
+            
+            
+                        console.log(FoundHome, Foundaway, Foundmatchday);
+                        
+            
+                        if (Foundmatchday == -1) {
                             
-
-
-
-
-
-                const save = await existing.save();
-
-
-                    deleteFixture(existingFix, FoundmatchdayF, Fixture, fixtureId)
-
-
-                    updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
-
-
-
-
-
-
-               return  res.status(200).json({
-                    type: "success",
-                    mgs: "Process successful",
-                    data: save
-                })
-
-
-
-                
-            }
-            //------------ This creates a new cart and then adds the item to the cart that has been created------------
-            else {
-    
-    
-
+                            existing.result.push(result)
         
-                const save = await Result.create({
-                    competition, year, result
-                })
-                    // res.redirect("/login")
-
-                   
-                    deleteFixture(existingFix, FoundmatchdayF, Fixture, fixtureId)
-                    updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
-
         
-                return res.status(200).json({
-                    success: true,
-                    save,
-                    message: "created successfully ✅"
-                   
-                })  
+                             updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+        
+                        }
+        
+                        if (Foundmatchday !== -1) {
+        
+        
+                           if (FoundHome == -1 && Foundaway == -1) {
+        
+                            console.log(FoundHome, teams );
+                            
+                                existing.result[Foundmatchday].teams.push(teams ) 
+        
+        
+        
+                                //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res)
+        
+        
+           
+                            }
+        
+        
+                        else if (FoundHome !== -1 || Foundaway !== -1  ) {
+                            
+                           return  res.status(400).json({
+                                type: "failed",
+                                mgs: "result added choose different fixtures ",
+          
+                            })
+                           }
+                           console.log(existing.result[Foundmatchday].teams, 'tt', );
+                           
+        
+                        }
+                                    
+        
+        
+        
+        
+        
+                        const save = await existing.save();
+        
+        
+                            deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
+        
+        
+                            updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+        
+        
+        
+        
+        
+        
+                       return  res.status(200).json({
+                            type: "success",
+                            mgs: "Process successful",
+                            data: save
+                        })
+        
+        
+        
+                        
+                    }
+                    //------------ This creates a new cart and then adds the item to the cart that has been created------------
+                    // else {
             
+            
+        
                 
+                    //     const save = await Result.create({
+                    //         competition, year, result
+                    //     })
+                    //         // res.redirect("/login")
+        
+                           
+                    //         deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
+                    //         updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+        
+                
+                    //     return res.status(200).json({
+                    //         success: true,
+                    //         save,
+                    //         message: "created successfully ✅"
+                           
+                    //     })  
+                    
+                        
+                    // }
+        
+             else if (String(existing.type) == "cup") {
+
+
+            //     const teams =     {
+            //             home: String(home), homeScore: Number(homeScore), 
+            //             time: {date: String(time.date), time: String(time.time)}, 
+            //             awayScore: Number(awayScore), away: String(away), 
+            //             type: String(type), group: String(group), refree: String(referee), stadium: String(stadium), lineup: String(lineup), stage: String(stage), 
+            //         }
+        
+            //                 const result =  [{ matchday,
+            //                 teams: teams    // teams: [{home, time: [{date, time,}], away } ]
+            
+            // }]
+        
+        
+        
+        
+                        const Foundmatchday = existing.result.findIndex(item => item.matchday == matchday);
+                        const FoundHome = existing.result[Foundmatchday].teams.findIndex(item => item.home == String(home));
+                        const Foundaway = existing.result[Foundmatchday].teams.findIndex(item => item.away == String(away));
+        
+        
+            
+            
+                        console.log(FoundHome, Foundaway, Foundmatchday);
+                        
+            
+                        if (Foundmatchday == -1) {
+                            
+                            existing.result.push(result)
+       
+        
+        
+                        }
+        
+                        if (Foundmatchday !== -1) {
+        
+        
+                           if (FoundHome == -1 && Foundaway == -1) {
+        
+                            console.log(FoundHome, teams );
+                            
+                                existing.result[Foundmatchday].teams.push(teams ) 
+        
+        
+        
+                                //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res)
+        
+        
+           
+                            }
+        
+        
+                        else if (FoundHome !== -1 || Foundaway !== -1  ) {
+                            
+                           return  res.status(400).json({
+                                type: "failed",
+                                mgs: "result added choose different fixtures ",
+          
+                            })
+                           }
+                           console.log(existing.result[Foundmatchday].teams, 'tt', );
+                           
+        
+                        }
+                                    
+        
+        
+        
+        
+        
+                        const save = await existing.save();
+
+                        
+                        if (String(stage) !== "knockout") {
+                            updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
+
+                         }
+        
+        
+                          //  deleteFixture(existingFix, FoundmatchdayF, Fixture, fixtureId)
+        
+        
+        
+        
+        
+        
+        
+        
+                       return  res.status(200).json({
+                            type: "success",
+                            mgs: "Process successful",
+                            data: save
+                        })
+        
+        
+        
+                        
+                    
+                    //------------ This creates a new cart and then adds the item to the cart that has been created------------
+
+        
             }
 
 
+            }    else {
+            
+            
+        
+                
+                        const save = await Result.create({
+                            competition, year, result, type: String(type)
+                        })
+                            // res.redirect("/login")
+        
+                            
+                            if (String(save.type) == "league") {
+                                updateStanding(Standing, competition, year, home, homeScore, away, awayScore, group, res )
+ 
+                             }
+
+                             else if (String(save.type) == "cup") {
+
+                                   if (String(stage) !== "knockout") {
+                                updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
+ 
+                             }
+                             }
+
+                          
+
+                           
+                            // deleteFixture(existingFix, FoundmatchdayF, Fixture, fixtureId)
+        
+                
+                        return res.status(200).json({
+                            success: true,
+                            save,
+                            message: "created successfully ✅"
+                           
+                        })  
+                    
+                        
+                    }
     } catch (error) {
         console.error(error)
         return res.status(500).json({
