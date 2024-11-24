@@ -244,7 +244,7 @@ const Codeofconduct = ({}) => {
 
 
     { isActive.communities && 
-    <p>  Play fairly
+    <p>  Play fairly '\n`\n`b /n '/n `/n'
         Not cheat, dive, complain or waste time
         Respect my team mates, the other team, the referee and my coach or team manager
         Play by the rules, as directed by the referee

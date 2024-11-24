@@ -42,7 +42,8 @@
 .section p{
     margin: 10px;
     padding: 10px;
-    font-weight: 900;
+    /* font-weight: 900; */
     font-style: normal;
     font-family: Arial, Helvetica, sans-serif;
+    white-space: pre-wrap;
 }
