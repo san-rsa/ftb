@@ -14,6 +14,8 @@ const User = require('../models/user')
 const cloudinary = require("../connection/cloudinary");
 const Standing = require("../models/competition/standing/standing");
 
+const {update} = require("./stats")
+
 
 
 const auth = (req, res, next) => {
@@ -120,95 +122,7 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
       const existing = await table.findOne({competition, year})
 
 
-
-  function win(teamId, ws, ls ) {
-
-    const team = existing.standing.findIndex(item => item.teams == teamId);
-
-    const dif = ws - ls
-
-
-    existing.standing[team].stats.played = existing.standing[team].stats.played + 1;
-    existing.standing[team].stats.win = existing.standing[team].stats.win + 1;
-    existing.standing[team].stats.points = existing.standing[team].stats.points + 3;
-    existing.standing[team].stats.gd = existing.standing[team].stats.gd + dif
-    existing.standing[team].stats.gs = existing.standing[team].stats.gs + Number(ws);
-    existing.standing[team].stats.ga = existing.standing[team].stats.ga + Number(ls);
-
-    existing.standing[team].stats.form.push('W')
-    
-
-
-  }
-
-
-
-  function loss(teamId, ws, ls) {
-
-    const team = existing.standing.findIndex(item => item.teams == teamId);
-
-
-    const dif = ls - ws
-
-    existing.standing[team].stats.played = existing.standing[team].stats.played + 1;
-    existing.standing[team].stats.loss = existing.standing[team].stats.loss + 1;
-    existing.standing[team].stats.gd = existing.standing[team].stats.gd + dif
-    existing.standing[team].stats.gs = existing.standing[team].stats.gs + Number(ls);
-    existing.standing[team].stats.ga = existing.standing[team].stats.ga + Number(ws);
-
-
-    existing.standing[team].stats.form.push('L')
-
-
-  }
-
-
-
-
-
-
-  function draw(teamId, ws, ls) {
-
-    const team = existing.standing.findIndex(item => item.teams == teamId);
-
-
-    existing.standing[team].stats.played = existing.standing[team].stats.played + 1;
-    existing.standing[team].stats.draw = existing.standing[team].stats.draw + 1;
-    existing.standing[team].stats.points = existing.standing[team].stats.points + 1;
-    existing.standing[team].stats.gs = existing.standing[team].stats.gs + Number(ws);
-    existing.standing[team].stats.ga = existing.standing[team].stats.ga + Number(ls);
-
-    existing.standing[team].stats.form.push('D')
-
-
-  }
-
-  
-  function update() {
-
-
-    
-    if (hms > aws) {
-
-      win(h, hms, aws )
-      loss(a, hms, aws)
-                  
-
-    } else if (hms < aws) {
-      
-      win(a, aws, hms )
-      loss(h, aws, hms)
-
-
-
-    } else if (hma == aws ) {
-      draw(h, hms, aws )
-      draw(a, hms, aws)
-    }
-      
-  }
-
-   const stats = {win: 0, loss: 0, draw: 0, gd: 0, point: 0, play: 0,  }
+      const stats = {win: 0, loss: 0, draw: 0, gd: 0, point: 0, play: 0,  }
 
 
 
@@ -219,16 +133,17 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
   
           if (existing) {
               //---- Check if index exists ----
+              console.log(competition, year, h, hms, a, aws, group, );
 
-              const FoundGroup = existing.group.findIndex(item => item.group == group );
+              const FoundGroup = existing?.group.findIndex(item => item.group == group );
 
-              const FoundHome = existing.group[FoundGroup].standing.findIndex(item => item.teams == h);
-              const Foundaway = existing.group[FoundGroup].standing.findIndex(item => item.teams == a);
+              const FoundHome = existing.group[FoundGroup]?.standing.findIndex(item => item.teams == h);
+              const Foundaway = existing.group[FoundGroup]?.standing.findIndex(item => item.teams == a);
 
 
   
   
-              console.log(FoundHome, Foundaway);
+              console.log(FoundHome, Foundaway , 'hhhhhhhhhhhh');
               
 
               if (FoundGroup !== -1) {
@@ -243,7 +158,7 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
                     }
   
   
-                  update()
+                   // update(existing, group, h, hms, aws,a)
   
                 }
               }
@@ -253,69 +168,41 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
                   group: group, standing: [{teams: h, stats: stats}, {teams: a, stats: stats}]
                 })
 
-                update()
+               // update(existing, group, h, hms, aws,a)
               }
 
 
 
               else if (FoundHome !== -1 && Foundaway !== -1  ) {
-               update()
         
 
               }
-                 console.log(existing, 'tt', );
                  
+
+                update(existing, group, h, hms, aws,a)
+
+                 console.log(existing, 'tt', );
 
             
               const save = await existing.save();
 
+              
 
-             return  save
+
+           
              
              
           }
           //------------ This creates a new cart and then adds the item to the cart that has been created------------
           else {
   
-  
-
-      
               const save = await table.create({
-                  competition, year,
+                  competition, year, group: [{group: group, standing: [{teams: h, stats: stats}, {teams: a, stats: stats}]}]
+
               })
 
-
-
-
-
-              const stats = {win: 0, loss: 0, draw: 0, gd: 0, point: 0, play: 0,  }
-
-               
             
-              
-
-                          //---- Check if index exists ----
-            
-                          const FoundGroup = existing.group.findIndex(item => item.group == group );
-                          const FoundHome = save.standing.findIndex(item => item.teams == h);
-                          const Foundaway = save.standing.findIndex(item => item.teams == a);
-            
-            
-              
-              
-                          console.log(FoundHome, Foundaway);
-                          
-            
-                           if ( FoundGroup == -1)  {
-                            existing.group.push({
-                              group: group, standing: [{teams: h, stats: stats}, {teams: a, stats: stats}]
-                            })
-            
-                    
-                          }
-            
-            
-                            update()
+                    update(save, group, h, hms, aws,a)
 
 
                           
@@ -330,7 +217,7 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
                   // res.redirect("/login")
 
                        
-              return save
+             // return save
               
           }
 
@@ -371,93 +258,6 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
       const existing = await table.findOne({competition, year})
 
 
-
-  function win(teamId, ws, ls ) {
-
-    const team = existing.standing.findIndex(item => item.teams == teamId);
-
-    const dif = ws - ls
-
-
-    existing.standing[team].stats.played = existing.standing[team].stats.played + 1;
-    existing.standing[team].stats.win = existing.standing[team].stats.win + 1;
-    existing.standing[team].stats.points = existing.standing[team].stats.points + 3;
-    existing.standing[team].stats.gd = existing.standing[team].stats.gd + dif
-    existing.standing[team].stats.gs = existing.standing[team].stats.gs + Number(ws);
-    existing.standing[team].stats.ga = existing.standing[team].stats.ga + Number(ls);
-
-    existing.standing[team].stats.form.push('W')
-    
-
-
-  }
-
-
-
-  function loss(teamId, ws, ls) {
-
-    const team = existing.standing.findIndex(item => item.teams == teamId);
-
-
-    const dif = ls - ws
-
-    existing.standing[team].stats.played = existing.standing[team].stats.played + 1;
-    existing.standing[team].stats.loss = existing.standing[team].stats.loss + 1;
-    existing.standing[team].stats.gd = existing.standing[team].stats.gd + dif
-    existing.standing[team].stats.gs = existing.standing[team].stats.gs + Number(ls);
-    existing.standing[team].stats.ga = existing.standing[team].stats.ga + Number(ws);
-
-
-    existing.standing[team].stats.form.push('L')
-
-
-  }
-
-
-
-
-
-
-  function draw(teamId, ws, ls) {
-
-    const team = existing.standing.findIndex(item => item.teams == teamId);
-
-
-    existing.standing[team].stats.played = existing.standing[team].stats.played + 1;
-    existing.standing[team].stats.draw = existing.standing[team].stats.draw + 1;
-    existing.standing[team].stats.points = existing.standing[team].stats.points + 1;
-    existing.standing[team].stats.gs = existing.standing[team].stats.gs + Number(ws);
-    existing.standing[team].stats.ga = existing.standing[team].stats.ga + Number(ls);
-
-    existing.standing[team].stats.form.push('D')
-
-
-  }
-
-  function update() {
-
-
-    
-    if (hms > aws) {
-
-      win(h, hms, aws )
-      loss(a, hms, aws)
-                  
-
-    } else if (hms < aws) {
-      
-      win(a, aws, hms )
-      loss(h, aws, hms)
-
-
-
-    } else if (hma == aws ) {
-      draw(h, hms, aws )
-      draw(a, hms, aws)
-    }
-      
-  }
-
    const stats = {win: 0, loss: 0, draw: 0, gd: 0, point: 0, play: 0,  }
 
 
@@ -489,21 +289,10 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
                     existing.standing.push({teams: a, stats }) 
                   }
 
-
-                update()
-
               }
 
-
-
-
-              else if (FoundHome !== -1 && Foundaway !== -1  ) {
-               update()
-        
-
-              }
-                 console.log(existing, 'tt', );
                  
+                update(existing, group, h, hms, aws,a)
 
             
               const save = await existing.save();
@@ -520,49 +309,14 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 
       
               const save = await table.create({
-                  competition, year,
+                  competition, year, standing: [{teams: h, stats: stats}, {teams: a, stats: stats}]
               })
 
-
-
-
-
-              const stats = {win: 0, loss: 0, draw: 0, gd: 0, point: 0, play: 0,  }
-
-               
-            
-              
-
-                          //---- Check if index exists ----
-            
-                          const FoundHome = save.standing.findIndex(item => item.teams == h);
-                          const Foundaway = save.standing.findIndex(item => item.teams == a);
-            
-            
               
               
-                          console.log(FoundHome, Foundaway);
-                          
             
-                          if (FoundHome == -1 || Foundaway == -1) {
-                            
-                            if (FoundHome == -1 ) {
-                                  existing.standing.push({teams: h, stats }) 
-                              }
-            
-                            if ( Foundaway == -1) {
-                                existing.standing.push({teams: a, stats }) 
-                              }
-            
-            
-                            update()
+                              update(save, group, h, hms, aws,a)
 
-
-                          }
-            
-
-                          
-                             
             
                          await save.save();
 

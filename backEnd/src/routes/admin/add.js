@@ -355,7 +355,8 @@ router.post('/fixtures',  async (req, res)=> {
                 
                         else if (String(existing.type) == "cup") {
                              const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
-        
+                             const Foundgroup = existing.fixture[Foundmatchday].teams.findIndex(item => item.group == group);
+
         
             
             
@@ -376,6 +377,8 @@ router.post('/fixtures',  async (req, res)=> {
         
            
                             }
+
+
         
         
                         else if (FoundHome !== -1 || Foundaway !== -1  ) {
@@ -679,7 +682,7 @@ router.post('/results',  async (req, res)=> {
                             existing.result.push(result)
         
         
-                             updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+                           //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
         
                         }
         
@@ -823,7 +826,8 @@ router.post('/results',  async (req, res)=> {
         
         
                         else if (FoundHome !== -1 || Foundaway !== -1  ) {
-                            
+                            updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
+
                            return  res.status(400).json({
                                 type: "failed",
                                 mgs: "result added choose different fixtures ",
@@ -840,7 +844,6 @@ router.post('/results',  async (req, res)=> {
         
         
         
-                        const save = await existing.save();
 
                         
                         if (String(stage) !== "knockout") {
@@ -856,7 +859,8 @@ router.post('/results',  async (req, res)=> {
         
         
         
-        
+                                const save = await existing.save();
+
         
                        return  res.status(200).json({
                             type: "success",

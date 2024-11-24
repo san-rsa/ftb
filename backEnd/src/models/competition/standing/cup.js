@@ -45,6 +45,6 @@ const Schema = new mongoose.Schema({
     timestamps: true
 })
 
-const CupStanding = mongoose.model('Cup-Standing', Schema)
+const CupStanding = mongoose.model('Group-Stage', Schema)
 
 module.exports = CupStanding
