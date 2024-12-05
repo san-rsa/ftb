@@ -17,6 +17,7 @@ const _ = require('lodash')
 const Standing = require('../models/competition/standing/standing')
 const Result = require('../models/competition/result')
 const Codeofconduct = require('../models/news/codesofconduct')
+const Live = require('../models/competition/live')
 
 // const Product = require('../models/product')
 // const Auth = require('../middleware/mid')
@@ -48,8 +49,6 @@ router.get('/:link/fixtures/:year', async(req, res)=> {
 
 
  const {link, year} = req.params
-
- // new date().getFullYear()
 
  
   const data = await Fixture.findOne({competition: link, year}).populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
@@ -133,10 +132,6 @@ router.get('/:link/fixtures/:year', async(req, res)=> {
      }
 
 
-      const sort = _.sortBy(data.fixture, ['matchday']);
-      data.fixture = sort
-
-
           res.status(200).json({
              success: true,
             data: data
@@ -144,6 +139,101 @@ router.get('/:link/fixtures/:year', async(req, res)=> {
      })
 
 
+
+     router.get('/:link/live/:year', async(req, res)=> {
+
+
+      const {link, year} = req.params
+    
+    
+      
+       const data = await Live.findOne({competition: link, year}).populate({path: "result.teams", populate: {path: "home"} }).populate({path: "result.teams", populate: {path: "away"}})
+    
+     
+     
+       if (!data) {
+        const newyear = year -1 ;
+     
+         const data = await Live.findOne({competition: link, year: newyear}).populate({path: "result.teams", populate: {path: "home"} }).populate({path: "result.teams", populate: {path: "away"}})
+    
+     
+         const sort = _.sortBy(data.result, ['matchday']);
+         data.result = sort
+      
+            return  res.status(200).json({
+               success: true,
+              data: data
+             })
+    
+       } else {
+            const sort = _.sortBy(data.result, ['matchday']);
+        data.result = sort
+    
+            
+        return  res.status(200).json({
+          success: true,
+         data: data
+        })
+      
+       }
+        
+    
+       })
+
+
+       router.get('/:link/:team/live/:year', async(req, res)=> {
+
+
+        const { link, team, year} = req.params
+       
+       // let year = '2022' // new date().getFullYear()
+    
+        const data = []
+        
+         const db = await Live.findOne({competition: link, year})
+    
+         if (!data) {
+         const year2 = year -1
+    
+          const data = await Live.findOne({competition: link, year: year2})
+    
+        for (let i = 0; i < db.result.length; i++) {
+    
+          const Foundmatch = db.result[i].teams.findIndex(item => item.home == team || item.away == team);
+    
+          if (Foundmatch !== -1 ) {
+    
+            data.push({
+              matchday: i + 1,
+              match: db.result[i].teams[Foundmatch]
+            })
+          }    
+        }
+         
+    
+         } else {
+          
+        for (let i = 0; i < db.result.length; i++) {
+    
+          const Foundmatch = db.result[i].teams.findIndex(item => item.home == team || item.away == team);
+    
+          if (Foundmatch !== -1 ) {
+    
+            data.push({
+              matchday: i + 1,
+              match: db.result[i].teams[Foundmatch]
+            })
+          }
+    
+        }
+    
+         }
+         
+              res.status(200).json({
+                 success: true,
+                data: data
+               })
+         })
 
 
   
@@ -275,8 +365,6 @@ router.get('/:link/results/:year', async(req, res)=> {
     }
 
      }
-           const sort = _.sortBy(data.result, ['matchday']);
-      data.result = sort
      
           res.status(200).json({
              success: true,

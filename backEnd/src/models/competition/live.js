@@ -2,7 +2,7 @@
 const mongoose = require('mongoose')
 // const ObjectID = mongoose.Schema.Types.ObjectId
 
-const resultSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
 
     competition: { type: mongoose.Schema.Types.String, ref: "Competition",
     },
@@ -12,7 +12,7 @@ const resultSchema = new mongoose.Schema({
 
     type : {type: String,  enum: [ 'league', 'cup'],  },
 
-      result: [{ matchday: {type: Number, required: true},
+      live: [{ matchday: {type: Number, required: true},
 
   
                  
@@ -26,7 +26,7 @@ const resultSchema = new mongoose.Schema({
             
             
                 
-                time: { date: {type: String , required: true}, time: {type: String , required: true}}, 
+                time: { now: {type: Number , required: true, default: 0}, first: {type: Number , required: true, default: 45}, second: {type: Number , required: true, default: 90}}, 
                 
                 
                 group: {type: String  },
@@ -97,6 +97,10 @@ const resultSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Result = mongoose.model('Result', resultSchema)
 
-module.exports = Result
+
+
+
+const Live = mongoose.model('Live', schema)
+
+module.exports = Live

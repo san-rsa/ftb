@@ -15,6 +15,11 @@ const playerSchema = new mongoose.Schema({
      teamId: {type: mongoose.Schema.Types.String, ref: "Team", 
       },
 
+      exTeamId: [{type: mongoose.Schema.Types.String, ref: "Team", }
+        
+      ],
+
+
       position: {type: String, required: true, trim: true
       },
 

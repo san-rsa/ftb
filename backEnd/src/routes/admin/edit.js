@@ -7,14 +7,19 @@ const jwt= require('jsonwebtoken')
 //const OTP = require('../../models/OTP')
 const otpGenerator = require("otp-generator");
 const User = require('../../models/user')
-// const Product = require('../models/product')
-// const Auth = require('../middleware/mid')
- const {auth, role} = require('../../middleware/mid')
  const cloudinary = require('../../connection/cloudinary')
+ const {auth, role, uploadMiddleware, deleteFixture, updateStanding, updateCupStanding} = require('../../middleware/mid')
+const News = require('../../models/news/news')
+const Competition = require('../../models/competition/competition')
+const Team = require('../../models/competition/team')
+const Player = require('../../models/competition/player')
+const Fixture = require('../../models/competition/fixture')
+const Result = require('../../models/competition/result')
+const Standing = require('../../models/competition/standing/standing')
+const Codeofconduct = require('../../models/news/codesofconduct')
+const CupStanding = require('../../models/competition/standing/cup')
 
 
-
- 
 
 
 
@@ -45,11 +50,11 @@ const User = require('../../models/user')
         
         
         
-            const data = await Banner.findByIdAndUpdate(req.params.id, {
+            const save = await Banner.findByIdAndUpdate(req.params.id, {
                 $set: update, imgUrl: imgUrl[0]
             }, { new: true });
-            res.json(data);
-            console.log(data, req.body, " updated successfully!");
+            res.json(save);
+            console.log(save, req.body, " updated successfully!");
         } catch (error) {
             return next(error);
         }
@@ -57,6 +62,408 @@ const User = require('../../models/user')
 
 
 
+
+
+router.patch('/codes-of-conduct/:id', async (req, res)=> {
+
+    const data = req.body
+
+    try {
+        const {title, body}= data
+
+        const id = req.params.id
+
+		if (!title || !body ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+        console.log(data)
+
+
+
+        const save = await Codeofconduct.findOneAndUpdate({title: id}, {
+            $set: data,
+        }, { new: true });
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+            savw,
+            message: " successfully ✅"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : " registration failed"
+        })
+       
+   }  
+})
+
+
+
+
+
+router.patch('/competition/:id', async (req, res)=> {
+
+    const data = req.body //JSON.parse(req.body.data)
+    const file = req.files.logo  
+
+    
+    if (!req.files) {
+        // No file was uploaded
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+     
+
+    try {
+        const {name, description, type}= data
+        const logo = []
+
+        const image = await cloudinary.uploader.upload(
+        file.tempFilePath,
+        { folder: 'Banner' },
+
+      );
+
+
+      logo.push({url: image.secure_url,  imgId: image.public_id})
+
+ 
+      
+
+
+        console.log(data)
+
+		if (!name || !logo ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+        //check if use already exists?
+
+
+
+
+
+        const save = await Competition.findOneAndUpdate({name: req.params.id}, {
+            $set: data, logo: logo[0]
+        }, { new: true });
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+            save,
+            message: "created successfully ✅"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+})
+
+
+router.patch('/:competition/fixture/:id',  async (req, res)=> {
+
+    const data = req.body  //JSON.parse(req.body.data)
+
+    try {
+        const { matchday, home, time, date, away, group, referee, stadium, stage}= data
+        const {id, competition} = req.params
+
+        
+        console.log(data)
+
+
+
+
+		if (!id || !competition ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+
+     
+                const existing = await Fixture.findOne({_id: competition})
+
+                    
+               
+            
+                    if (existing) {
+                        //---- Check if index exists ----
+        
+                        if (String(existing.type) == "league") {
+                            
+                            const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
+                            const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == id);
+        
+                                    
+            
+                        if (Foundmatchday == -1) {
+                            
+                            return  res.status(400).json({
+                                type: "failed",
+                                mgs: "matchday not found ",
+          
+                            })
+                        }
+        
+                        if (Foundmatchday !== -1) {
+                           if (Foundmatch == -1) {
+                            return  res.status(400).json({
+                                type: "failed",
+                                mgs: "match not found ",
+          
+                            })  }
+        
+        
+                        else if (Foundmatch !== -1 ) {
+
+                            await Fixture.findOneAndUpdate({_id: competition}, 
+                                { 
+                                  "$set": {"fixture.$[day].teams.$[match]": {$set: data, }} 
+                                },
+                                { 
+                                  "arrayFilters": [
+                                    { "day.matchday": matchday },
+                                    {"match._id": id}
+
+                                  ]
+                                })
+                           }}
+        
+        
+                        const save = await existing.save();
+                       return  res.status(200).json({
+                            type: "success",
+                            mgs: "Process successful",
+                            data: save
+                        })
+        
+                    }
+
+                
+                        else if (String(existing.type) == "cup") {
+                             const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
+                             const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == id);
+
+                                
+            
+                        if (Foundmatchday == -1) {
+                            
+                            return  res.status(400).json({
+                                type: "failed",
+                                mgs: "matchday not found ",
+          
+                            })                       
+                        }
+        
+                            if (Foundmatchday !== -1) {
+                                if (Foundmatch == -1) {
+                                 return  res.status(400).json({
+                                     type: "failed",
+                                     mgs: "match not found ",
+               
+                                 })
+                                 }
+             
+             
+                             else if (Foundmatch !== -1 ) {
+     
+                                 await Fixture.findOneAndUpdate({_id: competition}, 
+                                     { 
+                                       "$set": {"fixture.$[day].teams.$[match]": {$set: data, }} 
+                                     },
+                                     { 
+                                       "arrayFilters": [
+                                         { "day.matchday": matchday },
+                                         {"match._id": id}
+     
+                                       ]
+                                     })
+     
+                                 }
+                                
+             
+                             }      
+        
+        
+        
+        
+                        const save = await existing.save();
+                       return  res.status(200).json({
+                            type: "success",
+                            mgs: "Process successful",
+                            data: save
+                        })
+        
+        
+        
+                        
+                    }
+                    //------------ This creates a new cart and then adds the item to the cart that has been created------------
+ 
+            
+
+
+    }
+            
+
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+
+})
+
+
+
+router.patch('/news/:id', auth,  role(process.env.ADMIN), async (req, res)=> {
+
+    const data = JSON.parse(req.body.data)
+    const file = req.files.img  
+      
+    
+    if (!req.files) {
+        // No file was uploaded
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+     
+
+    try {
+        const {head, body}= data
+        const imgUrl = []
+
+        const image = await cloudinary.uploader.upload(
+        file.tempFilePath,
+        { folder: 'Banner' },
+
+      );
+
+
+      imgUrl.push({url: image.secure_url,  imgId: image.public_id})
+
+ 
+
+		if (!head || !imgUrl ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+        //check if use already exists?
+        const save = await News.findByIdAndUpdate(req.params.id, {
+            $set: update, imgUrl: imgUrl[0]
+        }, { new: true });
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+            save,
+            message: "successfully ✅"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "banner registration failed"
+        })
+       
+   }  
+})
+
+
+
+router.patch('/player', auth,  role(process.env.ADMIN), async (req, res)=> {
+
+    const data = JSON.parse(req.body.data)
+    const file = req.files?.img  
+      
+    
+    if (!req.files) {
+        // No file was uploaded
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+     
+
+    try {
+        const {name, description, teamId, position, number}= data
+        const  picture = []
+
+        const image = await cloudinary.uploader.upload(
+        file.tempFilePath,
+        { folder: 'Banner' },
+
+      );
+
+
+      picture.push({url: image.secure_url,  imgId: image.public_id})
+
+ 
+      
+
+
+        console.log(data)
+
+		if (!name || !picture ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+
+        
+        const db = await Player.findOne({name: req.params.id})
+
+        const  ex = []
+
+
+        if (db.teamId !== teamId) {
+            ex.push(db.teamId)
+        };
+
+        const save = await Player.findByIdAndUpdate({name: req.params.id},  {
+           $set: data, picture: picture[0], exTeamId: ex
+        }, { new: true })
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+            save,
+            message: "created successfully ✅"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+})
 
 
 
@@ -73,6 +480,480 @@ const User = require('../../models/user')
             return next(error);
         }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ router.patch('/toadmin', auth, role(process.env.ADMIN), async (req, res, next) => {
+    try {
+
+        const data = await User.findByIdAndUpdate(req.body.productId, {
+            $set: req.body, role: 'admin'
+        }, { new: true });
+        res.json(data);
+    } catch (error) {
+        return next(error);
+    }
+});
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.post('/results',  async (req, res)=> {
+
+    const data = req.body  //JSON.parse(req.body.data)
+
+    try {
+        const {fixtureId, matchId, matchday, homeScore, awayScore}= data
+
+
+
+        const existingFix = await Fixture.findById(fixtureId)
+
+        
+
+        const FoundmatchdayF = existingFix.fixture.findIndex(item => item.matchday == matchday);
+       const Foundtime = existingFix.fixture[FoundmatchdayF].teams.findIndex(item => item._id == matchId);
+
+
+
+        const {time, home, away, group, stage, referee, stadium, lineup  } = existingFix.fixture[FoundmatchdayF].teams[Foundtime]
+
+        const {competition, type, year} = existingFix
+
+        
+        console.log(data, time, home+'z', 'y'+away)
+
+		if (!competition || !fixtureId || !matchId || !homeScore || !awayScore) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+
+            const existing = await Result.findOne({competition, year})
+
+            const teams =     {
+                home: String(home), homeScore: Number(homeScore), 
+                time: {date: String(time.date), time: String(time.time)}, 
+                awayScore: Number(awayScore), away: String(away), 
+                type: String(type), group: String(group), refree: String(referee), stadium: String(stadium), lineup: String(lineup), stage: String(stage), 
+            }
+
+                    const result =  [{ matchday,
+                    teams: teams    // teams: [{home, time: [{date, time,}], away } ]
+    
+    }]
+
+
+
+                    
+               
+            
+                    if (existing) {
+
+
+                        //---- Check if index exists ----
+                    if (String(existing.type) == "league") {
+
+
+            //     const teams =     {
+            //             home: String(home), homeScore: Number(homeScore), 
+            //             time: {date: String(time.date), time: String(time.time)}, 
+            //             awayScore: Number(awayScore), away: String(away), 
+            //             type: String(type), referee: String(referee), stadium: String(stadium), lineup: String(lineup)
+            //         }
+        
+            //                 const result =  [{ matchday,
+            //                 teams: teams    // teams: [{home, time: [{date, time,}], away } ]
+            
+            // }]
+                        const Foundmatchday = existing.result.findIndex(item => item.matchday == matchday);
+                        const FoundHome = existing.result[Foundmatchday].teams.findIndex(item => item.home == String(home));
+                        const Foundaway = existing.result[Foundmatchday].teams.findIndex(item => item.away == String(away));
+        
+        
+            
+            
+                        console.log(FoundHome, Foundaway, Foundmatchday);
+                        
+            
+                        if (Foundmatchday == -1) {
+                            
+                            existing.result.push(result)
+        
+        
+                           //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+        
+                        }
+        
+                        if (Foundmatchday !== -1) {
+        
+        
+                           if (FoundHome == -1 && Foundaway == -1) {
+        
+                            console.log(FoundHome, teams );
+                            
+                                existing.result[Foundmatchday].teams.push(teams ) 
+        
+        
+        
+                                //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res)
+        
+        
+           
+                            }
+        
+        
+                        else if (FoundHome !== -1 || Foundaway !== -1  ) {
+                            
+                           return  res.status(400).json({
+                                type: "failed",
+                                mgs: "result added choose different fixtures ",
+          
+                            })
+                           }
+                           console.log(existing.result[Foundmatchday].teams, 'tt', );
+                           
+        
+                        }
+                                    
+        
+        
+        
+        
+        
+                        const save = await existing.save();
+        
+        
+                            deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
+        
+        
+                            updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+        
+        
+        
+        
+        
+        
+                       return  res.status(200).json({
+                            type: "success",
+                            mgs: "Process successful",
+                            data: save
+                        })
+        
+        
+        
+                        
+                    }
+                    //------------ This creates a new cart and then adds the item to the cart that has been created------------
+                    // else {
+            
+            
+        
+                
+                    //     const save = await Result.create({
+                    //         competition, year, result
+                    //     })
+                    //         // res.redirect("/login")
+        
+                           
+                    //         deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
+                    //         updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+        
+                
+                    //     return res.status(200).json({
+                    //         success: true,
+                    //         save,
+                    //         message: "created successfully ✅"
+                           
+                    //     })  
+                    
+                        
+                    // }
+        
+             else if (String(existing.type) == "cup") {
+
+
+            //     const teams =     {
+            //             home: String(home), homeScore: Number(homeScore), 
+            //             time: {date: String(time.date), time: String(time.time)}, 
+            //             awayScore: Number(awayScore), away: String(away), 
+            //             type: String(type), group: String(group), refree: String(referee), stadium: String(stadium), lineup: String(lineup), stage: String(stage), 
+            //         }
+        
+            //                 const result =  [{ matchday,
+            //                 teams: teams    // teams: [{home, time: [{date, time,}], away } ]
+            
+            // }]
+        
+        
+        
+        
+                        const Foundmatchday = existing.result.findIndex(item => item.matchday == matchday);
+                        const FoundHome = existing.result[Foundmatchday].teams.findIndex(item => item.home == String(home));
+                        const Foundaway = existing.result[Foundmatchday].teams.findIndex(item => item.away == String(away));
+        
+        
+            
+            
+                        console.log(FoundHome, Foundaway, Foundmatchday);
+                        
+            
+                        if (Foundmatchday == -1) {
+                            
+                            existing.result.push(result)
+       
+        
+        
+                        }
+        
+                        if (Foundmatchday !== -1) {
+        
+        
+                           if (FoundHome == -1 && Foundaway == -1) {
+        
+                            console.log(FoundHome, teams );
+                            
+                                existing.result[Foundmatchday].teams.push(teams ) 
+        
+        
+        
+                                //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res)
+        
+        
+           
+                            }
+        
+        
+                        else if (FoundHome !== -1 || Foundaway !== -1  ) {
+                            updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
+
+                           return  res.status(400).json({
+                                type: "failed",
+                                mgs: "result added choose different fixtures ",
+          
+                            })
+                           }
+                           console.log(existing.result[Foundmatchday].teams, 'tt', );
+                           
+        
+                        }
+                                    
+        
+        
+        
+        
+        
+
+                        
+                        if (String(stage) !== "knockout") {
+                            updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
+
+                         }
+        
+        
+                          //  deleteFixture(existingFix, FoundmatchdayF, Fixture, fixtureId)
+        
+        
+        
+        
+        
+        
+                                const save = await existing.save();
+
+        
+                       return  res.status(200).json({
+                            type: "success",
+                            mgs: "Process successful",
+                            data: save
+                        })
+        
+        
+        
+                        
+                    
+                    //------------ This creates a new cart and then adds the item to the cart that has been created------------
+
+        
+            }
+
+
+            }    else {
+            
+            
+        
+                
+                        const save = await Result.create({
+                            competition, year, result, type: String(type)
+                        })
+                            // res.redirect("/login")
+        
+                            
+                            if (String(save.type) == "league") {
+                                updateStanding(Standing, competition, year, home, homeScore, away, awayScore, group, res )
+ 
+                             }
+
+                             else if (String(save.type) == "cup") {
+
+                                   if (String(stage) !== "knockout") {
+                                updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
+ 
+                             }
+                             }
+
+                          
+
+                           
+                            // deleteFixture(existingFix, FoundmatchdayF, Fixture, fixtureId)
+        
+                
+                        return res.status(200).json({
+                            success: true,
+                            save,
+                            message: "created successfully ✅"
+                           
+                        })  
+                    
+                        
+                    }
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+
+})
+
+
+
+
+
+router.post('/team', async (req, res)=> {
+
+    const data = req.body //JSON.parse(req.body.data)
+    const file = req.files.img  
+      
+     
+
+    try {
+        const {name, description}= data
+        const logo = []
+
+        const image = await cloudinary.uploader.upload(
+        file.tempFilePath,
+        { folder: 'Banner' },
+
+      );
+
+
+      logo.push({url: image.secure_url,  imgId: image.public_id})
+
+ 
+      
+
+		if (!name || !logo ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+
+        const save = await Team.findByIdAndUpdate(req.params.id, {
+            $set: update, logo: logo[0]
+        }, { new: true });
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+            save,
+            message: "successfully ✅"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

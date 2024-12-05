@@ -1,7 +1,6 @@
 const express = require("express");
 const router = new express.Router();
 const Wishlist = require("../models/wishlist");
-const Product = require("../models/product");
 const {auth} = require("../middleware/mid");
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -18,7 +17,7 @@ router.post("/wishlist", auth, async (req, res) => {
     try {
         const wishlist = await Wishlist.findOne({ userId: user });
        // let productDetailss = await productById(productId);
-        const productDetails = await Product.findOne({ _id: productId });
+        const productDetails = await Wishlist.findOne({ _id: productId });
 
              if (!productDetails) {
             return res.status(500).json({

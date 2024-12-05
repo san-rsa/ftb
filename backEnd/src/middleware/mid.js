@@ -14,7 +14,8 @@ const User = require('../models/user')
 const cloudinary = require("../connection/cloudinary");
 const Standing = require("../models/competition/standing/standing");
 
-const {update} = require("./stats")
+const {update} = require("./stats");
+const Live = require("../models/competition/live");
 
 
 
@@ -363,6 +364,193 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 
 
 
+  const firstHalf = async (id, matchId, day, ) => {
+    // do something
+
+    const existing = await Live.findById(id)
+
+
+    
+
+
+
+    const Foundmatchday = existing.live.findIndex(item => item.matchday == day);
+    const Foundmatch = existing.live[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+
+
+
+    const time = existing.live[Foundmatchday].teams[Foundmatch].time
+
+    console.log(id, existing, time);
+
+
+   const timer = async () => {
+
+            if (time.now <= time.first) {
+        // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
+         
+        time.now = time.now + 1; 
+        
+        console.log("rrrrrr", time);
+        
+        
+        
+       setTimeout(timer, 1000);
+ 
+ 
+ 
+     } else {
+         clearTimeout(timer)
+     }    
+     existing.save()
+    } 
+
+    timer()
+
+    
+
+
+
+  };
+
+
+
+
+
+  const secondHalf = async (id, matchId, day, ) => {
+    // do something
+
+    const existing = await Live.findById(id)
+
+
+
+    const Foundmatchday = existing.live.findIndex(item => item.matchday == day);
+    const Foundmatch = existing.live[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+
+
+
+    const time = existing.live[Foundmatchday].teams[Foundmatch].time
+
+    time.second =  90;
+    time.now = 45
+
+
+    const timer = async () => {
+
+      if (time.now <= time.second) {
+  // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
+   
+  time.now = time.now + 1; 
+  
+  console.log("rrrrrr", time);
+  
+  
+  
+ setTimeout(timer, 1000);
+
+
+
+} else {
+   clearTimeout(timer)
+}    
+existing.save()
+} 
+
+timer()
+
+
+  };
+
+
+  const extraTimeFirstHalf = async (id, matchId, day, ) => {
+    // do something
+
+    const existing = await Live.findById(id)
+
+
+
+    const Foundmatchday = existing.live.findIndex(item => item.matchday == day);
+    const Foundmatch = existing.live[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+
+
+
+    const time = existing.live[Foundmatchday].teams[Foundmatch].time
+
+    time.first =   105;
+    time.now = 90;
+
+
+    const timer = async () => {
+
+      if (time.now <= time.first) {
+  // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
+   
+  time.now = time.now + 1; 
+  
+  console.log("rrrrrr", time);
+  
+  
+  
+ setTimeout(timer, 1000);
+
+
+
+} else {
+   clearTimeout(timer)
+}    
+existing.save()
+} 
+
+timer()
+
+
+  };
+
+
+  
+  const extraTimeSecondHalf = async (id, matchId, day, ) => {
+    // do something
+
+    const existing = await Live.findById(id)
+
+
+
+    const Foundmatchday = existing.live.findIndex(item => item.matchday == day);
+    const Foundmatch = existing.live[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+
+
+
+    const time = existing.live[Foundmatchday].teams[Foundmatch].time
+
+    time.second =  120;
+    time.now = 105
+
+
+    const timer = async () => {
+
+      if (time.now <= time.second) {
+  // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
+   
+  time.now = time.now + 1; 
+  
+  console.log("rrrrrr", time);
+  
+  
+  
+ setTimeout(timer, 1000);
+
+
+
+} else {
+   clearTimeout(timer)
+}    
+existing.save()
+} 
+
+timer()
+
+
+  };
 
 
 
@@ -370,4 +558,6 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 
 
 
-module.exports = {  auth, role, deleteFixture, updateStanding, updateCupStanding};
+
+
+module.exports = {  auth, role, deleteFixture, updateStanding, updateCupStanding, firstHalf, secondHalf, extraTimeFirstHalf, extraTimeSecondHalf};

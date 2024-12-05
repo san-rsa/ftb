@@ -29,8 +29,15 @@ const Schema = new mongoose.Schema({
                 stadium: {type: String},
 
                 lineup: {
-                    home: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}],
-                    away: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}]
+                    starting: {
+                        home: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}],
+                        away: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}]
+                    },
+
+                    sub: {
+                        home: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}],
+                        away: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}]
+                    }
 
                 }
 

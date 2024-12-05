@@ -1,3 +1,5 @@
+const Player = require("../models/competition/player");
+const Stat = require("../models/competition/stats");
 
 
 function win(existing, groupName, teamId, ws, ls ) {
@@ -102,8 +104,600 @@ function win(existing, groupName, teamId, ws, ls ) {
 
 
 
+async function updatePlayerPlayed(competition, year, playerId) {
+  
+    try {
+
+
+		if (!year || !competition ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+
+        const existingPlayer = await Player.findOne({_id: playerId})
+
+        console.log(existingCompetition);
+        
+
+
+        const stats = {player: playerId, team: existingPlayer.teamId, 
+          
+          played: 1,
+          goal: 0,
+          assist: 0,
+          yellow: 0,
+          red: 0,
+          motm: 0,
+          potm: 0, 
+      }
+     
+            const existing = await Stat.findOne({competition, year})
+     
+                    
+               
+            
+                    if (existing) {
+                        //---- Check if index exists ---- 
+                            
+                          const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+                        
+            
+                        if (Foundplayer == -1) {
+                            
+                            existing.stats.push(stats)
+                        }
+        
+                        if (Foundplayer !== -1) {
+                         
+                          existing.stats[Foundplayer].played = existing.stats[Foundplayer].played + 1;
+        
+                           console.log(existing, 'tt,' );
+                           
+        
+                        }
+                               
+                         await existing.save()
+        
+        }
+                     else {
+            
+                
+                        await Stat.create({
+                            competition,  year, stats
+                        })
+
+                      }
+            
+
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
 
 
 
 
-  module.exports = { update };
+}
+
+
+async function updatePlayerGoal(competition, year, playerId) {
+  
+  try {
+
+
+  if (!year || !competition ) {
+    return res.status(403).json({
+      success: false,
+      message: "All Fields are required",
+    });
+  }
+
+
+      const existingPlayer = await Player.findOne({_id: playerId})
+
+      console.log(existingCompetition);
+      
+
+
+      const stats = {player: playerId, team: existingPlayer.teamId, 
+        
+        played: 0,
+        goal: 1,
+        assist: 0,
+        yellow: 0,
+        red: 0,
+        motm: 0,
+        potm: 0, 
+    }
+   
+          const existing = await Stat.findOne({competition, year})
+   
+                  
+             
+          
+                  if (existing) {
+                      //---- Check if index exists ---- 
+                          
+                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+                      
+          
+                      if (Foundplayer == -1) {
+                          
+                          existing.stats.push(stats)
+                      }
+      
+                      if (Foundplayer !== -1) {
+                       
+                        existing.stats[Foundplayer].goal = existing.stats[Foundplayer].goal + 1;
+      
+                         console.log(existing, 'tt,' );
+                         
+      
+                      }
+                             
+                       await existing.save()
+      
+      }
+                   else {
+          
+              
+                      await Stat.create({
+                          competition,  year, stats
+                      })
+
+                    }
+          
+
+
+  } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+          success: false,
+          message : "registration failed"
+      })
+     
+ }  
+
+
+
+
+}
+
+
+async function updatePlayerAssist(competition, year, playerId) {
+  
+  try {
+
+
+  if (!year || !competition ) {
+    return res.status(403).json({
+      success: false,
+      message: "All Fields are required",
+    });
+  }
+
+
+      const existingPlayer = await Player.findOne({_id: playerId})
+
+      console.log(existingCompetition);
+      
+
+
+      const stats = {player: playerId, team: existingPlayer.teamId, 
+        
+        played: 0,
+        goal: 0,
+        assist: 1,
+        yellow: 0,
+        red: 0,
+        motm: 0,
+        potm: 0, 
+    }
+   
+          const existing = await Stat.findOne({competition, year})
+   
+                  
+             
+          
+                  if (existing) {
+                      //---- Check if index exists ---- 
+                          
+                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+                      
+          
+                      if (Foundplayer == -1) {
+                          
+                          existing.stats.push(stats)
+                      }
+      
+                      if (Foundplayer !== -1) {
+                       
+                        existing.stats[Foundplayer].assist = existing.stats[Foundplayer].assist + 1;
+      
+                         console.log(existing, 'tt,' );
+                         
+      
+                      }
+                             
+                       await existing.save()
+      
+      }
+                   else {
+          
+              
+                      await Stat.create({
+                          competition,  year, stats
+                      })
+
+                    }
+          
+
+
+  } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+          success: false,
+          message : "registration failed"
+      })
+     
+ }  
+
+
+
+
+}
+
+
+async function updatePlayerYellowCard(competition, year, playerId) {
+  
+  try {
+
+
+  if (!year || !competition ) {
+    return res.status(403).json({
+      success: false,
+      message: "All Fields are required",
+    });
+  }
+
+
+      const existingPlayer = await Player.findOne({_id: playerId})
+
+      console.log(existingCompetition);
+      
+
+
+      const stats = {player: playerId, team: existingPlayer.teamId, 
+        
+        played: 0,
+        goal: 0,
+        assist: 0,
+        yellow: 1,
+        red: 0,
+        motm: 0,
+        potm: 0, 
+    }
+   
+          const existing = await Stat.findOne({competition, year})
+   
+                  
+             
+          
+                  if (existing) {
+                      //---- Check if index exists ---- 
+                          
+                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+                      
+          
+                      if (Foundplayer == -1) {
+                          
+                          existing.stats.push(stats)
+                      }
+      
+                      if (Foundplayer !== -1) {
+                       
+                        existing.stats[Foundplayer].yellow = existing.stats[Foundplayer].yellow + 1;
+      
+                         console.log(existing, 'tt,' );
+                         
+      
+                      }
+                             
+                       await existing.save()
+      
+      }
+                   else {
+          
+              
+                      await Stat.create({
+                          competition,  year, stats
+                      })
+
+                    }
+          
+
+
+  } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+          success: false,
+          message : "registration failed"
+      })
+     
+ }  
+
+
+
+
+}
+
+
+async function updatePlayerRedCard(competition, year, playerId) {
+  
+  try {
+
+
+  if (!year || !competition ) {
+    return res.status(403).json({
+      success: false,
+      message: "All Fields are required",
+    });
+  }
+
+
+      const existingPlayer = await Player.findOne({_id: playerId})
+
+      console.log(existingCompetition);
+      
+
+
+      const stats = {player: playerId, team: existingPlayer.teamId, 
+        
+        played: 0,
+        goal: 0,
+        assist: 0,
+        yellow: 0,
+        red: 1,
+        motm: 0,
+        potm: 0, 
+    }
+   
+          const existing = await Stat.findOne({competition, year})
+   
+                  
+             
+          
+                  if (existing) {
+                      //---- Check if index exists ---- 
+                          
+                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+                      
+          
+                      if (Foundplayer == -1) {
+                          
+                          existing.stats.push(stats)
+                      }
+      
+                      if (Foundplayer !== -1) {
+                       
+                        existing.stats[Foundplayer].red = existing.stats[Foundplayer].red + 1;
+      
+                         console.log(existing, 'tt,' );
+                         
+      
+                      }
+                             
+                       await existing.save()
+      
+      }
+                   else {
+          
+              
+                      await Stat.create({
+                          competition,  year, stats
+                      })
+
+                    }
+          
+
+
+  } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+          success: false,
+          message : "registration failed"
+      })
+     
+ }  
+
+
+
+
+}
+
+
+async function updatePlayerManOfTheMatch(competition, year, playerId) {
+  
+  try {
+
+
+  if (!year || !competition ) {
+    return res.status(403).json({
+      success: false,
+      message: "All Fields are required",
+    });
+  }
+
+
+      const existingPlayer = await Player.findOne({_id: playerId})
+
+      console.log(existingCompetition);
+      
+
+
+      const stats = {player: playerId, team: existingPlayer.teamId, 
+        
+        played: 0,
+        goal: 0,
+        assist: 0,
+        yellow: 0,
+        red: 0,
+        motm: 1,
+        potm: 0, 
+    }
+   
+          const existing = await Stat.findOne({competition, year})
+   
+                  
+             
+          
+                  if (existing) {
+                      //---- Check if index exists ---- 
+                          
+                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+                      
+          
+                      if (Foundplayer == -1) {
+                          
+                          existing.stats.push(stats)
+                      }
+      
+                      if (Foundplayer !== -1) {
+                       
+                        existing.stats[Foundplayer].motm = existing.stats[Foundplayer].motm + 1;
+      
+                         console.log(existing, 'tt,' );
+                         
+      
+                      }
+                             
+                       await existing.save()
+      
+      }
+                   else {
+          
+              
+                      await Stat.create({
+                          competition,  year, stats
+                      })
+
+                    }
+          
+
+
+  } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+          success: false,
+          message : "registration failed"
+      })
+     
+ }  
+
+
+
+
+}
+
+
+async function updatePlayerPlayerOfTheMatch(competition, year, playerId) {
+  
+  try {
+
+
+  if (!year || !competition ) {
+    return res.status(403).json({
+      success: false,
+      message: "All Fields are required",
+    });
+  }
+
+
+      const existingPlayer = await Player.findOne({_id: playerId})
+
+      console.log(existingCompetition);
+      
+
+
+      const stats = {player: playerId, team: existingPlayer.teamId, 
+        
+        played: 0,
+        goal: 0,
+        assist: 0,
+        yellow: 0,
+        red: 0,
+        motm: 0,
+        potm: 1, 
+    }
+   
+          const existing = await Stat.findOne({competition, year})
+   
+                  
+             
+          
+                  if (existing) {
+                      //---- Check if index exists ---- 
+                          
+                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+                      
+          
+                      if (Foundplayer == -1) {
+                          
+                          existing.stats.push(stats)
+                      }
+      
+                      if (Foundplayer !== -1) {
+                       
+                        existing.stats[Foundplayer].potm = existing.stats[Foundplayer].potm + 1;
+      
+                         console.log(existing, 'tt,' );
+                         
+      
+                      }
+                             
+                       await existing.save()
+      
+      }
+                   else {
+          
+              
+                      await Stat.create({
+                          competition,  year, stats
+                      })
+
+                    }
+          
+
+
+  } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+          success: false,
+          message : "registration failed"
+      })
+     
+ }  
+
+
+
+
+}
+
+
+
+
+
+
+
+  module.exports = { update, updatePlayerPlayed, updatePlayerGoal, updatePlayerAssist, 
+    updatePlayerYellowCard, updatePlayerRedCard, updatePlayerManOfTheMatch, updatePlayerPlayerOfTheMatch, 
+  
+  };

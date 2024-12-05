@@ -6,10 +6,7 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt= require('jsonwebtoken')
 //const OTP = require('../../models/OTP')
-// const Product = require('../models/product')
-// const Product = require('../models/product')
- const {auth, role, uploadMiddleware, deleteFixture, updateStanding, updateCupStanding} = require('../../middleware/mid')
- // const cloudinary = require("cloudinary");
+ const {auth, role, uploadMiddleware, deleteFixture, updateStanding, updateCupStanding, firstHalf} = require('../../middleware/mid')
 const cloudinary = require('../../connection/cloudinary')
 const News = require('../../models/news/news')
 const Competition = require('../../models/competition/competition')
@@ -20,6 +17,7 @@ const Result = require('../../models/competition/result')
 const Standing = require('../../models/competition/standing/standing')
 const Codeofconduct = require('../../models/news/codesofconduct')
 const CupStanding = require('../../models/competition/standing/cup')
+const Live = require('../../models/competition/live')
 
 
 
@@ -447,6 +445,164 @@ router.post('/fixtures',  async (req, res)=> {
    }  
 
 })
+
+
+
+
+
+router.post('/live',  async (req, res)=> {
+
+    const data = req.body  //JSON.parse(req.body.data)
+
+    try {
+        const {fixtureId, matchId, matchday, }= data
+
+
+
+        const existingFix = await Fixture.findById(fixtureId)
+
+        
+
+        const FoundmatchdayF = existingFix.fixture.findIndex(item => item.matchday == matchday);
+       const Foundtime = existingFix.fixture[FoundmatchdayF].teams.findIndex(item => item._id == matchId);
+
+
+
+        const {_id, time, home, away} = existingFix.fixture[FoundmatchdayF].teams[Foundtime]
+        const {competition, type, year} = existingFix
+
+
+        const teams = existingFix.fixture[FoundmatchdayF].teams[Foundtime]
+
+
+		if (!competition || !fixtureId || !matchId ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+
+            const existing = await Live.findOne({competition, year})
+
+
+
+            const live =  { matchday, teams: teams }
+
+
+                    if (existing) {
+
+
+
+
+
+                        const Foundmatchday = existing.live.findIndex(item => item.matchday == matchday)
+        
+            
+            
+                        
+            
+                        if (Foundmatchday == -1) {
+                            
+                            existing.live.push(live)
+        
+        
+                           //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+        
+                        }
+        
+                        if (Foundmatchday !== -1) {
+                        const FoundHome = existing.live[Foundmatchday].teams.findIndex(item => item.home == String(home));
+                        const Foundaway = existing.live[Foundmatchday].teams.findIndex(item => item.away == String(away));
+        
+                                console.log(FoundHome, Foundaway, Foundmatchday);
+
+                           if (FoundHome == -1 && Foundaway == -1) {
+        
+                            console.log(FoundHome, teams );
+                            
+                                existing.live[Foundmatchday].teams.push(teams ) 
+
+
+                                //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res)
+        
+        
+           
+                            }
+        
+        
+                        else if (FoundHome !== -1 || Foundaway !== -1  ) {
+                            
+                           return  res.status(400).json({
+                                type: "failed",
+                                mgs: "live added choose different fixtures ",
+          
+                            })
+                           }
+                           console.log(existing.live[Foundmatchday].teams, 'tt', );
+                           
+        
+                        }
+                                    
+        
+        
+                        const save = await existing.save();
+
+        
+        
+                        firstHalf(existing._id, _id, matchday)
+        
+        
+                         //   deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
+
+                       return  res.status(200).json({
+                            type: "success",
+                            mgs: "Process successful",
+                            data: save
+                        })
+        
+
+            }    else {
+            
+            
+                
+                        const save = await Live.create({
+                            competition, year, live, type: String(type)
+                        })  
+                        
+
+                        firstHalf(save._id, _id, matchday)
+                        
+
+                    //    deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
+
+                
+                        return res.status(200).json({
+                            success: true,
+                            save,
+                            message: "created successfully ✅"
+                           
+                        })  
+                    
+                        
+                    }
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+
+})
+
+
+
+
+
+
+
 
 
 router.post('/news', auth,  role(process.env.ADMIN), async (req, res)=> {
