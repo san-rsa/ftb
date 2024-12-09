@@ -775,6 +775,7 @@ router.post('/results',  async (req, res)=> {
 
         const {competition, type, year} = existingFix
 
+
         
         console.log(data, time, home+'z', 'y'+away)
 
@@ -795,10 +796,10 @@ router.post('/results',  async (req, res)=> {
                 type: String(type), group: String(group), refree: String(referee), stadium: String(stadium), lineup: String(lineup), stage: String(stage), 
             }
 
-                    const result =  [{ matchday,
+                    const result =  { matchday,
                     teams: teams    // teams: [{home, time: [{date, time,}], away } ]
     
-    }]
+    }
 
 
 
@@ -946,13 +947,10 @@ router.post('/results',  async (req, res)=> {
         
         
                         const Foundmatchday = existing.result.findIndex(item => item.matchday == matchday);
-                        const FoundHome = existing.result[Foundmatchday].teams.findIndex(item => item.home == String(home));
-                        const Foundaway = existing.result[Foundmatchday].teams.findIndex(item => item.away == String(away));
-        
+  
         
             
             
-                        console.log(FoundHome, Foundaway, Foundmatchday);
                         
             
                         if (Foundmatchday == -1) {
@@ -964,6 +962,8 @@ router.post('/results',  async (req, res)=> {
                         }
         
                         if (Foundmatchday !== -1) {
+                              const FoundHome = existing.result[Foundmatchday].teams.findIndex(item => item.home == String(home));
+                        const Foundaway = existing.result[Foundmatchday].teams.findIndex(item => item.away == String(away));
         
         
                            if (FoundHome == -1 && Foundaway == -1) {
@@ -975,14 +975,15 @@ router.post('/results',  async (req, res)=> {
         
         
                                 //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res)
-        
+                                console.log(FoundHome, Foundaway, Foundmatchday);
+
         
            
                             }
         
         
                         else if (FoundHome !== -1 || Foundaway !== -1  ) {
-                            updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
+                           // updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
 
                            return  res.status(400).json({
                                 type: "failed",
