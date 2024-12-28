@@ -7,12 +7,13 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 
 
-const News = ({img, head, body, id}) => {
+const News = ({img, head, body, id, link}) => {
 
+    const newsLink =link.replaceAll(' ','-')
 
     return (
         <div className={Style.news}>
-            <Link to={"/product/gg"}>
+            <Link to={ "/news/" + newsLink}>
             <div className={Style.news1}>
 
                 <div className={Style.img1} >
@@ -43,12 +44,13 @@ const News = ({img, head, body, id}) => {
 
 
 
-const Mininews = ({img, head, id}) => {
+const Mininews = ({img, head, link, id}) => {
 
+    const newsLink =link.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
-           <Link >
+           <Link to={"/news/" + newsLink}>
             <div className={Style.news2}>
 
 
@@ -77,13 +79,14 @@ const Mininews = ({img, head, id}) => {
 
 
 
-const Mininews2 = ({img, head, id}) => {
+const Mininews2 = ({img, head, link, id}) => {
 
+    const newsLink =link.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
 
-        <Link >
+        <Link to={"/news/" + newsLink}>
         <div className={Style.news3}>
 
 
@@ -110,12 +113,13 @@ const Mininews2 = ({img, head, id}) => {
 
 
 
-const Minivideo = ({img, head, body}) => {
+const Minivideo = ({img, head, link, body}) => {
 
+    const videoLink =link.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
-            <Link >
+            <Link to={"/video/" + videoLink}>
             <div className={Style.news3}>
 
 
@@ -143,12 +147,13 @@ const Minivideo = ({img, head, body}) => {
 
 
 
-const Mininews3 = ({img, head, id}) => {
+const Mininews3 = ({img, head,link, id}) => {
 
+    const newsLink =link?.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
-            <Link >
+            <Link to={ "/news/" + newsLink }>
             <div className={Style.news3}>
 
 

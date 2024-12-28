@@ -206,6 +206,7 @@ const Awards = () => {
                 <Mininews3
                     text={project.text}
                     img={project.imgUrl.url}
+                    link={project.text}
                     />    
                     </div>
 

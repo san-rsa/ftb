@@ -29,6 +29,7 @@ const TopNews = () => {
               <News
                   head={project.head}
                   img={project.imgUrl.url}
+                  link={project.head}
                 />    
                 </div>
             
@@ -45,6 +46,7 @@ const TopNews = () => {
                 <Mininews
                     head={project.head}
                     img={project.imgUrl.url}
+                    link={project.head}
                     />    
                     </div>
 

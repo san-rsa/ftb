@@ -37,6 +37,7 @@ import Editcategory from "./pages/admin/sub/category/Edit";
 
 
 import "./styles/style.css"
+import News from "./pages/News";
 
 
   
@@ -48,7 +49,36 @@ function App() {
         <BrowserRouter>
     <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<Description />}/>
+
+
+        <Route path="/video/:id" element={<Description />}/>
+        <Route path="/news/:id" element={<News />}/>
+
+        <Route path="/team/:id" element={<Description />}/>
+        <Route path="/player/:id" element={<Description />}/>
+
+
+        <Route path="/competitions" element={<Description />}/>
+        <Route path="/competition/:id" element={<Description />}/>
+
+
+        <Route path="/competition/:id/fixtures" element={<Description />}/>
+        <Route path="/competition/:id/fixture/:matchId" element={<Description />}/>
+
+
+        <Route path="/competition/:id/results" element={<Description />}/>
+        <Route path="/competition/:id/result/:matchId" element={<Description />}/>
+
+
+        <Route path="/competition/:id/lives" element={<Description />}/>
+        <Route path="/competition/:id/live/:matchId" element={<Description />}/>
+
+
+        <Route path="/competition/:id/stats/:type" element={<Description />}/>
+        <Route path="/competition/:id/standing" element={<Description />}/>
+
+
+
         <Route path="/login" element={<Login />}/>
         <Route path="/register" element={<Register />}/>
         <Route path="/user" element={<Profile />}/>

@@ -14,3 +14,29 @@
     margin: 20px;
     padding: 10px;
 }
+
+
+.head {
+    display: grid;
+
+    display: grid;
+    grid-template-columns: auto 35%;
+    border: 2px #2bff00 solid;
+    width: 100%;
+    text-align: left;
+    margin: auto;
+}
+
+
+.head .topic {
+    margin: 50% 0 auto;
+    padding: 0;
+    font-size: xx-large;
+
+}
+
+.topic h1  {
+    position: relative;
+    right: 100px;
+    background-color: rgb(41, 41, 37);
+}

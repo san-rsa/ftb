@@ -228,11 +228,11 @@ router.get('/:link/live/:id/:year', async(req, res)=> {
 })
   
 
-router.get('/news/:id', auth, async (req, res, next) => {
+router.get('/news/:id', async (req, res, next) => {
 
 
           try {
-              const data = await News.findById(req.params.id)
+              const data = await News.findOne({head: req.params.id})
   
               res.status(200).json(data);
           } catch (error) {
