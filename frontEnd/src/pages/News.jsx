@@ -5,6 +5,7 @@ import Nav from "../components/sub component/Nav"
 import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { Topic } from "../components/sub component/list/Newsviewlist";
 
 
 
@@ -101,23 +102,23 @@ const News = ({}) => {
     return (
         <div>
          <Nav />
-            <div className={Style.desc}>
+            <div className={Style.app}>
 
 
                 
         <div className={Style.head} >
+
             
+        <div className={Style.headline}>
+            <h1 > <span > {data.head} </span> </h1>
+        </div>    
+        
         <div className={Style.img}>
                 {/* <img src={info?.imgUrl} alt=""/> */}
                 <img src={data.imgUrl?.url}/>
 
         </div>
 
-        <div className={Style.topic}>
-        <h1 > {data.head} </h1>
-        </div>
-
-
         </div>
 
 
@@ -126,15 +127,29 @@ const News = ({}) => {
 
 
 
-        <div className={Style.News} >
+        <div className={Style.news} >
 
 
 
 
-        <div className={Style.details}>
+        <div className={Style.article}>
             {/* <p>{info?.description}.</p> */}
             <p> {data.body}</p>
         </div>
+
+
+
+        <div className={Style.relatedNews}>
+            <h3 > RELATED NEWS</h3>
+
+  
+                <Topic 
+                    head={data.head}
+                    link={data.head} 
+                />
+
+        </div>
+
 
         </div>
 

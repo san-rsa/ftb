@@ -3,7 +3,6 @@ import * as React from 'react'
 
 
 import Home from "./pages/Home";
-import Description from "./pages/Description";
 import Codeofconduct from "./pages/Codeofconduct";
 
 
@@ -38,6 +37,30 @@ import Editcategory from "./pages/admin/sub/category/Edit";
 
 import "./styles/style.css"
 import News from "./pages/News";
+import Video from "./pages/Video";
+import Team from "./pages/Team";
+import Player from "./pages/Player";
+
+import Competitions from "./pages/Competitions";
+import Competition from "./pages/competition/Competition";
+
+import Fixtures from "./pages/competition/Fixtures";
+import Fixture from "./pages/competition/match/Fixture";
+
+
+import Results from "./pages/competition/Results";
+import Result from "./pages/competition/match/Result";
+
+
+import Lives from "./pages/competition/Lives";
+import Live from "./pages/competition/match/Live";
+
+
+import Stats from "./pages/competition/Stats";
+import Standing from "./pages/competition/Standing";
+
+
+
 
 
   
@@ -51,36 +74,34 @@ function App() {
         <Route path="/" element={<Home />} />
 
 
-        <Route path="/video/:id" element={<Description />}/>
+        <Route path="/video/:id" element={<Video />}/>
         <Route path="/news/:id" element={<News />}/>
 
-        <Route path="/team/:id" element={<Description />}/>
-        <Route path="/player/:id" element={<Description />}/>
+        <Route path="/team/:id" element={<Team />}/>
+        <Route path="/player/:id" element={<Player />}/>
 
 
-        <Route path="/competitions" element={<Description />}/>
-        <Route path="/competition/:id" element={<Description />}/>
+        {/* <Route path="/competitions" element={<Competitions />}/>
+        <Route path="/competition/:id" element={<Competition />}/>
 
 
-        <Route path="/competition/:id/fixtures" element={<Description />}/>
-        <Route path="/competition/:id/fixture/:matchId" element={<Description />}/>
+        <Route path="/competition/:id/fixtures" element={<Fixtures />}/>
+        <Route path="/competition/:id/fixture/:matchId" element={<Fixture />}/>
 
 
-        <Route path="/competition/:id/results" element={<Description />}/>
-        <Route path="/competition/:id/result/:matchId" element={<Description />}/>
+        <Route path="/competition/:id/results" element={<Results />}/>
+        <Route path="/competition/:id/result/:matchId" element={<Result />}/>
 
 
-        <Route path="/competition/:id/lives" element={<Description />}/>
-        <Route path="/competition/:id/live/:matchId" element={<Description />}/>
+        <Route path="/competition/:id/lives" element={<Lives />}/>
+        <Route path="/competition/:id/live/:matchId" element={<Live />}/>
 
 
-        <Route path="/competition/:id/stats/:type" element={<Description />}/>
-        <Route path="/competition/:id/standing" element={<Description />}/>
+        <Route path="/competition/:id/stats/:type" element={<Stats />}/>
+        <Route path="/competition/:id/standing" element={<Standing />}/>
+ */}
 
 
-
-        <Route path="/login" element={<Login />}/>
-        <Route path="/register" element={<Register />}/>
         <Route path="/user" element={<Profile />}/>
         <Route path="/admin" element={<Admin />}/>
 
@@ -95,12 +116,14 @@ function App() {
         <Route path="/admin/addbanner" element={<Addbanner />}/>
         <Route path="/admin/editcategory/:id" element={<Editcategory />}/>
         <Route path="/admin/addcategory" element={<Addcategory />}/>
-        <Route path="/forgetpassword" element={<ForgetPassword />}></Route>
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/code-of-conduct" element={<Codeofconduct />} />
 
 
-   
+        {/* <Route path="/login" element={<Login />}/>
+        <Route path="/register" element={<Register />}/>
+        <Route path="/forgetpassword" element={<ForgetPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+ */}
 
 
     </Routes>       
