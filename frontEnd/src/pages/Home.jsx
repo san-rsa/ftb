@@ -8,6 +8,7 @@ import "../styles/style.css"
 import TopNews from "../components/Topnews";
 import Homehighlight from "../components/Homehighlight";
 import { Mininews2, Mininews3 } from "../components/sub component/list/Newslist";
+import Footer from "../components/sub component/Footer";
 
 
 
@@ -38,6 +39,8 @@ function App() {
 
               {/* <Slist /> */}
 
+
+              <Footer />
     </div>
   );
 }
