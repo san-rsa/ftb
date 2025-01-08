@@ -1,6 +1,7 @@
 .footer {
     text-align: left;
     background-color: brown;
+    padding: 0 10px;
 }
 
 .socials {
@@ -17,7 +18,7 @@
     display: inline-flex;
     background-color: rgb(32, 32, 32);
     padding: 5px 90px 5px 15px;
-    margin: 15px 10px;
+    margin: 15px 10px 15px 0;
     
 }
 
@@ -79,6 +80,15 @@
     justify-items: flex-start;
 }
 
+
+
+.copyright {
+    text-align: center;
+    margin: auto;
+    font-weight: lighter;
+    font-size: small;
+    padding: 10px 0;
+}
 
 
 

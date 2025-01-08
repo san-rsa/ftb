@@ -186,6 +186,10 @@ const Footer = () => {
 
 
 
+      const options = {weekday: "none", day: "none", month: "none"};
+      const year = new Date().getFullYear(options);
+    
+    
 
 
 
@@ -242,6 +246,11 @@ const Footer = () => {
 
 
                     </div>
+                </div>
+
+
+                <div className={Style.copyright} >
+                    <p > @ {year} Agbedian League </p>
                 </div>
 
 
