@@ -40,7 +40,11 @@ ul {
 
 
 
-
+.teams {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
 .teams li {
     display: flex;
 }
@@ -139,12 +143,14 @@ time {
 .home {
     text-align: right;
     margin: auto 10px auto auto;
+    display: flex;
 
 }
 
 .away {
     text-align: left;
     margin: auto auto auto 10px;
+    display: flex;
 
 
 }
@@ -158,12 +164,15 @@ time {
     background-color: rgb(71, 69, 65);
 }
 
+
+
 /* result */
 
 .score {
     border:  2px rgb(212, 196, 255) solid;
     padding: 5px 15px;
     background-color: rgb(10, 92, 92);
+    display: flex;
 }
 
 .results:hover {

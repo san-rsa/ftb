@@ -47,7 +47,7 @@ router.get('/codes-of-conduct/:id', auth, async (req, res, next) => {
 })
 
 
-router.get('/competition/:id', auth, async (req, res, next) => {
+router.get('/competition/:id', async (req, res, next) => {
 
 
       try {
@@ -498,9 +498,12 @@ router.get('/:link/stats/:team/:type/:year', async(req, res)=> {
 })
 
 
-router.get('team/:id', async(req, res)=> {
+router.get('team/:id', async(req, res, next)=> {
 
-                  const data = await Team.find({_id: req.params.id}).populate("playerId") //.sort("title")
+                  const data = await Team.find({name: req.params.id})//.populate("playerId") //.sort("title")
+                  
+
+                  console.log(data);
                   
                        res.status(200).json({
                           success: true,
