@@ -149,11 +149,10 @@ const Team = ({}) => {
 
 
 
-        <div className={Style.news}>
                 <div className={Style.list}>
     
                     <ul >
-                        <li onClick={handleChange} > Overview </li>
+                        <li onClick={handleChange} >Overview </li>
                         <li onClick={handleChange}  >News</li>
                         <li onClick={handleChange} >Fixtures</li>
                         <li onClick={handleChange}  >Results</li>
@@ -166,7 +165,6 @@ const Team = ({}) => {
     
     
                     
-                 { mode.overview && <Overview />}
               
                  {/* { mode.fixtures && <Fixtures />}
     
@@ -174,7 +172,12 @@ const Team = ({}) => {
     
          </div>
 
+         <div className={Style.section} >
+
+            { mode.overview && <Overview />}
+
          </div>
+
 
 
 

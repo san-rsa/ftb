@@ -16,8 +16,6 @@ const Tablehead = () => {
         <div className={Style.table}>
             <div className={Style.standings}>
 
-                <h2> STANDING</h2>
-
                 <ul >
                     <li className={Style.head}> 
                         <div className={Style.played} id={Style.played}>  <abbr > PL  </abbr> </div>
@@ -51,16 +49,19 @@ const Table = ({pos, w, d, l, pts, name, logo, pl, gd, ga, gs}) => {
         <div className={Style.table}>
             <div className={Style.standings}>
 
-                <ul >                 
+                           
 
                  <div className={Style.teams}> 
                     <li >  
-                        <div className={Style.pos}> <span>{pos}</span> </div>
-                        <div className={Style.dot}> <div>  </div></div>
+                        <div className={Style.info} >
+                            <div className={Style.pos}> <span>{pos}</span> </div>
+                            <div className={Style.dot}> <div>  </div></div>
 
-                        <div className={Style.team}>
-                            <span > <img src={logo}/> </span>
-                            <p> {name}</p>
+                            <div className={Style.team}>
+                                <span > <img src={logo}/> </span>
+                                <p> {name}</p>
+                            </div>
+
                         </div>
 
                         <div className={Style.head2}>
@@ -79,7 +80,7 @@ const Table = ({pos, w, d, l, pts, name, logo, pl, gd, ga, gs}) => {
                     </li>
                  </div>
 
-                </ul>
+          
 
 
 

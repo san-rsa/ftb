@@ -8,6 +8,7 @@ import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Fixture, Result, Table, Tablehead } from "./list/Tournamentlist";
 import { Mininews } from "./list/Newslist";
+import { Standing } from "./Hometournament";
 
 
 
@@ -16,11 +17,23 @@ const Overview = ({}) => {
     
     const [mode, setInputs] = useState({overview: true, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false });
     const [news, setnews] = useState([])
+    const [stand, setStand] = useState([])
     const [data, setData] = useState({})
     const [wishlist, setwish] = useState()
     const [set, setset] = useState('')
     const [priced, setpriced] = useState(Number())
 
+
+    const year = 2022 // new Date(2022).getFullYear()
+
+    
+
+
+    useEffect(() => {
+        fetch(process.env.REACT_APP_API_LINK + "getall/672a24205fa419f32c581933/standing/" + year)
+        .then((res) =>  res.json())
+        .then((data) => setStand(data.data));
+    }, []);
 
 
     
@@ -145,18 +158,42 @@ const Overview = ({}) => {
 
 
 
-                {/* <div className={Style.standing} >
+                <div className={Style.standing} >
                     <h2 > Standing</h2>
 
 
-                </div> */}
+           <Tablehead />
+   
+              {stand.standing?.slice(0, 5).map((props, pos) => (
 
 
-                {/* <div className={Style.form} >
+
+                <Table
+                    pos={pos + 1}
+                    name={props.teams.name}
+                    logo={props.teams.logo[0].url}
+                    w={props.stats.win} 
+                    d={props.stats.draw} 
+                    l={props.stats.loss} 
+                    pts={props.stats.points} 
+                    pl={props.stats.played} 
+                    gd={props.stats.gd} 
+                    ga={props.stats.ga} 
+                    gs={props.stats.gs}
+                    />    
+
+
+
+                )   )   }
+
+                </div>
+
+
+                <div className={Style.form} >
                     <h2 > Form Guide</h2>
 
 
-                </div> */}
+                </div>
 
                 <div className={Style.latestN} >
                     <h2 > Latest News</h2>
