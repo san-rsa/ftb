@@ -6,7 +6,8 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Topic } from "../components/sub component/list/Newsviewlist";
-import { Overview } from "../components/sub component/Teamview";
+import { Overview, TeamNews } from "../components/sub component/Teamview";
+import Footer from "../components/sub component/Footer";
 
 
 
@@ -51,8 +52,8 @@ const Team = ({}) => {
         const handleChange = (event) => {
             const name = event.target.innerHTML.toLowerCase();
     
-            setInputs({table: false, fixtures: false, results: false, players: false})
-    
+            setInputs({overview: false, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false });
+
             
             setInputs(values => ({...values, [name]: true}))
           }
@@ -152,7 +153,7 @@ const Team = ({}) => {
                 <div className={Style.list}>
     
                     <ul >
-                        <li onClick={handleChange} >Overview </li>
+                        <li onClick={handleChange} >Overview</li>
                         <li onClick={handleChange}  >News</li>
                         <li onClick={handleChange} >Fixtures</li>
                         <li onClick={handleChange}  >Results</li>
@@ -176,47 +177,19 @@ const Team = ({}) => {
 
             { mode.overview && <Overview />}
 
+            { mode.news && <TeamNews />}
+
+
          </div>
 
 
 
 
 
-        
-
-
-
-
-        <div className={Style.news} >
-
-
-
-
-        <div className={Style.article}>
-            {/* <p>{info?.description}.</p> */}
-            <p> {data.body}</p>
-        </div>
-
-
-
-        <div className={Style.relatedNews}>
-            <h3 > RELATED NEWS</h3>
-
-  
-                <Topic 
-                    head={data.head}
-                    link={data.head} 
-                />
-
-        </div>
-
-
-        </div>
-
-
-
 
      </div>
+
+     <Footer />
         </div>
 
     )

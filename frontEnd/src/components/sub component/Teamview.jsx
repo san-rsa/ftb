@@ -7,22 +7,19 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Fixture, Result, Table, Tablehead } from "./list/Tournamentlist";
-import { Mininews } from "./list/Newslist";
+import News, { Mininews } from "./list/Newslist";
 import { Standing } from "./Hometournament";
+import { TeamList } from "./list/Teamviewlist";
 
 
 
 
 const Overview = ({}) => {
     
-    const [mode, setInputs] = useState({overview: true, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false });
     const [news, setnews] = useState([])
+    const [otherTeams, setotherTeams] = useState([])
     const [stand, setStand] = useState([])
     const [data, setData] = useState({})
-    const [wishlist, setwish] = useState()
-    const [set, setset] = useState('')
-    const [priced, setpriced] = useState(Number())
-
 
     const year = 2022 // new Date(2022).getFullYear()
 
@@ -49,6 +46,12 @@ const Overview = ({}) => {
             fetch(process.env.REACT_APP_API_LINK + "getall/news")
             .then((res) =>  res.json())
             .then((data) => setnews(data.data));
+        }, []);
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
+            .then((res) =>  res.json())
+            .then((data) => setotherTeams(data.data));
         }, []);
     
 
@@ -189,11 +192,11 @@ const Overview = ({}) => {
                 </div>
 
 
-                <div className={Style.form} >
+                {/* <div className={Style.form} >
                     <h2 > Form Guide</h2>
 
 
-                </div>
+                </div> */}
 
                 <div className={Style.latestN} >
                     <h2 > Latest News</h2>
@@ -220,11 +223,11 @@ const Overview = ({}) => {
 
                 </div>
 
-                <div className={Style.latestV} >
+                {/* <div className={Style.latestV} >
                     <h2 > Latest Videos </h2>
 
 
-                </div>
+                </div> */}
 
 
 
@@ -232,6 +235,24 @@ const Overview = ({}) => {
                     </div>
 
                     <div className={Style.right} >
+                        <div className={Style.otherTeams} >
+                        <h2 > Other teams</h2>
+
+                        {otherTeams.slice(1, 5).map((project) => (
+
+                            <div className={Style.perone} key={project._id}> 
+
+                            <TeamList
+                                name={project.name}
+                                logo={project.logo[0].url}
+                                link={project.name}
+                                />    
+                                </div>
+
+
+                        )   )   }
+
+                        </div>
 
                     </div>
         </div>
@@ -241,7 +262,97 @@ const Overview = ({}) => {
 }
 
 
+const TeamNews = ({}) => {
+    
+    const [news, setnews] = useState([])
+    const [otherTeams, setotherTeams] = useState([])
+    const [stand, setStand] = useState([])
+    const [data, setData] = useState({})
+
+    const year = 2022 // new Date(2022).getFullYear()
+
+    
+
+    
+
+
+    
+    const title = useParams().id
+
+    const link =title.replaceAll('-',' ')
+
+    
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+            .then((res) =>  res.json())
+            .then((data) => setnews(data.data));
+        }, []);
+
+
+    
 
 
 
-export {Overview, }
+
+    return (
+        <div className={Style.teamNews}>
+
+
+
+
+
+                    <div className={Style.top} >
+                    {news.slice(0, 1).map((project) => (
+
+                    <div className='' key={project._id}> 
+
+                    <News
+                        head={project.head}
+                        img={project.imgUrl.url}
+                        link={project.head}
+                        />    
+                        </div>
+
+
+                    )   )   }
+                    </div>
+
+
+                        {news.slice(1, 10).map((project) => (
+
+                        <div className={Styles.perone} key={project._id}> 
+
+                        <Mininews
+                            head={project.head}
+                            img={project.imgUrl.url}
+                            link={project.head}
+                            />    
+                            </div>
+
+
+                        )   )   }
+                    
+
+
+
+         
+
+                {/* <div className={Style.latestV} >
+                    <h2 > Latest Videos </h2>
+
+
+                </div> */}
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
+
+
+
+export {Overview, TeamNews}

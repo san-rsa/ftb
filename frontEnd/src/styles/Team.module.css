@@ -97,8 +97,43 @@
 } */
 
 
+/* right */
 
 
+
+/* other team */
+
+
+.otherTeams {
+    display: block;
+}
+
+.listT *{
+    display: inline;
+}
+
+.listT {
+    margin-bottom: 5px;
+}
+
+.listT img {
+    width: 20px;
+    margin-right: 1px;
+
+}
+
+
+
+
+/* team news */
+
+.teamNews {
+    text-align: left;
+    margin: auto 20px;
+}
+.top {
+    margin: 10px auto;
+}
 
 @media (max-width: 700px) {
     

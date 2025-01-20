@@ -716,7 +716,7 @@ router.get('/:link/standing/:year', async(req, res)=> {
 
 
 
-router.get('/team', async(req, res)=> {
+router.get('/teams', async(req, res)=> {
 
   const data = await Team.find().sort("name")
   
