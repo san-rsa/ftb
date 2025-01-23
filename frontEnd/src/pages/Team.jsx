@@ -6,7 +6,7 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Topic } from "../components/sub component/list/Newsviewlist";
-import { Overview, TeamNews } from "../components/sub component/Teamview";
+import { Overview, TeamFixtures, TeamNews, TeamResults, TeamSquad } from "../components/sub component/Teamview";
 import Footer from "../components/sub component/Footer";
 
 
@@ -158,8 +158,8 @@ const Team = ({}) => {
                         <li onClick={handleChange} >Fixtures</li>
                         <li onClick={handleChange}  >Results</li>
                         <li onClick={handleChange}  >Squad</li>
-                        <li onClick={handleChange}  >Transfer</li>
-                        <li onClick={handleChange}  >Official</li>
+                        {/* <li onClick={handleChange}  >Transfer</li> */}
+                        {/* <li onClick={handleChange}  >Official</li> */}
     
                     </ul>
     
@@ -178,6 +178,13 @@ const Team = ({}) => {
             { mode.overview && <Overview />}
 
             { mode.news && <TeamNews />}
+
+            { mode.fixtures && <TeamFixtures />}
+
+            { mode.results && <TeamResults />}
+
+            { mode.squad && <TeamSquad />}
+
 
 
          </div>

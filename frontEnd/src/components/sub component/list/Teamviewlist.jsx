@@ -39,6 +39,39 @@ const TeamList = ({logo, name, link}) => {
 
 
 
+const TeamSquadList = ({img, name, link, number,}) => {
+
+    return (
+        <Link to={"/player/" + link} className={Style.listS}>
 
 
-export {TeamList, }
+
+
+        <div className={Style.img}>
+                {/* <img src={info?.imgUrl} alt=""/> */}
+                <img src={img} />
+
+        </div>
+                
+            <div className={Style.number} >
+                <h1 > {number} 2 </h1>
+            </div>
+            
+        <div className={Style.name}>
+            <h3 >  {name}  </h3>
+        </div>    
+        
+
+
+        </Link>
+        
+
+    )
+}
+
+
+
+
+
+
+export {TeamList, TeamSquadList}
