@@ -1,5 +1,10 @@
+.app {
+    text-align: left;
+}
 
-
+.info {
+    margin: 10px;
+}
 .head {
     display: flex;
     margin: 50px auto ;
@@ -19,7 +24,6 @@
 .img {
     width: 200px;
     justify-content: center;
-
     margin: auto 10px;
 }
 
@@ -27,73 +31,56 @@
     width: 100%;
 }
 
+/* info */
 
-.layout {
-    display: grid;
-    grid-template-columns: auto 20%;
-    margin: 10px;
-    width: 100%;
-    text-align: left;
-
+.teams {
+    margin:  10px auto;
 }
 
-.list {
-    text-align: left;
-    margin: auto;
-    display: block;
 
-
+.teams h2 {
+    margin: 10px auto;
 }
 
-.list ul {
+.teams a {
+    width: fit-content;
+    background: black;
     display: flex;
 }
 
-.matches {
-    text-align: left;
-    display: grid;
-    grid-template-columns: auto 50%;
 
-
+.team {
+    display: flex;
+    padding: 10px 90px 10px 10px;
 }
 
-.matches h2 {
+.team .logo {
+    width: 100px;
+    margin: auto 10px;
+}
+
+.team .logo img {
+    width: 100%;
+}
+
+.team .name {
+    margin: auto 10px;
+}
+
+
+.bio {
+    justify-content: space-evenly;
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    text-align: left;
+    justify-items: flex-start;
+}
+
+.biostat {
     margin: 10px 0;
 }
 
-.result > div {
-    position: relative;
-    top: 7px;
-    text-align: left;
-}
-
-.result > div, .fixture > div {
-
-    justify-items: flex-start;
-}
-
-/* standing */
-
-.standing  div:first-child {
-
-    justify-items: flex-start;
-}
-
-.standing {
-    margin: 10px;
-}
-
-.result, .fixture {
-    margin: 10px;
-}
-
-
-
-/* form */
-
-.form {
-    margin: 10px;
-}
 
 
 
