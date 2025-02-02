@@ -13,7 +13,7 @@ import Footer from "../components/sub component/Footer";
 
 
 const Team = ({}) => {
-    const [mode, setInputs] = useState({Info: true, Season: false, });
+    const [mode, setInputs] = useState({info: true, season: false, });
 
     const [data, setData] = useState({})
     const [wishlist, setwish] = useState()
@@ -52,7 +52,7 @@ const Team = ({}) => {
         const handleChange = (event) => {
             const name = event.target.innerHTML.toLowerCase();
     
-            setInputs({Info: false, Season: false, });
+            setInputs({info: false, season: false, });
 
             
             setInputs(values => ({...values, [name]: true}))
@@ -130,54 +130,64 @@ const Team = ({}) => {
          <Nav />
             <div className={Style.app}>
 
-        <div className={Style.head} >
+                <div className={Style.top}>
+                        <div className={Style.player}>
+                        <h3 > PLAYER </h3>
 
-        <div className={Style.img}>
-                {/* <img src={info?.imgUrl} alt=""/> */}
-                <img src={data.imgUrl?.url}/>
 
-        </div>
-                
+                    <div className={Style.head} >
+
+
+                        <div className={Style.img}>
+                            {/* <img src={info?.imgUrl} alt=""/> */}
+                            <img src={data.imgUrl?.url}/>
+
+                        </div>
+                            
+
+
+                        <div className={Style.name}>
+                        <h1 > <span > {data.head} </span> </h1>
+                        </div>    
+
+
+
+                        </div>
+                    </div>  
+
+
+
+                        <div className={Style.list}>
+            
+                            <ul >
+                                <li onClick={handleChange} >Info</li>
+                                <li onClick={handleChange}  >Season</li>
+                                {/* <li onClick={handleChange} >Fixtures</li>
+                                <li onClick={handleChange}  >Results</li>
+                                <li onClick={handleChange}  >Squad</li> */}
+                                {/* <li onClick={handleChange}  >Transfer</li> */}
+                                {/* <li onClick={handleChange}  >Official</li> */}
+            
+                            </ul>
 
             
-        <div className={Style.name}>
-            <h1 > <span > {data.head} </span> </h1>
-        </div>    
-        
-
-
-        </div>
-
-
-
-                <div className={Style.list}>
-    
-                    <ul >
-                        <li onClick={handleChange} >Info</li>
-                        <li onClick={handleChange}  >Season</li>
-                        {/* <li onClick={handleChange} >Fixtures</li>
-                        <li onClick={handleChange}  >Results</li>
-                        <li onClick={handleChange}  >Squad</li> */}
-                        {/* <li onClick={handleChange}  >Transfer</li> */}
-                        {/* <li onClick={handleChange}  >Official</li> */}
-    
-                    </ul>
-    
-    
-    
+            
+            
+                            
                     
-              
-                 {/* { mode.fixtures && <Fixtures />}
-    
-                 { mode.results &&  <Results />} */}
-    
-         </div>
+                        {/* { mode.fixtures && <Fixtures />}
+            
+                        { mode.results &&  <Results />} */}
+            
+                </div>
+                </div>
+                    <hr/>
 
          <div className={Style.section} >
 
-            { mode.Info && <Info />}
+            { mode.info && <Info />}
 
-            { mode.Season && <Season />}
+            { mode.season && <Season />}
 
             {/* { mode.fixtures && <TeamFixtures />}
 

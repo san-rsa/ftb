@@ -9,7 +9,8 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Fixture, Result, Table, Tablehead } from "./list/Tournamentlist";
 import News, { Mininews } from "./list/Newslist";
 import { Standing } from "./Hometournament";
-import { PlayerBio, PlayerTeam, TeamSquadList } from "./list/Playerviewlist";
+import { PlayerBio, } from "./list/Playerviewlist";
+import { CardList } from "./list/Generallist";
 
 
 
@@ -81,8 +82,10 @@ const Info = ({}) => {
                         <h2 > Team</h2>
 
                     
-                        <PlayerTeam 
+                        <CardList 
                             name={"ebuawa"}
+                            to={"team"}
+                            category={"Team"}
                             link={"ebuawa"}
                             logo={data.imgUrl?.url}
 
@@ -95,7 +98,7 @@ const Info = ({}) => {
 
                         <div className={Style.stats}> 
 
-                            <h2 > Key Stats</h2>
+                            <h2 > KEY STATS</h2>
 
                             <div className={Style.bio}>
 
@@ -179,161 +182,57 @@ const Season = ({}) => {
 
 
     return (
-        <div className={Style.teamNews}>
+        <div className={Style.season}>
+
+            <div className={Style.stats}>
+                               
+                               
+            <h2 > KEY STATS</h2>
 
 
+            <div className={Style.stat}>
 
 
+                    <PlayerBio
+                    topic={"Appearances"}
+                    answer={"22"}
+                    />
 
-                    <div className={Style.top} >
-                    {news.slice(0, 1).map((project) => (
+                    <PlayerBio
+                    topic={"Goals"}
+                    answer={"22"}
+                    />
 
-                    <div className='' key={project._id}> 
+                    <PlayerBio
+                    topic={"Assists"}
+                    answer={"22"}
+                    />
 
-                    <News
-                        head={project.head}
-                        img={project.imgUrl.url}
-                        link={project.head}
-                        />    
-                        </div>
+                    <PlayerBio
+                    topic={"Yellow cards"}
+                    answer={"22"}
+                    />
 
+                    <PlayerBio
+                    topic={"Red cards"}
+                    answer={"22"}
+                    />
 
-                    )   )   }
-                    </div>
+                    <PlayerBio
+                    topic={"Jersey number"}
+                    answer={"22"}
+                    />
 
-
-                        {news.slice(1, 10).map((project) => (
-
-                        <div className={Styles.perone} key={project._id}> 
-
-                        <Mininews
-                            head={project.head}
-                            img={project.imgUrl.url}
-                            link={project.head}
-                            />    
-                            </div>
-
-
-                        )   )   }
-                    
-
-
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
 
 
 
 
                     </div>
-
- 
-
-    )
-}
-
-
-
-const TeamFixtures = ({}) => {
-    
-    const [fixtures, setfixtures] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
-
-    
-
-    
-
-
-    
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
-
-    
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
-            .then((res) =>  res.json())
-            .then((data) => setfixtures(data.data));
-        }, []);
-
-
-    
+            </div>
 
 
 
 
-    return (
-        <div className={Style.teamFix}>
-
-            <h2 > Next Fixtures </h2>
-
-
-
-                    <div className={Style.fix} >
-
-                    {fixtures.slice(0, 3).map((project) => (
-
-                                        
-        <div className={Style.fixture}>
-
-            <Fixture 
-                // Hname={props.home?.name}
-                // Hlogo={props.home?.logo[0].url}
-                // Hscore={props.home.homeScore}
-
-                // date={props.time.date}
-                // time={props.time.time}
-
-                // Ascore={props.away.awayScore}
-                // Alogo={props.away?.logo[0].url}
-                // Aname={props.away?.name}
-
-
-
-                Hname={'kkkkk'}
-                Hlogo={'00'}
-                Hscore={3}
-
-                date={'2/22/22'}
-                time={'4pm'}
-
-                Ascore={2}
-                Alogo={1}
-                Aname={'dddd'}
-
-            />  
-
-
-
-
-
-
-
-                        </div>
-
-
-                    )   )   }
-                    </div>
-                    
-
-
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
 
 
 
@@ -347,187 +246,6 @@ const TeamFixtures = ({}) => {
 
 
 
-const TeamResults = ({}) => {
-    
-    const [fixtures, setfixtures] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
 
-    const year = 2022 // new Date(2022).getFullYear()
 
-    
-
-    
-
-
-    
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
-
-    
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
-            .then((res) =>  res.json())
-            .then((data) => setfixtures(data.data));
-        }, []);
-
-
-    
-
-
-
-
-    return (
-        <div className={Style.teamRes}>
-
-            <h2 > Next Fixtures </h2>
-
-
-
-                    <div className={Style.res} >
-
-                    {fixtures.slice(0, 3).map((project) => (
-
-                                        
-        <div className={Style.result}>
-
-            <Fixture 
-                // Hname={props.home?.name}
-                // Hlogo={props.home?.logo[0].url}
-                // Hscore={props.home.homeScore}
-
-                // date={props.time.date}
-                // time={props.time.time}
-
-                // Ascore={props.away.awayScore}
-                // Alogo={props.away?.logo[0].url}
-                // Aname={props.away?.name}
-
-
-
-                Hname={'kkkkk'}
-                Hlogo={'00'}
-                Hscore={3}
-
-                date={'2/22/22'}
-                time={'4pm'}
-
-                Ascore={2}
-                Alogo={1}
-                Aname={'dddd'}
-
-            />  
-
-
-
-
-
-
-
-                        </div>
-
-
-                    )   )   }
-                    </div>
-                    
-
-
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
-
-
-
-
-                    </div>
-
- 
-
-    )
-}
-
-
-
-const TeamSquad = ({}) => {
-    
-    const [fixtures, setfixtures] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
-
-    
-
-    
-
-
-    
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
-
-    
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
-            .then((res) =>  res.json())
-            .then((data) => setfixtures(data.data));
-        }, []);
-
-
-    
-
-
-
-
-    return (
-        <div className={Style.teamFix}>
-
-
-
-
-
-                    <div className={Style.squads} >
-                    {fixtures.map((project) => (
-
-
-                    <TeamSquadList
-                        name={project.head}
-                        img={project.imgUrl.url}
-                        link={project.head}
-                        />    
-
-
-                    )   )   }
-                    </div>
-                    
-
-
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
-
-
-
-
-                    </div>
-
- 
-
-    )
-}
-
-
-export {Info, Season, TeamFixtures, TeamResults, TeamSquad, }
+export {Info, Season,  }
