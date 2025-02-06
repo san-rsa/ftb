@@ -43,6 +43,41 @@ const CardList = ({logo, name, link, category, to}) => {
 }
 
 
+const CardList2 = ({logo, name, link, category, to}) => {
+
+    return (
+        <Link to={"/" + to + "/" + link} className={Style.a2} >
+
+        <div className={Style.main2} >
+
+        <div className={Style.logo2}>
+                {/* <img src={info?.imgUrl} alt=""/> */}
+                <img src={logo} />
+
+        </div>
+                
+
+            
+        <div className={Style.name2}>
+
+            <h3 > {category} </h3>
+
+            <h2 >  {name}  </h2>
+        </div>    
+        
+
+
+        </div>
+
+
+
+        </Link>
+        
+
+    )
+}
+
+
 
 
 
@@ -74,4 +109,4 @@ const PlayerBio = ({answer, topic,}) => {
 
 
 
-export {CardList, PlayerBio, }
+export {CardList, PlayerBio, CardList2, }

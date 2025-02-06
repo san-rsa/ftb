@@ -41,7 +41,7 @@ import Video from "./pages/Video";
 import Team from "./pages/Team";
 import Player from "./pages/Player";
 
-import Competitions from "./pages/Competitions";
+import Competitions from "./pages/Competition";
 import Competition from "./pages/competition/Competition";
 
 import Fixtures from "./pages/competition/Fixtures";
@@ -81,10 +81,10 @@ function App() {
         <Route path="/player/:id" element={<Player />}/>
 
 
-        {/* <Route path="/competitions" element={<Competitions />}/>
-        <Route path="/competition/:id" element={<Competition />}/>
+        <Route path="/regions" element={<Competitions />}/>
+        <Route path="/region/:id" element={<Competition />}/>
 
-
+              {/*
         <Route path="/competition/:id/fixtures" element={<Fixtures />}/>
         <Route path="/competition/:id/fixture/:matchId" element={<Fixture />}/>
 

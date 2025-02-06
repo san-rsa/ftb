@@ -11,6 +11,7 @@ const Nav = () => {
 
 
     const [data, setInputs] = useState({});
+    const [burger, setburger] = useState(false)
     const navigate = useNavigate();
 
 
@@ -46,41 +47,71 @@ const Nav = () => {
 
     const [search, setelement] = useState()
 
-    function hide (p){
-        const btn = document.getElementById(Style.form)
-        const styles = window.getComputedStyle(btn).getPropertyValue("display");
+    function toggle (p){
 
-        if (styles == "none") {
-            btn.style.display = "block"
-        } else if (styles == "block"){
-            btn.style.display = "none"        
-        }
-        console.log(btn);
+        setburger(!burger)
 
     }
 
     return (
         <nav>
-        {/* <div className={Style.lnav}>
-            <a ><FontAwesomeIcon icon={faBars} size="1x"/> </a> 
-        </div> */}
+            <FontAwesomeIcon className={Style.burger} icon={faBars} size="2x" onClick={toggle} /> 
+
              <Link to={"/"}>
              {/* <img src={require("../../logo.png")} /> */}
              <h1 id={Style.navh1}> AGBEDIAN LEAGUE</h1>
              </Link>
-                   {/* <div className={Style.rnav}>
-<Link className={Style.navr}to={"/login"}  onClick={login} ><FontAwesomeIcon icon={faUser}/> </Link>
+
+
+
+                       <div className={Style.menu} >
+                        
+                       <Link to={"/regions"}>
+                       {/* <img src={require("../../logo.png")} /> */}
+                       <h3 id={Style.navh1}> Regions</h3>
+                       </Link>
+          
+                       <Link to={"/"}>
+                       {/* <img src={require("../../logo.png")} /> */}
+                       <h3 id={Style.navh1}> Matches </h3>
+                       </Link>
+
+                       <Link to={"/"}>
+                       {/* <img src={require("../../logo.png")} /> */}
+                       <h3 id={Style.navh1}> Teams </h3>
+                       </Link>
+          
+                       
+                       </div>
+
+
+          { burger &&  
+                       <div className={Style.navmenu} >
+                        
+                        <Link to={"/regions"}>
+                       {/* <img src={require("../../logo.png")} /> */}
+                       <h3 id={Style.navh1}> Regions</h3>
+                       </Link>
+          
+                       <Link to={"/"}>
+                       {/* <img src={require("../../logo.png")} /> */}
+                       <h3 id={Style.navh1}> Matches </h3>
+                       </Link>
+
+                       <Link to={"/"}>
+                       {/* <img src={require("../../logo.png")} /> */}
+                       <h3 id={Style.navh1}> Teams </h3>
+                       </Link>
+          
+                       
+                       </div>
+          }
+
+        {/* <div className={Style.rnav}>
+                <Link className={Style.navr}to={"/login"}  onClick={login} ><FontAwesomeIcon icon={faUser}/> </Link>
         
-         <Link className={Style.navr} to={"/cart"}><FontAwesomeIcon icon={faCartShopping}/> </Link>
-
-            <form id={Style.form} action="/search">
-                <Search name="order" type={"text"} onchange={handleChange} value={data.order} class={Style.order} />  
-            </form>
 
 
-
-            <button id={Style.search} name="navbtn" onClick={hide}><FontAwesomeIcon icon={faSearch}/> </button>
-   
         </div> */}
 
     </nav>

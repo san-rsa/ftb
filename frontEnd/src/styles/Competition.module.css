@@ -1,15 +1,56 @@
-.competion {
+.competion, .competitions {
     text-align: left;
+}
+
+.competitions h3 {
+    margin: 10px;
 }
 
 
 .regions {
-    display: grid;
+    display: inline-flex;
     justify-content: space-evenly;
     grid-template-columns: repeat(5, 1fr);
     text-align: left;
 }
 
-.regions a {
+.regions a, .allregions a {
     margin: 10px;
+    
 }
+
+.allregions {
+    display: grid;
+    justify-content: space-evenly;
+
+    grid-template-columns: repeat(4, 1fr);
+
+}
+
+
+
+
+
+@media (max-width: 850px) {
+   
+
+.allregions {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+ 
+ }
+ 
+ 
+ 
+ 
+ 
+ @media (max-width: 650px) {
+   
+
+    .allregions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+     
+     }

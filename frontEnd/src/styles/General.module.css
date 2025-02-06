@@ -1,16 +1,17 @@
-.a {
+.a, .a2 {
     width: fit-content;
-    background: black;
-    display: flex;
-}
-
-
-.main {
-    display: flex;
+    background: rgb(85, 70, 70);
+    display: flex;    
     padding: 15px 90px 15px 10px;
+
 }
 
-.logo {
+
+.main, .main2 {
+    display: flex;
+}
+
+.logo, .logo2 {
     width: 50px;
     height: 50px;
     justify-content: left;
@@ -20,27 +21,58 @@
     
 }
 
-.logo img {
+.logo img, .logo2 img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
 }
 
-.name {
+.name, .name2 {
     display: inline;
     justify-content: center;
     margin: auto 10px;
 }
 
 
-.name h2 {
+.name h2, .name2 h2 {
     margin: 0;
 }
 
 
-@media (max-width: 700px) {
+.a2 {
+    width: 90%;
+    padding: 10px 0px 10px 10px;
+}
+
+
+@media (max-width: 650px) {
     
+.a2 {
+    padding: 5px ;
+    text-align: center;
+
+
+}
+
+.main2 {
+    display: block;
+    margin: auto;
+}
+
+.logo2 {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+.name2 {
+    margin: auto;
+}
+
+.name2 h3 {
+    display: none;
+}
 
 
 
@@ -49,6 +81,7 @@
 
 
  @media (max-width: 450px) {
+
 
 
 

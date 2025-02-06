@@ -25,7 +25,20 @@ const Competition = () => {
             .then((data) => setdata(data.data));
         }, []);
 
-    
+        const settings = {
+            dots: false,
+            fade: false,
+            infinite: true,
+            autoplay: false,
+            speed: 2000,
+            autoplaySpeed: 6000,
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            cssEase: "linear",
+            waitForAnimate: false,
+            // nextArrow: <SampleNextArrow />,
+            // prevArrow: <SamplePrevArrow />
+          };
 
 
 
@@ -33,29 +46,30 @@ const Competition = () => {
     return (
         <div className={Style.competion}>
 
-            <h1 >REGION</h1>
+            <h1 >POPULAR REGION</h1>
 
             <div className={Style.regions} > 
                 
     
-        {/* <div className="slider-container">
+       {/* <div className="slider-container">
           <Slider {...settings}>
     
-                     {banner.map((project) => (
+                     {data.map((project) => (
 
-                <div className={Style.perone} key={project._id}> 
-
-                <CardList
-                    text={project.text}
-                    img={project.imgUrl.url}
+                    <CardList 
+                        name={"ebuawa"}
+                        to={"competition"}
+                        category={"Region"}
+                        link={"ebuawa"}
+                        logo={data.imgUrl?.url}
                     />    
-                    </div>
+
 
 
                 )   )   }
                 </Slider>
 
-                </div> */}
+                </div>  */}
 
 
 
@@ -74,6 +88,8 @@ const Competition = () => {
 
 
             )   )   }
+
+
             </div>
 
 
