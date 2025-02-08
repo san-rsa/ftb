@@ -15,6 +15,12 @@
 }
 
 
+.top {
+    border: 1px #ffffff solid;
+    border-width: 1px 0 ;
+
+}
+
 
 .img {
     width: 200px;

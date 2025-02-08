@@ -8,12 +8,13 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Topic } from "../components/sub component/list/Newsviewlist";
 import { Overview, TeamFixtures, TeamNews, TeamResults, TeamSquad } from "../components/sub component/Teamview";
 import Footer from "../components/sub component/Footer";
+import { CompetitionFixtures, CompetitionNews, CompetitionResults, CompetitionTable } from "../components/sub component/Competitionview";
 
 
 
 
 const Competition = ({}) => {
-    const [mode, setInputs] = useState({overview: true, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false });
+    const [mode, setInputs] = useState({news: true, fixtures: false, results: false, table: false, transfer: false, official: false });
 
     const [data, setData] = useState({})
     const [wishlist, setwish] = useState()
@@ -24,7 +25,7 @@ const Competition = ({}) => {
     
     const title = useParams().id
 
-    const link =title.replaceAll('-',' ');
+    const link =title?.replaceAll('-',' ');
 
 
         useEffect(() => {
@@ -48,7 +49,7 @@ const Competition = ({}) => {
         const handleChange = (event) => {
             const name = event.target.innerHTML.toLowerCase();
     
-            setInputs({overview: false, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false });
+            setInputs({news: false, fixtures: false, results: false, table: false, transfer: false, official: false });
 
             
             setInputs(values => ({...values, [name]: true}))
@@ -126,60 +127,71 @@ const Competition = ({}) => {
          <Nav />
             <div className={Style.app}>
 
-        <div className={Style.head} >
 
-        <div className={Style.img}>
-                {/* <img src={info?.imgUrl} alt=""/> */}
-                <img src={data.imgUrl?.url}/>
 
-        </div>
-                
 
-            
-        <div className={Style.name}>
-            <h1 > <span > {data.head} </span> </h1>
-        </div>    
+
+
+
+
+
+
+
+                         <div className={Style.top}>
+         
+                                <div className={Style.head} >
+
+                                <div className={Style.img}>
+                                        {/* <img src={info?.imgUrl} alt=""/> */}
+                                        <img src={data.imgUrl?.url}/>
+
+                                </div>
+                                        
+
+                                    
+                                <div className={Style.name}>
+                                    <h1 > <span > {data.head} </span> </h1>
+                                </div>    
+                                
+                                </div>
+
+    
+         
+                            <div className={Style.list}>
         
-
-
-        </div>
-
-
-
-                <div className={Style.list}>
-    
-                    <ul >
-                        <li onClick={handleChange} >Overview</li>
-                        <li onClick={handleChange}  >News</li>
-                        <li onClick={handleChange} >Fixtures</li>
-                        <li onClick={handleChange}  >Results</li>
-                        <li onClick={handleChange}  >Squad</li>
-                        {/* <li onClick={handleChange}  >Transfer</li> */}
-                        {/* <li onClick={handleChange}  >Official</li> */}
-    
-                    </ul>
-    
-    
-    
-                    
-              
-                 {/* { mode.fixtures && <Fixtures />}
-    
-                 { mode.results &&  <Results />} */}
-    
-         </div>
+                        <ul >
+                            <li onClick={handleChange}  >News</li>
+                            <li onClick={handleChange} >Fixtures</li>
+                            <li onClick={handleChange}  >Results</li>
+                            <li onClick={handleChange}  >Table</li>
+                            {/* <li onClick={handleChange}  >Transfer</li> */}
+                            {/* <li onClick={handleChange}  >Official</li> */}
+        
+                        </ul>
+        
+        
+        
+                        
+                
+                    {/* { mode.fixtures && <Fixtures />}
+        
+                    { mode.results &&  <Results />} */}
+        
+            </div>
+         
+      
+  
+                         </div>
 
          <div className={Style.section} >
 
-            { mode.overview && <Overview />}
+            { mode.news && <CompetitionNews />}
 
-            { mode.news && <TeamNews />}
+            { mode.fixtures && <CompetitionFixtures />}
 
-            { mode.fixtures && <TeamFixtures />}
+            { mode.results && <CompetitionResults />}
 
-            { mode.results && <TeamResults />}
-
-            { mode.squad && <TeamSquad />}
+            { mode.table && <CompetitionTable />}
 
 
 

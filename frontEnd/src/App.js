@@ -41,8 +41,8 @@ import Video from "./pages/Video";
 import Team from "./pages/Team";
 import Player from "./pages/Player";
 
-import Competitions from "./pages/Competition";
-import Competition from "./pages/competition/Competition";
+import Competitions from "./pages/Competitions";
+import Competition from "./pages/Competition";
 
 import Fixtures from "./pages/competition/Fixtures";
 import Fixture from "./pages/competition/match/Fixture";

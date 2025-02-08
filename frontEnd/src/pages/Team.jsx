@@ -130,27 +130,35 @@ const Team = ({}) => {
          <Nav />
             <div className={Style.app}>
 
-        <div className={Style.head} >
-
-        <div className={Style.img}>
-                {/* <img src={info?.imgUrl} alt=""/> */}
-                <img src={data.imgUrl?.url}/>
-
-        </div>
-                
-
-            
-        <div className={Style.name}>
-            <h1 > <span > {data.head} </span> </h1>
-        </div>    
-        
-
-
-        </div>
 
 
 
-                <div className={Style.list}>
+
+  
+
+
+
+                         <div className={Style.top}>
+
+                            <div className={Style.head} >
+
+                            <div className={Style.img}>
+                                    {/* <img src={info?.imgUrl} alt=""/> */}
+                                    <img src={data.imgUrl?.url}/>
+
+                            </div>
+                                    
+
+                                
+                            <div className={Style.name}>
+                                <h1 > <span > {data.head} </span> </h1>
+                            </div>    
+                                     
+                  
+                             </div>  
+         
+         
+                       <div className={Style.list}>
     
                     <ul >
                         <li onClick={handleChange} >Overview</li>
@@ -171,7 +179,9 @@ const Team = ({}) => {
     
                  { mode.results &&  <Results />} */}
     
-         </div>
+                 </div>
+
+                         </div>
 
          <div className={Style.section} >
 

@@ -21,30 +21,7 @@ const Competitions = ({}) => {
             .then((data) => setdata(data.data));
         }, []);
 
-        // useEffect(() => {
-        //     fetch(process.env.REACT_APP_API_LINK  + "getall/product")
-        //     .then((res) =>  res.json())
-        //     .then((data) => setproduct(data.data));
-        // }, []);
-    
- 
 
-    //  useEffect(() => {
-    //     fetch(process.env.REACT_APP_API_LINK  + "getone/wishlist/" + link, {
-    //         credentials: "include",
-    //         headers: { "Content-type": "application/json; charset=UTF-8", },
-    //     }).then((res) =>  res.json())
-    //     .then((data) =>  {
-    //         if (data.data == "true") {
-    //             setwish(faX)
-    //             setset("active")
-    //         } else {
-    //             setwish(faHeart)
-    //             setset("false")
-    //         }
-    //     } );
-    // }, []);
-    
 
     return (
         <div className={Style.competitions}>
@@ -59,7 +36,7 @@ const Competitions = ({}) => {
 
             <CardList2 
                 name={"ebuawa"}
-                to={"competition"}
+                to={"region"}
                 category={"Region"}
                 link={"ebuawa"}
                 logo={data.imgUrl?.url}
@@ -74,7 +51,7 @@ const Competitions = ({}) => {
 
 <CardList2 
     name={"ebuawa"}
-    to={"competition"}
+    to={"region"}
     category={"Region"}
     link={"ebuawa"}
     logo={data.imgUrl?.url}

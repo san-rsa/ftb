@@ -85,6 +85,7 @@ ul {
     display: inline-flex;
     text-align: end;
     justify-items: flex-end;
+    justify-content: flex-end;
     margin-left: auto;
 }
 .head div, .head2 div {
@@ -108,15 +109,7 @@ ul {
     background-color: rgb(71, 69, 65);
 }
 
-@media (max-width: 500px) {
 
-    #draw , #loss, #win, #ga, #gs{
-        display: none;
-        width: 0;
-    }
-
-
- }
 
 
 
@@ -205,3 +198,20 @@ time {
 .results:hover {
     background-color: rgb(71, 69, 65);
 }
+
+
+@media (max-width: 500px) {
+
+    #draw , #loss, #win, #ga, #gs{
+        display: none;
+        width: 0;
+    }
+
+
+    .fixtures span, .result span {
+        font-size: small;
+    }
+    
+
+
+ }

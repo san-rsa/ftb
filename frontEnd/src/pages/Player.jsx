@@ -181,7 +181,6 @@ const Team = ({}) => {
             
                 </div>
                 </div>
-                    <hr/>
 
          <div className={Style.section} >
 
