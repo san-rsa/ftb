@@ -1,0 +1,197 @@
+.team {
+    text-align: center;
+}
+
+
+/* competion */
+.competition {
+    display: inline-flex;
+    border-radius: 40px;
+    margin: auto;
+    background: #949494;
+    padding: 5px;
+    justify-items: center;
+    margin-top: 10px;
+}
+
+.competition .logo {
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+
+}
+
+.competition img {
+    width: 100%;
+}
+
+
+/* team */
+
+
+.team {
+    text-align: center;
+    justify-items: center;
+
+    font-size: ;
+}
+
+
+.team .logo {
+    width: 100px;
+    height: 100px;
+}
+
+
+
+.matchday {
+    
+}
+
+
+
+@media (max-width: 850px) {
+   
+
+.allregions {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+ 
+ }
+ 
+ 
+ 
+ 
+ 
+ @media (max-width: 650px) {
+   
+
+    .allregions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+     
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* region & components  */
+
+
+
+     
+.top {
+    border: 1px #ffffff solid;
+    border-width: 1px 0 ;
+    text-align: center;
+
+    background-color: rgb(16, 19, 17);
+
+
+}
+
+.app {
+    text-align: left;
+}
+
+
+.head {
+    display: flex;
+    justify-content: center;
+    justify-content: space-evenly;
+
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    /* margin: 50px auto ; */
+    padding: 50px 0;
+}
+
+
+.name {
+    display: inline;
+    justify-content: center;
+    margin: auto 10px;
+}
+
+
+
+/* standing */
+
+
+
+.standing {
+    margin: 10px;
+    text-align: left;
+}
+
+
+
+
+
+/*  team fix */
+
+
+
+
+
+
+/* team results  */
+
+
+
+
+
+/* team news */
+
+
+
+
+
+@media (max-width: 900px) {
+    
+.fix, .res {
+    grid-template-columns: repeat(2, 1fr);
+
+}
+
+ }
+
+
+
+
+@media (max-width: 700px) {
+    
+
+    .head {
+    }
+
+
+ }
+
+
+
+
+
+ @media (max-width: 600px) {
+    
+    .fix, .res {
+        grid-template-columns: repeat(1, 1fr);
+    
+    }
+        
+
+     }

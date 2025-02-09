@@ -42,7 +42,7 @@ import Team from "./pages/Team";
 import Player from "./pages/Player";
 
 import Competitions from "./pages/Competitions";
-import Competition from "./pages/Competition";
+import Competition from "./pages/competition/Competition";
 
 import Fixtures from "./pages/competition/Fixtures";
 import Fixture from "./pages/competition/match/Fixture";
@@ -57,7 +57,6 @@ import Live from "./pages/competition/match/Live";
 
 
 import Stats from "./pages/competition/Stats";
-import Standing from "./pages/competition/Standing";
 
 
 
@@ -84,10 +83,11 @@ function App() {
         <Route path="/regions" element={<Competitions />}/>
         <Route path="/region/:id" element={<Competition />}/>
 
-              {/*
+   
         <Route path="/competition/:id/fixtures" element={<Fixtures />}/>
-        <Route path="/competition/:id/fixture/:matchId" element={<Fixture />}/>
+        <Route path="/region/:id/fixture/:matchId" element={<Fixture />}/>
 
+           {/*
 
         <Route path="/competition/:id/results" element={<Results />}/>
         <Route path="/competition/:id/result/:matchId" element={<Result />}/>
