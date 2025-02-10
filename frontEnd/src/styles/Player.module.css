@@ -21,7 +21,7 @@
 
 .top {
     border: 1px #ffffff solid;
-    border-width: 1px 0 ;
+    border-width: 0 0 1px 0 ;
 
 }
 
@@ -106,9 +106,9 @@
     
     
     
-    .img {
-        width: 200px;
+    .head .img {
         display: block;
+        text-align: center;
         justify-content: center;
     
         margin: auto ;

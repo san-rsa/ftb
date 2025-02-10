@@ -11,9 +11,8 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 const TeamList = ({logo, name, link}) => {
 
     return (
-        <Link to={"/team/" + link} >
+        <Link to={"/team/" + link} className={Style.listT}>
 
-        <div className={Style.listT} >
 
         <div className={Style.img}>
                 {/* <img src={info?.imgUrl} alt=""/> */}
@@ -27,9 +26,6 @@ const TeamList = ({logo, name, link}) => {
             <h4 >  {name}  </h4>
         </div>    
         
-
-
-        </div>
 
         </Link>
         

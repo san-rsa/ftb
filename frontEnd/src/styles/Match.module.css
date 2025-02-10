@@ -25,6 +25,13 @@
     width: 100%;
 }
 
+.list {
+    display: none;
+    text-align: center;
+    border: 1px #ffffff solid;
+    border-width: 1px 0 ;
+}
+
 
 /* team */
 
@@ -45,7 +52,25 @@
 
 
 .matchday {
-    
+
+}
+
+
+
+/* starting xi */
+
+.lineup {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+}
+
+.lineup h3 {
+    margin: 10px;
+}
+
+.starting_lineup span {
+    display: none;
 }
 
 
@@ -65,10 +90,21 @@
  
  
  @media (max-width: 650px) {
+
+
+    .list {
+        display: block;
+    }
+
+    .starting_lineup span {
+        display: inline;
+    }
+
+
    
 
-    .allregions {
-        grid-template-columns: repeat(2, 1fr);
+    .lineup {
+        grid-template-columns: repeat(1, 1fr);
     }
     
      

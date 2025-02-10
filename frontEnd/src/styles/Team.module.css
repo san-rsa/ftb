@@ -17,12 +17,12 @@
 
 .top {
     border: 1px #ffffff solid;
-    border-width: 1px 0 ;
+    border-width: 0 0 1px 0 ;
 
 }
 
 
-.img {
+.top .img {
     width: 200px;
     justify-content: center;
 
@@ -45,7 +45,7 @@
 
 .list {
     text-align: left;
-    margin: auto;
+    margin: auto 10px;
     display: block;
 
 
@@ -117,19 +117,20 @@
 
 .otherTeams {
     display: block;
+    margin: 10px;
 }
 
-.listT *{
-    display: inline;
-}
 
 .listT {
     margin-bottom: 5px;
+    display: inline-flex;
 }
+
+
 
 .listT img {
     width: 20px;
-    margin-right: 1px;
+    margin-right: 5px;
 
 }
 
@@ -241,6 +242,13 @@
 
 
 
+@media (max-width: 900px) {
+    .fix, .res, .squads {
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+}
+
 
 
 
@@ -251,6 +259,7 @@
 
     .head {
         display: block;
+        padding: 40px 0;
     }
     .name {
         display: block;
@@ -258,15 +267,33 @@
         margin: auto ;
     }
     
-    
-    
-    .img {
+    .top .img {
         width: 200px;
         display: block;
         justify-content: center;
     
         margin: auto ;
     }
+    .list {
+        font-size: small;
+    }
+
+    .list li {
+        margin: 5px;
+        padding: 0;
+    }
+
+    .listS .img {
+        margin: auto 3px auto 0;
+    }
+
+    .listS .name {
+        margin: auto 2px;
+    }
+    
+    
+    
+
 
 
     .layout {
@@ -281,3 +308,11 @@
         margin: 10px;
     }
  }
+
+
+ @media (max-width: 610px) {
+    .fix, .res, .squads {
+        grid-template-columns: repeat(1, 1fr);
+
+    }
+}

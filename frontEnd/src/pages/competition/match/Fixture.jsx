@@ -8,20 +8,23 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Footer from "../../../components/sub component/Footer";
 import { CompetitionFixtures, CompetitionNews, CompetitionResults, CompetitionTable } from "../../../components/sub component/Competitionview";
 import { MatchCompetition, MatchTeam, MatchTime } from "../../../components/sub component/list/Matchlist";
+import { TeamSquadList } from "../../../components/sub component/list/Teamviewlist";
+import { LineUp } from "../../../components/sub component/Matchview";
 
 
 
 
-const Fixture = ({}) => {
-    const [mode, setInputs] = useState({home: true, away: false, });
+const Fixture  =  ({})  =>  {
+    const [mode, setInputs] = useState({home: true, away: true, });
 
     const [data, setData] = useState({})
+    const [data2, setData2] = useState([])
     const [wishlist, setwish] = useState()
     const [set, setset] = useState('')
     const [priced, setpriced] = useState(Number())
-    const [width, setwidth] = useState(Number)
     const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight,});
 
+    var width = window.innerWidth
     
     const title = useParams().id
 
@@ -32,6 +35,13 @@ const Fixture = ({}) => {
             fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
             .then((res) =>  res.json())
             .then((data) => setData(data));
+        }, []);
+
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+            .then((res) =>  res.json())
+            .then((data) => setData2(data.data));
         }, []);
 
 
@@ -82,16 +92,27 @@ const Fixture = ({}) => {
                 return () => {
                   window.removeEventListener('resize', handleResize);
                 };
-              }, []);
+              }, [width]);
+
+
+
+
+
+
           
               function widths() {
-                if (screenSize.width <= 900) {
-                  setwidth(2)
-                } else if (screenSize.width <= 700) {
-                  setwidth(1)
+                if (screenSize.width <= 650) {
+
+
+                    setInputs({home: true, away: false, });
+
+
                 } else {
-                  setwidth(4)
+                    setInputs({home: true, away: true, });
+
                 }
+
+
               }
             
           
@@ -206,7 +227,20 @@ const Fixture = ({}) => {
 
          <div className={Style.section} >
 
-            <div className={Style.lineup} >
+
+            <div className={Style.events} >
+
+                <h2 > Timeline</h2>
+
+                <div className={Style.timeline}>
+
+                    
+                </div>
+
+
+            </div>
+
+            <div className={Style.lineups} >
                 <h2> Line-ups </h2>
 
 
@@ -222,14 +256,41 @@ const Fixture = ({}) => {
                    </div>
 
 
-                <div className={Style.home} >
-
-                </div>
+                   <div className={Style.lineup} >
 
 
-                <div className={Style.away} >
 
-                </div>
+
+                    { mode.home &&                   
+                    
+                    <div className={Style.home} >
+
+                        <LineUp data={data2} type={"Starting"} team={"Home"} />
+
+                        <LineUp data={data2} type={"Sub"} team={"Home"} />
+
+
+                    </div> }
+
+
+
+
+
+                   { mode.away && 
+                                       <div className={Style.away} >
+
+                        <LineUp data={data2} type={"Starting"} team={"Away"}/>
+
+                        <LineUp data={data2} type={"Sub"} team={"Away"} />
+
+
+                        </div>
+
+                   }
+
+
+
+                   </div>
 
 
 

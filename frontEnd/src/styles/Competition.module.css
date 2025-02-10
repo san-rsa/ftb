@@ -78,7 +78,7 @@
      
 .top {
     border: 1px #ffffff solid;
-    border-width: 1px 0 ;
+    border-width: 0 0 1px 0 ;
 
 }
 
@@ -210,6 +210,7 @@
 
     .head {
         display: block;
+        padding: 50px 0;
     }
     .name {
         display: block;
