@@ -179,6 +179,12 @@
     width: 90%;
 }
 
+.teamRes button, .teamFix button {
+    text-align: center;
+    display: flex;
+    margin: auto;
+}
+
 
 /* team news */
 

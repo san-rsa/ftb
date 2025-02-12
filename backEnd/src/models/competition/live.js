@@ -51,6 +51,21 @@ const schema = new mongoose.Schema({
 
                 motm: {type: mongoose.Schema.Types.ObjectId, ref: "Player"},
 
+                timelines: [{
+                    time: {type: String}, 
+                    player: {
+                        main: {type: mongoose.Schema.Types.ObjectId, ref: "Player"},
+                        assist: {type: mongoose.Schema.Types.ObjectId, ref: "Player"},
+                    },
+
+                    event: {type: String,  enum: [ 'goal', 'red', "yellow", "sub", ],  },
+
+                    team: {type: String,  enum: [ 'home', 'away'],  },
+                
+
+
+                }], 
+
                 timeline: {
                   
                         goal: {

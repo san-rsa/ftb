@@ -7,7 +7,7 @@ import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Footer from "../../../components/sub component/Footer";
 import { CompetitionFixtures, CompetitionNews, CompetitionResults, CompetitionTable } from "../../../components/sub component/Competitionview";
-import { MatchCompetition, MatchTeam, MatchTime } from "../../../components/sub component/list/Matchlist";
+import { MatchCompetition, MatchEventAway, MatchEventHome, MatchTeam, MatchTime } from "../../../components/sub component/list/Matchlist";
 import { TeamSquadList } from "../../../components/sub component/list/Teamviewlist";
 import { LineUp } from "../../../components/sub component/Matchview";
 
@@ -234,7 +234,9 @@ const Fixture  =  ({})  =>  {
 
                 <div className={Style.timeline}>
 
-                    
+                    <MatchEventHome name={"eeegg"} assist={"tttyjkkk yyyyrrr"} />
+                    <MatchEventAway name={"eeegg"} assist={"tttyjkkk yyyyrrr"} />
+
                 </div>
 
 

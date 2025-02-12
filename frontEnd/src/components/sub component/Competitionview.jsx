@@ -120,7 +120,13 @@ const CompetitionFixtures = ({}) => {
     
 
     
+    const [showAll, setShowAll] = useState(false);
 
+    function handleClick() {
+      setShowAll(prevShowAll => !prevShowAll);
+    }
+  
+      const show = showAll ? fixtures : fixtures.slice(0, 5);
 
     
     const title = useParams().id
@@ -149,7 +155,7 @@ const CompetitionFixtures = ({}) => {
 
                     <div className={Style.fix} >
 
-                    {fixtures.slice(0, 3).map((project) => (
+                    {show.map((project) => (
 
                                         
         <div className={Style.fixture}>
@@ -204,6 +210,9 @@ const CompetitionFixtures = ({}) => {
 
                 </div> */}
 
+                    <button  onClick={handleClick}> {showAll ? "Showless" : "showAll" } </button>
+
+
 
 
 
@@ -218,7 +227,8 @@ const CompetitionFixtures = ({}) => {
 
 const CompetitionResults = ({}) => {
     
-    const [fixtures, setfixtures] = useState([])
+    const [results, setresult] = useState([])
+    
     const [otherTeams, setotherTeams] = useState([])
     const [stand, setStand] = useState([])
     const [data, setData] = useState({})
@@ -227,7 +237,14 @@ const CompetitionResults = ({}) => {
 
     
 
-    
+    const [showAll, setShowAll] = useState(false);
+
+  function handleClick() {
+    setShowAll(prevShowAll => !prevShowAll);
+  }
+
+    const show = showAll ? results : results.slice(0, 5);
+
 
 
     
@@ -239,7 +256,7 @@ const CompetitionResults = ({}) => {
         useEffect(() => {
             fetch(process.env.REACT_APP_API_LINK + "getall/news")
             .then((res) =>  res.json())
-            .then((data) => setfixtures(data.data));
+            .then((data) => setresult(data.data));
         }, []);
 
 
@@ -257,9 +274,9 @@ const CompetitionResults = ({}) => {
 
                     <div className={Style.res} >
 
-                    {fixtures.slice(0, 3).map((project) => (
+                    {show.map((project) => (
 
-                                        
+
         <div className={Style.result}>
 
             <Result 
@@ -276,16 +293,7 @@ const CompetitionResults = ({}) => {
 
 
 
-                Hname={'kkkkk'}
-                Hlogo={'00'}
-                Hscore={3}
-
-                date={'2/22/22'}
-                time={'4pm'}
-
-                Ascore={2}
-                Alogo={1}
-                Aname={'dddd'}
+                Hname={'kkkkk'} Hlogo={'00'} Hscore={3} date={'2/22/22'} time={'4pm'} Ascore={2} Alogo={1} Aname={'dddd'}
 
             />  
 
@@ -300,6 +308,12 @@ const CompetitionResults = ({}) => {
 
                     )   )   }
                     </div>
+
+
+
+
+                    
+                        <button  onClick={handleClick}> {showAll ? "Showless" : "showAll" } </button>
                     
 
 

@@ -7,25 +7,6 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 
 
-const Topic = ({head, id, link}) => {
-
-    const newsLink =link?.replaceAll(' ','-')
-
-    return (
-       <Link to={"/news/" + newsLink}>
-
-         <div className={Style.topics}>
-            <h4> {head}  </h4>
-        </div>
-
-       </Link>
-
-    )
-}
-
-
-
-
 const MatchTeam = ({logo, name, }) => {
 
 
@@ -151,4 +132,109 @@ const Mininews3 = ({img, head,link, id}) => {
 }
 
 
-export {Topic, MatchCompetition, MatchTeam, MatchTime, Mininews3}
+
+
+
+
+
+const MatchEventHome = ({img, name, assist, time,}) => {
+
+    return (
+
+
+        <div className={Style.eventH} >
+
+
+        <div className={Style.listS}>
+
+
+            <div className={Style.player}>
+                <p className={Style.main}> {name} </p>
+
+                <p className={Style.assist} > {assist} </p>
+            </div>
+
+
+
+
+        <div className={Style.img}>
+                {/* <img src={info?.imgUrl} alt=""/> */}
+                <img src={img} />
+
+        </div>
+                
+
+            
+        <div className={Style.stime} >
+                <h3 > {time} 2 </h3>
+            </div>
+        </div>            
+        
+        <div className={Style.time} >
+                <h3 > {time} 2 </h3>
+            </div>
+
+            {/* <h1 className={Style.time} > {time} 2 </h1> */}
+
+            
+        </div>
+
+        
+
+    )
+}
+
+
+
+const MatchEventAway = ({img, name, assist, time,}) => {
+
+    return (
+
+
+        <div className={Style.eventA} >
+
+        <div className={Style.time} >
+                <h3 > {time} 2 </h3>
+            </div>
+
+
+        <div className={Style.listS}>
+
+
+
+        <div className={Style.stime} >
+                <h3 > {time} 2 </h3>
+            </div>
+
+
+        <div className={Style.img}>
+                {/* <img src={info?.imgUrl} alt=""/> */}
+                <img src={img} />
+
+        </div>
+
+            <div className={Style.player}>
+                <p className={Style.main}> {name} </p>
+
+                <p className={Style.assist} > {assist} </p>
+            </div>
+
+
+
+
+
+                
+
+            
+
+        </div>            
+            
+        </div>
+
+        
+
+    )
+}
+
+
+export {MatchCompetition, MatchTeam, MatchTime, MatchEventHome, MatchEventAway}

@@ -50,10 +50,108 @@
 }
 
 
+/* event */
 
-.matchday {
+.timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.eventH  {
+    display: grid;
+    grid-template-areas: "home timeline away";
+    text-align: right;
+    grid-template-columns: 18rem 2rem 18rem;
 
 }
+
+
+.eventA {
+    display: grid;
+    grid-template-areas: "home timeline away";
+    text-align: left;
+    grid-template-columns: 18rem 2rem 18rem;
+
+}
+
+
+.eventH .listS, .eventH .time, .eventA .listS, .eventA .time {
+    display: flex;
+}
+
+.eventH .listS {
+    grid-area: home;
+}
+
+.eventH .time, .eventA .time {
+    grid-area: timeline;
+}
+
+.eventA .listS {
+    grid-area: away;
+}
+
+
+
+.eventH .time, .eventA .time {
+    justify-items: center;
+}
+
+
+
+.eventH .time h3, .eventA .time h3 {
+    margin: auto;
+}
+
+.eventH .listS {
+    text-align: end;
+    justify-content: end;
+}
+
+.eventA .listS {
+    text-align: start;
+    justify-content: start;
+}
+
+
+
+
+.listS img, .listS .img {
+    width: 40px;
+    margin: auto 5px;    
+}
+
+
+.stime {
+    display: none;
+}
+
+
+
+.listS {
+    text-align: left;
+    display: inline-flex;
+    background-color: rgb(35, 51, 46);
+    padding: 10px 5px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+
+.main {
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.assist {
+    font-size: smaller;
+    font-weight: lighter;
+}
+
+
+
 
 
 
@@ -72,18 +170,6 @@
 .starting_lineup span {
     display: none;
 }
-
-
-
-@media (max-width: 850px) {
-   
-
-.allregions {
-    grid-template-columns: repeat(3, 1fr);
-}
-
- 
- }
  
  
  
@@ -105,6 +191,39 @@
 
     .lineup {
         grid-template-columns: repeat(1, 1fr);
+    }
+
+
+
+    /* event */
+
+    .eventH {
+        display: flex;
+        align-self: flex-start;
+    }
+
+    .eventA {
+        display: flex;
+        align-self: flex-end;
+    }
+
+    .eventH .time, .eventA .time {
+        display: none;
+    }
+
+    .stime {
+        display: block;
+        margin: auto;
+    }
+
+    .eventH .listS {
+        flex-direction: row-reverse;
+        text-align: left;
+    }
+
+    .eventA .listS {
+        flex-direction: row-reverse;
+        text-align: right;
     }
     
      
