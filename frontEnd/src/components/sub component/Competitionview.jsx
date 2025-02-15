@@ -15,21 +15,11 @@ import { TeamList, TeamSquadList } from "./list/Teamviewlist";
 
 
 
-const CompetitionNews = ({}) => {
+const CompetitionNews = ({regionId}) => {
     
     const [news, setnews] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
-
-    
-
-    
 
 
-    
     const title = useParams().id
 
     const link =title.replaceAll('-',' ')
@@ -108,16 +98,10 @@ const CompetitionNews = ({}) => {
 
 
 
-const CompetitionFixtures = ({}) => {
+const CompetitionFixtures = ({regionId}) => {
     
-    const [fixtures, setfixtures] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
-
-    
+    const [data, setData] = useState([])
+    const year = 2023 // new Date(2022).getFullYear()
 
     
     const [showAll, setShowAll] = useState(false);
@@ -126,23 +110,21 @@ const CompetitionFixtures = ({}) => {
       setShowAll(prevShowAll => !prevShowAll);
     }
   
-      const show = showAll ? fixtures : fixtures.slice(0, 5);
 
     
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
 
     
+
+
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+            fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/fixtures/" + year)
             .then((res) =>  res.json())
-            .then((data) => setfixtures(data.data));
+            .then((data) => setData(data.data));
         }, []);
 
-
     
 
+      const show = showAll ? data.fixture : data.fixture?.slice(0, 1);
 
 
 
@@ -153,39 +135,49 @@ const CompetitionFixtures = ({}) => {
 
 
 
-                    <div className={Style.fix} >
 
-                    {show.map((project) => (
+                    {show?.map((p) => (
 
                                         
         <div className={Style.fixture}>
 
-            <Fixture 
-                // Hname={props.home?.name}
-                // Hlogo={props.home?.logo[0].url}
-                // Hscore={props.home.homeScore}
-
-                // date={props.time.date}
-                // time={props.time.time}
-
-                // Ascore={props.away.awayScore}
-                // Alogo={props.away?.logo[0].url}
-                // Aname={props.away?.name}
+            <h3 > matchday: {p.matchday} </h3>
 
 
+                    <div className={Style.fix} >
 
-                Hname={'kkkkk'}
-                Hlogo={'00'}
-                Hscore={3}
 
-                date={'2/22/22'}
-                time={'4pm'}
+                        {p.teams.map((props) => (
 
-                Ascore={2}
-                Alogo={1}
-                Aname={'dddd'}
+                            <Fixture 
+                             Hname={props.home?.name}
+                             Hlogo={props.home?.logo[0].url}
+                             Hscore={props.home?.homeScore}
 
-            />  
+                             date={props.day?.date} time={props.day?.time}
+
+                             Ascore={props.away?.awayScore}
+                             Alogo={props.away?.logo[0].url}
+                             Aname={props.away?.name}
+
+                            live={props?.live} start={props?.start} 
+                            half={props?.half} minutes={props?.time.now}
+
+
+                            _id={props._id}
+                            regionId={data.competition}
+
+
+
+
+
+                            />  
+
+
+
+                        )
+                        ) }
+                    </div>
 
 
 
@@ -197,7 +189,6 @@ const CompetitionFixtures = ({}) => {
 
 
                     )   )   }
-                    </div>
                     
 
 
@@ -225,15 +216,10 @@ const CompetitionFixtures = ({}) => {
 
 
 
-const CompetitionResults = ({}) => {
+const CompetitionResults = ({regionId}) => {
     
-    const [results, setresult] = useState([])
-    
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
+    const [data, setData] = useState([])
+    const year = 2023 // new Date(2022).getFullYear()
 
     
 
@@ -243,21 +229,15 @@ const CompetitionResults = ({}) => {
     setShowAll(prevShowAll => !prevShowAll);
   }
 
-    const show = showAll ? results : results.slice(0, 5);
-
+  const show = showAll ? data.fixture : data.fixture?.slice(0, 1);
 
 
     
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
-
-    
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
-            .then((res) =>  res.json())
-            .then((data) => setresult(data.data));
-        }, []);
+    useEffect(() => {
+        fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/fixtures/" + year)
+        .then((res) =>  res.json())
+        .then((data) => setData(data.data));
+    }, []);
 
 
     
@@ -271,31 +251,47 @@ const CompetitionResults = ({}) => {
             <h2 > Latest Results </h2>
 
 
-
-                    <div className={Style.res} >
-
-                    {show.map((project) => (
+                    {show?.map((p) => (
 
 
         <div className={Style.result}>
-
-            <Result 
-                // Hname={props.home?.name}
-                // Hlogo={props.home?.logo[0].url}
-                // Hscore={props.home.homeScore}
-
-                // date={props.time.date}
-                // time={props.time.time}
-
-                // Ascore={props.away.awayScore}
-                // Alogo={props.away?.logo[0].url}
-                // Aname={props.away?.name}
+             <h3 > matchday: {p.matchday} </h3>
 
 
 
-                Hname={'kkkkk'} Hlogo={'00'} Hscore={3} date={'2/22/22'} time={'4pm'} Ascore={2} Alogo={1} Aname={'dddd'}
+                    <div className={Style.res} >
 
-            />  
+
+                {p.teams.map((props) => (
+
+                <Result 
+                Hname={props.home?.name}
+                Hlogo={props.home?.logo[0].url}
+                Hscore={props.home?.homeScore}
+
+                date={props.day?.date} time={props.day?.time}
+
+                Ascore={props.away?.awayScore}
+                Alogo={props.away?.logo[0].url}
+                Aname={props.away?.name}
+
+                live={props?.live} start={props?.start} 
+                half={props?.half} minutes={props?.time.now}
+
+
+                _id={props._id}
+                regionId={data.competition}
+
+
+
+
+
+                />  
+
+
+
+                )
+                ) }
 
 
 
@@ -305,9 +301,9 @@ const CompetitionResults = ({}) => {
 
                         </div>
 
-
+       </div>
                     )   )   }
-                    </div>
+             
 
 
 
@@ -329,7 +325,7 @@ const CompetitionResults = ({}) => {
 
 
 
-const CompetitionTable = ({id}) => {
+const CompetitionTable = ({regionId}) => {
     
     const [data, setData] = useState([])
 
@@ -338,7 +334,7 @@ const CompetitionTable = ({id}) => {
 
 
     // useEffect(() => {
-    //     fetch(process.env.REACT_APP_API_LINK + "getall/" + id + "/standing/" + year)
+    //     fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/standing/" + year)
     //     .then((res) =>  res.json())
     //     .then((data) => setData(data.data));
     // }, []);

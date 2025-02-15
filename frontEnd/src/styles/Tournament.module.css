@@ -185,6 +185,17 @@ time {
 }
 
 
+.comp {
+    width: 10px;
+    display: inline-flex;
+    height: 10px;
+}
+
+.comp img {
+    width: 10px;
+    height: 10px;
+}
+
 
 /* result */
 
@@ -193,6 +204,14 @@ time {
     padding: 5px 15px;
     background-color: rgb(10, 92, 92);
     display: flex;
+}
+
+.teams .scoreboard {
+    display: block;
+}
+
+.scoreboard p {
+    font-size: x-small;
 }
 
 .results:hover {

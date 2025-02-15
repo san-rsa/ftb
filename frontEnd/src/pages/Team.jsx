@@ -16,12 +16,6 @@ const Team = ({}) => {
     const [mode, setInputs] = useState({overview: true, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false });
 
     const [data, setData] = useState({})
-    const [wishlist, setwish] = useState()
-    const [set, setset] = useState('')
-    const [priced, setpriced] = useState(Number())
-
-
-
 
     
     const title = useParams().id
@@ -32,17 +26,10 @@ const Team = ({}) => {
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
+            fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + link)
             .then((res) =>  res.json())
             .then((data) => setData(data));
         }, []);
-
-
-        console.log(process.env.REACT_APP_API_LINK);
-        
-
-
-        console.log(data);
 
 
 
@@ -144,14 +131,13 @@ const Team = ({}) => {
 
                             <div className={Style.img}>
                                     {/* <img src={info?.imgUrl} alt=""/> */}
-                                    <img src={data.imgUrl?.url}/>
-
+                                {data.logo && <img src={data.logo[0]?.url}/>       }
                             </div>
                                     
 
                                 
                             <div className={Style.name}>
-                                <h1 > <span > {data.head} </span> </h1>
+                                <h1 > <span > {data.name} </span> </h1>
                             </div>    
                                      
                   

@@ -71,16 +71,15 @@ const Nav = () => {
                        <h3 id={Style.navh1}> Regions</h3>
                        </Link>
           
-                       <Link to={"/"}>
-                       {/* <img src={require("../../logo.png")} /> */}
+                                         {/*  <Link to={"/"}>
                        <h3 id={Style.navh1}> Matches </h3>
                        </Link>
+                        */}
 
-                       <Link to={"/"}>
-                       {/* <img src={require("../../logo.png")} /> */}
+                       {/*   <Link to={"/"}>
                        <h3 id={Style.navh1}> Teams </h3>
                        </Link>
-          
+                      */}
                        
                        </div>
 
@@ -93,15 +92,13 @@ const Nav = () => {
                        <h3 id={Style.navh1}> Regions</h3>
                        </Link>
           
-                       <Link to={"/"}>
-                       {/* <img src={require("../../logo.png")} /> */}
+                       {/* <Link to={"/"}>
                        <h3 id={Style.navh1}> Matches </h3>
                        </Link>
 
                        <Link to={"/"}>
-                       {/* <img src={require("../../logo.png")} /> */}
                        <h3 id={Style.navh1}> Teams </h3>
-                       </Link>
+                       </Link> */}
           
                        
                        </div>

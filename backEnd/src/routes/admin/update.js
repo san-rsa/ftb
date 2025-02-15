@@ -8,7 +8,7 @@ const jwt= require('jsonwebtoken')
 //const OTP = require('../../models/OTP')
 // const Product = require('../models/product')
 // const Product = require('../models/product')
- const {auth, role, uploadMiddleware, deleteFixture, updateStanding, updateCupStanding, secondHalf, extraTimeFirstHalf, extraTimeSecondHalf} = require('../../middleware/mid')
+ const {auth, role, uploadMiddleware, deleteFixture, updateStanding, updateCupStanding, secondHalf, extraTimeFirstHalf, extraTimeSecondHalf, firstHalf} = require('../../middleware/mid')
  // const cloudinary = require("cloudinary");
 const cloudinary = require('../../connection/cloudinary')
 const News = require('../../models/news/news')
@@ -35,7 +35,16 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
     const data = req.body  //JSON.parse(req.body.data)
 
     try {
-        const { matchday, homeStartingLineup, awayStartingLineup, homeSubLineup, awaySubLineup, }= data
+        const {
+            matchday, homeStartingLineup, awayStartingLineup, homeSubLineup, awaySubLineup,
+            extraTime, start, end,
+
+            main, assist, action, team, 
+
+            motm
+
+
+         }= data
         const {id, competition} = req.params
 
         
@@ -45,6 +54,9 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
             starting: { home: homeStartingLineup, away: awayStartingLineup  },
             sub: { home: homeSubLineup, away: awaySubLineup }
         }
+
+
+
 
 
 
@@ -71,9 +83,20 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
                             
                             const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
                             const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == id);
-        
-                                    
-            
+                            const Foundtime = existing.fixture[Foundmatchday].teams[Foundmatch].time.now;
+
+
+
+
+                            const timeline = {
+                                time: Foundtime, player: { main: main, assist: assist, },
+                                action: action, team: team, 
+                            }
+
+
+
+
+
                         if (Foundmatchday == -1) {
                             
                             return  res.status(400).json({
@@ -90,13 +113,55 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
                                 mgs: "match not found ",
           
                             })  }
+
+
+                            if (extraTime) {
+                                existing.fixture[Foundmatchday].teams[Foundmatch].time.first + extraTime
+                                existing.fixture[Foundmatchday].teams[Foundmatch].time.second + extraTime
+                                existing.fixture[Foundmatchday].teams[Foundmatch].time.firstET + extraTime
+                                existing.fixture[Foundmatchday].teams[Foundmatch].time.secondET + extraTime
+
+                            }
+
+
+
+                            if (start == "firstHalf") {
+                                firstHalf(existing._id, _id, matchday)
+                            }
+                            else if (start == "secondhalf") {
+
+                                secondHalf(existing._id, _id, matchday)
+
+                            }
+
+                            else if (start == "exratime") {
+                                extraTimeFirstHalf(existing._id, _id, matchday)
+
+                            } else if (start == "secondhalfextratime") {
+                                extraTimeSecondHalf(existing._id, _id, matchday)
+
+                            }
         
         
                         else if (Foundmatch !== -1 ) {
 
-                            await Fixture.findOneAndUpdate({_id: competition}, 
+
+                            if (action && main && team ) {
+                                await Fixture.findOneAndUpdate({_id: competition}, 
+                                    { 
+                                      "$push": {"fixture.$[day].teams.$[match]": {timeline: timeline,  }} 
+                                    },
+                                    { 
+                                      "arrayFilters": [
+                                        { "day.matchday": matchday },
+                                        {"match._id": id}
+    
+                                      ]
+                                    })   
+                            } else {
+                                await Fixture.findOneAndUpdate({_id: competition}, 
                                 { 
-                                  "$set": {"fixture.$[day].teams.$[match]": {$set: data, lineup: lineup }} 
+                                  "$set": {"fixture.$[day].teams.$[match]": {$set: data, lineup: lineup, motm }} 
                                 },
                                 { 
                                   "arrayFilters": [
@@ -104,7 +169,15 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
                                     {"match._id": id}
 
                                   ]
-                                })
+                                })   
+                            }
+
+
+
+
+
+
+
                            }}          
              
                     }      
@@ -127,181 +200,6 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
 
 })
 
-
-
-router.patch('/:competition/live/:id',  async (req, res)=> {
-
-    const data = req.body  //JSON.parse(req.body.data)
-
-    try {
-        const { matchday, extraTime, start,
-                homeGoal, awayGoal, homeAssist, awayAssist,
-                homeYellow, awayYellow, homeRed, awayRed,
-                homeSubIn, awaySubIn, homeSubOut, awaySubOut,
-                motm
-            
-            }= data
-        const {id, competition} = req.params
-
-
-
-
-        console.log(data)
-
-
-
-
-		if (!id || !competition ) {
-			return res.status(403).json({success: false,
-                message: "All Fields are required",
-});
-		}
-
-
-     
-                const existing = await Live.findOne({_id: competition})
-
-                    
-               
-            
-                    if (existing) {
-
-
-                        
-                        //---- Check if index exists ----
-        
-                            
-                            const Foundmatchday = existing.live.findIndex(item => item.matchday == matchday);
-                            const Foundmatch = existing.live[Foundmatchday].teams.findIndex(item => item._id == id);
-        
-                            const Foundtime = existing.live[Foundmatchday].teams[Foundmatch].time.now;
-
-                                    
-                            const timeline = {
-          
-                                goal: {
-                                    home: {time: Foundtime, player: homeGoal},
-                                    away: {time: Foundtime, player: awayGoal}
-                                },
-                
-                                assist: {
-                                    home: {time: Foundtime, player: homeAssist},
-                                    away: {time: Foundtime, player: awayAssist}
-                                },
-                
-                
-                                yellow: {
-                                    home: {time: Foundtime, player: homeYellow},
-                                    away: {time: Foundtime, player: awayYellow}
-                                },
-                
-                                red: {
-                                    home: {time: Foundtime, player: homeRed},
-                                    away: {time: Foundtime, player: awayRed}
-                                },
-                
-                                sub: {
-                
-                                    home: {time: Foundtime, in: homeSubIn, out: homeSubOut },
-                                    away: {time:Foundtime, in: awaySubIn, out: awaySubOut }
-                             
-                                },
-                
-                        
-                            }
-            
-                        if (Foundmatchday == -1) {
-                            
-                            return  res.status(400).json({
-                                type: "failed",
-                                mgs: "matchday not found ",
-          
-                            })
-                        }
-        
-                        if (Foundmatchday !== -1) {
-                           if (Foundmatch == -1) {
-                            return  res.status(400).json({
-                                type: "failed",
-                                mgs: "match not found ",
-          
-                            })  }
-
-
-
-
-
-                            if (extraTime) {
-                                existing.live[Foundmatchday].teams[Foundmatch].time.first + extraTime
-                                existing.live[Foundmatchday].teams[Foundmatch].time.second + extraTime
-
-                            }
-
-                            if (start == "secondhalf") {
-
-                                secondHalf(existing._id, _id, matchday)
-
-                            }
-
-                            else if (start == "exratime") {
-                                extraTimeFirstHalf(existing._id, _id, matchday)
-
-                            } else if (start == "secondhalfextratime") {
-                                extraTimeSecondHalf(existing._id, _id, matchday)
-
-                            }
-
-
-
-                            
-        
-        
-                        if (Foundmatch !== -1 ) {
-
-                            await Live.findOneAndUpdate({_id: competition}, 
-                                { 
-                                  "$set": {"live.$[day].teams.$[match]": {$set: data, timeline, motm}} 
-                                },
-                                { 
-                                  "arrayFilters": [
-                                    { "day.matchday": matchday },
-                                    {"match._id": id}
-
-                                  ]
-                                })
-                           }}
-                                
-             
-                             }      
-        
-        
-        
-        
-                        const save = await existing.save();
-                       return  res.status(200).json({
-                            type: "success",
-                            mgs: "Process successful",
-                            data: save
-                        })
-        
-        
-        
-                        
-                
-                    //------------ This creates a new cart and then adds the item to the cart that has been created------------
-            
-
-
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({
-            success: false,
-            message : "registration failed"
-        })
-       
-   }  
-
-})
 
 
 

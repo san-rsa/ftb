@@ -13,38 +13,27 @@ import { CompetitionFixtures, CompetitionNews, CompetitionResults, CompetitionTa
 
 
 
-const Competition = ({}) => {
+const Competition = ({})  => {
     const [mode, setInputs] = useState({news: true, fixtures: false, results: false, table: false, transfer: false, official: false });
 
     const [data, setData] = useState({})
-    const [wishlist, setwish] = useState()
-    const [set, setset] = useState('')
-    const [priced, setpriced] = useState(Number())
+  
 
 
     
     const title = useParams().id
 
-    const link =title?.replaceAll('-',' ');
+    const link = title?.replaceAll('-',' ');
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
+            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + link)
             .then((res) =>  res.json())
             .then((data) => setData(data));
         }, []);
 
 
-        console.log(process.env.REACT_APP_API_LINK);
         
-
-
-        console.log(data);
-
-
-
-
-
 
         const handleChange = (event) => {
             const name = event.target.innerHTML.toLowerCase();
@@ -54,71 +43,6 @@ const Competition = ({}) => {
             
             setInputs(values => ({...values, [name]: true}))
           }
-        
-          console.log(mode);
-    
-    
-    
-
-         
-        
-
-        // useEffect(() => {
-        //     fetch(process.env.REACT_APP_API_LINK  + "getall/product")
-        //     .then((res) =>  res.json())
-        //     .then((data) => setproduct(data.data));
-        // }, []);
-    
- 
-
-    //  useEffect(() => {
-    //     fetch(process.env.REACT_APP_API_LINK  + "getone/wishlist/" + link, {
-    //         credentials: "include",
-    //         headers: { "Content-type": "application/json; charset=UTF-8", },
-    //     }).then((res) =>  res.json())
-    //     .then((data) =>  {
-    //         if (data.data == "true") {
-    //             setwish(faX)
-    //             setset("active")
-    //         } else {
-    //             setwish(faHeart)
-    //             setset("false")
-    //         }
-    //     } );
-    // }, []);
-    //      function wish(e) {
-    //         e.preventDefault()
-    //         const  mood = wishlist.iconName
-
-
-    //         if (mood == "heart") {
-    //             fetch(process.env.REACT_APP_API_LINK + "add/wishlist", {
-    //             method: "POST",
-    //             credentials: "include",
-    //             headers: {
-    //               "Content-type": "application/json",
-    //             },
-    //             body: JSON.stringify({productId: data._id }),
-    //          }).then((res) =>  res.json())
-    //          .then( ()=> setwish(faX))
-
-
-
-    //         } else {
-    //             fetch(process.env.REACT_APP_API_LINK + "del/wishlist", {
-    //                 method: "DELETE",
-    //                 credentials: "include",
-    //                 headers: {
-    //                   "Content-type": "application/json",
-    //                 },
-    //                 body: JSON.stringify({productId: data._id }),
-    //              }).then((res) =>  res.json())
-    //              .then( ()=> setwish(faHeart))
-    //         }
-
-
-
-    //    }
 
 
 
@@ -131,26 +55,20 @@ const Competition = ({}) => {
 
 
 
-
-
-
-
-
-
                          <div className={Style.top}>
          
                                 <div className={Style.head} >
 
                                 <div className={Style.img}>
                                         {/* <img src={info?.imgUrl} alt=""/> */}
-                                        <img src={data.imgUrl?.url}/>
 
+                                    {data.logo &&  <img src={ data.logo[0]?.url }/>    }
                                 </div>
                                         
 
                                     
                                 <div className={Style.name}>
-                                    <h1 > <span > {data.head} </span> </h1>
+                                    <h1 > <span > {data.name} </span> </h1>
                                 </div>    
                                 
                                 </div>
@@ -185,13 +103,13 @@ const Competition = ({}) => {
 
          <div className={Style.section} >
 
-            { mode.news && <CompetitionNews />}
+            { mode.news && <CompetitionNews regionId={link}/>}
 
-            { mode.fixtures && <CompetitionFixtures />}
+            { mode.fixtures && <CompetitionFixtures regionId={link}/>}
 
-            { mode.results && <CompetitionResults />}
+            { mode.results && <CompetitionResults regionId={link}/>}
 
-            { mode.table && <CompetitionTable />}
+            { mode.table && <CompetitionTable regionId={link}/>}
 
 
 

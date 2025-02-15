@@ -303,9 +303,12 @@
 
 
 
-
 /* team results  */
 
+.score {
+    font-size: xx-large;
+    margin-bottom: 5px;
+}
 
 
 
@@ -341,11 +344,15 @@
 
 
 
- @media (max-width: 600px) {
+ @media (max-width: 400px) {
     
-    .fix, .res {
-        grid-template-columns: repeat(1, 1fr);
-    
+
+    .score {
+        font-size: medium;
+    }
+
+    .matchday, .team, .competition {
+        font-size: x-small;
     }
         
 

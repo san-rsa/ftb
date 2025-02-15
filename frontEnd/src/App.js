@@ -84,14 +84,13 @@ function App() {
         <Route path="/region/:id" element={<Competition />}/>
 
    
-        <Route path="/competition/:id/fixtures" element={<Fixtures />}/>
         <Route path="/region/:id/fixture/:matchId" element={<Fixture />}/>
+        <Route path="/region/:id/result/:matchId" element={<Result />}/>
 
+
+
+        
            {/*
-
-        <Route path="/competition/:id/results" element={<Results />}/>
-        <Route path="/competition/:id/result/:matchId" element={<Result />}/>
-
 
         <Route path="/competition/:id/lives" element={<Lives />}/>
         <Route path="/competition/:id/live/:matchId" element={<Live />}/>

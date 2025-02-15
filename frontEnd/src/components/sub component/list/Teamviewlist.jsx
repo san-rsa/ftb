@@ -8,7 +8,10 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 
 
-const TeamList = ({logo, name, link}) => {
+const TeamList = ({logo, name,}) => {
+
+
+    const link = name.replaceAll(' ','-')
 
     return (
         <Link to={"/team/" + link} className={Style.listT}>
@@ -35,7 +38,9 @@ const TeamList = ({logo, name, link}) => {
 
 
 
-const TeamSquadList = ({img, name, link, number,}) => {
+const TeamSquadList = ({img, name, number,}) => {
+
+    const link = name.replaceAll(' ','-')
 
     return (
         <Link to={"/player/" + link} className={Style.listS}>

@@ -27,7 +27,15 @@ router.get('/banner/:id', auth, async (req, res, next) => {
         try {
             const data = await Banner.findById(req.params.id)
 
-            res.status(200).json(data);
+            if (data) {
+                
+              res.status(200).json(data);
+
+            } else {
+              res.status(404).json("not found");
+
+            }
+
         } catch (error) {
             res.status(500).json(error);
         }
@@ -40,20 +48,36 @@ router.get('/codes-of-conduct/:id', auth, async (req, res, next) => {
       try {
           const data = await Codeofconduct.findById(req.params.id)
 
-          res.status(200).json(data);
+
+          if (data) {
+                
+            res.status(200).json(data);
+
+          } else {
+            res.status(404).json("not found");
+
+          }
+
       } catch (error) {
           res.status(500).json(error);
       }
 })
 
 
-router.get('/competition/:id', async (req, res, next) => {
+router.get('/competition/:id', async (req, res) => {
 
 
       try {
-          const data = await Competition.findById(req.params.id)
+          const data = await Competition.findOne({name: req.params.id})
 
-          res.status(200).json(data);
+          if (data) {
+                
+            res.status(200).json(data);
+
+          } else {
+            res.status(404).json("not found");
+
+          }
       } catch (error) {
           res.status(500).json(error);
       }
@@ -234,8 +258,15 @@ router.get('/news/:id', async (req, res, next) => {
           try {
               const data = await News.findOne({head: req.params.id})
   
-              res.status(200).json(data);
-          } catch (error) {
+              if (data) {
+                
+                res.status(200).json(data);
+  
+              } else {
+                res.status(404).json("not found");
+  
+              }
+             } catch (error) {
               res.status(500).json(error);
           }
 })
@@ -243,12 +274,26 @@ router.get('/news/:id', async (req, res, next) => {
 
 router.get('/player/:id', async(req, res)=> {
 
-        const data = await Player.findOne({id: req.params.id}) //.sort("title")
+
+      
+
+        try {
+         const data = await Player.findOne({id: req.params.id}) //.sort("title")
+
+        if (data) {
+                
+          res.status(200).json(data);
+
+        } else {
+          res.status(404).json("not found");
+
+        }
+        } catch (error) {
+
+            res.status(500).json(error);
+
+          }
         
-             res.status(200).json({
-                success: true,
-               data: data
-              })
 })
 
 
@@ -498,18 +543,33 @@ router.get('/:link/stats/:team/:type/:year', async(req, res)=> {
 })
 
 
-router.get('team/:id', async(req, res, next)=> {
+router.get('/team/:id', async(req, res)=> {
 
-                  const data = await Team.find({name: req.params.id})//.populate("playerId") //.sort("title")
                   
 
-                  console.log(data);
+                  try {
+                    const data = await Team.findOne({name: req.params.id})//.populate("playerId") //.sort("title")
+
+
+                    console.log(data);
+                    
+                    if (data) {
+                
+                      res.status(200).json(data);
+        
+                    } else {
+                      res.status(404).json("not found");
+        
+                    }
+                  } catch (error) {
+                      res.status(500).json(error )
+                  }
                   
-                       res.status(200).json({
-                          success: true,
-                         data: data
-                        })
+
 })
+
+
+
     
 
 
@@ -521,7 +581,15 @@ router.get('/user', auth, async (req, res, next) => {
 
         try {
             const data = await User.findOne( {_id: user} )
-            res.json(data);
+
+            if (data) {
+                
+              res.status(200).json(data);
+
+            } else {
+              res.status(404).json("not found");
+
+            }
         } catch (error) {
             return next(error);
         }

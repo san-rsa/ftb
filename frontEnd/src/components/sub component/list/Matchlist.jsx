@@ -99,34 +99,30 @@ const MatchTime = ({day, time, }) => {
 
 
 
-const Mininews3 = ({img, head,link, id}) => {
-
-    const newsLink =link?.replaceAll(' ','-')
+const MatchScore = ({home, away, time, }) => {
 
     return (
-        <div className={Style.newsm}>
-            <Link to={ "/news/" + newsLink }>
-            <div className={Style.news3}>
+        <div className={Style.matchday}>
 
+
+ 
+            <div className={Style.score} >
+                <h1 > {home} : {away} </h1>
+
+            </div>
 
             
-                <div className={Style.img3} >
-                     <img src={img} />
-                </div>
-
+            <div className={Style.text3} >
                 
-                <div className={Style.text3} >
-                    
-                    <div className={Style.head3}>
-                        <h2 > {head} Premier League Player of the Week: The smiling assassin</h2>
-                    </div>
-
+                <div className={Style.head3}>
+                    <h4 > {time} </h4>
                 </div>
 
+            </div>
 
-                </div>
-            </Link>
-        </div>
+
+            </div>
+  
 
     )
 }
@@ -237,4 +233,4 @@ const MatchEventAway = ({img, name, assist, time,}) => {
 }
 
 
-export {MatchCompetition, MatchTeam, MatchTime, MatchEventHome, MatchEventAway}
+export {MatchCompetition, MatchTeam, MatchTime, MatchScore, MatchEventHome, MatchEventAway}

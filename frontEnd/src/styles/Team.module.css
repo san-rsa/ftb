@@ -80,10 +80,7 @@
 
 /* standing */
 
-.standing  div:first-child {
 
-    justify-items: flex-start;
-}
 
 .standing {
     margin: 10px;

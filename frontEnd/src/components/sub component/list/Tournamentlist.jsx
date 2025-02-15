@@ -45,8 +45,14 @@ const Tablehead = () => {
 const Table = ({pos, w, d, l, pts, name, logo, pl, gd, ga, gs}) => {
 
 
+    const link = name?.replaceAll(' ','-')
+
+
     return (
-        <div className={Style.table}>
+
+        <Link to={"/team/" + link } className={Style.table} >  
+        
+                <div className={Style.table}>
             <div className={Style.standings}>
 
                            
@@ -80,14 +86,19 @@ const Table = ({pos, w, d, l, pts, name, logo, pl, gd, ga, gs}) => {
                     </li>
                  </div>
 
+
+            </div>
+        </div>
+        </Link>
+
+
           
 
 
 
 
 
-     </div>
-        </div>
+ 
 
     )
 }
@@ -98,17 +109,34 @@ const Table = ({pos, w, d, l, pts, name, logo, pl, gd, ga, gs}) => {
 
 
 
-const Fixture = ({Hname, Hlogo, date, time, Alogo, Aname}) => {
+const Fixture = ({Hname, Hscore, Hlogo, date, time, Alogo, Ascore, Aname, _id, live, start, half, minutes, regionId,  }) => {
+
+    
+    const Half = live ? minutes : half ;
+
+
+    const Start = start ? <div className={Style.scoreboard}>
+    <span className={Style.score}>
+        <span className={Style.h}> {Hscore} </span>
+        <span className={Style.div}> - </span>
+        <span className={Style.a}> {Ascore} </span>
+    </span> <p > {Half}</p> </div> : 
+    
+    <time dateTime="">  <span className={Style.date}> {date}  </span> <br/> {time}</time> ;
 
 
     return (
-        <div className={Style.fixtures}>
+
+
+        <Link to={"/region/" + regionId + "/fixture/" + _id} className={Style.fixtures} >
+
             <div className={Style.matchday}>
 
                 {/* <h2> Matchday 3</h2> */}
 
                 <ul  className={Style.list}>
-                
+
+
                     <li className={Style.fixture}>
                         <div className={Style.container} >
                             <span className={Style.teams}>
@@ -118,7 +146,10 @@ const Fixture = ({Hname, Hlogo, date, time, Alogo, Aname}) => {
                                     <span className={Style.logo}> <img src={Hlogo} />  </span>
                                 </span>
 
-                              <time dateTime="">  <span className={Style.date}> {date}  </span> <br/> {time}</time> 
+                              {Start }
+
+
+
 
                                 <span className={Style.away}>
                                     <span className={Style.logo}> <img src={Alogo} />  </span>
@@ -136,7 +167,9 @@ const Fixture = ({Hname, Hlogo, date, time, Alogo, Aname}) => {
 
 
      </div>
-        </div>
+
+        </Link>
+
 
     )
 }
@@ -144,11 +177,18 @@ const Fixture = ({Hname, Hlogo, date, time, Alogo, Aname}) => {
 
 
 
-const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname}) => {
+const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname, _id, regionId, half }) => {
+
 
 
     return (
-        <div className={Style.results}>
+
+        <Link to={"/region/" + regionId + "/result/" + _id} className={Style.results} >
+
+
+
+
+
             <div className={Style.matchday}>
 {/* 
                 <h2> Matchday 3</h2> */}
@@ -163,12 +203,14 @@ const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname}) => {
                                     <span className={Style.name} > {Hname}</span>
                                     <span className={Style.logo}> <img src={Hlogo}  />  </span>
                                 </span>
-
+                                <div className={Style.scoreboard}>
                                 <span className={Style.score}>
                                     <span className={Style.h}> {Hscore} </span>
                                     <span className={Style.div}> - </span>
                                     <span className={Style.a}> {Ascore} </span>
-                                </span>
+                                </span> <p > {half}</p> </div>
+
+
                                 <span className={Style.away}>
                                     <span className={Style.logo}> <img src={Alogo}  />  </span>
                                     <span className={Style.name} > {Aname}</span>
@@ -185,8 +227,9 @@ const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname}) => {
 
 
      </div>
-        </div>
 
+
+        </Link>
     )
 }
 export {Table, Fixture, Result, Tablehead}

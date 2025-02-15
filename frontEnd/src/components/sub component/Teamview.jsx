@@ -396,37 +396,34 @@ const TeamFixtures = ({}) => {
 
                     <div className={Style.fix} >
 
-                    {fixtures.slice(0, 3).map((project) => (
+                    {fixtures.slice(0, 3).map((props) => (
 
                                         
         <div className={Style.fixture}>
 
-            <Fixture 
-                // Hname={props.home?.name}
-                // Hlogo={props.home?.logo[0].url}
-                // Hscore={props.home.homeScore}
+                        <Fixture 
+                             Hname={props.home?.name}
+                             Hlogo={props.home?.logo[0].url}
+                             Hscore={props.home?.homeScore}
 
-                // date={props.time.date}
-                // time={props.time.time}
+                             date={props.day?.date} time={props.day?.time}
 
-                // Ascore={props.away.awayScore}
-                // Alogo={props.away?.logo[0].url}
-                // Aname={props.away?.name}
+                             Ascore={props.away?.awayScore}
+                             Alogo={props.away?.logo[0].url}
+                             Aname={props.away?.name}
+
+                            live={props?.live} start={props?.start} 
+                            half={props?.half} minutes={props?.time?.now}
+
+
+                            _id={props._id}
+                            regionId={data.competition}
 
 
 
-                Hname={'kkkkk'}
-                Hlogo={'00'}
-                Hscore={3}
 
-                date={'2/22/22'}
-                time={'4pm'}
 
-                Ascore={2}
-                Alogo={1}
-                Aname={'dddd'}
-
-            />  
+                            />  
 
 
 
@@ -498,43 +495,39 @@ const TeamResults = ({}) => {
     return (
         <div className={Style.teamRes}>
 
-            <h2 > Next Fixtures </h2>
+            <h2 > Results </h2>
 
 
 
                     <div className={Style.res} >
 
-                    {fixtures.slice(0, 3).map((project) => (
+                    {fixtures.slice(0, 3).map((props) => (
 
                                         
         <div className={Style.result}>
+                <Result 
+                Hname={props.home?.name}
+                Hlogo={props.home?.logo[0].url}
+                Hscore={props.home?.homeScore}
 
-            <Fixture 
-                // Hname={props.home?.name}
-                // Hlogo={props.home?.logo[0].url}
-                // Hscore={props.home.homeScore}
+                date={props.day?.date} time={props.day?.time}
 
-                // date={props.time.date}
-                // time={props.time.time}
+                Ascore={props.away?.awayScore}
+                Alogo={props.away?.logo[0].url}
+                Aname={props.away?.name}
 
-                // Ascore={props.away.awayScore}
-                // Alogo={props.away?.logo[0].url}
-                // Aname={props.away?.name}
+                live={props?.live} start={props?.start} 
+                half={props?.half} minutes={props?.time?.now}
 
 
+                _id={props._id}
+                regionId={data.competition}
 
-                Hname={'kkkkk'}
-                Hlogo={'00'}
-                Hscore={3}
 
-                date={'2/22/22'}
-                time={'4pm'}
 
-                Ascore={2}
-                Alogo={1}
-                Aname={'dddd'}
 
-            />  
+
+                /> 
 
 
 

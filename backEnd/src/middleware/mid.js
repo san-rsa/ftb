@@ -15,7 +15,7 @@ const cloudinary = require("../connection/cloudinary");
 const Standing = require("../models/competition/standing/standing");
 
 const {update} = require("./stats");
-const Live = require("../models/competition/live");
+const Fixture = require("../models/competition/fixture");
 
 
 
@@ -346,42 +346,33 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 
 
 
-
-  // try {
-  //   let user= await  User.findOne({_id: req.userId})
-
-    
-  //   if (user.role !== role) {
-  //     return res.status(403).json({ error: 'Forbidden' });
-  //   }
-    
-  //   next();
-  // } catch (error) {
-  //   console.error('Error authorizing user:', error);
-  //   res.status(500).json({ error: 'An error occurred while authorizing the user' });
-  // }
-
-
-
-
   const firstHalf = async (id, matchId, day, ) => {
     // do something
 
-    const existing = await Live.findById(id)
+    const existing = await Fixture.findById(id)
 
 
     
 
 
 
-    const Foundmatchday = existing.live.findIndex(item => item.matchday == day);
-    const Foundmatch = existing.live[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+    const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
+    const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
 
 
 
-    const time = existing.live[Foundmatchday].teams[Foundmatch].time
+    const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
 
     console.log(id, existing, time);
+
+
+
+    existing.fixture[Foundmatchday].teams[Foundmatch].live = true
+
+    existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
+
+
+
 
 
    const timer = async () => {
@@ -389,10 +380,7 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
             if (time.now <= time.first) {
         // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
          
-        time.now = time.now + 1; 
-        
-        console.log("rrrrrr", time);
-        
+        time.now = time.now + 1;      
         
         
        setTimeout(timer, 1000);
@@ -401,6 +389,18 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
  
      } else {
          clearTimeout(timer)
+
+         existing.fixture[Foundmatchday].teams[Foundmatch].half = "half time"
+
+         existing.fixture[Foundmatchday].teams[Foundmatch].live = false
+
+         time.now = 45
+         time.first = 45
+         time.second = 90
+         time.firstET = 105
+         time.secondET = 120
+
+
      }    
      existing.save()
     } 
@@ -420,25 +420,25 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
   const secondHalf = async (id, matchId, day, ) => {
     // do something
 
-    const existing = await Live.findById(id)
+    const existing = await Fixture.findById(id)
 
 
 
-    const Foundmatchday = existing.live.findIndex(item => item.matchday == day);
-    const Foundmatch = existing.live[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+    const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
+    const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
 
 
 
-    const time = existing.live[Foundmatchday].teams[Foundmatch].time
+    const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
 
-    time.second =  90;
-    time.now = 45
+    existing.fixture[Foundmatchday].teams[Foundmatch].live = true
+
+    existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
 
 
     const timer = async () => {
 
       if (time.now <= time.second) {
-  // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
    
   time.now = time.now + 1; 
   
@@ -452,6 +452,17 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 
 } else {
    clearTimeout(timer)
+
+
+   existing.fixture[Foundmatchday].teams[Foundmatch].live = false
+
+   existing.fixture[Foundmatchday].teams[Foundmatch].half = "full time"
+
+   time.now = 90
+   time.first = 45
+   time.second = 90
+   time.firstET = 105
+   time.secondET = 120
 }    
 existing.save()
 } 
@@ -465,24 +476,25 @@ timer()
   const extraTimeFirstHalf = async (id, matchId, day, ) => {
     // do something
 
-    const existing = await Live.findById(id)
+    const existing = await Fixture.findById(id)
 
 
 
-    const Foundmatchday = existing.live.findIndex(item => item.matchday == day);
-    const Foundmatch = existing.live[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+    const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
+    const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
 
 
 
-    const time = existing.live[Foundmatchday].teams[Foundmatch].time
+    const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
 
-    time.first =   105;
-    time.now = 90;
+    existing.fixture[Foundmatchday].teams[Foundmatch].live = true
+
+    existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
 
 
     const timer = async () => {
 
-      if (time.now <= time.first) {
+      if (time.now <= time.firstET) {
   // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
    
   time.now = time.now + 1; 
@@ -496,6 +508,19 @@ timer()
 
 
 } else {
+
+  existing.fixture[Foundmatchday].teams[Foundmatch].live = false
+
+  existing.fixture[Foundmatchday].teams[Foundmatch].half = "half time AET"
+
+  time.now = 105
+
+  time.first = 45
+  time.second = 90
+  time.firstET = 105
+  time.secondET = 120
+
+
    clearTimeout(timer)
 }    
 existing.save()
@@ -515,15 +540,17 @@ timer()
 
 
 
-    const Foundmatchday = existing.live.findIndex(item => item.matchday == day);
-    const Foundmatch = existing.live[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+    const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
+    const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
 
 
 
-    const time = existing.live[Foundmatchday].teams[Foundmatch].time
+    const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
 
-    time.second =  120;
-    time.now = 105
+
+    existing.fixture[Foundmatchday].teams[Foundmatch].live = true
+
+    existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
 
 
     const timer = async () => {
@@ -542,7 +569,22 @@ timer()
 
 
 } else {
+
+  existing.fixture[Foundmatchday].teams[Foundmatch].live = false
+
+  existing.fixture[Foundmatchday].teams[Foundmatch].half = "full time AET"
+
+
    clearTimeout(timer)
+
+
+   time.now = 120
+   time.first = 45
+   time.second = 90
+   time.firstET = 105
+   time.secondET = 120
+
+
 }    
 existing.save()
 } 

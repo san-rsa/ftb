@@ -54,7 +54,7 @@ router.get('/codes-of-conduct', async(req, res)=> {
 
 router.get('/competition', async(req, res)=> {
 
-    const data = await Competition.find({}) //.sort("title")
+    const data = await Competition.find().sort("name")
     
          res.status(200).json({
             success: true,

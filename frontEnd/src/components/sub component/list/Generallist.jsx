@@ -8,7 +8,10 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 
 
-const CardList = ({logo, name, link, category, to}) => {
+const CardList = ({logo, name, category, to}) => {
+
+    const link = name.replaceAll(' ','-')
+
 
     return (
         <Link to={"/" + to + "/" + link} className={Style.a} >
@@ -43,7 +46,10 @@ const CardList = ({logo, name, link, category, to}) => {
 }
 
 
-const CardList2 = ({logo, name, link, category, to}) => {
+const CardList2 = ({logo, name, category, to}) => {
+
+    const link = name.replaceAll(' ','-')
+
 
     return (
         <Link to={"/" + to + "/" + link} className={Style.a2} >
