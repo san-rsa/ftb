@@ -6,7 +6,7 @@ import Categorylist  from "./sub/Categorylist";
 import AdminList from "./sub/admin/AdminList"
 import UserList from "./sub/UserList"
 import Style from "../../styles/Admin.module.css"
-import Nav from "../../components/sub component/Nav"
+import Nav from "../../../components/sub component/Nav"
 import Input from "./sub/Inputs";
 import Search from "./sub/Search";
 

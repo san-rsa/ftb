@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-import Nav from "../../components/sub component/Nav"
-import Input from "./sub/Inputs";
+import Nav from "../../../components/sub component/Nav"
+import Input from "../sub/Inputs";
 import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
-import Style from "../../styles/Register.module.css"
+import Style from "../../../styles/Register.module.css"
 
 
 
@@ -11,7 +11,7 @@ import Style from "../../styles/Register.module.css"
 const Register = ({ img}) => {
     const [data, setInputs] = useState({});
     const [data2, setInputs2] = useState({});
-let navigate = useNavigate()
+    let navigate = useNavigate()
     let [msg, msg2] = ""
 
   const handleChange = (event) => {

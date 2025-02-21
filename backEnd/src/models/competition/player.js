@@ -4,24 +4,20 @@ const mongoose = require('mongoose')
 
 const playerSchema = new mongoose.Schema({
 
-    name: {type: String, required: true, trim: true, unique: true
-    },
+    name: {type: String, required: true, trim: true, unique: true  },
 
-    picture: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
-
-    description: {type: String, required: true
-     },
-
-     teamId: {type: mongoose.Schema.Types.String, ref: "Team", 
-      },
-
-      exTeamId: [{type: mongoose.Schema.Types.String, ref: "Team", }
-        
-      ],
+    dob: {type: Date, required: true, trim: true,  },
 
 
-      position: {type: String, required: true, trim: true
-      },
+    picture: {url: {type: String, required: true}, imgId: {type: String, required: true} },
+
+
+     teamId: {type: mongoose.Schema.Types.String, ref: "Team",   },
+
+      exTeamId: [{type: mongoose.Schema.Types.String, ref: "Team", } ],
+
+
+      position: {type: String, required: true, trim: true },
 
       number: {type: Number},
 

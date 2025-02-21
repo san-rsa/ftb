@@ -551,7 +551,6 @@ router.get('/team/:id', async(req, res)=> {
                     const data = await Team.findOne({name: req.params.id})//.populate("playerId") //.sort("title")
 
 
-                    console.log(data);
                     
                     if (data) {
                 

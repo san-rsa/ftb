@@ -1,8 +1,8 @@
 import React, { useState, useEffect, createContext, useContext  } from "react";
-import Nav from "../../components/sub component/Nav"
-import Input from "./sub/Inputs";
+import Nav from "../../../components/sub component/Nav"
+import Input from "../sub/Inputs";
 import { Link, useNavigate } from "react-router-dom";
-import Style from "../../styles/Login.module.css"
+import Style from "../../../styles/Login.module.css"
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 

@@ -7,24 +7,23 @@ import Codeofconduct from "./pages/Codeofconduct";
 
 
 
-import Login from "./pages/user/Login";
-import Register from "./pages/user/Register";
+import Login from "./pages/user/security/Login";
+import Register from "./pages/user/security/Register";
 import Profile from "./pages/user/Profile";
-import ForgetPassword from "./pages/user/Forgetpassword";
-import ResetPassword from "./pages/user/Resetpassword";
+import ForgetPassword from "./pages/user/security/Forgetpassword";
+import ResetPassword from "./pages/user/security/Resetpassword";
 
 
-import Admin from "./pages/admin/Admin";
-import Addtea from "./pages/admin/sub/tea/Add";
-import Edittea from "./pages/admin/sub/tea/Edit";
-import Addadmin from "./pages/admin/sub/admin/Add";
-import Search from "./pages/admin/sub/ResultAdmin";
-import Addbanner from "./pages/admin/sub/banner/Add";
-import Editbanner from "./pages/admin/sub/banner/Edit";
-import Addnews from "./pages/admin/sub/news/Add";
-import Editnews from "./pages/admin/sub/news/Edit";
-import Addcategory from "./pages/admin/sub/category/Add";
-import Editcategory from "./pages/admin/sub/category/Edit";
+// import Admin from "./pages/user/admin/Admin";
+// import Addadmin from "./pages/admin/sub/admin/Add";
+// import Search from "./pages/admin/sub/ResultAdmin";
+
+// import Addbanner from "./pages/admin/sub/banner/Add";
+// import Editbanner from "./pages/admin/sub/banner/Edit";
+// import Addnews from "./pages/admin/sub/news/Add";
+// import Editnews from "./pages/admin/sub/news/Edit";
+// import Addcategory from "./pages/admin/sub/category/Add";
+// import Editcategory from "./pages/admin/sub/category/Edit";
 
 
   import 'react-toastify/dist/ReactToastify.css';
@@ -52,11 +51,11 @@ import Results from "./pages/competition/Results";
 import Result from "./pages/competition/match/Result";
 
 
-import Lives from "./pages/competition/Lives";
-import Live from "./pages/competition/match/Live";
+// import Lives from "./pages/competition/Lives";
 
 
 import Stats from "./pages/competition/Stats";
+import Add from "./pages/teamadmin/Add";
 
 
 
@@ -89,6 +88,13 @@ function App() {
 
 
 
+        <Route path="/team/:id/:event/:type" element={<Add />}/>
+        <Route path="/team/:id/:event/:type/list" element={<Team />}/>
+        <Route path="/team/:id/:event/:type/:typeId" element={<Team />}/>
+
+
+
+
         
            {/*
 
@@ -102,7 +108,7 @@ function App() {
 
 
         <Route path="/user" element={<Profile />}/>
-        <Route path="/admin" element={<Admin />}/>
+        {/* <Route path="/admin" element={<Admin />}/>
 
         
         <Route path="/admin/addtea/" element={<Addtea />}/>
@@ -114,7 +120,7 @@ function App() {
         <Route path="/admin/editbanner/:id" element={<Editbanner />}/>
         <Route path="/admin/addbanner" element={<Addbanner />}/>
         <Route path="/admin/editcategory/:id" element={<Editcategory />}/>
-        <Route path="/admin/addcategory" element={<Addcategory />}/>
+        <Route path="/admin/addcategory" element={<Addcategory />}/> */}
         <Route path="/code-of-conduct" element={<Codeofconduct />} />
 
 

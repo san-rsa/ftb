@@ -38,7 +38,7 @@ const TeamList = ({logo, name,}) => {
 
 
 
-const TeamSquadList = ({img, name, number,}) => {
+const TeamSquadList = ({img, name, number, pos,}) => {
 
     const link = name.replaceAll(' ','-')
 
@@ -53,14 +53,25 @@ const TeamSquadList = ({img, name, number,}) => {
                 <img src={img} />
 
         </div>
+
+              <div className={Style.number} >
+                        <h1 > {number} </h1>
+                </div>
+                    
                 
-            <div className={Style.number} >
-                <h1 > {number} 2 </h1>
-            </div>
+  
+
+
+                <div className={Style.info} >
             
-        <div className={Style.name}>
-            <h3 >  {name}  </h3>
-        </div>    
+            <div className={Style.pos} >
+                    <p > {pos}  </p>
+                </div>  
+                <div className={Style.name}>
+                    
+                    <h3 >  {name}  </h3>
+                </div>
+            </div>
         
 
 
@@ -71,8 +82,64 @@ const TeamSquadList = ({img, name, number,}) => {
 }
 
 
+const TeamSquadListWithPosition =  ({data, pos, number,})  => {
+    
+
+    console.log(data);
+    
+
+    return (
+        <div className={Style.teamFix}>
+
+
+            <div className={Style.pos} >
+
+
+                <h2> {pos} </h2>
+
+                    <div className={Style.squads} >
+
+                        {
+
+
+                    data.map((props) => (
+
+                     props.position == pos.toLowerCase() && 
+                     
+                     <TeamSquadList
+                     name={props.name}
+                     img={props.picture[0].url}
+                    //  number={props.number}
+                    number={0}
+                     pos={props.position}
+                     /> 
+
+
+   
+
+
+                    )   )   
+                         } 
+                    </div>
+                    
+                </div>
 
 
 
 
-export {TeamList, TeamSquadList}
+
+
+
+
+
+                    </div>
+
+        
+
+    )
+}
+
+
+
+
+export {TeamList, TeamSquadList, TeamSquadListWithPosition}

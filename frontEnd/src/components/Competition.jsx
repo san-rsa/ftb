@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Style from "../styles/Competition.module.css"
 import News, {Minivideo} from "./sub component/list/Newslist"
@@ -9,7 +9,9 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Fixtures, Results, Standing } from "./sub component/Hometournament";
-import { CardList } from "./sub component/list/Generallist";
+import  {HorizontalScroll, CardList } from "./sub component/list/Generallist";
+
+
 
 
 
@@ -48,34 +50,15 @@ const Competition = () => {
 
             <h1 >POPULAR REGION</h1>
 
+
+                <HorizontalScroll >
             <div className={Style.regions} > 
-                
-    
-       {/* <div className="slider-container">
-          <Slider {...settings}>
-    
-                     {data.map((project) => (
-
-                    <CardList 
-                        name={"ebuawa"}
-                        to={"competition"}
-                        category={"Region"}
-                        link={"ebuawa"}
-                        logo={data.imgUrl?.url}
-                    />    
-
-
-
-                )   )   }
-                </Slider>
-
-                </div>  */}
-
-
 
 
                     
             {data.map((p) => (
+
+
 
                         <CardList 
                             name={p.name}
@@ -88,8 +71,11 @@ const Competition = () => {
 
             )   )   }
 
-
+            
             </div>
+
+                </HorizontalScroll>
+
 
 
 

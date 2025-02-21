@@ -9,12 +9,13 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Fixture, Result, Table, Tablehead } from "./list/Tournamentlist";
 import News, { Mininews } from "./list/Newslist";
 import { Standing } from "./Hometournament";
-import { TeamList, TeamSquadList } from "./list/Teamviewlist";
+import { TeamList, TeamSquadList, TeamSquadListWithPosition } from "./list/Teamviewlist";
+import { CardList2, CardList3 } from "./list/Generallist";
 
 
 
 
-const Overview = ({}) => {
+const Overview = ({id}) => {
     
     const [news, setnews] = useState([])
     const [otherTeams, setotherTeams] = useState([])
@@ -57,11 +58,11 @@ const Overview = ({}) => {
 
 
 
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
-            .then((res) =>  res.json())
-            .then((data) => setData(data));
-        }, []);
+        // useEffect(() => {
+        //     fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
+        //     .then((res) =>  res.json())
+        //     .then((data) => setData(data));
+        // }, []);
 
 
 
@@ -262,14 +263,13 @@ const Overview = ({}) => {
 }
 
 
-const TeamNews = ({}) => {
+const TeamNews = ({id}) => {
     
     const [news, setnews] = useState([])
     const [otherTeams, setotherTeams] = useState([])
     const [stand, setStand] = useState([])
     const [data, setData] = useState({})
 
-    const year = 2022 // new Date(2022).getFullYear()
 
     
 
@@ -355,7 +355,7 @@ const TeamNews = ({}) => {
 
 
 
-const TeamFixtures = ({}) => {
+const TeamFixtures = ({id}) => {
     
     const [fixtures, setfixtures] = useState([])
     const [otherTeams, setotherTeams] = useState([])
@@ -420,9 +420,6 @@ const TeamFixtures = ({}) => {
                             regionId={data.competition}
 
 
-
-
-
                             />  
 
 
@@ -460,7 +457,7 @@ const TeamFixtures = ({}) => {
 
 
 
-const TeamResults = ({}) => {
+const TeamResults = ({id}) => {
     
     const [fixtures, setfixtures] = useState([])
     const [otherTeams, setotherTeams] = useState([])
@@ -564,7 +561,95 @@ const TeamResults = ({}) => {
 
 
 
-const TeamSquad = ({}) => {
+const TeamSquad = ({id}) => {
+    
+    const [fixtures, setfixtures] = useState([])
+    const [otherTeams, setotherTeams] = useState([])
+    const [stand, setStand] = useState([])
+    const [data, setData] = useState([])
+
+    const year = 2022 // new Date(2022).getFullYear()
+
+    
+
+    
+
+
+    
+    const title = useParams().id
+
+    const link =title.replaceAll('-',' ')
+
+    
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/players/" + id)
+            .then((res) =>  res.json())
+            .then((data) => setData(data.data));
+        }, []);
+
+
+    
+
+
+
+
+    return (
+        <div className={Style.teamFix}>
+
+
+            {/* <div className={Style.pos} >
+
+
+                <h2>   </h2>
+
+                    <div className={Style.squads} >
+
+                    {data.map((project) => (
+
+
+
+
+                    <TeamSquadList
+                        name={project.head}
+                        img={project.imgUrl.url}
+                        link={project.head}
+                        />    
+
+
+                    )   )   }
+                    </div>
+                    
+                </div> */}
+
+
+
+
+
+                    <TeamSquadListWithPosition pos={"Goalkeeper"} data={data} />
+                    <TeamSquadListWithPosition pos={"Defender"} data={data} />
+                    <TeamSquadListWithPosition pos={"Midfielder"} data={data} />
+                    <TeamSquadListWithPosition pos={"Foward"} data={data} />
+
+
+
+
+
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
+
+
+
+
+
+const TeamAdmin = ({}) => {
     
     const [fixtures, setfixtures] = useState([])
     const [otherTeams, setotherTeams] = useState([])
@@ -597,36 +682,48 @@ const TeamSquad = ({}) => {
 
 
     return (
-        <div className={Style.teamFix}>
+        <div className={Style.teamAdmin}>
 
 
 
 
 
-                    <div className={Style.squads} >
-                    {fixtures.map((project) => (
+        <div className={Style.teamadminmenu} >
+
+            <h2 > Players</h2>
+
+            <div className={Style.teamadminmenulist} >
+                <CardList3 name={"Players"} to={"add"} category={"add"} link={"player"} logo={data.imgUrl?.url} />  
+                <CardList3 name={"Players"} to={"edit"} category={"edit"} link={"player"} logo={data.imgUrl?.url} />  
+                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={data.imgUrl?.url} />   */}
+      
+            </div>
 
 
-                    <TeamSquadList
-                        name={project.head}
-                        img={project.imgUrl.url}
-                        link={project.head}
-                        />    
+        </div>
+
+        
+        <div className={Style.teamadminmenu} >
 
 
-                    )   )   }
-                    </div>
+            <h2 > News</h2>
+
+            <div className={Style.teamadminmenulist} >
+                <CardList3 name={"Players"} to={"add"} category={"add"} link={"player"} logo={data.imgUrl?.url} />  
+                <CardList3 name={"Players"} to={"edit"} category={"edit"} link={"player"} logo={data.imgUrl?.url} />  
+                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={data.imgUrl?.url} />   */}
+      
+            </div>
+            
+        </div>
+
+
+
                     
 
 
 
          
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
 
 
 
@@ -639,4 +736,4 @@ const TeamSquad = ({}) => {
 }
 
 
-export {Overview, TeamNews, TeamFixtures, TeamResults, TeamSquad, }
+export {Overview, TeamNews, TeamFixtures, TeamResults, TeamSquad, TeamAdmin }

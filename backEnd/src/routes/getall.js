@@ -515,7 +515,15 @@ router.get('/:link/:team/fixtures/:year', async(req, res)=> {
 
         router.get('/players/:team', async(req, res)=> {
 
-          const data = await Player.find({teamId: req.params.team}) //.sort("title")
+          const team = await Team.findOne({name: req.params.team}) 
+
+
+
+          const data = await Player.find({teamId: team._id}).sort("name")
+
+
+          console.log(team, data);
+          
           
                res.status(200).json({
                   success: true,

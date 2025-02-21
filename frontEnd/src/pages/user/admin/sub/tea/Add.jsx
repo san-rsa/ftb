@@ -97,7 +97,7 @@ const Add = () => {
 
             <div className={Style.inp}>
 
-<Input name="name" type={"text"} onchange={handleChange} value={data.name} class={Style.name} label={"name"} />   
+      <Input name="name" type={"text"} onchange={handleChange} value={data.name} class={Style.name} label={"name"} />   
 
         <div className={Style.cat}>
             <label for="category ">category</label>
@@ -110,7 +110,7 @@ const Add = () => {
               )   )   }
               </select>
 
-            </div>  
+            </div>
  
 
 

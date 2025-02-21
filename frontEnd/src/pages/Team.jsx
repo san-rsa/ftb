@@ -6,14 +6,14 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Topic } from "../components/sub component/list/Newsviewlist";
-import { Overview, TeamFixtures, TeamNews, TeamResults, TeamSquad } from "../components/sub component/Teamview";
+import { Overview, TeamAdmin, TeamFixtures, TeamNews, TeamResults, TeamSquad } from "../components/sub component/Teamview";
 import Footer from "../components/sub component/Footer";
 
 
 
 
 const Team = ({}) => {
-    const [mode, setInputs] = useState({overview: true, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false });
+    const [mode, setInputs] = useState({overview: true, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false, admin: false });
 
     const [data, setData] = useState({})
 
@@ -39,7 +39,7 @@ const Team = ({}) => {
         const handleChange = (event) => {
             const name = event.target.innerHTML.toLowerCase();
     
-            setInputs({overview: false, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false });
+            setInputs({overview: false, news: false, fixtures: false, results: false, squad: false, admin: false, transfer: false, official: false });
 
             
             setInputs(values => ({...values, [name]: true}))
@@ -154,6 +154,8 @@ const Team = ({}) => {
                         <li onClick={handleChange}  >Squad</li>
                         {/* <li onClick={handleChange}  >Transfer</li> */}
                         {/* <li onClick={handleChange}  >Official</li> */}
+                        <li onClick={handleChange}  >Admin</li>
+
     
                     </ul>
     
@@ -171,15 +173,17 @@ const Team = ({}) => {
 
          <div className={Style.section} >
 
-            { mode.overview && <Overview />}
+            { mode.overview && <Overview id={link} />}
 
-            { mode.news && <TeamNews />}
+            { mode.news && <TeamNews id={link} />}
 
-            { mode.fixtures && <TeamFixtures />}
+            { mode.fixtures && <TeamFixtures id={link} />}
 
-            { mode.results && <TeamResults />}
+            { mode.results && <TeamResults id={link} />}
 
-            { mode.squad && <TeamSquad />}
+            { mode.squad && <TeamSquad id={link} />}
+
+            { mode.admin && <TeamAdmin id={link} />}
 
 
 

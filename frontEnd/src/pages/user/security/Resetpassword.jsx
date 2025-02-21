@@ -1,4 +1,4 @@
-import Nav from "../../components/sub component/Nav"
+import Nav from "../../../components/sub component/Nav"
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";

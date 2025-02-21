@@ -10,7 +10,6 @@ import {
     faLinkedin,
    
   } from "@fortawesome/free-brands-svg-icons";
-import Search from "../../pages/admin/sub/Search";
 import {Footerlist, SocialList} from "./list/Footerlist";
 
 

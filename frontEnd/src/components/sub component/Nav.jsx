@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Style from "../../styles/Nav.module.css"
 import {Link, useNavigate} from "react-router-dom"
 import { faBars, faUser, faCartShopping, faSearch } from '@fortawesome/free-solid-svg-icons'
-import Search from "../../pages/admin/sub/Search";
 
 
 
