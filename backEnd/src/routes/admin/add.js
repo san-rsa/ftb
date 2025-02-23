@@ -694,7 +694,6 @@ router.post('/player',   async (req, res)=> {
     try {
         const {fname, lname, dob,  teamid, position, number}= data
         const  picture = []
-    const fullname = fname + ' ' + lname;
 
 
 
@@ -708,6 +707,13 @@ router.post('/player',   async (req, res)=> {
 				message: "All Fields are required",
 			});
 		}
+
+
+        const fullname = {first: fname, last: lname}
+
+
+
+
 
         //check if use already exists?
         const existingItem = await Player.findOne({name: fullname})

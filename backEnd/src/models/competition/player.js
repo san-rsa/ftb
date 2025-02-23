@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const playerSchema = new mongoose.Schema({
 
-    name: {type: String, required: true, trim: true, unique: true  },
+    name: {first: {type: String, required: true, trim: true, }, last : {type: String, required: true, trim: true, unique: true  }},
 
     dob: {type: Date, required: true, trim: true,  },
 

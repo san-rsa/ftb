@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import * as React from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 import Home from "./pages/Home";
@@ -56,6 +58,7 @@ import Result from "./pages/competition/match/Result";
 
 import Stats from "./pages/competition/Stats";
 import Add from "./pages/teamadmin/Add";
+import List from "./pages/teamadmin/List";
 
 
 
@@ -63,7 +66,7 @@ import Add from "./pages/teamadmin/Add";
 
   
 
-function App() {
+function Links() {
  
   return (
  
@@ -89,8 +92,8 @@ function App() {
 
 
         <Route path="/team/:id/:event/:type" element={<Add />}/>
-        <Route path="/team/:id/:event/:type/list" element={<Team />}/>
-        <Route path="/team/:id/:event/:type/:typeId" element={<Team />}/>
+        <Route path="/team/:id/:event/:type/list" element={<List />}/>
+        <Route path="/team/:id/:event/:type/:typeId" element={<Add />}/>
 
 
 
@@ -138,4 +141,26 @@ function App() {
   );
 }
 
+
+
+
+
+
+
+
+function App() {
+ 
+  return (
+ 
+    <div >
+          <Links />
+
+
+<ToastContainer />
+    </div>
+
+ 
+ 
+  );
+}
 export default App;

@@ -10,7 +10,7 @@ import { Fixture, Result, Table, Tablehead } from "./list/Tournamentlist";
 import News, { Mininews } from "./list/Newslist";
 import { Standing } from "./Hometournament";
 import { TeamList, TeamSquadList, TeamSquadListWithPosition } from "./list/Teamviewlist";
-import { CardList2, CardList3 } from "./list/Generallist";
+import { CardList2, CardList3, CardList3Edit } from "./list/Generallist";
 
 
 
@@ -694,7 +694,7 @@ const TeamAdmin = ({}) => {
 
             <div className={Style.teamadminmenulist} >
                 <CardList3 name={"Players"} to={"add"} category={"add"} link={"player"} logo={data.imgUrl?.url} />  
-                <CardList3 name={"Players"} to={"edit"} category={"edit"} link={"player"} logo={data.imgUrl?.url} />  
+                <CardList3Edit name={"Players"} to={"edit"} category={"edit"} link={"player"} logo={data.imgUrl?.url} id={"list"} />  
                 {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={data.imgUrl?.url} />   */}
       
             </div>
@@ -710,7 +710,7 @@ const TeamAdmin = ({}) => {
 
             <div className={Style.teamadminmenulist} >
                 <CardList3 name={"Players"} to={"add"} category={"add"} link={"player"} logo={data.imgUrl?.url} />  
-                <CardList3 name={"Players"} to={"edit"} category={"edit"} link={"player"} logo={data.imgUrl?.url} />  
+                <CardList3Edit name={"Players"} to={"edit"} category={"edit"} link={"player"} logo={data.imgUrl?.url} id={"list"} />  
                 {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={data.imgUrl?.url} />   */}
       
             </div>

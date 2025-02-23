@@ -4,13 +4,13 @@ import Style from "../../styles/admin/Team.module.css"
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
-import { Inputs } from "./list/Generallist";
+import { AlertError, Inputs } from "./list/Generallist";
 
 
 
 
 const TeamAdminPlayer = ({teamid, event, typeId }) => {
-  const [data, setInputs] = useState({position: 'foward'})
+  const [data, setInputs] = useState({})
   const [img, setFile] = useState({});
   const [submitbtn, setSubmitBtn] = useState(false)
 
@@ -32,15 +32,21 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
         useEffect(() => {
           if (typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/player/" + typeId)
+            fetch(process.env.REACT_APP_API_LINK  + "getone/player/" + typeId.replaceAll('-',' '))
             .then((res) =>  res.json())
             .then((data) =>  setInputs({
+              fname:data.name.first,
+              lname: data.name.last,
               position: data.position,
+              
+              // picture: data.picture[0].url
+
               
               
             })
           );
-          }
+          }       
+
       }, []);
         
 
@@ -49,7 +55,6 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
     const h1 = (event.add) ? "Add Player" : (event.edit) ? "Edit Player" : "please try again later" ;  
 
 
-    
     
       
          
@@ -72,13 +77,29 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({...values, [name]: value}))
+
+
+
+
+
+
       }
     
       const handleFileChange = (event) => {
         setFile(event.target.files)
       };
 
-
+// toast.error('message2', {
+//       position: "top-center",
+//       autoClose: 2000,
+//       hideProgressBar: true,
+//       closeOnClick: true,
+//       pauseOnHover: true,
+//       draggable: true,
+//       progress: undefined,
+//       theme: "dark",
+//       transition: Bounce,
+//       })
 
           console.log(data, img);
     
@@ -110,25 +131,47 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
         
         .then((res) => {
            if (res.status == 200) {
-            navigate("admin"); 
             
             console.log('res22')       
 
            } else {
             setSubmitBtn(false);
-            console.log('res')       
-
-
+       
            }
-             console.log(res, 'k')       
+
+           return res.json()
         }).then(
-          data => console.log(data))
+          data => {
+            console.log(data.message, 'llk')       
+
+           
+            if (data.success == false) {
+               AlertError(data.message)
+
+               console.log(data.message);
+               
+            } else {
+                            // navigate("admin"); 
+
+            }
+          })
 
 
         
         .catch((e) => {
           console.log(e);
           setSubmitBtn(!submitbtn)
+          toast.error('message', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+            })
 
           let msg = "fail"
         })
@@ -152,6 +195,13 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
       </div>
 
 
+      <div className={Style.pimg} >
+
+            {/* <img src={data.picture } /> */}
+    
+
+      </div>
+
 
         <div className={Style.form} >
 
@@ -168,7 +218,11 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
         <label >positions</label>
 
-          <select id="position" name={"position"} onChange={handleChange} title="position"  >
+          <select id="position" name={"position"} onChange={handleChange} title="position" Value={data.position} >
+
+          { data.position ?  <option value={data.position} > {data.position}  </option> : <option value={""} > select a position  </option> }
+
+
 
               <option name={"position"} value={"foward"} > foward  </option>
               <option name={"position"} value={"midfielder"} > midfielder  </option>

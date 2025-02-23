@@ -160,11 +160,11 @@ const CardList2 = ({logo, name, category, to}) => {
 
 
 
-const CardList3 = ({logo, name, category, to, link}) => {
+const CardList3 = ({logo, name, category, to, link,}) => {
 
 
     return (
-        <Link to={ to + "/" + link} className={Style.a3} >
+        <Link to={ to + "/" + link  } className={Style.a3} >
 
         <div className={Style.main3} >
 
@@ -199,6 +199,49 @@ const CardList3 = ({logo, name, category, to, link}) => {
 }
 
 
+const CardList3Edit = ({logo, name, category, to, link, id}) => {
+
+
+  const idLink =id?.replaceAll('-',' ')
+
+
+
+  return (
+      <Link to={ to + "/" + link + "/" + idLink } className={Style.a3} >
+
+      <div className={Style.main3} >
+
+      <div className={Style.logo3}>
+              {/* <img src={info?.imgUrl} alt=""/> */}
+              <img src={logo} />
+
+      </div>
+              
+
+          
+      <div className={Style.name3}>
+
+          <h3 > {category} </h3>
+
+          <h2 className={Style.cat}> {category} </h2>
+
+
+          <h2 >  {name}  </h2>
+      </div>    
+      
+
+
+      </div>
+
+
+
+      </Link>
+      
+
+  )
+}
+
+
 
 
 
@@ -225,7 +268,7 @@ const PlayerBio = ({answer, topic,}) => {
 
 
 
-const AlertSuccess = ({message, }) => {
+const AlertSuccess = (message) => {
 
 
   return (
@@ -254,18 +297,11 @@ const AlertSuccess = ({message, }) => {
 
 
 
+const AlertError = (message ) => {
 
 
-
-
-
-
-const AlertError = ({message, }) => {
-
-
-  return (
   
-    toast.error(message, {
+  return   toast.error(message, {
     position: "top-center",
     autoClose: 2000,
     hideProgressBar: true,
@@ -277,17 +313,11 @@ const AlertError = ({message, }) => {
     transition: Bounce,
     })
   
-      
-
-
   
-      
-
-  )
 }
 
 
 
 
 
-export {CardList, PlayerBio, CardList2, CardList3, HorizontalScroll, Inputs, AlertError, AlertSuccess }
+export {CardList, PlayerBio, CardList2, CardList3, CardList3Edit, HorizontalScroll, Inputs, AlertError, AlertSuccess }
