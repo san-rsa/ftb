@@ -6,7 +6,7 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Footer from "../../components/sub component/Footer";
-import { TeamAdminPlayer } from "../../components/sub component/TeamAdminview";
+import { TeamAdminNews, TeamAdminPlayer } from "../../components/sub component/TeamAdminview";
 
 
 
@@ -141,6 +141,9 @@ const Add = ({}) => {
          <div className={Style.section} >
 
             { mode2.player && <TeamAdminPlayer teamid={teamid} event={mode1} typeId={typeId} />}
+
+            { mode2.news && <TeamAdminNews teamid={teamid} event={mode1} typeId={typeId} />}
+
 
                     {/*  { mode.news && <TeamNews />}
 

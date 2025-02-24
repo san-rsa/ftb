@@ -13,6 +13,13 @@ a {
   color: white;
 }
 
+img {
+  object-fit: cover;
+
+
+}
+
+
 
 
 button ::-webkit-outer-spin-button, button ::-webkit-inner-spin-button {

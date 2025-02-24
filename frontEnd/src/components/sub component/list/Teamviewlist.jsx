@@ -157,10 +157,10 @@ const TeamSquadListWithPosition =  ({data, pos, number,})  => {
                      props.position == pos.toLowerCase() && 
                      
                      <TeamSquadList
-                     name={props.name}
-                     img={props.picture[0].url}
+                     name={props.name?.first + ' ' + props.name?.last}
+                     img={props.picture?.url}
                     //  number={props.number}
-                    number={0}
+                    // number={0}
                      pos={props.position}
                      /> 
 
@@ -215,8 +215,8 @@ const TeamSquadListWithPositionEdit =  ({data, pos, number,})  => {
                      props.position == pos.toLowerCase() && 
                      
                      <TeamSquadListEdit
-                     name={props.name}
-                     img={props.picture[0].url}
+                     name={props.name?.first + ' ' + props.name?.last}
+                     img={props.picture?.url}
                     //  number={props.number}
                     number={0}
                      pos={props.position}

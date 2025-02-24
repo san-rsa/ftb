@@ -283,8 +283,10 @@ router.get('/player/:id', async(req, res)=> {
 
         const name = req.params.id.split(" ");
 
+        const fullname = {first: name[0], last: name[1] }
 
-         const data = await Player.findOne({name: req.params.id}) //.sort("title")
+
+         const data = await Player.findOne({name: fullname}) //.sort("title")
 
         if (data) {
                 

@@ -709,8 +709,8 @@ const TeamAdmin = ({}) => {
             <h2 > News</h2>
 
             <div className={Style.teamadminmenulist} >
-                <CardList3 name={"Players"} to={"add"} category={"add"} link={"player"} logo={data.imgUrl?.url} />  
-                <CardList3Edit name={"Players"} to={"edit"} category={"edit"} link={"player"} logo={data.imgUrl?.url} id={"list"} />  
+                <CardList3 name={"News"} to={"add"} category={"add"} link={"news"} logo={data.imgUrl?.url} />  
+                <CardList3Edit name={"News"} to={"edit"} category={"edit"} link={"news"} logo={data.imgUrl?.url} id={"list"} />  
                 {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={data.imgUrl?.url} />   */}
       
             </div>
