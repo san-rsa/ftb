@@ -13,8 +13,19 @@ const Schema = new mongoose.Schema({
 
     logo: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
 
-    description: {type: String,
-     },
+    description: {type: String, },
+
+    sub_Region: [{
+        name: {type: String, }, bio: {type: String, },
+        pictures: [{url: {type: String, }, imgId: {type: String, } }],
+
+        
+    }],
+
+
+
+    views: {type: Number, default: 0 },
+
 
 
 

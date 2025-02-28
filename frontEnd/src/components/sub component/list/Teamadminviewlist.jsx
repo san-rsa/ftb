@@ -5,7 +5,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { TeamSquadListWithPositionEdit } from "./Teamviewlist";
-import { Mininews } from "./Newslist";
+import { Mininews, MininewsEdit } from "./Newslist";
 
 
 
@@ -76,7 +76,7 @@ const TeamAdminNewsList = ({teamid}) => {
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news/" ) // + teamid)
+            fetch(process.env.REACT_APP_API_LINK + "getall/news/team/"  + teamid)
             .then((res) =>  res.json())
             .then((data) => setData(data.data));
         }, []);
@@ -103,10 +103,9 @@ const TeamAdminNewsList = ({teamid}) => {
                 {data.map((project) => (
 
                         
-            <Mininews
+            <MininewsEdit
                 head={project.head}
-                img={project.imgUrl.url}
-                link={project.head}
+                img={project.imgUrl[0].url}
                 />  
 
 

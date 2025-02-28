@@ -44,7 +44,7 @@ const Overview = ({id}) => {
 
     
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+            fetch(process.env.REACT_APP_API_LINK + "getall/news/team/" + id)
             .then((res) =>  res.json())
             .then((data) => setnews(data.data));
         }, []);
@@ -204,13 +204,13 @@ const Overview = ({id}) => {
 
 
                     <div className={Style.news} >
-                        {news.slice(1, 5).map((project) => (
+                        {news.slice(0, 5).map((project) => (
 
                         <div className={Styles.perone} key={project._id}> 
 
                         <Mininews
                             head={project.head}
-                            img={project.imgUrl.url}
+                            img={project.imgUrl[0].url}
                             link={project.head}
                             />    
                             </div>
@@ -283,7 +283,7 @@ const TeamNews = ({id}) => {
 
     
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+            fetch(process.env.REACT_APP_API_LINK + "getall/news/team/" + id)
             .then((res) =>  res.json())
             .then((data) => setnews(data.data));
         }, []);
@@ -304,14 +304,12 @@ const TeamNews = ({id}) => {
                     <div className={Style.top} >
                     {news.slice(0, 1).map((project) => (
 
-                    <div className='' key={project._id}> 
 
                     <News
                         head={project.head}
-                        img={project.imgUrl.url}
+                        img={project.imgUrl[0].url}
                         link={project.head}
                         />    
-                        </div>
 
 
                     )   )   }

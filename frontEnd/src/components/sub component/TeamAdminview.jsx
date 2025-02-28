@@ -52,7 +52,7 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
         if (event.add ) {
       setFetch({link: 'admin/add/player/', method: 'POST'  })
     } else if (event.edit) {
-      setFetch({link: 'admin/edit/player/' + typeId, method: 'PATCH'  })
+      setFetch({link: 'admin/edit/player/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
 
     }
 
@@ -263,6 +263,9 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
 const TeamAdminNews = ({teamid, event, typeId }) => {
   const [data, setInputs] = useState({})
+  const [region, settRegion] = useState([])
+
+
   const [img, setFile] = useState({});
   const [submitbtn, setSubmitBtn] = useState(false)
 
@@ -286,15 +289,26 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
 
 
         useEffect(() => {
+          fetch(process.env.REACT_APP_API_LINK  + "getall/competition/" )
+          .then((res) =>  res.json())
+          .then((data) =>  settRegion(data.data))
+        
+
+      }, []);
+
+
+
+        useEffect(() => {
+
           if (typeId) {
             fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + typeId.replaceAll('-',' '))
             .then((res) =>  res.json())
             .then((data) =>  setInputs({
-              fname:data.name.first,
-              lname: data.name.last,
-              position: data.position,
-              dob: data.dob.slice(0, 10), 
-              img: data.picture.url
+              head:data.head,
+              body: data.body,
+              team: data.ref_Team[0],
+              region: data.ref_Region[0], 
+              img: data?.imgUrl[0]?.url
               
               
             })
@@ -304,7 +318,7 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
         if (event.add ) {
       setFetch({link: 'admin/add/news/', method: 'POST'  })
     } else if (event.edit) {
-      setFetch({link: 'admin/edit/news/' + typeId, method: 'PATCH'  })
+      setFetch({link: 'admin/edit/news/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
 
     }
 
@@ -313,7 +327,7 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
 
 
 
-    const h1 = (event.add) ? "Add Player" : (event.edit) ? "Edit Player" : "please try again later" ;  
+    const h1 = (event.add) ? "Add News" : (event.edit) ? "Edit News" : "please try again later" ;  
     
     
       const handleChange = (event) => {
@@ -433,33 +447,53 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
       </div>
 
 
-        <div className={Style.form} >
+        <form className={Style.form} >
 
-        <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
-        <Inputs label={'last name'} type={'text'} name={'lname'} onchange={handleChange} value={data.lname}  placeholder={'last name'} disabled={false} required={true}  />
+        <Inputs label={'head'} type={'text'} name={'head'} onchange={handleChange} value={data.head}  placeholder={'head'} disabled={false} required={true}  />
+        
+       
+       
         <Inputs label={'team'} type={'text'} value={teamid} disabled={true} required={true}  />
-
-        <Inputs label={'date of birth'} type={'date'} name={'dob'} onchange={handleChange} value={data.dob} disabled={false} required={true}  />
-        <Inputs label={'picture'} type={'file'} name={'picture'} onchange={handleFileChange} value={data.picture}  placeholder={'first name'} disabled={false} required={true}  />
 
 
        <div className={Style.select} >
 
 
-        <label >positions</label>
+        <label rel="select" htmlFor="select" >region</label>
 
-          <select id="position" name={"position"} onChange={handleChange} title="position" Value={data.position} >
-
-          { data.position ?  <option value={data.position} > {data.position}  </option> : <option value={""} > select a position  </option> }
-
+          <select id="region" name={"region"} onChange={handleChange} title="region" Value={data.region} > 
+          { data.region ?  <option value={data.region} > {data.region}  </option> : <option value={""} > select a region  </option> }
 
 
-              <option name={"position"} value={"foward"} > foward  </option>
-              <option name={"position"} value={"midfielder"} > midfielder  </option>
-              <option name={"position"} value={"defender"} > defender  </option>
-              <option name={"position"} value={"goalkeeper"} > goalkeeper  </option>
+          {region.map((props) => (
+
+                        
+        <option key={props._id} name={"region"} value={props.name} > {props.name}  </option>
+ 
+
+
+                )   )   }
+    
+
 
           </select>
+
+        </div>
+
+
+        <Inputs label={'picture'} type={'file'} name={'picture'} onchange={handleFileChange} value={data.picture}  placeholder={'first name'} disabled={false} required={true}  />
+
+
+
+
+
+       <div className={Style.textarea} >
+
+
+        <label rel="textarea" htmlFor="textarea" >article</label>
+
+        <textarea value={data.body} onChange={handleChange} name="body" placeholder="type your article here"  rows={7}> </textarea>
+
 
         </div>
 
@@ -482,14 +516,12 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
         </div> */}
 
 
-
-        <Inputs label={'shirt number'} type={'text'} name={'snumber'} onchange={handleChange} value={data.snumber} placeholder={'first name'} disabled={false} required={true}  />
         
         {/* <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
         <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
         <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
          */}
-        </div>
+        </form>
 
 
 

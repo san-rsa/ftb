@@ -9,7 +9,7 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 const News = ({img, head, body, id, link}) => {
 
-    const newsLink =link.replaceAll(' ','-')
+    const newsLink =head.replaceAll(' ','-')
 
     return (
         <div className={Style.news}>
@@ -46,7 +46,7 @@ const News = ({img, head, body, id, link}) => {
 
 const Mininews = ({img, head, link, id}) => {
 
-    const newsLink =link.replaceAll(' ','-')
+    const newsLink =head.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
@@ -81,7 +81,7 @@ const Mininews = ({img, head, link, id}) => {
 
 const Mininews2 = ({img, head, link, id}) => {
 
-    const newsLink =link.replaceAll(' ','-')
+    const newsLink =head.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
@@ -115,7 +115,7 @@ const Mininews2 = ({img, head, link, id}) => {
 
 const Minivideo = ({img, head, link, body}) => {
 
-    const videoLink =link.replaceAll(' ','-')
+    const videoLink =head.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
@@ -149,7 +149,7 @@ const Minivideo = ({img, head, link, body}) => {
 
 const Mininews3 = ({img, head,link, id}) => {
 
-    const newsLink =link?.replaceAll(' ','-')
+    const newsLink =head?.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
@@ -180,5 +180,47 @@ const Mininews3 = ({img, head,link, id}) => {
 }
 
 
+
+
+
+
+
+
+
+
+
+const MininewsEdit = ({img, head,  id}) => {
+
+    const link = head.replaceAll(' ','-')
+
+    return (
+        <div className={Style.newsm}>
+           <Link to={"./../" + link}>
+            <div className={Style.news2}>
+
+
+ 
+                    <div className={Style.img2} >
+                        <img src={img} />
+                    </div>
+
+                    
+                    <div className={Style.text2} >
+                        
+                        <div className={Style.head2}>
+                            <h2 >  {head}</h2>
+                        </div>
+
+                    </div>
+
+
+                </div>
+              </Link>
+        </div>
+
+    )
+}
+
+
 export default News
-export {Mininews, Mininews2, Minivideo, Mininews3}
+export {Mininews, Mininews2, Minivideo, Mininews3, MininewsEdit}

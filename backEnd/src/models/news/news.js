@@ -9,7 +9,13 @@ const newsSchema = new mongoose.Schema({
   },
 
 
-  imgUrl: {url: {type: String, required: true}, imgId: {type: String, required: true} },
+  imgUrl: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
+
+  ref_Team: [{type: mongoose.Schema.Types.String, ref: "Team", }],
+
+  ref_Region: [{type: mongoose.Schema.Types.String, ref: "Competition", }],
+
+  views: {type: Number, default: 0 },
 
  
 }, {

@@ -337,25 +337,32 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
 
 
 
-router.patch('/news/:id', auth,  role(process.env.ADMIN), async (req, res)=> {
+router.patch('/news/:id',  async (req, res)=> {
 
     const data = JSON.parse(req.body.data)
-    const file = req.files.img  
-      
-    
-    if (!req.files) {
-        // No file was uploaded
-        return res.status(400).json({ error: "No file uploaded" });
-      }
+    const file = req.files?.img  
+    const imgUrl = []
+
      
 
     try {
         const {head, body}= data
-        const imgUrl = []
+
+
+
+		if (!head || !body ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+    
+    if (req.files) {
 
         const image = await cloudinary.uploader.upload(
         file.tempFilePath,
-        { folder: 'Banner' },
+        { folder: 'News' },
 
       );
 
@@ -363,31 +370,33 @@ router.patch('/news/:id', auth,  role(process.env.ADMIN), async (req, res)=> {
       imgUrl.push({url: image.secure_url,  imgId: image.public_id})
 
  
-
-		if (!head || !imgUrl ) {
-			return res.status(403).json({
-				success: false,
-				message: "All Fields are required",
-			});
-		}
+      }
+      //  const gg = await News.findOne({head: req.params.id})
 
         //check if use already exists?
-        const save = await News.findByIdAndUpdate(req.params.id, {
-            $set: update, imgUrl: imgUrl[0]
+        const save = await News.findOneAndUpdate({head: req.params.id}, {
+            $set: data,  imgUrl: imgUrl[0], ref_Region: data.region, ref_Team: data.team
         }, { new: true });
             // res.redirect("/login")
+
+            console.log(data, req.params.id,  save, );
+            
+
+
+           
 
         return res.status(200).json({
             success: true,
             save,
             message: "successfully ✅"
            
-        })  
+        }) 
+
     } catch (error) {
         console.error(error)
         return res.status(500).json({
             success: false,
-            message : "banner registration failed"
+            message : " registration failed"
         })
        
    }  
@@ -395,38 +404,37 @@ router.patch('/news/:id', auth,  role(process.env.ADMIN), async (req, res)=> {
 
 
 
-router.patch('/player', auth,  role(process.env.ADMIN), async (req, res)=> {
+router.patch('/player',  async (req, res)=> {
 
     const data = JSON.parse(req.body.data)
     const file = req.files?.img  
       
-    
-    if (!req.files) {
-        // No file was uploaded
-        return res.status(400).json({ error: "No file uploaded" });
-      }
+
      
 
     try {
-        const {name, description, teamId, position, number}= data
+        const {name, description, teamid, position, number}= data
         const  picture = []
 
-        const image = await cloudinary.uploader.upload(
-        file.tempFilePath,
-        { folder: 'Banner' },
+        if (req.files) {
 
-      );
-
-
-      picture.push({url: image.secure_url,  imgId: image.public_id})
-
- 
+            const image = await cloudinary.uploader.upload(
+            file.tempFilePath,
+            { folder: 'News' },
+    
+          );
+    
+    
+          picture.push({url: image.secure_url,  imgId: image.public_id})
+    
+     
+          }
       
 
 
         console.log(data)
 
-		if (!name || !picture ) {
+		if (!name || teamid ) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",
@@ -435,24 +443,24 @@ router.patch('/player', auth,  role(process.env.ADMIN), async (req, res)=> {
 
 
         
-        const db = await Player.findOne({name: req.params.id})
+        // const db = await Player.findOne({name: req.params.id})
 
-        const  ex = []
+        // const  ex = []
 
 
-        if (db.teamId !== teamId) {
-            ex.push(db.teamId)
-        };
+        // if (db.teamId !== teamId) {
+        //     ex.push(db.teamId)
+        // };
 
         const save = await Player.findByIdAndUpdate({name: req.params.id},  {
-           $set: data, picture: picture[0], exTeamId: ex
+           $set: data, picture: picture[0], // exTeamId: ex
         }, { new: true })
             // res.redirect("/login")
 
         return res.status(200).json({
             success: true,
             save,
-            message: "created successfully ✅"
+            message: " successfull ✅"
            
         })  
     } catch (error) {

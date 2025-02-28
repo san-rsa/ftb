@@ -547,6 +547,37 @@ router.get('/:link/:team/fixtures/:year', async(req, res)=> {
 
 
 
+
+
+    router.get('/news/team/:id', async(req, res)=> {
+
+      const news = await News.find({ref_Team: req.params.id}).sort([['updatedAt', 'desc']]);
+      
+           res.status(200).json({
+              success: true,
+             data: news
+            })
+      })
+
+
+      router.get('/news/region/:id', async(req, res)=> {
+
+        const news = await News.find({ref_Region: req.params.id}).sort([['updatedAt', 'desc']]);
+        
+             res.status(200).json({
+                success: true,
+               data: news
+              })
+        })
+
+
+
+
+
+
+
+
+
 // user
 
 router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {

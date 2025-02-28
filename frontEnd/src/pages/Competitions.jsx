@@ -16,7 +16,7 @@ const Competitions = ({}) => {
     const [data, setdata] = useState([])
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/banner")
+            fetch(process.env.REACT_APP_API_LINK + "getall/competition")
             .then((res) =>  res.json())
             .then((data) => setdata(data.data));
         }, []);
@@ -35,31 +35,19 @@ const Competitions = ({}) => {
             {data?.map((p) => (
 
             <CardList2 
-                name={"ebuawa"}
-                to={"region"}
-                category={"Region"}
-                link={"ebuawa"}
-                logo={data.imgUrl?.url}
+                        name={p.name}
+                        to={"region"}
+                        category={"Region"}
+                        logo={p.logo[0]?.url}
 
-            />  
+                    />  
+
+
+  
 
 
             )   )   }
 
-
-{data?.map((p) => (
-
-<CardList2 
-    name={"ebuawa"}
-    to={"region"}
-    category={"Region"}
-    link={"ebuawa"}
-    logo={data.imgUrl?.url}
-
-/>  
-
-
-)   )   }
 
 
 

@@ -27,20 +27,6 @@ const Competition = () => {
             .then((data) => setdata(data.data));
         }, []);
 
-        const settings = {
-            dots: false,
-            fade: false,
-            infinite: true,
-            autoplay: false,
-            speed: 2000,
-            autoplaySpeed: 6000,
-            slidesToShow: 2,
-            slidesToScroll: 2,
-            cssEase: "linear",
-            waitForAnimate: false,
-            // nextArrow: <SampleNextArrow />,
-            // prevArrow: <SamplePrevArrow />
-          };
 
 
 
@@ -87,4 +73,69 @@ const Competition = () => {
 
 
 
-export default Competition
+
+
+
+
+
+
+
+
+const Team = () => {
+
+
+    const [data, setdata] = useState([])
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
+            .then((res) =>  res.json())
+            .then((data) => setdata(data.data));
+        }, []);
+
+
+
+
+
+    return (
+        <div className={Style.competion}>
+
+            <h1 >POPULAR TEAM</h1>
+
+
+                <HorizontalScroll >
+            <div className={Style.regions} > 
+
+
+                    
+            {data.map((p) => (
+
+
+
+                        <CardList 
+                            name={p.name}
+                            to={"team"}
+                            category={"team"}
+                            logo={p.logo[0]?.url}
+
+                        />  
+
+
+            )   )   }
+
+            
+            </div>
+
+                </HorizontalScroll>
+
+
+
+
+
+        </div>
+
+    )
+}
+
+
+
+export {Competition, Team}

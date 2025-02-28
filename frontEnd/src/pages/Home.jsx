@@ -9,7 +9,7 @@ import TopNews from "../components/Topnews";
 import Homehighlight from "../components/Homehighlight";
 import { Mininews2, Mininews3 } from "../components/sub component/list/Newslist";
 import Footer from "../components/sub component/Footer";
-import Competition from "../components/Competition";
+import {Competition, Team} from "../components/HCompetition";
 
 
 
@@ -41,6 +41,8 @@ function App() {
               {/* <Slist /> */}
 
               <Competition />
+
+              <Team />
 
 
               <Footer />

@@ -605,7 +605,7 @@ router.post('/live',  async (req, res)=> {
 
 
 
-router.post('/news', auth,  role(process.env.ADMIN), async (req, res)=> {
+router.post('/news', async (req, res)=> {
 
     const data = JSON.parse(req.body.data)
     const file = req.files.img  
@@ -618,17 +618,9 @@ router.post('/news', auth,  role(process.env.ADMIN), async (req, res)=> {
      
 
     try {
-        const {head, body}= data
+        const {head, body, teamid, region}= data
         const imgUrl = []
 
-        const image = await cloudinary.uploader.upload(
-        file.tempFilePath,
-        { folder: 'Banner' },
-
-      );
-
-
-      imgUrl.push({url: image.secure_url,  imgId: image.public_id})
 
  
       
@@ -636,7 +628,7 @@ router.post('/news', auth,  role(process.env.ADMIN), async (req, res)=> {
 
         console.log(data)
 
-		if (!head || !imgUrl ) {
+		if (!head || !body || !teamid ) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",
@@ -648,19 +640,32 @@ router.post('/news', auth,  role(process.env.ADMIN), async (req, res)=> {
         if(existingItem){
             return res.status(400).json({
                 success: false,
-                message: "banner already exists"
+                message: " already exists"
             })
         }
 
+
+
+        const image = await cloudinary.uploader.upload(
+        file.tempFilePath,
+        { folder: 'News' },
+
+      );
+
+      imgUrl.push({url: image.secure_url,  imgId: image.public_id})
+
+
+
+
         const banner = await News.create({
-            head, body, imgUrl: imgUrl[0]
+            head, body, imgUrl: imgUrl[0], ref_Region: region, ref_Team: teamid
         })
             // res.redirect("/login")
 
         return res.status(200).json({
             success: true,
             banner,
-            message: "banner created successfully ✅"
+            message: "created successfully ✅"
            
         })  
     } catch (error) {
@@ -753,7 +758,7 @@ router.post('/player',   async (req, res)=> {
 
 
         const save = await Player.create({
-           name: fullname , teamId: existingTeam._id, dob, position, number, picture: picture[0]
+           name: fullname , teamId: existingTeam.name, dob, position, number, picture: picture[0]
         })
 
 
