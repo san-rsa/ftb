@@ -75,7 +75,7 @@ const Inputs = ({label, type, name, onchange, value, disabled, placeholder, requ
   return (
       <div className={Style.formlist} >
       <label >{label}</label>
-      <input type={type} disabled={disabled} name={name} onChange={onchange} value={value} id={name} placeholder={name} required={required} />
+      <input type={type} disabled={disabled} name={name} onChange={onchange} value={value} id={name} placeholder={placeholder} required={required} />
       </div>
 
   )
@@ -170,7 +170,8 @@ const CardList3 = ({logo, name, category, to, link,}) => {
 
         <div className={Style.logo3}>
                 {/* <img src={info?.imgUrl} alt=""/> */}
-                <img src={logo} />
+                {/* <img src={logo} /> */}
+                <FontAwesomeIcon icon={logo} />
 
         </div>
                 
@@ -213,7 +214,8 @@ const CardList3Edit = ({logo, name, category, to, link, id}) => {
 
       <div className={Style.logo3}>
               {/* <img src={info?.imgUrl} alt=""/> */}
-              <img src={logo} />
+              {/* <img src={logo} /> */}
+              <FontAwesomeIcon icon={logo} />
 
       </div>
               
@@ -225,6 +227,48 @@ const CardList3Edit = ({logo, name, category, to, link, id}) => {
 
           <h2 className={Style.cat}> {category} </h2>
 
+
+          <h2 >  {name}  </h2>
+      </div>    
+      
+
+
+      </div>
+
+
+
+      </Link>
+      
+
+  )
+}
+
+
+
+
+
+
+const CardList4 = ({logo, name, category, link}) => {
+
+  const to = link.replaceAll(' ','-')
+
+
+  return (
+      <Link to={ to } className={Style.a4} >
+
+      <div className={Style.main4} >
+
+      <div className={Style.logo4}>
+              {/* <img src={info?.imgUrl} alt=""/> */}
+              <img src={logo} />
+
+      </div>
+              
+
+          
+      <div className={Style.name4}>
+
+          <h3 > {category} </h3>
 
           <h2 >  {name}  </h2>
       </div>    
@@ -320,4 +364,4 @@ const AlertError = (message ) => {
 
 
 
-export {CardList, PlayerBio, CardList2, CardList3, CardList3Edit, HorizontalScroll, Inputs, AlertError, AlertSuccess }
+export {CardList, PlayerBio, CardList2, CardList3, CardList3Edit, CardList4, HorizontalScroll, Inputs, AlertError, AlertSuccess }

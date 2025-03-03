@@ -1,9 +1,9 @@
 import React, { useState, useEffect, createContext, useContext  } from "react";
 import Nav from "../../../components/sub component/Nav"
-import Input from "../sub/Inputs";
 import { Link, useNavigate } from "react-router-dom";
 import Style from "../../../styles/Login.module.css"
 import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { Inputs } from "../../../components/sub component/list/Generallist";
 
 
 
@@ -146,8 +146,8 @@ const Login = () => {
 
                 <div className={Style.inp}>
                     
-            <Input name="email" type={"email"} onchange={handleChange} value={data.email} class={Style.email} label={"email"} />
-            <Input name="password" type={"password"} onchange={handleChange} value={data.password} class={Style.password} label={"password"} />
+            <Inputs name="email" type={"email"} onchange={handleChange} value={data.email} class={Style.email} label={"email"} />
+            <Inputs name="password" type={"password"} onchange={handleChange} value={data.password} class={Style.password} label={"password"} />
                 </div>
 
             <button className="login" onClick={handleSubmit}> Log in</button> 

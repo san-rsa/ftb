@@ -1,291 +1,201 @@
-import React, { useState, useEffect,  } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import List  from "../../components/sub component/list/Bannerlist";
-import Style from "../../styles/Profile.module.css"
+import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Style from "../../styles/Team.module.css"
 import Nav from "../../components/sub component/Nav"
-import Input from "./sub/Inputs";
+import { useParams, Link } from "react-router-dom";
+import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { Overview, TeamAdmin, TeamFixtures, TeamNews, TeamResults,  } from "../../components/sub component/profileview";
+import Footer from "../../components/sub component/Footer";
 
 
 
-const Profile = ({ text, img}) => {
-    const navigate = useNavigate();
 
+const Profile = ({}) => {
+    const [mode, setInputs] = useState({overview: true, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false, admin: false });
 
- 
-    const [order, setorder] = useState([])
-    const [product, setproduct] = useState([])
-    const [user, setuser] = useState([])
-    const [data, setInputs] = useState({});
-    const [status, setstatus] = useState("true");
+    const [data, setData] = useState({})
 
     
-    
-    function Api() {
+    const title = useParams().id
 
-        
-    
+    const link =title?.replaceAll('-',' ')
+
+
+
+
         useEffect(() => {
-            
-            fetch(process.env.REACT_APP_API_LINK + "getall/wishlist",  {
-                method: "GET",
-                credentials: "include",
-              }) 
+            fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + link)
             .then((res) =>  res.json())
-            .then((data) => setproduct(data.data));
+            .then((data) => setData(data));
         }, []);
+
+
+
+
+
+
+        const handleChange = (event) => {
+            const name = event.target.innerHTML.toLowerCase();
     
+            setInputs({overview: false, news: false, account: false, admin: false, transfer: false, official: false });
+
+            
+            setInputs(values => ({...values, [name]: true}))
+          }
+        
+          console.log(mode);
+    
+    
+    
+
+         
+        
+
         // useEffect(() => {
-        //     fetch(process.env.REACT_APP_API_LINK + "getall/order", {
-          // method: "GET",
-           // credentials: "include",})
+        //     fetch(process.env.REACT_APP_API_LINK  + "getall/product")
         //     .then((res) =>  res.json())
         //     .then((data) => setproduct(data.data));
         // }, []);
     
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getone/user", {
-            method: "GET",
-            credentials: "include",
-            })
-            .then((res) =>  res.json())
-            .then((data) =>{ return (setInputs({
-                "name": data.name,
-                "email": data.email,
-                "phone": data.phone,
-                "address": data?.address,
-                "password": data.password,
-            }), setuser(data))});
-        }, []);
-    }
-    
-    Api()
+ 
+
+    //  useEffect(() => {
+    //     fetch(process.env.REACT_APP_API_LINK  + "getone/wishlist/" + link, {
+    //         credentials: "include",
+    //         headers: { "Content-type": "application/json; charset=UTF-8", },
+    //     }).then((res) =>  res.json())
+    //     .then((data) =>  {
+    //         if (data.data == "true") {
+    //             setwish(faX)
+    //             setset("active")
+    //         } else {
+    //             setwish(faHeart)
+    //             setset("false")
+    //         }
+    //     } );
+    // }, []);
+    //      function wish(e) {
+    //         e.preventDefault()
+    //         const  mood = wishlist.iconName
+
+
+    //         if (mood == "heart") {
+    //             fetch(process.env.REACT_APP_API_LINK + "add/wishlist", {
+    //             method: "POST",
+    //             credentials: "include",
+    //             headers: {
+    //               "Content-type": "application/json",
+    //             },
+    //             body: JSON.stringify({productId: data._id }),
+    //          }).then((res) =>  res.json())
+    //          .then( ()=> setwish(faX))
 
 
 
-
-console.log(user)
-
-
-
-
-
-const edit = (e) => {
-    e.preventDefault()
-
-    const ed = document.getElementById(Style.edit);
-    const sv = document.getElementById(Style.save);
-    const pass = document.getElementById(Style.password);
+    //         } else {
+    //             fetch(process.env.REACT_APP_API_LINK + "del/wishlist", {
+    //                 method: "DELETE",
+    //                 credentials: "include",
+    //                 headers: {
+    //                   "Content-type": "application/json",
+    //                 },
+    //                 body: JSON.stringify({productId: data._id }),
+    //              }).then((res) =>  res.json())
+    //              .then( ()=> setwish(faHeart))
+    //         }
 
 
-    sv.style.display = 'block';
-    ed.style.display = 'none';
-    pass.style.display = "block"
 
-
-    setstatus(!status)
-  };
-
-  const save = async (e) => {
-    e.preventDefault()
-
-    const api = await fetch(process.env.REACT_APP_API_LINK + 'edit/user/', {
-        method: 'PATCH',
-        credentials: "include",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-         })
-         
-         if (api.status === 200) {
-            setuser(data)
-        }
-
-    const ed = document.getElementById(Style.edit);
-    const sv = document.getElementById(Style.save);
-    const pass = document.getElementById(Style.password);
-
-
-    sv.style.display = 'none';
-    ed.style.display = 'block';
-    pass.style.display = "none"
-
-
-    setstatus(!status)
-  };
-
-
-    const handleChange = (event) => {
-      const name = event.target.name;
-      const value = event.target.value;
-      setInputs(values => ({...values, [name]: value}))
-    }
-
-      
-
-
-    const change = (event) => {
-        event.preventDefault()
-        const name = event.target.name
-        const info = document.getElementById(Style.info);
-        const order = document.getElementById(Style.order);
-        const wishlist = document.getElementById(Style.wishlist);
-
-        if (event.target.name == "info") {
-
-            info.style.display = 'block';
-            order.style.display = 'none';
-            wishlist.style.display = 'none';
-            
-        } else  if (event.target.name == "order") {
-
-            info.style.display = 'none'
-            wishlist.style.display = 'none';
-            order.style.display = 'block'
-
-            
-        } 
-        else  if (event.target.name == "wishlist") {
-
-            info.style.display = 'none'
-            order.style.display = 'none'
-            wishlist.style.display = 'block';
-
-            
-        } }
-
-            const logout = async (event) => {
-       
-           
-                const api = await fetch(process.env.REACT_APP_API_LINK + 'auth/logout/', {
-                    method: 'GET',
-                    credentials: "include",
-                    headers: {'Content-Type': 'application/json'},
-                     })
-                     
-                     if (api.status === 200) {
-                      navigate("/");
-                    } 
-                  }
-            
-       
-        //else {
-            
-        // }
-
-        // info ?  info.style.display = 'flex' :  info.style.display = 'none'
+    //    }
 
 
 
     return (
         <div>
          <Nav />
-            <div className={Style.Profile}>
+            <div className={Style.app}>
 
 
-            <div className={Style.section}>
 
-                <div className={Style.left}>
-                            <div className={Style.imgD}>
-                            <img src={""} alt=""/>
-                            <h3> {user?.name}</h3>
-                            <br></br>      
-                            <br></br>  
-                
-                                <div className={Style.tabs}>
 
-                                    <div >
-                                        <button name="info" onClick={change}> personal information</button>
-                                    </div>
 
-                                    <div >
-                                        <button name="order" onClick={change}> my order</button>
-                                    </div>
+  
 
-                                    <div >
-                                        <button name="wishlist" onClick={change}> wishlist</button>
-                                    </div>
 
-                                    <div id={Style.logout} >
-                                        <button name="log-out" onClick={logout}> log out</button>
-                                    </div>
 
-                                </div>
-                            
-                            </div></div>
+                         <div className={Style.top}>
 
-        <div className={Style.right}>
-            <div className={Style.info} id={Style.info}>
-                <h1>PERSONAL INFORMATION</h1>
+                            <div className={Style.head} >
 
-                <form id={Style.form}>
-                <div className={Style.quan}>
-                <div className={Style.details}>
+                            <div className={Style.img}>
+                                    {/* <img src={info?.imgUrl} alt=""/> */}
+                                {data.logo && <img src={data.logo[0]?.url}/>       }
+                            </div>
+                                    
 
-                    <div className={Style.name}>
-                        <Input name="name" status={status} type={"text"} onchange={handleChange} value={data.name} class={Style.fname} label={"first name"} />   
-                    </div>
+                                
+                            <div className={Style.name}>
+                                <h1 > <span > {data.name} </span> </h1>
+                            </div>    
+                                     
+                  
+                             </div>  
+         
+         
+                       <div className={Style.list}>
+    
+                    <ul >
+                        <li onClick={handleChange} >Overview</li>
+                        <li onClick={handleChange}  >News</li>
+                        {/* <li onClick={handleChange} >Fixtures</li>
+                        <li onClick={handleChange}  >Results</li> */}
+                        {/* <li onClick={handleChange}  >Squad</li> */}
+                        {/* <li onClick={handleChange}  >Transfer</li> */}
+                        {/* <li onClick={handleChange}  >Official</li> */}
+                        <li onClick={handleChange}  >Admin</li>
 
-                    <div className={Style.contact}>
-                        <Input name="email" status={status} type={"email"} onchange={handleChange} value={data.email} class={Style.email} label={"email"}   />
-                        <Input name="phone" status={status} type={"number"} onchange={handleChange} value={data.phone} class={Style.number} label={"phone number"}  />
-                    </div>
+    
+                    </ul>
+    
+    
+    
                     
-                
-                    <div className={Style.other}>
-                    <Input name="address" status={status}  type={"text"} onchange={handleChange} value={data.address} class={Style.address} label={"address"} />
-                    <Input name="password" id={Style.password} status={status} type={"password"} onchange={handleChange} value={data.password} class={Style.password} label={"password"}  />
-                    
-                    </div>
-                </div>
-                <button className={Style.cartB} id={Style.edit} onClick={edit}>EDIT</button>
-                <button className={Style.cartB} id={Style.save} onClick={save}>SAVE</button>
-                </div>
-                </form>
-            </div>
-
-
-            <div className={Style.order} id={Style.order}>
-                <h1 > MY ORDERS</h1>
+              
+                 {/* { mode.fixtures && <Fixtures />}
     
-            </div>
-
-            <div className={Style.wishlist} id={Style.wishlist} >
-                <h1 > WISHLIST</h1>
-
-
-                {product.products?.map((project, id) => (
-                    
-
-
-                    <div className="card"> 
-                                        
-                    <List
-                    key={id}
-                    id={product.products[id].productId?._id}
-                    price={product.products[id].productId?.size[0].price}
-                    name={product.products[id].productId?.name}
-                    img={product.products[id].productId?.imgUrl.url}   
-
-
-
-                    /> 
+                 { mode.results &&  <Results />} */}
     
-    
-                        </div>
-    
-    
-                    )   )   }
+                 </div>
 
-            </div>
- 
+                         </div>
 
-                <div id={Style.logout2} >
-                    <button name="log-out" onClick={logout}> log out</button>
-                </div>
+         <div className={Style.section} >
 
-            </div>
-            </div>
+            { mode.overview && <Overview id={link} />}
+
+            { mode.news && <TeamNews id={link} />}
+
+            {/* { mode.fixtures && <TeamFixtures id={link} />}
+
+            { mode.results && <TeamResults id={link} />} */}
+
+            {/* { mode.squad && <TeamSquad id={link} />} */}
+
+            { mode.admin && <TeamAdmin id={link} />}
+
+
+
+         </div>
+
+
+
+
+
 
      </div>
+
+     <Footer />
         </div>
 
     )

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Nav from "../../../components/sub component/Nav"
-import Input from "../sub/Inputs";
+import { Inputs } from "../../../components/sub component/list/Generallist";
 import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import Style from "../../../styles/Register.module.css"
 
@@ -67,15 +67,15 @@ const Register = ({ img}) => {
 
                 <div className={Style.inp}>
 
-            <Input name="fname" type={"text"} onchange={handleChange} value={data.fname} class={Style.fname} label={"first name"} />   
-            <Input name="lname" type={"text"} onchange={handleChange} value={data.lname} class={Style.lname} label={"second name"} />
-            <Input name="email" type={"email"} onchange={handleChange} value={data.email} class={Style.email} label={"email"} />
-            <Input name="number" type={"number"} onchange={handleChange} value={data.number} class={Style.number} label={"phone number"} />
+            <Inputs name="fname" type={"text"} onchange={handleChange} value={data.fname} class={Style.fname} label={"first name"} />   
+            <Inputs name="lname" type={"text"} onchange={handleChange} value={data.lname} class={Style.lname} label={"second name"} />
+            <Inputs name="email" type={"email"} onchange={handleChange} value={data.email} class={Style.email} label={"email"} />
+            <Inputs name="number" type={"number"} onchange={handleChange} value={data.number} class={Style.number} label={"phone number"} />
 
-            <Input name="address" type={"text"} onchange={handleChange} value={data.address} class={Style.address} label={"address"} />
+            <Inputs name="address" type={"text"} onchange={handleChange} value={data.address} class={Style.address} label={"address"} />
 
-            <Input name="password" type={"password"} onchange={handleChange} value={data.password} class={Style.password} label={"password"} />
-            <Input name="imgUrl" type={"text"} onchange={handleChange} value={data.img} class={Style.img} label={"image url address"} />
+            <Inputs name="password" type={"password"} onchange={handleChange} value={data.password} class={Style.password} label={"password"} />
+            <Inputs name="imgUrl" type={"text"} onchange={handleChange} value={data.img} class={Style.img} label={"image url address"} />
         
 
                 </div>

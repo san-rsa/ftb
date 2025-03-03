@@ -4,7 +4,7 @@ import Style from "../..//styles/Team.module.css"
 import Styles from "../..//styles/News.module.css"
 
 import { useParams, Link } from "react-router-dom";
-import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
+import {  faX, faHeart, faPlus, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Fixture, Result, Table, Tablehead } from "./list/Tournamentlist";
 import News, { Mininews } from "./list/Newslist";
@@ -691,9 +691,9 @@ const TeamAdmin = ({}) => {
             <h2 > Players</h2>
 
             <div className={Style.teamadminmenulist} >
-                <CardList3 name={"Players"} to={"add"} category={"add"} link={"player"} logo={data.imgUrl?.url} />  
-                <CardList3Edit name={"Players"} to={"edit"} category={"edit"} link={"player"} logo={data.imgUrl?.url} id={"list"} />  
-                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={data.imgUrl?.url} />   */}
+                <CardList3 name={"Players"} to={"add"} category={"add"} link={"player"} logo={faPlus} />  
+                <CardList3Edit name={"Players"} to={"edit"} category={"edit"} link={"player"} logo={faPenToSquare} id={"list"} />  
+                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
       
             </div>
 
@@ -707,9 +707,9 @@ const TeamAdmin = ({}) => {
             <h2 > News</h2>
 
             <div className={Style.teamadminmenulist} >
-                <CardList3 name={"News"} to={"add"} category={"add"} link={"news"} logo={data.imgUrl?.url} />  
-                <CardList3Edit name={"News"} to={"edit"} category={"edit"} link={"news"} logo={data.imgUrl?.url} id={"list"} />  
-                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={data.imgUrl?.url} />   */}
+                <CardList3 name={"News"} to={"add"} category={"add"} link={"news"} logo={faPlus} />  
+                <CardList3Edit name={"News"} to={"edit"} category={"edit"} link={"news"} logo={faPenToSquare} id={"list"} />  
+                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
       
             </div>
             

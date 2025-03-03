@@ -404,16 +404,18 @@ router.patch('/news/:id',  async (req, res)=> {
 
 
 
-router.patch('/player',  async (req, res)=> {
+router.patch('/player/:id',  async (req, res)=> {
 
     const data = JSON.parse(req.body.data)
     const file = req.files?.img  
+    const id = {first: req.params.id.split(" ")[0], last: req.params.id.split(" ")[1]}
+
       
 
      
 
     try {
-        const {name, description, teamid, position, number}= data
+        const {fname, lname, description, teamid, position, number}= data
         const  picture = []
 
         if (req.files) {
@@ -434,7 +436,12 @@ router.patch('/player',  async (req, res)=> {
 
         console.log(data)
 
-		if (!name || teamid ) {
+
+        const fullname = {first: fname, last: lname}
+
+
+
+		if (!fullname || !teamid ) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",
@@ -452,8 +459,8 @@ router.patch('/player',  async (req, res)=> {
         //     ex.push(db.teamId)
         // };
 
-        const save = await Player.findByIdAndUpdate({name: req.params.id},  {
-           $set: data, picture: picture[0], // exTeamId: ex
+        const save = await Player.findOneAndUpdate({name: id},  {
+           $set: data, name: fullname,  picture: picture[0], // exTeamId: ex
         }, { new: true })
             // res.redirect("/login")
 

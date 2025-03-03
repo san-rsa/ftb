@@ -24,10 +24,12 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
 
         useEffect(() => {
+          if (!typeId) {
             fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + teamid)
             .then((res) =>  res.json())
             .then((data) =>  setInputs(values => ({...values, teamid: data.name}))
           );
+          }
 
         }, []);
 
@@ -42,7 +44,8 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
               lname: data.name.last,
               position: data.position,
               dob: data.dob.slice(0, 10), 
-              img: data.picture.url
+              img: data.picture.url, 
+              teamid: data.teamId
               
               
             })
@@ -111,7 +114,7 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
             const link =teamid.replaceAll(' ','-')
 
           
-                navigate("/team/"+ link + "/"); 
+                navigate("/user"); 
 
            } else {
             setSubmitBtn(false);
@@ -127,7 +130,7 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
             if (data.success == false) {
                AlertError(data.message)
 
-               console.log(data.message);
+               setSubmitBtn(false);
                
             } else {
                             // navigate("admin"); 
@@ -139,18 +142,8 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
         
         .catch((e) => {
           console.log(e);
-          setSubmitBtn(!submitbtn)
-          toast.error('message', {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-            })
+          setSubmitBtn(false)
+            AlertError(e)
 
           let msg = "fail"
         })
@@ -181,11 +174,11 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
       </div>
 
 
-        <div className={Style.form} >
+        <form className={Style.form} >
 
         <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
         <Inputs label={'last name'} type={'text'} name={'lname'} onchange={handleChange} value={data.lname}  placeholder={'last name'} disabled={false} required={true}  />
-        <Inputs label={'team'} type={'text'} value={teamid} disabled={true} required={true}  />
+        <Inputs label={'team'} type={'text'} value={data.teamid} disabled={true} required={true}  />
 
         <Inputs label={'date of birth'} type={'date'} name={'dob'} onchange={handleChange} value={data.dob} disabled={false} required={true}  />
         <Inputs label={'picture'} type={'file'} name={'picture'} onchange={handleFileChange} value={data.picture}  placeholder={'first name'} disabled={false} required={true}  />
@@ -237,7 +230,6 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
         <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
         <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
          */}
-        </div>
 
 
 
@@ -245,6 +237,7 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
 
         <button className="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
+        </form>
 
     </div>
 
@@ -521,7 +514,6 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
         <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
         <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
          */}
-        </form>
 
 
 
@@ -529,6 +521,7 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
 
 
         <button className="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
+        </form>
 
     </div>
 

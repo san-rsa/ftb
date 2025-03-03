@@ -57,8 +57,11 @@ import Result from "./pages/competition/match/Result";
 
 
 import Stats from "./pages/competition/Stats";
-import Add from "./pages/teamadmin/Add";
-import List from "./pages/teamadmin/List";
+import TeamAdd from "./pages/user/adminteam/TeamAdd";
+import AdminAdd from "./pages/user/admin/AdminAdd";
+
+import TeamAdminList from "./pages/user/adminteam/List";
+import AdminList from "./pages/user/admin/List";
 
 
 
@@ -91,14 +94,11 @@ function Links() {
 
 
 
-        <Route path="/team/:id/:event/:type" element={<Add />}/>
-        <Route path="/team/:id/:event/:type/list" element={<List />}/>
-        <Route path="/team/:id/:event/:type/:typeId" element={<Add />}/>
+        <Route path="/team/:id/:event/:type" element={<TeamAdd />}/>
+        <Route path="/team/:id/:event/:type/list" element={<TeamAdminList />}/>
+        <Route path="/team/:id/:event/:type/:typeId" element={<TeamAdd />}/>
 
 
-
-
-        
            {/*
 
         <Route path="/competition/:id/lives" element={<Lives />}/>
@@ -111,6 +111,19 @@ function Links() {
 
 
         <Route path="/user" element={<Profile />}/>
+
+        <Route path="/user/:event/match" element={<Profile />}/>
+        <Route path="/user/:event/match/:region" element={<Profile />}/>
+        <Route path="/user/:event/match/:region/list" element={<Profile />}/>
+        <Route path="/user/:event/match/:region/:matchId" element={<Profile />}/>
+
+
+
+        <Route path="/user/:event/:type" element={<AdminAdd />}/>
+        <Route path="/user/:event/:type/list" element={<AdminList />}/>
+        <Route path="/user/:event/:type/:typeId" element={<AdminAdd />}/>
+        <Route path="/user" element={<Profile />}/>
+        
         {/* <Route path="/admin" element={<Admin />}/>
 
         

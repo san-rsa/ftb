@@ -519,7 +519,7 @@ router.get('/:link/:team/fixtures/:year', async(req, res)=> {
 
 
 
-          const data = await Player.find({teamId: team._id}).sort("name")
+          const data = await Player.find({teamId: team.name}).sort("name")
 
 
           console.log(team, data);

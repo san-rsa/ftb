@@ -54,7 +54,7 @@ const Live = require('../../models/competition/live')
 
 
 
-router.post('/banner', auth,  role(process.env.ADMIN), async (req, res)=> {
+router.post('/banner',  async (req, res)=> {
 
     const data = JSON.parse(req.body.data)
     const file = req.files.img  
