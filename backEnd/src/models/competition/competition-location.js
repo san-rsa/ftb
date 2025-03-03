@@ -4,14 +4,17 @@ const mongoose = require('mongoose')
 
 const Schema = new mongoose.Schema({
 
+    regionId: {type: mongoose.Schema.Types.String, ref: "Competition",   },
+    
+
     name: {type: String, required: true, trim: true, unique: true
     },
 
-    type : {type: String,  enum: [ 'league', 'cup'],  },
+
+    bio: {type: String, },
+    pictures: [{url: {type: String, }, imgId: {type: String, } }],
 
 
-
-    logo: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
 
 
 
@@ -29,6 +32,6 @@ const Schema = new mongoose.Schema({
     timestamps: true
 })
 
-const Competition  = mongoose.model('Competition ', Schema)
+const Sub_Region  = mongoose.model('Sub-Region ', Schema)
 
-module.exports = Competition  
+module.exports = Sub_Region  

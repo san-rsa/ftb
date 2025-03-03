@@ -106,6 +106,7 @@ const TeamAdminNewsList = ({teamid}) => {
             <MininewsEdit
                 head={project.head}
                 img={project.imgUrl[0].url}
+                link={"./../" + project.head}
                 />  
 
 

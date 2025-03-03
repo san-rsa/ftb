@@ -81,7 +81,7 @@ const Mininews = ({img, head, link, id}) => {
 
 const Mininews2 = ({img, head, link, id}) => {
 
-    const newsLink =head.replaceAll(' ','-')
+    const newsLink =link.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
@@ -189,13 +189,18 @@ const Mininews3 = ({img, head,link, id}) => {
 
 
 
-const MininewsEdit = ({img, head,  id}) => {
+const MininewsEdit = ({img, head,  link }) => {
 
-    const link = head.replaceAll(' ','-')
+    const to = link.replaceAll(' ','-')
 
+    const tod = head.replaceAll(' ','-')
+
+
+    console.log(tod);
+    
     return (
         <div className={Style.newsm}>
-           <Link to={"./../" + link}>
+           <Link to={ to}>
             <div className={Style.news2}>
 
 

@@ -7,7 +7,7 @@ import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Footer from "../../../components/sub component/Footer";
 import { TeamAdminNews, TeamAdminPlayer } from "../../../components/sub component/TeamAdminview";
-import { AdminBanner, AdminNews } from "../../../components/sub component/Profileadminview";
+import { AdminBanner, AdminNews, AdminRegion } from "../../../components/sub component/Profileadminview";
 
 
 
@@ -129,9 +129,12 @@ const Add = ({}) => {
             { mode2.news && <AdminNews teamid={teamid} event={mode1} typeId={typeId} />}
 
 
-            { mode2.news && <AdminNews teamid={teamid} event={mode1} typeId={typeId} />}
+            { mode2.region && <AdminRegion teamid={teamid} event={mode1} typeId={typeId} />}
+
+            { mode2["sub-location"] && <AdminNews teamid={teamid} event={mode1} typeId={typeId} />}
 
             { mode2.fixtures && <AdminNews teamid={teamid} event={mode1} typeId={typeId} />}
+
 
             { mode2.results && <AdminNews teamid={teamid} event={mode1} typeId={typeId} />}
   {/* 

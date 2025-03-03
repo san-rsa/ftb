@@ -7,7 +7,7 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Footer from "../../../components/sub component/Footer";
-import { AdminBannerList, AdminNewsList } from "../../../components/sub component/list/Profileadminviewlist";
+import { AdminBannerList, AdminNewsList, AdminRegionList } from "../../../components/sub component/list/Profileadminviewlist";
 
 
 
@@ -148,6 +148,12 @@ const List = ({}) => {
 
             { mode2.banner && <AdminBannerList teamid={teamid} event={mode1} typeId={typeId} />}
 
+            { mode2.news && <AdminNewsList teamid={teamid} event={mode1} typeId={typeId} />}
+
+            { mode2.region && <AdminRegionList teamid={teamid} event={mode1} typeId={typeId} />}
+            
+            { mode2.news && <AdminNewsList teamid={teamid} event={mode1} typeId={typeId} />}
+            { mode2.news && <AdminNewsList teamid={teamid} event={mode1} typeId={typeId} />}
             { mode2.news && <AdminNewsList teamid={teamid} event={mode1} typeId={typeId} />}
 
 

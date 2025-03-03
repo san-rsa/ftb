@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 
 const bannerSchema = new mongoose.Schema({
-  head: {type: String, required: true
+  head: {type: String, required: true, trim: true 
   },
 
 

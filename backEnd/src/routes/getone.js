@@ -21,11 +21,13 @@ const Team = require('../models/competition/team')
 
 
 
-router.get('/banner/:id', auth, async (req, res, next) => {
+router.get('/banner/:id',  async (req, res, next) => {
+  console.log(req.params.id +2);
+  
 
 
         try {
-            const data = await Banner.findById(req.params.id)
+            const data = await Banner.findOne({head: req.params.id})
 
             if (data) {
                 

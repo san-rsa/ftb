@@ -88,11 +88,19 @@
 
 
 
+
+
 /* news list */
-.newsgrid, .list {
+.newsgrid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
 
+}
+
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 
@@ -123,8 +131,13 @@
 
     }
 
-    .newsgrid, .list {
+    .newsgrid {
         grid-template-columns: repeat(3, 1fr);
+
+    }
+
+    .list {
+        grid-template-columns: repeat(2, 1fr);
 
     }
 }
@@ -141,8 +154,13 @@
     }
     
 
-    .newsgrid, .list {
+    .newsgrid {
         grid-template-columns: repeat(1, 1fr);
+
+    }
+
+    .list {
+        grid-template-columns: repeat(2, 1fr);
 
     }
     

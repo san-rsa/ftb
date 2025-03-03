@@ -26,7 +26,7 @@ const CupStanding = require('../../models/competition/standing/cup')
 
 
 
-    router.patch('/banner/:id' , auth, role(process.env.ADMIN), async (req, res, next) => {
+    router.patch('/banner/:id' ,  async (req, res, next) => {
         try {
 
             const update = JSON.parse(req.body.data)
@@ -50,7 +50,7 @@ const CupStanding = require('../../models/competition/standing/cup')
         
         
         
-            const save = await Banner.findByIdAndUpdate(req.params.id, {
+            const save = await Banner.findOneAndUpdate({head: req.params.id}, {
                 $set: update, imgUrl: imgUrl[0]
             }, { new: true });
             res.json(save);

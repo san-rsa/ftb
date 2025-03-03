@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const newsSchema = new mongoose.Schema({
-  head: {type: String, required: true
+  head: {type: String, required: true, trim: true 
   },
 
 

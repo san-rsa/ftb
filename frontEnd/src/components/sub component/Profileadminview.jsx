@@ -19,37 +19,23 @@ const AdminBanner = ({teamid, event, typeId }) => {
 
 
   let navigate = useNavigate()
-
-
-
-
-        useEffect(() => {
-          if (!typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + teamid)
-            .then((res) =>  res.json())
-            .then((data) =>  setInputs(values => ({...values, teamid: data.name}))
-          );
-          }
-
-        }, []);
+        
 
 
 
         useEffect(() => {
           if (typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/player/" + typeId.replaceAll('-',' '))
+            fetch(process.env.REACT_APP_API_LINK  + "getone/banner/" + typeId.replaceAll('-',' '))
             .then((res) =>  res.json())
             .then((data) =>  setInputs({
-              fname:data.name.first,
-              lname: data.name.last,
-              position: data.position,
-              dob: data.dob.slice(0, 10), 
-              img: data.picture.url, 
-              teamid: data.teamId
+              head:data.head,
+              body: data.body,
+              img: data.imgUrl?.url, 
               
               
             })
-          );
+          ); 
+
           }       
 
         if (event.add ) {
@@ -80,7 +66,6 @@ const AdminBanner = ({teamid, event, typeId }) => {
 
 
 
-          console.log(data, img);
     
 
 
@@ -108,13 +93,14 @@ const AdminBanner = ({teamid, event, typeId }) => {
         body:   formData
         })
         
-        .then((res) => {
+        .then((res) => {            console.log(res.status);
+
            if (res.status == 200) {
 
-            const link =teamid.replaceAll(' ','-')
+         
 
           
-                navigate("/team/"+ link + "/"); 
+                navigate("/user"); 
 
            } else {
             setSubmitBtn(false);
@@ -133,27 +119,14 @@ const AdminBanner = ({teamid, event, typeId }) => {
                setSubmitBtn(false);
                
             } else {
-                            // navigate("admin"); 
+              //  navigate("/user"); 
 
             }
-          })
-
-
-        
-        .catch((e) => {
+          }).catch((e) => {
           console.log(e);
           setSubmitBtn(false)
-          toast.error('message', {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-            })
+          AlertError("error try again later")
+
 
           let msg = "fail"
         })
@@ -490,15 +463,6 @@ const AdminNews = ({teamid, event, typeId }) => {
 
 
 
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + teamid)
-            .then((res) =>  res.json())
-            .then((data) =>  setInputs(values => ({...values, teamid: data.name}))
-          );
-
-        }, []);
-
-
 
         useEffect(() => {
           fetch(process.env.REACT_APP_API_LINK  + "getall/competition/" )
@@ -518,7 +482,6 @@ const AdminNews = ({teamid, event, typeId }) => {
             .then((data) =>  setInputs({
               head:data.head,
               body: data.body,
-              team: data.ref_Team[0],
               region: data.ref_Region[0], 
               img: data?.imgUrl[0]?.url
               
@@ -585,11 +548,8 @@ const AdminNews = ({teamid, event, typeId }) => {
         
         .then((res) => {
            if (res.status == 200) {
-
-            const link =teamid.replaceAll(' ','-')
-
           
-                navigate("/team/"+ link + "/"); 
+                navigate("/user"); 
 
            } else {
             setSubmitBtn(false);
@@ -618,17 +578,8 @@ const AdminNews = ({teamid, event, typeId }) => {
         .catch((e) => {
           console.log(e);
           setSubmitBtn(!submitbtn)
-          toast.error('message', {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-            })
+          AlertError("error try again later")
+
 
           let msg = "fail"
         })
@@ -663,10 +614,6 @@ const AdminNews = ({teamid, event, typeId }) => {
 
         <Inputs label={'head'} type={'text'} name={'head'} onchange={handleChange} value={data.head}  placeholder={'head'} disabled={false} required={true}  />
         
-       
-       
-        <Inputs label={'team'} type={'text'} value={teamid} disabled={true} required={true}  />
-
 
        <div className={Style.select} >
 
@@ -751,4 +698,201 @@ const AdminNews = ({teamid, event, typeId }) => {
 
 
 
-export {TeamAdminPlayer, AdminNews, AdminBanner}
+const AdminRegion = ({teamid, event, typeId }) => {
+  const [data, setInputs] = useState({})
+  const [region, settRegion] = useState([])
+
+
+  const [img, setFile] = useState({});
+  const [submitbtn, setSubmitBtn] = useState(false)
+
+  const [fetchs, setFetch] = useState({link: "", method: ""})
+
+
+
+  let navigate = useNavigate()
+
+
+
+
+
+
+        useEffect(() => {
+
+          if (typeId) {
+            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + typeId.replaceAll('-',' '))
+            .then((res) =>  res.json())
+            .then((data) =>  setInputs({
+              name:data.name,
+              type: data.type,
+              img: data?.logo[0]?.url
+              
+              
+            })
+          );
+          }       
+
+        if (event.add ) {
+      setFetch({link: 'admin/add/news/', method: 'POST'  })
+    } else if (event.edit) {
+      setFetch({link: 'admin/edit/news/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+
+    }
+
+      }, []);
+        
+
+
+
+    const h1 = (event.add) ? "Add Region" : (event.edit) ? "Edit Region" : "please try again later" ;  
+    
+    
+      const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+
+      }
+    
+      const handleFileChange = (event) => {
+        setFile(event.target.files)
+      };
+
+
+
+          console.log(data, img);
+    
+
+
+      const HandleSubmit = async (event) => {
+        event.preventDefault();
+        setSubmitBtn(!submitbtn)
+    
+        const formData = new FormData();
+      
+    
+        Array.from(img).forEach(imgs => {
+    
+          formData.append('img', imgs);
+    
+      });
+    
+            formData.append('data',  JSON.stringify(data));
+    
+    
+    
+       const api = fetch(process.env.REACT_APP_API_LINK + fetchs.link, {
+        method: fetchs.method,
+        // credentials: "include",
+       // headers: {'Content-Type': "application/json", },
+        body:   formData
+        })
+        
+        .then((res) => {
+           if (res.status == 200) {
+          
+                navigate("/user"); 
+
+           } else {
+            setSubmitBtn(false);
+       
+           }
+
+           return res.json()
+        }).then(
+          data => {
+
+           
+            if (data.success == false) {
+               AlertError(data.message)
+
+               console.log(data.message);
+               
+            } else {
+                            // navigate("admin"); 
+
+            }
+          })
+
+
+        
+        .catch((e) => {
+          console.log(e);
+          setSubmitBtn(!submitbtn)
+          AlertError("error try again later")
+
+
+          let msg = "fail"
+        })
+
+
+        
+    
+    
+     
+      
+      }
+
+
+
+    return (            
+      <div className={Style.app}>
+
+
+      <div className={Style.top} >
+        <h1 > {h1} </h1>
+      </div>
+
+
+      <div className={Style.pimg} >
+
+{        data.img &&    <img src={data.img } /> }    
+
+      </div>
+
+
+        <form className={Style.form} >
+
+        <Inputs label={'name'} type={'text'} name={'name'} onchange={handleChange} value={data.name}  placeholder={'name'} disabled={false} required={true}  />
+        
+
+       <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" >region</label>
+
+          <select id="region" name={"type"} onChange={handleChange} title="type" Value={data?.type} defaultValue={data?.type} value={data.type} > 
+          {/* { data.type ?  <option value={data.type} > {data.type}  </option> : <option value={""} > select a region  </option> } */}
+                  <option name={"type"} value={"League"} > League  </option>
+
+            <option name={"type"} value={"Cup"} > Cup  </option>            
+
+
+          </select>
+
+        </div>
+
+
+        <Inputs label={'picture'} type={'file'} name={'picture'} onchange={handleFileChange} value={data.picture}  placeholder={'first name'} disabled={false} required={true}  />
+
+
+
+
+
+        </form>
+
+
+
+
+
+
+        <button className="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
+
+    </div>
+
+    )
+}
+
+
+
+export {TeamAdminPlayer, AdminNews, AdminBanner, AdminRegion}
