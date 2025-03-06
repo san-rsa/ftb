@@ -194,7 +194,7 @@ router.post('/competition', async (req, res)=> {
 
         const image = await cloudinary.uploader.upload(
         file.tempFilePath,
-        { folder: 'Banner' },
+        { folder: 'region' },
 
       );
 

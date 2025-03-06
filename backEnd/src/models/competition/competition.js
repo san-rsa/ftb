@@ -7,7 +7,7 @@ const Schema = new mongoose.Schema({
     name: {type: String, required: true, trim: true, unique: true
     },
 
-    type : {type: String,  enum: [ 'league', 'cup'],  },
+    type : {type: String,  enum:  ['league', 'cup', ] },
 
 
 

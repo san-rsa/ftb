@@ -36,7 +36,7 @@ const AdminBannerList = ({teamid}) => {
 
 
 
-            <div className={Style.list}  >  
+            <div className={Style.newsgrid}  >  
 
 
             {data.map((project) => (

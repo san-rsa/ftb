@@ -733,9 +733,9 @@ const AdminRegion = ({teamid, event, typeId }) => {
           }       
 
         if (event.add ) {
-      setFetch({link: 'admin/add/news/', method: 'POST'  })
+      setFetch({link: 'admin/add/competition/', method: 'POST'  })
     } else if (event.edit) {
-      setFetch({link: 'admin/edit/news/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+      setFetch({link: 'admin/edit/competition/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
 
     }
 
@@ -834,6 +834,8 @@ const AdminRegion = ({teamid, event, typeId }) => {
       }
 
 
+      console.log(data.type);
+
 
     return (            
       <div className={Style.app}>
@@ -851,7 +853,7 @@ const AdminRegion = ({teamid, event, typeId }) => {
       </div>
 
 
-        <form className={Style.form} >
+        <form className={Style.form} onSubmit={HandleSubmit}>
 
         <Inputs label={'name'} type={'text'} name={'name'} onchange={handleChange} value={data.name}  placeholder={'name'} disabled={false} required={true}  />
         
@@ -861,11 +863,11 @@ const AdminRegion = ({teamid, event, typeId }) => {
 
         <label rel="select" htmlFor="select" >region</label>
 
-          <select id="region" name={"type"} onChange={handleChange} title="type" Value={data?.type} defaultValue={data?.type} value={data.type} > 
-          {/* { data.type ?  <option value={data.type} > {data.type}  </option> : <option value={""} > select a region  </option> } */}
-                  <option name={"type"} value={"League"} > League  </option>
+          <select id="region" name={"type"} onChange={handleChange} title="type" value={data.type} required > 
+          { data.type ?  null : <option value={""} > select a region  </option> }
+            <option name={"type"} value={"league"} > League  </option>
 
-            <option name={"type"} value={"Cup"} > Cup  </option>            
+            <option name={"type"} value={"cup"} > Cup  </option>            
 
 
           </select>
@@ -873,7 +875,7 @@ const AdminRegion = ({teamid, event, typeId }) => {
         </div>
 
 
-        <Inputs label={'picture'} type={'file'} name={'picture'} onchange={handleFileChange} value={data.picture}  placeholder={'first name'} disabled={false} required={true}  />
+        <Inputs label={'logo'} type={'file'} name={'logo'} onchange={handleFileChange} value={data.logo}  placeholder={'first name'} disabled={false}  />
 
 
 
@@ -886,7 +888,7 @@ const AdminRegion = ({teamid, event, typeId }) => {
 
 
 
-        <button className="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
+        <button className="submit" type="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
 
     </div>
 

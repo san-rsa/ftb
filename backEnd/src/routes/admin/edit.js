@@ -111,28 +111,28 @@ router.patch('/codes-of-conduct/:id', async (req, res)=> {
 
 router.patch('/competition/:id', async (req, res)=> {
 
-    const data = req.body //JSON.parse(req.body.data)
-    const file = req.files.logo  
-
-    
-    if (!req.files) {
-        // No file was uploaded
-        return res.status(400).json({ error: "No file uploaded" });
-      }
+    const data = JSON.parse(req.body.data)
+    const file = req.files?.logo  
      
 
     try {
         const {name, description, type}= data
         const logo = []
 
-        const image = await cloudinary.uploader.upload(
-        file.tempFilePath,
-        { folder: 'Banner' },
+        if (req.files) {
+            // No file was uploaded
 
-      );
+            const image = await cloudinary.uploader.upload(
+            file.tempFilePath,
+            { folder: 'Banner' },
+    
+          );              
+          
+          logo.push({url: image.secure_url,  imgId: image.public_id})
+
+        }
 
 
-      logo.push({url: image.secure_url,  imgId: image.public_id})
 
  
       
@@ -140,7 +140,7 @@ router.patch('/competition/:id', async (req, res)=> {
 
         console.log(data)
 
-		if (!name || !logo ) {
+		if (!name || !type ) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",
@@ -154,7 +154,7 @@ router.patch('/competition/:id', async (req, res)=> {
 
 
         const save = await Competition.findOneAndUpdate({name: req.params.id}, {
-            $set: data, logo: logo[0]
+            $set: data, logo: logo[0], type: type
         }, { new: true });
             // res.redirect("/login")
 
