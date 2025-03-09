@@ -14,6 +14,10 @@ const Schema = new mongoose.Schema({
     logo: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
 
 
+    teams: [ {type: mongoose.Schema.Types.String, ref: "Team",   },  ],
+
+    
+
 
 
 

@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Style from "../../../styles/Team.module.css"
 import Nav from "../../../components/sub component/Nav"
 import { useParams, Link } from "react-router-dom";
-import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
-import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Footer from "../../../components/sub component/Footer";
-import { TeamAdminNews, TeamAdminPlayer } from "../../../components/sub component/TeamAdminview";
-import { AdminBanner, AdminNews, AdminRegion } from "../../../components/sub component/Profileadminview";
+import { AdminAddTeamToRegion, AdminBanner, AdminFixture, AdminNews, AdminRegion, AdminSubRegion } from "../../../components/sub component/Profileadminview";
 
 
 
@@ -15,23 +11,14 @@ import { AdminBanner, AdminNews, AdminRegion } from "../../../components/sub com
 const Add = ({}) => {
     const [mode1, setEvent] = useState({add: false, edit: false, });
 
-    const [mode2, setType] = useState({banner: false, news: false, region: false, user: false, "sub-location": false,  });
-
-    const [data, setData] = useState({})
-
+    const [mode2, setType] = useState({banner: false, news: false, region: false, user: false, "add-team-to-region": false, "sub-region": false,  });
     
-    const {id, event, type, typeId } = useParams()
+    const { event, type, typeId, matchId } = useParams()
 
-    const teamid =id?.replaceAll('-',' ')
-
-
+    const id =typeId?.replaceAll('-',' ')
 
 
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + teamid)
-            .then((res) =>  res.json())
-            .then((data) => setData(data));
-        }, []);
+
 
 
         useEffect(() => {            
@@ -47,70 +34,9 @@ const Add = ({}) => {
 
 
 
-        console.log(mode1, mode2, id, event, type, typeId);
+        console.log(mode1, mode2, event, type, typeId);
         
 
-
-
-         
-        
-
-        // useEffect(() => {
-        //     fetch(process.env.REACT_APP_API_LINK  + "getall/product")
-        //     .then((res) =>  res.json())
-        //     .then((data) => setproduct(data.data));
-        // }, []);
-    
- 
-
-    //  useEffect(() => {
-    //     fetch(process.env.REACT_APP_API_LINK  + "getone/wishlist/" + link, {
-    //         credentials: "include",
-    //         headers: { "Content-type": "application/json; charset=UTF-8", },
-    //     }).then((res) =>  res.json())
-    //     .then((data) =>  {
-    //         if (data.data == "true") {
-    //             setwish(faX)
-    //             setset("active")
-    //         } else {
-    //             setwish(faHeart)
-    //             setset("false")
-    //         }
-    //     } );
-    // }, []);
-    //      function wish(e) {
-    //         e.preventDefault()
-    //         const  mood = wishlist.iconName
-
-
-    //         if (mood == "heart") {
-    //             fetch(process.env.REACT_APP_API_LINK + "add/wishlist", {
-    //             method: "POST",
-    //             credentials: "include",
-    //             headers: {
-    //               "Content-type": "application/json",
-    //             },
-    //             body: JSON.stringify({productId: data._id }),
-    //          }).then((res) =>  res.json())
-    //          .then( ()=> setwish(faX))
-
-
-
-    //         } else {
-    //             fetch(process.env.REACT_APP_API_LINK + "del/wishlist", {
-    //                 method: "DELETE",
-    //                 credentials: "include",
-    //                 headers: {
-    //                   "Content-type": "application/json",
-    //                 },
-    //                 body: JSON.stringify({productId: data._id }),
-    //              }).then((res) =>  res.json())
-    //              .then( ()=> setwish(faHeart))
-    //         }
-
-
-
-    //    }
 
 
 
@@ -124,19 +50,22 @@ const Add = ({}) => {
 
          <div className={Style.section} >
 
-            { mode2.banner && <AdminBanner teamid={teamid} event={mode1} typeId={typeId} />}
+            { mode2.banner && <AdminBanner event={mode1} typeId={typeId} />}
 
-            { mode2.news && <AdminNews teamid={teamid} event={mode1} typeId={typeId} />}
-
-
-            { mode2.region && <AdminRegion teamid={teamid} event={mode1} typeId={typeId} />}
-
-            { mode2["sub-location"] && <AdminNews teamid={teamid} event={mode1} typeId={typeId} />}
-
-            { mode2.fixtures && <AdminNews teamid={teamid} event={mode1} typeId={typeId} />}
+            { mode2.news && <AdminNews  event={mode1} typeId={typeId} />}
 
 
-            { mode2.results && <AdminNews teamid={teamid} event={mode1} typeId={typeId} />}
+            { mode2.region && <AdminRegion event={mode1} typeId={typeId} />}
+
+            { mode2["sub-region"] && <AdminSubRegion event={mode1} typeId={typeId} />}
+
+           { mode2.fixture &&  <AdminFixture event={mode1} regionId={id} typeId={matchId}/> } 
+
+           { mode2["add-team-to-region"] &&  <AdminAddTeamToRegion event={mode1} regionId={id} typeId={matchId}/> } 
+
+
+
+            { mode2.results && <AdminNews  event={mode1} typeId={typeId} />}
   {/* 
             { mode.squad && <TeamSquad />}
 

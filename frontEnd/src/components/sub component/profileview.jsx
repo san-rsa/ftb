@@ -681,11 +681,26 @@ const TeamAdmin = ({}) => {
         <div className={Style.teamadminmenu} >
 
 
-            <h2 > Sub Location </h2>
+            <h2 > Sub Region </h2>
 
             <div className={Style.teamadminmenulist} >
-                <CardList3 name={"News"} to={"add"} category={"add"} link={"news"} logo={faPlus} />  
-                <CardList3Edit name={"News"} to={"edit"} category={"edit"} link={"news"} logo={faPenToSquare} id={"list"} />  
+                <CardList3 name={"Sub Region"} to={"add"} category={"add"} link={"sub-region"} logo={faPlus} />  
+                <CardList3Edit name={"Sub Region"} to={"edit"} category={"edit"} link={"sub-region"} logo={faPenToSquare} id={"list"} />  
+                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
+      
+            </div>
+            
+        </div>
+
+
+                <div className={Style.teamadminmenu} >
+
+
+            <h2 > Add Team to Region </h2>
+
+            <div className={Style.teamadminmenulist} >
+                <CardList3Edit name={"Add Team to Region"} to={"add"} category={"add"} link={"add-team-to-region"} logo={faPlus} id={"list"} />  
+                <CardList3Edit name={"Add Team to Region"} to={"edit"} category={"edit"} link={"add-team-to-region"} logo={faPenToSquare} id={"list"} />  
                 {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
       
             </div>
@@ -696,11 +711,11 @@ const TeamAdmin = ({}) => {
         <div className={Style.teamadminmenu} >
 
 
-            <h2 > News</h2>
+            <h2 > Fixture </h2>
 
             <div className={Style.teamadminmenulist} >
-                <CardList3 name={"News"} to={"add"} category={"add"} link={"news"} logo={faPlus} />  
-                <CardList3Edit name={"News"} to={"edit"} category={"edit"} link={"news"} logo={faPenToSquare} id={"list"} />  
+                <CardList3Edit name={"Fixture"} to={"add"} category={"add"} link={"fixture"} logo={faPlus} id={"list"} />  
+                <CardList3Edit name={"Fixture"} to={"edit"} category={"edit"} link={"fixture"} logo={faPenToSquare} id={"list"} />  
                 {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
       
             </div>

@@ -15,6 +15,9 @@ const teamSchema = new mongoose.Schema({
       }],
 
 
+      regionId: [{type: mongoose.Schema.Types.String, ref: "Competition",   }, ],
+
+
       
 
 

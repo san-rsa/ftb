@@ -18,6 +18,7 @@ const Result = require('../../models/competition/result')
 const Standing = require('../../models/competition/standing/standing')
 const Codeofconduct = require('../../models/news/codesofconduct')
 const CupStanding = require('../../models/competition/standing/cup')
+const Sub_Region = require('../../models/competition/competition-location')
 
 
 
@@ -112,7 +113,7 @@ router.patch('/codes-of-conduct/:id', async (req, res)=> {
 router.patch('/competition/:id', async (req, res)=> {
 
     const data = JSON.parse(req.body.data)
-    const file = req.files?.logo  
+    const file = req.files?.img  
      
 
     try {
@@ -162,6 +163,73 @@ router.patch('/competition/:id', async (req, res)=> {
             success: true,
             save,
             message: "created successfully ✅"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+})
+
+
+
+router.patch('/sub-competition/:id', async (req, res)=> {
+
+    const data = JSON.parse(req.body.data)
+    const file = req.files?.img  
+     
+
+    try {
+        const {name, description, region}= data
+        const logo = []
+
+        if (req.files) {
+            // No file was uploaded
+
+            const image = await cloudinary.uploader.upload(
+            file.tempFilePath,
+            { folder: 'Banner' },
+    
+          );              
+          
+          logo.push({url: image.secure_url,  imgId: image.public_id})
+
+        }
+
+
+
+ 
+      
+
+
+        console.log(data)
+
+		if (!name || !region ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+        //check if use already exists?
+
+
+
+
+
+        const save = await Sub_Region.findOneAndUpdate({name: req.params.id}, {
+            $set: data, pictures: logo[0], 
+        }, { new: true });
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+            save,
+            message: " successfully ✅"
            
         })  
     } catch (error) {

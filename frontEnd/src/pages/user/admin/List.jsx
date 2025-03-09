@@ -7,7 +7,8 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Footer from "../../../components/sub component/Footer";
-import { AdminBannerList, AdminNewsList, AdminRegionList } from "../../../components/sub component/list/Profileadminviewlist";
+import { AdminBannerList, AdminMatchRegionList, AdminNewsList, AdminRegionList, AdminSubRegionList } from "../../../components/sub component/list/Profileadminviewlist";
+import { AdminAddTeamToRegion } from "../../../components/sub component/Profileadminview";
 
 
 
@@ -19,7 +20,7 @@ import { AdminBannerList, AdminNewsList, AdminRegionList } from "../../../compon
 const List = ({}) => {
     const [mode1, setEvent] = useState({add: false, edit: false, });
 
-    const [mode2, setType] = useState({banner: false, news: false, region: false, user: false, "sub-location": false,  });
+    const [mode2, setType] = useState({banner: false, news: false, region: false, user: false, "sub-region": false,  });
 
     const [data, setData] = useState({})
 
@@ -152,9 +153,11 @@ const List = ({}) => {
 
             { mode2.region && <AdminRegionList teamid={teamid} event={mode1} typeId={typeId} />}
             
-            { mode2.news && <AdminNewsList teamid={teamid} event={mode1} typeId={typeId} />}
-            { mode2.news && <AdminNewsList teamid={teamid} event={mode1} typeId={typeId} />}
-            { mode2.news && <AdminNewsList teamid={teamid} event={mode1} typeId={typeId} />}
+            { mode2["sub-region"] && <AdminSubRegionList teamid={teamid} event={mode1} typeId={typeId} />}
+
+           { mode2.fixture &&  <AdminRegionList teamid={teamid} event={mode1} typeId={typeId}/> }  {/* <AdminNews teamid={teamid} event={mode1} typeId={typeId} />} */}
+          
+           { mode2["add-team-to-region"] &&  <AdminRegionList event={mode1} regionId={id} /> } 
 
 
                     {/*  { mode.news && <TeamNews />}

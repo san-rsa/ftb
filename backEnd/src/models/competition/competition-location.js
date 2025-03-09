@@ -14,6 +14,8 @@ const Schema = new mongoose.Schema({
     bio: {type: String, },
     pictures: [{url: {type: String, }, imgId: {type: String, } }],
 
+    
+
 
 
 
@@ -32,6 +34,6 @@ const Schema = new mongoose.Schema({
     timestamps: true
 })
 
-const Sub_Region  = mongoose.model('Sub-Region ', Schema)
+const Sub_Region  = mongoose.model('Competition_Sub-Region ', Schema)
 
 module.exports = Sub_Region  

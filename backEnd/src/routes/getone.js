@@ -16,6 +16,7 @@ const News = require('../models/news/news')
 const Live = require('../models/competition/live')
 const Player = require('../models/competition/player')
 const Team = require('../models/competition/team')
+const Sub_Region = require('../models/competition/competition-location')
 
 
 
@@ -66,6 +67,11 @@ router.get('/codes-of-conduct/:id', auth, async (req, res, next) => {
 })
 
 
+
+
+
+
+
 router.get('/competition/:id', async (req, res) => {
 
 
@@ -84,6 +90,49 @@ router.get('/competition/:id', async (req, res) => {
           res.status(500).json(error);
       }
 })
+
+router.get('/sub-competition/:id', async (req, res) => {
+
+
+  try {
+      const data = await Sub_Region.findOne({name: req.params.id})
+
+      if (data) {
+            
+        res.status(200).json(data);
+
+      } else {
+        res.status(404).json("not found");
+
+      }
+  } catch (error) {
+      res.status(500).json(error);
+  }
+})
+
+
+
+
+
+router.get('/fixtures/year/:id', async (req, res) => {
+
+
+  try {
+      const data = await Fixture.findOne({competition: req.params.id}).sort({year: 'desc'})
+
+      if (data) {
+            
+        res.status(200).json(data);
+
+      } else {
+        res.status(404).json("not found");
+
+      }
+  } catch (error) {
+      res.status(500).json(error);
+  }
+})
+
 
 
 router.get('/:link/group-stage/:groupName/:year', async(req, res)=> {

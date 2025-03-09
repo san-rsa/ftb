@@ -22,6 +22,7 @@ const CupStanding = require('../models/competition/standing/cup')
 const Competition = require('../models/competition/competition')
 const Stat = require('../models/competition/stats')
 const Player = require('../models/competition/player')
+const Sub_Region = require('../models/competition/competition-location')
 
 // const Product = require('../models/product')
 // const Auth = require('../middleware/mid')
@@ -61,6 +62,17 @@ router.get('/competition', async(req, res)=> {
            data: data
           })
     })
+
+
+    router.get('/sub-competition', async(req, res)=> {
+
+      const data = await Sub_Region.find().sort("name")
+      
+           res.status(200).json({
+              success: true,
+             data: data
+            })
+      })
 
 
 
@@ -764,6 +776,21 @@ router.get('/teams', async(req, res)=> {
          data: data
         })
   })
+
+
+
+
+
+
+  router.get('/teams/:id', async(req, res)=> {
+
+    const data = await Team.find({regionId: req.params.id}).sort("name")
+    
+         res.status(200).json({
+            success: true,
+           data: data
+          })
+    })
 
 
 

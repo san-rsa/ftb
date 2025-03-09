@@ -18,6 +18,7 @@ const Standing = require('../../models/competition/standing/standing')
 const Codeofconduct = require('../../models/news/codesofconduct')
 const CupStanding = require('../../models/competition/standing/cup')
 const Live = require('../../models/competition/live')
+const Sub_Region = require('../../models/competition/competition-location')
 
 
 
@@ -178,8 +179,8 @@ router.post('/codes-of-conduct', async (req, res)=> {
 
 router.post('/competition', async (req, res)=> {
 
-    const data = req.body //JSON.parse(req.body.data)
-    const file = req.files.logo  
+    const data = JSON.parse(req.body.data)
+    const file = req.files?.img  
       
     
     if (!req.files) {
@@ -192,28 +193,30 @@ router.post('/competition', async (req, res)=> {
         const {name, description, type}= data
         const logo = []
 
-        const image = await cloudinary.uploader.upload(
-        file.tempFilePath,
-        { folder: 'region' },
 
-      );
-
-
-      logo.push({url: image.secure_url,  imgId: image.public_id})
-
- 
-      
 
 
         console.log(data)
 
-		if (!name || !logo ) {
+		if (!name || !type ) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",
 			});
 		}
 
+
+        const image = await cloudinary.uploader.upload(
+            file.tempFilePath,
+            { folder: 'Banner' },
+    
+          );
+
+
+      logo.push({url: image.secure_url,  imgId: image.public_id})
+
+ 
+      
         //check if use already exists?
         const existingItem = await Competition.findOne({name})
         if(existingItem){
@@ -246,10 +249,161 @@ router.post('/competition', async (req, res)=> {
 
 
 
+router.post('/add-team-to-competition', async (req, res)=> {
 
-router.post('/fixtures',  async (req, res)=> {
+    const data = JSON.parse(req.body.data)
+     
 
-    const data = req.body  //JSON.parse(req.body.data)
+    try {
+        const {competitionId, team, }= data
+
+
+
+		if (!team || !competitionId ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+ 
+      
+        //check if use already exists?
+        const existingItem = await Competition.findOne({name: competitionId})
+        const existingTeam = await Team.findOne({name: team})
+
+
+
+        if(!existingItem || !existingTeam){
+            return res.status(400).json({
+                success: false,
+                message: "region or team not found"
+            })
+        }
+
+
+
+
+        existingItem.teams.addToSet(existingTeam.name)
+        existingTeam.regionId.addToSet(existingItem.name)
+
+
+
+
+
+        existingItem.save()
+        existingTeam.save()
+
+
+        console.log(existingItem, existingTeam);
+        
+
+
+
+
+
+
+
+
+
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+   
+            message: "successfully ✅ added"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+})
+
+
+
+
+
+
+router.post('/sub-competition', async (req, res)=> {
+
+    const data = JSON.parse(req.body.data)
+    const file = req.files?.img  
+      
+    
+    if (!req.files) {
+        // No file was uploaded
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+     
+
+    try {
+        const {name, bio,  type, region}= data
+        const logo = []
+
+
+
+
+        console.log(data)
+
+		if (!name || !region ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+
+        const image = await cloudinary.uploader.upload(
+            file.tempFilePath,
+            { folder: 'Banner' },
+    
+          );
+
+
+      logo.push({url: image.secure_url,  imgId: image.public_id})
+
+ 
+      
+        //check if use already exists?
+        const existingItem = await Sub_Region.findOne({name})
+        if(existingItem){
+            return res.status(400).json({
+                success: false,
+                message: "already exists"
+            })
+        }
+
+        const save = await Sub_Region.create({
+           name, regionId: region, bio, pictures: logo[0]
+        })
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+            save,
+            message: "created successfully ✅"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+})
+
+
+
+router.post('/fixture',  async (req, res)=> {
+
+    const data = JSON.parse(req.body.data)
 
     try {
         const {competition, year, matchday, home, time, date, away, group, referee, stadium, stage}= data
@@ -267,8 +421,15 @@ router.post('/fixtures',  async (req, res)=> {
 			});
 		}
 
+        if (home == away ) {
+            return res.status(403).json({
+				success: false,
+				message: "team is the same ",
+			});
+        }
 
-        const existingCompetition = await Competition.findOne({_id: competition})
+
+        const existingCompetition = await Competition.findOne({name: competition})
 
         console.log(existingCompetition);
         
@@ -277,7 +438,7 @@ router.post('/fixtures',  async (req, res)=> {
      
                 const existing = await Fixture.findOne({competition, year})
 
-                const teams = {home, time: {date, time}, away, referee, stadium, group, stage }
+                const teams = {home, day: {date, time}, away, referee, stadium, group, stage }
         
                             const fixture =  { matchday,
                             teams: teams   // teams: [{home, time: [{date, time,}], away } ]
@@ -353,7 +514,7 @@ router.post('/fixtures',  async (req, res)=> {
                 
                         else if (String(existing.type) == "cup") {
                              const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
-                             const Foundgroup = existing.fixture[Foundmatchday].teams.findIndex(item => item.group == group);
+                            //  const Foundgroup = existing.fixture[Foundmatchday].teams?.findIndex(item => item.group == group);
 
         
             

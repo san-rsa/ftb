@@ -9,7 +9,7 @@ import { AlertError, Inputs } from "./list/Generallist";
 
 
 
-const AdminBanner = ({teamid, event, typeId }) => {
+const AdminBanner = ({ event, typeId }) => {
   const [data, setInputs] = useState({})
   const [img, setFile] = useState({});
   const [submitbtn, setSubmitBtn] = useState(false)
@@ -157,7 +157,7 @@ const AdminBanner = ({teamid, event, typeId }) => {
       </div>
 
 
-        <form className={Style.form} >
+        <form className={Style.form} onSubmit={HandleSubmit}>
 
         <Inputs label={'head'} type={'text'} name={'head'} onchange={handleChange} value={data.head}  placeholder={'headline'} disabled={false} required={true}  />
         <Inputs label={'picture'} type={'file'} name={'picture'} onchange={handleFileChange} value={data.picture}  placeholder={'first name'} disabled={false} required={true}  />
@@ -181,7 +181,7 @@ const AdminBanner = ({teamid, event, typeId }) => {
 
 
 
-        <button className="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
+        <button className="submit" type="submit"  disabled={submitbtn}> Submit</button> 
 
         </form>
 
@@ -446,7 +446,7 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
 
 
-const AdminNews = ({teamid, event, typeId }) => {
+const AdminNews = ({event, typeId }) => {
   const [data, setInputs] = useState({})
   const [region, settRegion] = useState([])
 
@@ -610,7 +610,7 @@ const AdminNews = ({teamid, event, typeId }) => {
       </div>
 
 
-        <form className={Style.form} >
+        <form className={Style.form} onSubmit={HandleSubmit}>
 
         <Inputs label={'head'} type={'text'} name={'head'} onchange={handleChange} value={data.head}  placeholder={'head'} disabled={false} required={true}  />
         
@@ -621,7 +621,7 @@ const AdminNews = ({teamid, event, typeId }) => {
         <label rel="select" htmlFor="select" >region</label>
 
           <select id="region" name={"region"} onChange={handleChange} title="region" Value={data.region} > 
-          { data.region ?  <option value={data.region} > {data.region}  </option> : <option value={""} > select a region  </option> }
+          { data.region ? null : <option value={""} > select a region  </option> }
 
 
           {region.map((props) => (
@@ -674,12 +674,9 @@ const AdminNews = ({teamid, event, typeId }) => {
 
         </div> */}
 
+        <button className="submit" type="submit" disabled={submitbtn}> Submit</button> 
 
         
-        {/* <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
-        <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
-        <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
-         */}
         </form>
 
 
@@ -687,7 +684,6 @@ const AdminNews = ({teamid, event, typeId }) => {
 
 
 
-        <button className="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
 
     </div>
 
@@ -698,7 +694,7 @@ const AdminNews = ({teamid, event, typeId }) => {
 
 
 
-const AdminRegion = ({teamid, event, typeId }) => {
+const AdminRegion = ({event, typeId }) => {
   const [data, setInputs] = useState({})
   const [region, settRegion] = useState([])
 
@@ -864,7 +860,7 @@ const AdminRegion = ({teamid, event, typeId }) => {
         <label rel="select" htmlFor="select" >region</label>
 
           <select id="region" name={"type"} onChange={handleChange} title="type" value={data.type} required > 
-          { data.type ?  null : <option value={""} > select a region  </option> }
+          { data.type ?  null : <option value={""} > select type  </option> }
             <option name={"type"} value={"league"} > League  </option>
 
             <option name={"type"} value={"cup"} > Cup  </option>            
@@ -878,6 +874,7 @@ const AdminRegion = ({teamid, event, typeId }) => {
         <Inputs label={'logo'} type={'file'} name={'logo'} onchange={handleFileChange} value={data.logo}  placeholder={'first name'} disabled={false}  />
 
 
+        <button className="submit" type="submit" disabled={submitbtn}> Submit</button> 
 
 
 
@@ -888,7 +885,6 @@ const AdminRegion = ({teamid, event, typeId }) => {
 
 
 
-        <button className="submit" type="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
 
     </div>
 
@@ -897,4 +893,794 @@ const AdminRegion = ({teamid, event, typeId }) => {
 
 
 
-export {TeamAdminPlayer, AdminNews, AdminBanner, AdminRegion}
+const AdminSubRegion = ({event, typeId }) => {
+  const [data, setInputs] = useState({})
+  const [region, settRegion] = useState([])
+
+
+  const [img, setFile] = useState({});
+  const [submitbtn, setSubmitBtn] = useState(false)
+
+  const [fetchs, setFetch] = useState({link: "", method: ""})
+
+
+
+  let navigate = useNavigate()
+
+
+          useEffect(() => {
+          fetch(process.env.REACT_APP_API_LINK  + "getall/competition/" )
+          .then((res) =>  res.json())
+          .then((data) =>  settRegion(data.data))
+        
+
+      }, []);
+
+
+
+
+
+
+        useEffect(() => {
+
+          if (typeId) {
+            fetch(process.env.REACT_APP_API_LINK  + "getone/sub-competition/" + typeId.replaceAll('-',' '))
+            .then((res) =>  res.json())
+            .then((data) =>  setInputs({
+              name:data.name,
+              region: data.regionId,
+              bio: data.bio,
+              img: data?.pictures[0]?.url
+              
+              
+            })
+          );
+          }       
+
+        if (event.add ) {
+      setFetch({link: 'admin/add/sub-competition/', method: 'POST'  })
+    } else if (event.edit) {
+      setFetch({link: 'admin/edit/sub-competition/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+
+    }
+
+      }, []);
+        
+
+
+
+    const h1 = (event.add) ? "Add Sub Region" : (event.edit) ? "Edit Sub Region" : "please try again later" ;  
+    
+    
+      const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+
+      }
+    
+      const handleFileChange = (event) => {
+        setFile(event.target.files)
+      };
+
+
+
+          console.log(data, img);
+    
+
+
+      const HandleSubmit = async (event) => {
+        event.preventDefault();
+        setSubmitBtn(!submitbtn)
+    
+        const formData = new FormData();
+      
+    
+        Array.from(img).forEach(imgs => {
+    
+          formData.append('img', imgs);
+    
+      });
+    
+            formData.append('data',  JSON.stringify(data));
+    
+    
+    
+       const api = fetch(process.env.REACT_APP_API_LINK + fetchs.link, {
+        method: fetchs.method,
+        // credentials: "include",
+       // headers: {'Content-Type': "application/json", },
+        body:   formData
+        })
+        
+        .then((res) => {
+           if (res.status == 200) {
+          
+                navigate("/user"); 
+
+           } else {
+            setSubmitBtn(false);
+       
+           }
+
+           return res.json()
+        }).then(
+          data => {
+
+           
+            if (data.success == false) {
+               AlertError(data.message)
+
+               console.log(data.message);
+               
+            } else {
+                            // navigate("admin"); 
+
+            }
+          })
+
+
+        
+        .catch((e) => {
+          console.log(e);
+          setSubmitBtn(!submitbtn)
+          AlertError("error try again later")
+
+
+          let msg = "fail"
+        })
+
+
+        
+    
+    
+     
+      
+      }
+
+
+      console.log(data.type);
+
+
+    return (            
+      <div className={Style.app}>
+
+
+      <div className={Style.top} >
+        <h1 > {h1} </h1>
+      </div>
+
+
+      <div className={Style.pimg} >
+
+{        data.img &&    <img src={data.img } /> }    
+
+      </div>
+
+
+        <form className={Style.form} onSubmit={HandleSubmit}>
+
+        <Inputs label={'name'} type={'text'} name={'name'} onchange={handleChange} value={data.name}  placeholder={'name'} disabled={false} required={true}  />
+        
+
+
+           <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" >region</label>
+
+          <select id="region" name={"region"} onChange={handleChange} title="region" value={data.region} required > 
+          { data.region ?  null : <option value={""} > select a region  </option> }
+
+
+          {region.map((props) => (
+
+                        
+        <option key={props._id} name={"region"} value={props.name} > {props.name}  </option>
+ 
+
+
+                )   )   }
+    
+
+
+          </select>
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <Inputs label={'logo'} type={'file'} name={'logo'} onchange={handleFileChange} value={data.logo}  placeholder={'first name'} disabled={false}  />
+
+
+
+       <div className={Style.textarea} >
+
+
+        <label rel="textarea" htmlFor="textarea" >bio</label>
+
+        <textarea value={data.bio} onChange={handleChange} name="bio" placeholder="biography of the area"  rows={7}> </textarea>
+
+
+        </div>
+
+        <button className="submit" type="submit" disabled={submitbtn}> Submit</button> 
+
+        </form>
+
+
+
+
+
+
+
+    </div>
+
+    )
+}
+
+
+
+const AdminAddTeamToRegion = ({event, regionId, typeId }) => {
+  const [data, setInputs] = useState({})
+  const [team, setTeam] = useState([])
+
+
+  const [submitbtn, setSubmitBtn] = useState(false)
+
+  const [fetchs, setFetch] = useState({link: "", method: ""})
+
+
+
+  let navigate = useNavigate()
+
+
+          useEffect(() => {
+          fetch(process.env.REACT_APP_API_LINK  + "getall/teams" )
+          .then((res) =>  res.json())
+          .then((data) =>  setTeam(data.data))
+
+
+          if (!typeId) {
+            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + regionId.replaceAll('-',' '))
+            .then((res) =>  res.json())
+            .then((data) =>  setInputs({
+              name:data.name,
+              competitionId: data.name,
+              img: data?.logo[0]?.url
+              
+              
+            })
+          );
+          }   
+        
+
+      }, []);
+
+
+
+
+
+
+        useEffect(() => {
+
+          if (typeId) {
+            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + regionId?.replaceAll('-',' '))
+            .then((res) =>  res.json())
+            .then((data) =>  setInputs({
+              name:data.name,
+              competitionId: data.name,
+              img: data?.logo[0]?.url
+              
+              
+            })
+          );
+          }       
+
+        if (event.add ) {
+      setFetch({link: 'admin/add/add-team-to-competition/', method: 'POST'  })
+    } else if (event.edit) {
+      setFetch({link: 'admin/edit/add-team-to-competition/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+
+    }
+
+      }, []);
+        
+
+
+
+    const h1 = (event.add) ? "Add Team to Region" : (event.edit) ? "Edit Team Region" : "please try again later" ;  
+    
+    
+      const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+
+      }
+
+
+
+
+          console.log(data, );
+    
+
+
+      const HandleSubmit = async (event) => {
+        event.preventDefault();
+        setSubmitBtn(!submitbtn)
+    
+        const formData = new FormData();
+      
+    
+
+    
+        formData.append('data',  JSON.stringify(data));
+    
+    
+    
+       const api = fetch(process.env.REACT_APP_API_LINK + fetchs.link, {
+        method: fetchs.method,
+        // credentials: "include",
+       // headers: {'Content-Type': "application/json", },
+        body:   formData
+        })
+        
+        .then((res) => {
+           if (res.status == 200) {
+          
+                navigate("/user"); 
+
+           } else {
+            setSubmitBtn(false);
+       
+           }
+
+           return res.json()
+        }).then(
+          data => {
+
+           
+            if (data.success == false) {
+               AlertError(data.message)
+
+               console.log(data.message);
+               
+            } else {
+                            // navigate("admin"); 
+
+            }
+          })
+
+
+        
+        .catch((e) => {
+          console.log(e);
+          setSubmitBtn(!submitbtn)
+          AlertError("error try again later")
+
+
+          let msg = "fail"
+        })
+
+
+        
+    
+    
+     
+      
+      }
+
+
+      console.log(data.type);
+
+
+    return (            
+      <div className={Style.app}>
+
+
+      <div className={Style.top} >
+        <h1 > {h1} </h1>
+      </div>
+
+
+      <div className={Style.pimg} >
+
+{        data.img &&    <img src={data.img } /> }    
+
+      </div>
+
+
+        <form className={Style.form} onSubmit={HandleSubmit}>
+
+        <Inputs label={'region Id'} type={'text'} name={'competitionId'} value={data.competitionId} disabled={true} required={true}  />
+        
+
+
+           <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" >team</label>
+
+          <select id="team" name={"team"} onChange={handleChange} title="team" value={data.team} required > 
+          { data.team ?  null : <option value={""} > select a team  </option> }
+
+
+          {team.map((props) => (
+
+                        
+        <option key={props._id} name={"team"} value={props.name} > {props.name}  </option>
+ 
+
+
+                )   )   }
+    
+
+
+          </select>
+
+        </div>
+
+        <button className="submit" type="submit" disabled={submitbtn}> Submit</button> 
+
+        </form>
+
+
+
+
+
+
+
+    </div>
+
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+const AdminFixture = ({event, regionId, typeId,  }) => {
+  const [data, setInputs] = useState({})
+  const [teams, setTeam] = useState([])
+  const [type, setType] = useState("")
+  
+
+
+  const [submitbtn, setSubmitBtn] = useState(false)
+
+  const [fetchs, setFetch] = useState({link: "", method: ""})
+
+
+
+
+
+  const groups = new Array( 26 ).fill( 1 ).map( ( _, i ) => String.fromCharCode( 65 + i ) );
+
+  
+
+
+
+  let navigate = useNavigate()
+
+
+          useEffect(() => {
+            if (!typeId) {
+              fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + regionId)
+              .then((res) =>  res.json())
+              .then((data) =>  { return (setInputs(values => ({...values, competition: data.name, img: data.logo[0].url})),
+               setType(data.type) )}
+            );
+
+
+            if (!typeId) {
+              fetch(process.env.REACT_APP_API_LINK  + "getone/fixtures/year/" + regionId )
+              .then((res) =>  res.json())
+              .then((data) =>  setInputs(values => ({...values, year: data.year, })),
+            
+            );
+
+          }
+
+
+
+
+            fetch(process.env.REACT_APP_API_LINK  + "getall/teams/" + regionId)
+            .then((res) =>  res.json())
+            .then((data) =>  setTeam(data.data)
+          );
+            }
+
+
+
+  
+          }, []);
+
+
+
+        useEffect(() => {
+
+          if (typeId) {
+            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + typeId.replaceAll('-',' '))
+            .then((res) =>  res.json())
+            .then((data) =>  setInputs({
+              name:data.name,
+              type: data.type,
+              img: data?.logo[0]?.url
+              
+              
+            })
+          );
+          }   
+          
+          
+
+        if (event.add ) {
+      setFetch({link: 'admin/add/fixture/', method: 'POST'  })
+    } else if (event.edit) {
+      setFetch({link: 'admin/edit/fixture/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+
+    }
+
+      }, []);
+        
+
+
+
+    const h1 = (event.add) ? "Add Fixture " : (event.edit) ? "Edit Fixture" : "please try again later" ;  
+    
+    
+      const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+
+      }
+    
+
+
+
+          console.log(data );
+    
+
+
+      const HandleSubmit = async (event) => {
+        event.preventDefault();
+        setSubmitBtn(!submitbtn)
+    
+        const formData = new FormData();
+      
+    
+    
+        formData.append('data',  JSON.stringify(data));
+    
+    
+    
+       const api = fetch(process.env.REACT_APP_API_LINK + fetchs.link, {
+        method: fetchs.method,
+        // credentials: "include",
+       // headers: {'Content-Type': "application/json", },
+        body:   formData
+        })
+        
+        .then((res) => {
+           if (res.status == 200) {
+          
+                navigate("/user"); 
+
+           } else {
+            setSubmitBtn(false);
+       
+           }
+
+           return res.json()
+        }).then(
+          data => {
+
+           
+            if (data.success == false) {
+               AlertError(data.message)
+
+               console.log(data.message);
+               
+            } else {
+                            // navigate("admin"); 
+
+            }
+          })
+
+
+        
+        .catch((e) => {
+          console.log(e);
+          setSubmitBtn(!submitbtn)
+          AlertError("error try again later")
+
+
+          let msg = "fail"
+        })
+
+
+        
+    
+    
+     
+      
+      }
+
+
+      console.log(data.type);
+
+
+    return (            
+      <div className={Style.app}>
+
+
+      <div className={Style.top} >
+        <h1 > {h1} </h1>
+      </div>
+
+
+
+      <div className={Style.pimg} >
+
+{        data.img &&    <img src={data.img } /> }    
+
+      </div>
+
+
+
+
+        <form className={Style.form} onSubmit={HandleSubmit}>
+
+        <Inputs label={'region Id'} type={'text'} name={'competition'} value={data.competition} disabled={true} required={true}  />        
+
+        <Inputs label={'season '} type={'number'} name={'year'} onchange={handleChange} value={data.year}  placeholder={'season '} disabled={false} required={true}  />
+        
+        <Inputs label={'matchday '} type={'number'} name={'matchday'} onchange={handleChange} value={data.matchday}  placeholder={'matchday '} disabled={false} required={true}  />
+
+        <Inputs label={'match time '} type={'time'} name={'time'} onchange={handleChange} value={data.time}  placeholder={'time '} disabled={false} required={true}  />
+
+        <Inputs label={'match date'} type={'date'} name={'date'} onchange={handleChange} value={data.date} disabled={false} required={true}  />
+
+       <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" > home team </label>
+
+          <select id="region" name={"home"} onChange={handleChange} title="home" value={data.home} required > 
+          { data.home ?  null : <option value={""} > select home team  </option> }
+
+          {teams.map((props) => (
+
+                        
+          <option key={props._id} value={props.name} > {props.name}  </option>
+ 
+
+
+                )   )   }
+
+          </select>
+
+        </div>
+
+
+               <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" > away team </label>
+
+          <select id="region" name={"away"} onChange={handleChange} title="away" value={data.away} required > 
+          { data.away ?  null : <option value={""} > select away Team  </option> }
+
+          {teams.map((props) => (
+
+                        
+          <option key={props._id} value={props.name} > {props.name}  </option>
+ 
+
+
+                )   )   }
+
+          </select>
+
+        </div>
+
+
+        
+
+
+        { type == "cup" &&
+
+           <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" > stage </label>
+
+          <select id="region" name={"stage"} onChange={handleChange} title="stage" value={data.stage} required > 
+          { data.stage ?  null : <option value={""} > select stage  </option> }
+
+
+                        
+          <option value={"group"} > group  </option>
+          <option value={"knockout"} > knockout  </option>
+
+ 
+
+
+
+          </select>
+
+        </div>
+          
+        
+        }
+
+
+
+
+                { data.stage == "group" &&
+
+           <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" > group </label>
+
+          <select id="region" name={"group"} onChange={handleChange} title="group" value={data.group} required > 
+          { data.group ?  null : <option value={""} > select group  </option> }
+
+
+                        
+          {groups.map((props) => (
+
+                        
+          <option key={props} value={props} > {props}  </option>
+ 
+
+
+                )   )   }
+
+ 
+
+
+
+          </select>
+
+        </div>
+          
+        
+        }
+
+
+
+        <button className="submit" type="submit" disabled={submitbtn}> Submit</button> 
+
+
+
+        </form>
+
+
+
+
+
+
+
+    </div>
+
+    )
+}
+
+
+export {TeamAdminPlayer, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture}

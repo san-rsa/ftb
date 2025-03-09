@@ -7,7 +7,7 @@ const Schema = new mongoose.Schema({
     competition: { type: mongoose.Schema.Types.String, ref: "Competition",
     },
 
-    year : {type: Number , required: true, unique: false} ,
+    year : {type: Number , required: true, } ,
 
 
     type : {type: String,  enum: [ 'league', 'cup'],  },
@@ -18,11 +18,11 @@ const Schema = new mongoose.Schema({
 
                       teams: [{
                         
-                        home :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  },
+                        home :{type: mongoose.Schema.Types.String, ref: "Team",  },
               
                             homeScore: {type: Number , default: 0}, awayScore: {type: Number , default: 0 },  
               
-                            away :{type: mongoose.Schema.Types.ObjectId, ref: "Team",  },
+                            away :{type: mongoose.Schema.Types.String, ref: "Team",  },
                           
 
                               time: { now: {type: Number, default: 0}, first: {type: Number , required: true, default: 45}, second: {type: Number , required: true, default: 90},  firstET: {type: Number , required: true, default: 105},  secondET: {type: Number , required: true, default: 120}}, 
@@ -38,7 +38,7 @@ const Schema = new mongoose.Schema({
 
 
 
-                              day: { date: {type: String , required: true}, time: {type: String , required: true},},  
+                              day: { date: {type: Date , required: true}, time: {type: String , required: true},},  
 
                               
                               group: {type: String  },

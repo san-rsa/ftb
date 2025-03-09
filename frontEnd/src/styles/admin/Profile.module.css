@@ -94,6 +94,7 @@
 .newsgrid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+    margin: 10px auto;
 
 }
 
@@ -101,6 +102,7 @@
 .list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    margin: 10px auto;
 }
 
 

@@ -215,4 +215,77 @@ const AdminRegionList = ({teamid}) => {
 }
 
 
-export {AdminBannerList, AdminNewsList, AdminRegionList} 
+
+const AdminSubRegionList = ({teamid}) => {
+
+    const [data, setData] = useState([])
+   
+
+
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/sub-competition/" )
+            .then((res) =>  res.json())
+            .then((data) => setData(data.data));
+        }, []);
+
+
+
+    
+
+
+
+
+    return (
+        <div className={Style.app}>
+
+
+
+            <div className={Style.list}  >  
+
+
+            {data.map((project) => (
+
+                        
+            <CardList4
+                name={project.name}
+                logo={project.pictures[0]?.url}
+                category={"sub region"}
+                link={"./../" + project.name}
+
+                />  
+
+
+            )   )   }
+
+
+         
+                      
+
+  </div>
+
+                    
+
+
+
+
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
+
+
+
+
+
+
+
+
+
+export {AdminBannerList, AdminNewsList, AdminRegionList, AdminSubRegionList, } 

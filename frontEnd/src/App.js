@@ -122,6 +122,11 @@ function Links() {
         <Route path="/user/:event/:type" element={<AdminAdd />}/>
         <Route path="/user/:event/:type/list" element={<AdminList />}/>
         <Route path="/user/:event/:type/:typeId" element={<AdminAdd />}/>
+
+        <Route path="/user/:event/:type/:typeId/list" element={<AdminList />}/>
+
+        <Route path="/user/:event/:type/:typeId/:matchId" element={<AdminAdd />}/>
+
         <Route path="/user" element={<Profile />}/>
         
         {/* <Route path="/admin" element={<Admin />}/>
