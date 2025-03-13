@@ -668,7 +668,7 @@ const TeamAdmin = ({}) => {
             <h2 > Region</h2>
 
             <div className={Style.teamadminmenulist} >
-                <CardList3 name={"Reegion"} to={"add"} category={"add"} link={"region"} logo={faPlus} />  
+                <CardList3 name={"Region"} to={"add"} category={"add"} link={"region"} logo={faPlus} />  
                 <CardList3Edit name={"Region"} to={"edit"} category={"edit"} link={"region"} logo={faPenToSquare} id={"list"} />  
                 {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
       
@@ -693,7 +693,22 @@ const TeamAdmin = ({}) => {
         </div>
 
 
-                <div className={Style.teamadminmenu} >
+                 <div className={Style.teamadminmenu} >
+
+
+            <h2 > Add Team </h2>
+
+            <div className={Style.teamadminmenulist} >
+            <CardList3 name={"Team"} to={"add"} category={"add"} link={"team"} logo={faPlus} />  
+            <CardList3Edit name={"Team "} to={"edit"} category={"edit"} link={"team"} logo={faPenToSquare} id={"list"} />  
+                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
+      
+            </div>
+            
+        </div>
+
+
+         <div className={Style.teamadminmenu} >
 
 
             <h2 > Add Team to Region </h2>

@@ -431,7 +431,6 @@ router.post('/fixture',  async (req, res)=> {
 
         const existingCompetition = await Competition.findOne({name: competition})
 
-        console.log(existingCompetition);
         
 
 
@@ -452,17 +451,15 @@ router.post('/fixture',  async (req, res)=> {
                     if (existing) {
                         //---- Check if index exists ----
         
-                        if (String(existing.type) == "league") {      
                             
                             const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
         
         
-            
-            
-                        // console.log(FoundHome, Foundaway, Foundmatchday);
                         
             
                         if (Foundmatchday == -1) {
+                            console.log(Foundmatchday, fixture,  'd', );
+
                             
                             existing.fixture.push(fixture)
                         }
@@ -472,6 +469,9 @@ router.post('/fixture',  async (req, res)=> {
                          const Foundaway = existing.fixture[Foundmatchday].teams.findIndex(item => item.away == away);
         
                            if (FoundHome == -1 && Foundaway == -1) {
+
+                            console.log(FoundHome, Foundaway, 'd2', );
+
                                 existing.fixture[Foundmatchday].teams.push(teams) 
         
            
@@ -481,8 +481,8 @@ router.post('/fixture',  async (req, res)=> {
                         else if (FoundHome !== -1 || Foundaway !== -1  ) {
                             
                            return  res.status(400).json({
-                                type: "failed",
-                                mgs: "team added choose different team",
+                                success: false,
+                                message: "team added choose different team",
           
                             })
                            }
@@ -491,96 +491,25 @@ router.post('/fixture',  async (req, res)=> {
         
                         }
                                     
-        
-        
-        
+
         
                         const save = await existing.save();
                        return  res.status(200).json({
-                            type: "success",
-                            mgs: "Process successful",
+                            success: true,
+                            message: "Process successful",
                             data: save
                         })
         
         
         
                         
-                    }
-
-
-        
-        
-            
-                
-                        else if (String(existing.type) == "cup") {
-                             const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
-                            //  const Foundgroup = existing.fixture[Foundmatchday].teams?.findIndex(item => item.group == group);
-
-        
-            
-            
-                        // console.log(FoundHome, Foundaway, Foundmatchday);
-                        
-            
-                        if (Foundmatchday == -1) {
-                            
-                            existing.fixture.push(fixture)
-                        }
-        
-                        if (Foundmatchday !== -1) {
-                         const FoundHome = existing.fixture[Foundmatchday].teams.findIndex(item => item.home == home);
-                         const Foundaway = existing.fixture[Foundmatchday].teams.findIndex(item => item.away == away);
-        
-                           if (FoundHome == -1 && Foundaway == -1) {
-                                existing.fixture[Foundmatchday].teams.push(teams) 
-        
-           
-                            }
-
-
-        
-        
-                        else if (FoundHome !== -1 || Foundaway !== -1  ) {
-                            
-                           return  res.status(400).json({
-                                type: "failed",
-                                mgs: "team added choose different team",
-          
-                            })
-                           }
-                           console.log(existing, 'tt', );
-                           
-        
-                        }
-                                    
-        
-        
-        
-        
-                        const save = await existing.save();
-                       return  res.status(200).json({
-                            type: "success",
-                            mgs: "Process successful",
-                            data: save
-                        })
-        
-        
-        
-                        
-                    }
-                    //------------ This creates a new cart and then adds the item to the cart that has been created------------
- 
-            
-
-
-        }
-                     else {
+                    } else {
             
             
         
                 
                         const save = await Fixture.create({
-                            competition,  year, fixture, type: "cup" // String(existingCompetition.type)
+                            competition,  year, fixture, type:  String(existingCompetition.type)
                         })
                             // res.redirect("/login")
                 
@@ -833,7 +762,7 @@ router.post('/news', async (req, res)=> {
         console.error(error)
         return res.status(500).json({
             success: false,
-            message : "banner registration failed"
+            message : "registration failed"
         })
        
    }  
@@ -1292,7 +1221,7 @@ router.post('/results',  async (req, res)=> {
 
 router.post('/team', async (req, res)=> {
 
-    const data = req.body //JSON.parse(req.body.data)
+    const data = JSON.parse(req.body.data)
     const file = req.files.img  
       
     
@@ -1303,7 +1232,7 @@ router.post('/team', async (req, res)=> {
      
 
     try {
-        const {name, description}= data
+        const {name, description, regionId}= data
         const logo = []
 
         const image = await cloudinary.uploader.upload(
@@ -1338,7 +1267,7 @@ router.post('/team', async (req, res)=> {
         }
 
         const save = await Team.create({
-           name, description, logo: logo[0]
+           name, description, regionId , logo: logo[0]
         })
             // res.redirect("/login")
 

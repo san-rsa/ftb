@@ -7,8 +7,8 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Footer from "../../../components/sub component/Footer";
-import { AdminBannerList, AdminMatchRegionList, AdminNewsList, AdminRegionList, AdminSubRegionList } from "../../../components/sub component/list/Profileadminviewlist";
-import { AdminAddTeamToRegion } from "../../../components/sub component/Profileadminview";
+import { AdminBannerList, AdminMatchFixtureList, AdminMatchRegionList, AdminNewsList, AdminRegionList, AdminSubRegionList, AdminTeamList } from "../../../components/sub component/list/Profileadminviewlist";
+import { AdminAddTeamToRegion, AdminTeam } from "../../../components/sub component/Profileadminview";
 
 
 
@@ -20,7 +20,7 @@ import { AdminAddTeamToRegion } from "../../../components/sub component/Profilea
 const List = ({}) => {
     const [mode1, setEvent] = useState({add: false, edit: false, });
 
-    const [mode2, setType] = useState({banner: false, news: false, region: false, user: false, "sub-region": false,  });
+    const [mode2, setType] = useState({banner: false, team:false, fixture: false, news: false, region: false, user: false, "sub-region": false,  });
 
     const [data, setData] = useState({})
 
@@ -135,13 +135,22 @@ const List = ({}) => {
     //    }
 
 
+    if ("condition" !== 9 && 7 == 7) {
+       console.log('jj');
+       
+    } else {
+        console.log('jj');
+
+    }
+
+
 
     return (
         <div>
          <Nav />
             <div className={Style.app}>
 
-            <h1 > edit list </h1>
+            <h1 > {mode1.add ? "add" :  mode1.edit ? "edit" : null }  list </h1>
 
 
 
@@ -155,9 +164,12 @@ const List = ({}) => {
             
             { mode2["sub-region"] && <AdminSubRegionList teamid={teamid} event={mode1} typeId={typeId} />}
 
-           { mode2.fixture &&  <AdminRegionList teamid={teamid} event={mode1} typeId={typeId}/> }  {/* <AdminNews teamid={teamid} event={mode1} typeId={typeId} />} */}
+           { mode2.fixture ? mode1.add  ?  <AdminRegionList teamid={teamid} event={mode1} typeId={typeId}/>  : mode1.edit ? !typeId ?  <AdminMatchRegionList teamid={teamid} event={mode1} typeId={typeId}/>  :  <AdminMatchFixtureList teamid={teamid} event={mode1} typeId={typeId} regionid={typeId}/> : null : null}
           
            { mode2["add-team-to-region"] &&  <AdminRegionList event={mode1} regionId={id} /> } 
+
+           { mode2.team &&  <AdminTeamList event={mode1} typeId={typeId} /> } 
+
 
 
                     {/*  { mode.news && <TeamNews />}

@@ -118,7 +118,8 @@ router.get('/fixtures/year/:id', async (req, res) => {
 
 
   try {
-      const data = await Fixture.findOne({competition: req.params.id}).sort({year: 'desc'})
+      const data = await Fixture.findOne({competition: req.params.id}).sort({year: 'desc'}).populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
+
 
       if (data) {
             
@@ -128,7 +129,14 @@ router.get('/fixtures/year/:id', async (req, res) => {
         res.status(404).json("not found");
 
       }
+      console.log( data);
+
+
+
   } catch (error) {
+
+    console.log(error, );
+    
       res.status(500).json(error);
   }
 })
@@ -199,55 +207,33 @@ router.get('/:link/group-stage/:groupName/:year', async(req, res)=> {
 })
   
 
-router.get('/:link/fixture/:id/:year', async(req, res)=> {
+router.get('/:link/fixture/:id/', async(req, res)=> {
 
 
-        const { link, id, year} = req.params
+        const { link, id, } = req.params
            
         const data = {}
         
-         const db = await Fixture.findOne({competition: link, year})
-    
-         if (!data) {
-          const year2 = year -1
-    
-          const data = await Fixture.findOne({competition: link, year: year2})
-    
-        for (let i = 0; i < db.fixture.length; i++) {
-    
-          const Foundmatch = db.fixture[i].teams.findIndex(item => item._id == id);
-    
-          if (Foundmatch !== -1 ) {
+         const db = await Fixture.findOne({competition: link }).sort({year: 'desc'}).populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
 
-            data.matchday = i + 1,
-            data.match = db.fixture[i].teams[Foundmatch]
-          }    
-        }
     
-         } else {
           
         for (let i = 0; i < db.fixture.length; i++) {
     
             const Foundmatch = db.fixture[i].teams.findIndex(item => item._id == id);
     
           if (Foundmatch !== -1 ) {
-    
-        data.matchday = i + 1,
+            
+        data.info = {competition: db.competition, year: db.year, matchday: db.fixture[i].matchday, type: db.type } 
         data.match = db.fixture[i].teams[Foundmatch]
 
 
 
-       }
-    
+          }
         }
-       
-         }
     
     
-              res.status(200).json({
-                 success: true,
-                data: data
-               })
+              res.status(200).json(data)
 })
 
 

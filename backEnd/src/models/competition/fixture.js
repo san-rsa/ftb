@@ -25,17 +25,17 @@ const Schema = new mongoose.Schema({
                             away :{type: mongoose.Schema.Types.String, ref: "Team",  },
                           
 
-                              time: { now: {type: Number, default: 0}, first: {type: Number , required: true, default: 45}, second: {type: Number , required: true, default: 90},  firstET: {type: Number , required: true, default: 105},  secondET: {type: Number , required: true, default: 120}}, 
                               
                               
                               live : {type: Boolean, default: false },
 
                               start : {type: Boolean, default: false },
 
-                              
+                                                            
+                              time: { now: {type: Number, default: 0}, first: {type: Number , required: true, default: 45}, second: {type: Number , required: true, default: 90},  firstET: {type: Number , required: true, default: 105},  secondET: {type: Number , required: true, default: 120}}, 
+
 
                               half : {type: String,  enum: ['full time', 'half time', 'full time AET', 'half time AET', 'live', "upcoming" ],  },
-
 
 
                               day: { date: {type: Date , required: true}, time: {type: String , required: true},},  

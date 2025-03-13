@@ -7,6 +7,7 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { TeamSquadListWithPositionEdit } from "./Teamviewlist";
 import { Mininews, MininewsEdit } from "./Newslist";
 import { CardList2, CardList4 } from "./Generallist";
+import { FixtureToEdit } from "./Tournamentlist";
 
 
 
@@ -286,6 +287,281 @@ const AdminSubRegionList = ({teamid}) => {
 
 
 
+const AdminMatchRegionList = ({teamid}) => {
+
+    const [data, setData] = useState([])
+   
 
 
-export {AdminBannerList, AdminNewsList, AdminRegionList, AdminSubRegionList, } 
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/competition/" )
+            .then((res) =>  res.json())
+            .then((data) => setData(data.data));
+        }, []);
+
+
+
+    
+
+
+
+
+    return (
+        <div className={Style.app}>
+
+
+
+            <div className={Style.list}  >  
+
+
+            {data.map((project) => (
+
+                        
+            <CardList4
+                name={project.name}
+                logo={project.logo[0].url}
+                category={"region"}
+                link={"./../" + project.name+ "/list"}
+
+                />  
+
+
+            )   )   }
+
+
+         
+                      
+
+  </div>
+
+                    
+
+
+
+
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
+
+
+
+const AdminMatchFixtureList = ({regionid}) => {
+
+    const [data, setData] = useState({})
+   
+
+    const [showAll, setShowAll] = useState(false);
+
+    function handleClick() {
+      setShowAll(prevShowAll => !prevShowAll);
+    }
+  
+
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getone/fixtures/year/" + regionid )
+            .then((res) =>  res.json())
+            .then((data) => setData(data));
+        }, []);
+
+
+        const show = data && showAll ? data?.fixture : data.fixture?.slice(0, 1);
+
+
+
+    
+
+
+
+
+    return (
+        <div className={Style.app}>
+
+
+
+            <div className={Style.list}  >  
+
+        <div className={Style.teamFix}>
+
+            <h2 > Next Fixtures </h2>
+
+
+
+
+                    {show?.map((p) => (
+
+                                        
+        <div className={Style.fixture}>
+
+            <h3 > matchday: {p.matchday} </h3>
+
+
+                    <div className={Style.fix} >
+
+
+                        {p.teams.map((props) => (
+
+                            <FixtureToEdit
+                             Hname={props.home?.name}
+                             Hlogo={props.home?.logo[0]?.url}
+                             Hscore={props.home?.homeScore}
+
+                             date={props.day?.date.slice(0, 10).replaceAll('-','/')} time={props.day?.time}
+
+                             Ascore={props.away?.awayScore}
+                             Alogo={props.away?.logo[0]?.url}
+                             Aname={props.away?.name}
+
+                            live={props?.live} start={props?.start} 
+                            half={props?.half} minutes={props?.time.now}
+
+
+                            _id={props._id}
+                            regionId={data.competition}
+
+
+
+
+
+                            />  
+
+
+
+                        )
+                        ) }
+                    </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+                    )   )   }
+                    
+
+
+
+         
+
+                {/* <div className={Style.latestV} >
+                    <h2 > Latest Videos </h2>
+
+
+                </div> */}
+
+                    <button  onClick={handleClick}> {showAll ? "Showless" : "showAll" } </button>
+
+
+
+
+
+                    </div>
+
+
+         
+                      
+
+  </div>
+
+                    
+
+
+
+
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
+
+
+
+
+
+
+
+
+
+
+const AdminTeamList = ({teamid}) => {
+
+    const [data, setData] = useState([])
+   
+
+
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/teams/" )
+            .then((res) =>  res.json())
+            .then((data) => setData(data.data));
+        }, []);
+
+
+
+    
+
+
+
+
+    return (
+        <div className={Style.app}>
+
+
+
+            <div className={Style.list}  >  
+
+
+            {data.map((project) => (
+
+                        
+            <CardList4
+                name={project.name}
+                logo={project.logo[0]?.url}
+                category={"team"}
+                link={"./../" + project.name}
+
+                />  
+
+
+            )   )   }
+
+
+         
+                      
+
+  </div>
+
+                    
+
+
+
+
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
+
+export {AdminBannerList, AdminNewsList, AdminRegionList, AdminSubRegionList, AdminMatchRegionList, AdminMatchFixtureList, AdminTeamList } 

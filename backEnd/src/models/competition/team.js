@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const teamSchema = new mongoose.Schema({
 
-    name: {type: String, required: true, trim: true, unique: true
+    name: {type: String, required: true, trim: true, unique: true, key: true
     },
 
     logo: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],

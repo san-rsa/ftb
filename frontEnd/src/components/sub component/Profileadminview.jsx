@@ -1380,11 +1380,11 @@ const AdminFixture = ({event, regionId, typeId,  }) => {
             if (!typeId) {
               fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + regionId)
               .then((res) =>  res.json())
-              .then((data) =>  { return (setInputs(values => ({...values, competition: data.name, img: data.logo[0].url})),
-               setType(data.type) )}
+              .then((data) => setInputs(values => ({...values, competition: data.name, img: data.logo[0].url, type: data.type})),
+               
             );
 
-
+          }
             if (!typeId) {
               fetch(process.env.REACT_APP_API_LINK  + "getone/fixtures/year/" + regionId )
               .then((res) =>  res.json())
@@ -1401,7 +1401,7 @@ const AdminFixture = ({event, regionId, typeId,  }) => {
             .then((res) =>  res.json())
             .then((data) =>  setTeam(data.data)
           );
-            }
+          
 
 
 
@@ -1413,15 +1413,28 @@ const AdminFixture = ({event, regionId, typeId,  }) => {
         useEffect(() => {
 
           if (typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + typeId.replaceAll('-',' '))
+            fetch(process.env.REACT_APP_API_LINK + "getone/" + regionId + "/fixture/" + typeId   )
             .then((res) =>  res.json())
-            .then((data) =>  setInputs({
-              name:data.name,
-              type: data.type,
-              img: data?.logo[0]?.url
+            .then((data) => setInputs({
+
+              competition: data.info.competition ,
+              // img: data?.logo[0]?.match. ,              
+              type: data.info.type,
+              year: data.info.year ,
+              matchday: data.info.matchday ,
+              time: data.match.day.time ,
+              date: data.match.day.date.slice(0, 10),
+              home: data.match.home._id ,
+              away: data.match.away._id,
+              stage: data.match?.stage ,
+              group: data.match?.group ,
+
               
+
               
-            })
+           })             
+         
+
           );
           }   
           
@@ -1430,7 +1443,7 @@ const AdminFixture = ({event, regionId, typeId,  }) => {
         if (event.add ) {
       setFetch({link: 'admin/add/fixture/', method: 'POST'  })
     } else if (event.edit) {
-      setFetch({link: 'admin/edit/fixture/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+      setFetch({link: 'admin/edit/' + regionId +  '/fixture/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
 
     }
 
@@ -1566,7 +1579,7 @@ const AdminFixture = ({event, regionId, typeId,  }) => {
           {teams.map((props) => (
 
                         
-          <option key={props._id} value={props.name} > {props.name}  </option>
+          <option key={props._id} value={props._id} > {props.name}  </option>
  
 
 
@@ -1588,7 +1601,7 @@ const AdminFixture = ({event, regionId, typeId,  }) => {
           {teams.map((props) => (
 
                         
-          <option key={props._id} value={props.name} > {props.name}  </option>
+          <option key={props._id} value={props._id} > {props.name}  </option>
  
 
 
@@ -1602,7 +1615,7 @@ const AdminFixture = ({event, regionId, typeId,  }) => {
         
 
 
-        { type == "cup" &&
+        { data.type == "cup" &&
 
            <div className={Style.select} >
 
@@ -1683,4 +1696,220 @@ const AdminFixture = ({event, regionId, typeId,  }) => {
 }
 
 
-export {TeamAdminPlayer, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture}
+
+
+const AdminTeam = ({event, typeId }) => {
+  const [data, setInputs] = useState({})
+  const [region, settRegion] = useState([])
+
+
+  const [img, setFile] = useState({});
+  const [submitbtn, setSubmitBtn] = useState(false)
+
+  const [fetchs, setFetch] = useState({link: "", method: ""})
+
+
+
+  let navigate = useNavigate()
+
+
+
+
+
+        useEffect(() => {
+          fetch(process.env.REACT_APP_API_LINK  + "getall/competition/" )
+          .then((res) =>  res.json())
+          .then((data) =>  settRegion(data.data))
+        
+
+      }, []);
+
+
+
+        useEffect(() => {
+
+          if (typeId) {
+            fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + typeId?.replaceAll('-',' '))
+            .then((res) =>  res.json())
+            .then((data) =>  setInputs({
+              name:data.name,
+              regionId: data?.regionId[0], 
+              img: data?.logo[0]?.url
+              
+              
+            })
+          );
+          }       
+
+        if (event.add ) {
+      setFetch({link: 'admin/add/team/', method: 'POST'  })
+    } else if (event.edit) {
+      setFetch({link: 'admin/edit/team/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+
+    }
+
+      }, []);
+        
+
+
+
+    const h1 = (event.add) ? "Add Team" : (event.edit) ? "Edit Team" : "please try again later" ;  
+    
+    
+      const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+
+      }
+    
+      const handleFileChange = (event) => {
+        setFile(event.target.files)
+      };
+
+
+
+          console.log(data, img);
+    
+
+
+      const HandleSubmit = async (event) => {
+        event.preventDefault();
+        setSubmitBtn(!submitbtn)
+    
+        const formData = new FormData();
+      
+    
+        Array.from(img).forEach(imgs => {
+    
+          formData.append('img', imgs);
+    
+      });
+    
+            formData.append('data',  JSON.stringify(data));
+    
+    
+    
+       const api = fetch(process.env.REACT_APP_API_LINK + fetchs.link, {
+        method: fetchs.method,
+        // credentials: "include",
+       // headers: {'Content-Type': "application/json", },
+        body:   formData
+        })
+        
+        .then((res) => {
+           if (res.status == 200) {
+          
+                navigate("/user"); 
+
+           } else {
+            setSubmitBtn(false);
+       
+           }
+
+           return res.json()
+        }).then(
+          data => {
+            console.log(data.message, 'llk')       
+
+           
+            if (data.success == false) {
+               AlertError(data.message)
+
+               console.log(data.message);
+               
+            } else {
+                            // navigate("admin"); 
+
+            }
+          })
+
+
+        
+        .catch((e) => {
+          console.log(e);
+          setSubmitBtn(!submitbtn)
+          AlertError("error try again later")
+
+
+          let msg = "fail"
+        })
+
+
+        
+    
+    
+     
+      
+      }
+
+
+
+    return (            
+      <div className={Style.app}>
+
+
+      <div className={Style.top} >
+        <h1 > {h1} </h1>
+      </div>
+
+
+      <div className={Style.pimg} >
+
+{        data.img &&    <img src={data.img } /> }    
+
+      </div>
+
+
+        <form className={Style.form} onSubmit={HandleSubmit}>
+
+        <Inputs label={'name'} type={'text'} name={'name'} onchange={handleChange} value={data.name}  placeholder={'name'} disabled={false} required={true}  />
+        
+
+       <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" >region</label>
+
+          <select id="region" name={"regionId"} onChange={handleChange} title="region" Value={data.regionId} > 
+          { data.region ? null : <option value={""} > select a region  </option> }
+
+
+          {region.map((props) => (
+
+                        
+        <option key={props._id} name={"region"} value={props.name} > {props.name}  </option>
+ 
+
+
+                )   )   }
+    
+
+
+          </select>
+
+        </div>
+
+
+        <Inputs label={'picture'} type={'file'} name={'logo'} onchange={handleFileChange} value={data.logo}  placeholder={'logo'} disabled={false} required={data.img ? false  : true}  />
+
+
+        
+
+        <button className="submit" type="submit" disabled={submitbtn}> Submit</button> 
+
+        
+        </form>
+
+
+
+
+
+
+
+    </div>
+
+    )
+}
+
+export {TeamAdminPlayer, AdminTeam, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture}

@@ -3,7 +3,7 @@ import Style from "../../../styles/Team.module.css"
 import Nav from "../../../components/sub component/Nav"
 import { useParams, Link } from "react-router-dom";
 import Footer from "../../../components/sub component/Footer";
-import { AdminAddTeamToRegion, AdminBanner, AdminFixture, AdminNews, AdminRegion, AdminSubRegion } from "../../../components/sub component/Profileadminview";
+import { AdminAddTeamToRegion, AdminBanner, AdminFixture, AdminNews, AdminRegion, AdminSubRegion, AdminTeam } from "../../../components/sub component/Profileadminview";
 
 
 
@@ -19,6 +19,9 @@ const Add = ({}) => {
 
 
 
+
+    console.log(useParams());
+    
 
 
         useEffect(() => {            
@@ -66,6 +69,9 @@ const Add = ({}) => {
 
 
             { mode2.results && <AdminNews  event={mode1} typeId={typeId} />}
+
+            { mode2.team &&  <AdminTeam event={mode1} regionId={id} typeId={typeId}/> } 
+
   {/* 
             { mode.squad && <TeamSquad />}
 

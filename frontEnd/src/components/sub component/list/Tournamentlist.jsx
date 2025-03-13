@@ -232,4 +232,77 @@ const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname, _id, regionId, half
         </Link>
     )
 }
-export {Table, Fixture, Result, Tablehead}
+
+
+
+
+
+
+
+
+
+
+const FixtureToEdit = ({Hname, Hscore, Hlogo, date, time, Alogo, Ascore, Aname, _id, live, start, half, minutes, regionId,  }) => {
+
+    
+    const Half = live ? minutes : half ;
+
+
+    const Start = start ? <div className={Style.scoreboard}>
+    <span className={Style.score}>
+        <span className={Style.h}> {Hscore} </span>
+        <span className={Style.div}> - </span>
+        <span className={Style.a}> {Ascore} </span>
+    </span> <p > {Half}</p> </div> : 
+    
+    <time dateTime="">  <span className={Style.date}> {date}  </span> <br/> {time}</time> ;
+
+
+    return (
+
+
+        <Link to={"./../" + _id} className={Style.fixtures} >
+
+            <div className={Style.matchday}>
+
+
+                <ul  className={Style.list}>
+
+
+                    <li className={Style.fixture}>
+                        <div className={Style.container} >
+                            <span className={Style.teams}>
+
+                                <span className={Style.home}>
+                                    <span className={Style.name} > {Hname}</span>
+                                    <span className={Style.logo}> <img src={Hlogo} />  </span>
+                                </span>
+
+                              {Start }
+
+
+
+
+                                <span className={Style.away}>
+                                    <span className={Style.logo}> <img src={Alogo} />  </span>
+                                    <span className={Style.name} > {Aname}</span>
+                                </span>
+                            </span>
+                        </div>
+                    </li>
+
+
+                </ul>
+
+
+
+
+
+     </div>
+
+        </Link>
+
+
+    )
+}
+export {Table, Fixture, Result, Tablehead, FixtureToEdit}

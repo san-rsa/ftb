@@ -245,14 +245,14 @@ router.patch('/sub-competition/:id', async (req, res)=> {
 
 router.patch('/:competition/fixture/:id',  async (req, res)=> {
 
-    const data = req.body  //JSON.parse(req.body.data)
+    const data = JSON.parse(req.body.data)
 
     try {
-        const { matchday, home, time, date, away, group, referee, stadium, stage}= data
+        const { year, matchday, home, time, date, away, group, referee, stadium, stage, }= data
         const {id, competition} = req.params
 
         
-        console.log(data)
+        console.log(data, req.params)
 
 
 
@@ -266,16 +266,13 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
 
 
      
-                const existing = await Fixture.findOne({_id: competition})
+                const existing = await Fixture.findOne({competition}).sort({year: 'desc'})
 
                     
                
             
                     if (existing) {
-                        //---- Check if index exists ----
-        
-                        if (String(existing.type) == "league") {
-                            
+                        //---- Check if index exists ----                            
                             const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
                             const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == id);
         
@@ -301,9 +298,17 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
         
                         else if (Foundmatch !== -1 ) {
 
-                            await Fixture.findOneAndUpdate({_id: competition}, 
+                            const teams = {home, day: {date, time}, away, referee, stadium, group, stage }
+        
+                            const fixture =  { matchday,
+                            teams: teams   // teams: [{home, time: [{date, time,}], away } ]
+            
+            }
+
+                     let dd =       await Fixture.findOneAndUpdate({competition, year: existing.year}, 
                                 { 
-                                  "$set": {"fixture.$[day].teams.$[match]": {$set: data, }} 
+                                  $set: {"fixture.$[day].teams.$[match]": {$set: data, 
+                                    day: {date, time}, year, matchday, home, away, group, referee, stadium, stage }} 
                                 },
                                 { 
                                   "arrayFilters": [
@@ -311,83 +316,20 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
                                     {"match._id": id}
 
                                   ]
-                                })
+                                })                   
+console.log(dd.teams, 440);
                            }}
         
         
-                        const save = await existing.save();
+                   //     const save = await existing.save();
+
+                   
                        return  res.status(200).json({
                             type: "success",
                             mgs: "Process successful",
-                            data: save
+                            data: 'l' //save
                         })
         
-                    }
-
-                
-                        else if (String(existing.type) == "cup") {
-                             const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
-                             const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == id);
-
-                                
-            
-                        if (Foundmatchday == -1) {
-                            
-                            return  res.status(400).json({
-                                type: "failed",
-                                mgs: "matchday not found ",
-          
-                            })                       
-                        }
-        
-                            if (Foundmatchday !== -1) {
-                                if (Foundmatch == -1) {
-                                 return  res.status(400).json({
-                                     type: "failed",
-                                     mgs: "match not found ",
-               
-                                 })
-                                 }
-             
-             
-                             else if (Foundmatch !== -1 ) {
-     
-                                 await Fixture.findOneAndUpdate({_id: competition}, 
-                                     { 
-                                       "$set": {"fixture.$[day].teams.$[match]": {$set: data, }} 
-                                     },
-                                     { 
-                                       "arrayFilters": [
-                                         { "day.matchday": matchday },
-                                         {"match._id": id}
-     
-                                       ]
-                                     })
-     
-                                 }
-                                
-             
-                             }      
-        
-        
-        
-        
-                        const save = await existing.save();
-                       return  res.status(200).json({
-                            type: "success",
-                            mgs: "Process successful",
-                            data: save
-                        })
-        
-        
-        
-                        
-                    }
-                    //------------ This creates a new cart and then adds the item to the cart that has been created------------
- 
-            
-
-
     }
             
 
@@ -961,10 +903,10 @@ router.post('/results',  async (req, res)=> {
 
 
 
-router.post('/team', async (req, res)=> {
+router.patch('/team/:id', async (req, res)=> {
 
-    const data = req.body //JSON.parse(req.body.data)
-    const file = req.files.img  
+    const data = JSON.parse(req.body.data)
+    const file = req.files?.img  
       
      
 
@@ -972,19 +914,23 @@ router.post('/team', async (req, res)=> {
         const {name, description}= data
         const logo = []
 
-        const image = await cloudinary.uploader.upload(
-        file.tempFilePath,
-        { folder: 'Banner' },
+        if (req.files) {
 
-      );
-
-
-      logo.push({url: image.secure_url,  imgId: image.public_id})
-
+            const image = await cloudinary.uploader.upload(
+            file.tempFilePath,
+            { folder: 'News' },
+    
+          );
+    
+    
+          picture.push({url: image.secure_url,  imgId: image.public_id})
+    
+     
+          }
  
       
 
-		if (!name || !logo ) {
+		if (!name  ) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",
@@ -992,8 +938,8 @@ router.post('/team', async (req, res)=> {
 		}
 
 
-        const save = await Team.findByIdAndUpdate(req.params.id, {
-            $set: update, logo: logo[0]
+        const save = await Team.findOneAndUpdate({name: req.params.id}, {
+            $set: data, logo: logo[0]
         }, { new: true });
             // res.redirect("/login")
 

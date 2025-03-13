@@ -174,7 +174,7 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
       </div>
 
 
-        <form className={Style.form} >
+        <form className={Style.form} onClick={HandleSubmit}>
 
         <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
         <Inputs label={'last name'} type={'text'} name={'lname'} onchange={handleChange} value={data.lname}  placeholder={'last name'} disabled={false} required={true}  />
@@ -236,7 +236,7 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
 
 
-        <button className="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
+        <button className="submit"  disabled={submitbtn} type="submit"> Submit</button> 
         </form>
 
     </div>
@@ -440,7 +440,7 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
       </div>
 
 
-        <form className={Style.form} >
+        <form className={Style.form} onClick={HandleSubmit} >
 
         <Inputs label={'head'} type={'text'} name={'head'} onchange={handleChange} value={data.head}  placeholder={'head'} disabled={false} required={true}  />
         
@@ -492,35 +492,8 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
 
 
 
-        {/* <div className={Style.select} >
 
-
-        <label >positions</label>
-
-          <select id="position" name={"position"} onChange={handleChange} title="positions" >
-
-              <option name={"position"} value={"foward"} > foward  </option>
-              <option name={"position"} value={"midfielder"} > midfielder  </option>
-              <option name={"position"} value={"defender"} > defender  </option>
-              <option name={"position"} value={"goalkeeper"} > goalkeeper  </option>
-
-          </select>
-
-        </div> */}
-
-
-        
-        {/* <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
-        <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
-        <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
-         */}
-
-
-
-
-
-
-        <button className="submit" onClick={HandleSubmit} disabled={submitbtn}> Submit</button> 
+        <button className="submit"  disabled={submitbtn} type="submit"> Submit</button> 
         </form>
 
     </div>
