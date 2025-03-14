@@ -276,7 +276,10 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
                             const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
                             const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == id);
         
-                                    
+                           
+                            
+                            const existingmatchday = existing.fixture[Foundmatchday].matchday;
+
             
                         if (Foundmatchday == -1) {
                             
@@ -312,7 +315,7 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
                                 },
                                 { 
                                   "arrayFilters": [
-                                    { "day.matchday": matchday },
+                                    { "day.matchday": existingmatchday },
                                     {"match._id": id}
 
                                   ]

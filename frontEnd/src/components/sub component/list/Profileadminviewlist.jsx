@@ -404,7 +404,7 @@ const AdminMatchFixtureList = ({regionid}) => {
             <h3 > matchday: {p.matchday} </h3>
 
 
-                    <div className={Style.fix} >
+                    <div className={Style.match} >
 
 
                         {p.teams.map((props) => (
