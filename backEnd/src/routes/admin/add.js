@@ -718,7 +718,7 @@ router.post('/news', async (req, res)=> {
 
         console.log(data)
 
-		if (!head || !body || !teamid ) {
+		if (!head || !body || !req.files ) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",

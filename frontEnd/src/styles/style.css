@@ -42,6 +42,12 @@ button {
 }
 
 
+button:disabled {
+  background: #000000;
+  border: 3px #000000 solid; 
+
+}
+
 
 
 
