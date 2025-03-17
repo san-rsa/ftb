@@ -122,65 +122,52 @@ const Profile = ({}) => {
 
   
 
+                <div className={Style.top}>
+                        <div className={Style.player}>
+                        <h3 > USER </h3>
 
 
-                         <div className={Style.top}>
+                    <div className={Style.head} >
 
-                            <div className={Style.head} >
 
-                            <div className={Style.img}>
-                                    {/* <img src={info?.imgUrl} alt=""/> */}
-                                {data.logo && <img src={data.logo[0]?.url}/>       }
-                            </div>
-                                    
+                        <div className={Style.img}>
+                            {/* <img src={info?.imgUrl} alt=""/> */}
+                            <img src={data.imgUrl?.url}/>
 
-                                
-                            <div className={Style.name}>
-                                <h1 > <span > {data.name} </span> </h1>
-                            </div>    
-                                     
-                  
-                             </div>  
-         
-         
-                       <div className={Style.list}>
-    
+                        </div>
+                            
+
+
+                        <div className={Style.name}>
+                        <h1 > <span > {data.head} </span> </h1>
+                        </div>    
+
+
+
+                        </div>
+                    </div>  
+
+
+
+                        <div className={Style.list}>
+            
                     <ul >
                         <li onClick={handleChange} >Overview</li>
                         <li onClick={handleChange}  >News</li>
-                        {/* <li onClick={handleChange} >Fixtures</li>
-                        <li onClick={handleChange}  >Results</li> */}
-                        {/* <li onClick={handleChange}  >Squad</li> */}
-                        {/* <li onClick={handleChange}  >Transfer</li> */}
-                        {/* <li onClick={handleChange}  >Official</li> */}
                         <li onClick={handleChange}  >Admin</li>
 
     
                     </ul>
     
-    
-    
-                    
-              
-                 {/* { mode.fixtures && <Fixtures />}
-    
-                 { mode.results &&  <Results />} */}
-    
-                 </div>
-
-                         </div>
+            
+                </div>
+                </div>
 
          <div className={Style.section} >
 
             { mode.overview && <Overview id={link} />}
 
             { mode.news && <TeamNews id={link} />}
-
-            {/* { mode.fixtures && <TeamFixtures id={link} />}
-
-            { mode.results && <TeamResults id={link} />} */}
-
-            {/* { mode.squad && <TeamSquad id={link} />} */}
 
             { mode.admin && <TeamAdmin id={link} />}
 

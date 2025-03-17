@@ -1,7 +1,7 @@
 import React, { useState, useEffect,  } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Style from "../../styles/Profile.module.css"
-import { Inputs } from "./list/Generallist";
+import { CardList, Inputs, PlayerBio } from "./list/Generallist";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Styles from "../..//styles/News.module.css"
 
@@ -149,6 +149,24 @@ const Overview = ({id}) => {
         <div className={Style.overview}>
 
 
+            
+                    <div className={Style.teams} >
+
+                        <h2 > Team</h2>
+
+                    
+                        <CardList
+                            name={"ebuawa"}
+                            to={"team"}
+                            category={"Team"}
+                            link={"ebuawa"}
+                            logo={data.imgUrl?.url}
+
+                        />
+
+                        </div>
+
+
         <div className={Style.layout} >
 
                     <div className={Style.left} >
@@ -236,101 +254,36 @@ const Overview = ({id}) => {
         </div>
 
 
+        
+                                <div className={Style.stats}> 
+        
+                                    <h2 > KEY STATS</h2>
+        
+                                    <div className={Style.bio}>
+        
+                                        <PlayerBio
+                                            topic={"Name"}
+                                            answer={"22"}
+                                        />
+        
+                                        <PlayerBio
+                                            topic={"Age"}
+                                            answer={"22"}
+                                        />
+        
 
-                <div className={Style.standing} >
-                    <h2 > Standing</h2>
-
-
-           <Tablehead />
-   
-              {stand.standing?.slice(0, 5).map((props, pos) => (
-
-
-
-                <Table
-                    pos={pos + 1}
-                    name={props.teams.name}
-                    logo={props.teams.logo[0].url}
-                    w={props.stats.win} 
-                    d={props.stats.draw} 
-                    l={props.stats.loss} 
-                    pts={props.stats.points} 
-                    pl={props.stats.played} 
-                    gd={props.stats.gd} 
-                    ga={props.stats.ga} 
-                    gs={props.stats.gs}
-                    />    
-
-
-
-                )   )   }
-
-                </div>
-
-
-                {/* <div className={Style.form} >
-                    <h2 > Form Guide</h2>
-
-
-                </div> */}
-
-                <div className={Style.latestN} >
-                    <h2 > Latest News</h2>
-
-
-                    <div className={Style.news} >
-                        {news.slice(0, 5).map((project) => (
-
-                        <div className={Styles.perone} key={project._id}> 
-
-                        <Mininews
-                            head={project.head}
-                            img={project.imgUrl[0].url}
-                            link={project.head}
-                            />    
-                            </div>
-
-
-                        )   )   }
-                    </div>
-                    
-
-
-
-                </div>
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
-
-
+        
+        
+        
+        
+                                    </div>
+                                    
+                                 </div>
 
 
                     </div>
 
-                    <div className={Style.right} >
-                        <div className={Style.otherTeams} >
-                        <h2 > Other teams</h2>
 
-                        {otherTeams.slice(1, 5).map((project) => (
-
-                            <div className={Style.perone} key={project._id}> 
-
-                            <TeamList
-                                name={project.name}
-                                logo={project.logo[0].url}
-                                link={project.name}
-                                />    
-                                </div>
-
-
-                        )   )   }
-
-                        </div>
-
-                    </div>
         </div>
         </div>
 
@@ -338,30 +291,15 @@ const Overview = ({id}) => {
 }
 
 
-const TeamNews = ({id}) => {
+const TeamNews = () => {
     
     const [news, setnews] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-
-    
-
-    
-
-
-
-    
+     
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news/team/" + id)
+            fetch(process.env.REACT_APP_API_LINK + "getall/news")
             .then((res) =>  res.json())
             .then((data) => setnews(data.data));
         }, []);
-
-
-    
-
 
 
 
@@ -379,7 +317,7 @@ const TeamNews = ({id}) => {
                     <News
                         head={project.head}
                         img={project.imgUrl[0].url}
-                        link={project.head}
+                        body={project.body}
                         />    
 
 
@@ -393,7 +331,7 @@ const TeamNews = ({id}) => {
 
                         <Mininews
                             head={project.head}
-                            img={project.imgUrl.url}
+                            img={project.imgUrl[0].url}
                             link={project.head}
                             />    
                             </div>
@@ -401,19 +339,6 @@ const TeamNews = ({id}) => {
 
                         )   )   }
                     
-
-
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
-
-
-
 
                     </div>
 
@@ -715,7 +640,7 @@ const TeamAdmin = ({}) => {
 
             <div className={Style.teamadminmenulist} >
                 <CardList3Edit name={"Add Team to Region"} to={"add"} category={"add"} link={"add-team-to-region"} logo={faPlus} id={"list"} />  
-                <CardList3Edit name={"Add Team to Region"} to={"edit"} category={"edit"} link={"add-team-to-region"} logo={faPenToSquare} id={"list"} />  
+                <CardList3Edit name={"Add Team to Region"} to={"delete"} category={"delete"} link={"add-team-to-region"} logo={faPenToSquare} id={"list"} />  
                 {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
       
             </div>
@@ -744,8 +669,8 @@ const TeamAdmin = ({}) => {
             <h2 > User</h2>
 
             <div className={Style.teamadminmenulist} >
-                <CardList3 name={"News"} to={"add"} category={"add"} link={"news"} logo={faPlus} />  
-                <CardList3Edit name={"News"} to={"edit"} category={"edit"} link={"news"} logo={faPenToSquare} id={"list"} />  
+                <CardList3Edit name={"User"} to={"add"} category={"add"} link={"user"} logo={faPlus} id={"list"} />  
+                <CardList3Edit name={"User"} to={"delete"} category={"delete"} link={"user"} logo={faPenToSquare} id={"list"} />  
                 {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
       
             </div>

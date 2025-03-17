@@ -25,7 +25,7 @@ const AdminBanner = ({ event, typeId }) => {
 
         useEffect(() => {
           if (typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/banner/" + typeId.replaceAll('-',' '))
+            fetch(process.env.REACT_APP_API_LINK  + "getone/banner/" + typeId)
             .then((res) =>  res.json())
             .then((data) =>  setInputs({
               head:data.head,
@@ -41,7 +41,7 @@ const AdminBanner = ({ event, typeId }) => {
         if (event.add ) {
       setFetch({link: 'admin/add/banner/', method: 'POST'  })
     } else if (event.edit) {
-      setFetch({link: 'admin/edit/banner/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+      setFetch({link: 'admin/edit/banner/' + typeId, method: 'PATCH'  })
 
     }
 
@@ -93,7 +93,7 @@ const AdminBanner = ({ event, typeId }) => {
         body:   formData
         })
         
-        .then((res) => {            console.log(res.status);
+        .then((res) => {           
 
            if (res.status == 200) {
 
@@ -127,8 +127,6 @@ const AdminBanner = ({ event, typeId }) => {
           setSubmitBtn(false)
           AlertError("error try again later")
 
-
-          let msg = "fail"
         })
 
 
@@ -223,7 +221,7 @@ const AdminNews = ({event, typeId }) => {
         useEffect(() => {
 
           if (typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + typeId.replaceAll('-',' '))
+            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + typeId)
             .then((res) =>  res.json())
             .then((data) =>  setInputs({
               head:data.head,
@@ -239,7 +237,7 @@ const AdminNews = ({event, typeId }) => {
         if (event.add ) {
       setFetch({link: 'admin/add/news/', method: 'POST'  })
     } else if (event.edit) {
-      setFetch({link: 'admin/edit/news/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+      setFetch({link: 'admin/edit/news/' + typeId, method: 'PATCH'  })
 
     }
 
@@ -326,8 +324,6 @@ const AdminNews = ({event, typeId }) => {
           setSubmitBtn(!submitbtn)
           AlertError("error try again later")
 
-
-          let msg = "fail"
         })
 
 
@@ -462,7 +458,7 @@ const AdminRegion = ({event, typeId }) => {
         useEffect(() => {
 
           if (typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + typeId.replaceAll('-',' '))
+            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + typeId)
             .then((res) =>  res.json())
             .then((data) =>  setInputs({
               name:data.name,
@@ -477,7 +473,7 @@ const AdminRegion = ({event, typeId }) => {
         if (event.add ) {
       setFetch({link: 'admin/add/competition/', method: 'POST'  })
     } else if (event.edit) {
-      setFetch({link: 'admin/edit/competition/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+      setFetch({link: 'admin/edit/competition/' + typeId, method: 'PATCH'  })
 
     }
 
@@ -563,8 +559,6 @@ const AdminRegion = ({event, typeId }) => {
           setSubmitBtn(!submitbtn)
           AlertError("error try again later")
 
-
-          let msg = "fail"
         })
 
 
@@ -574,10 +568,6 @@ const AdminRegion = ({event, typeId }) => {
      
       
       }
-
-
-      console.log(data.type);
-
 
     return (            
       <div className={Style.app}>
@@ -880,68 +870,58 @@ const AdminAddTeamToRegion = ({event, regionId, typeId }) => {
 
   const [submitbtn, setSubmitBtn] = useState(false)
 
-  const [fetchs, setFetch] = useState({link: "", method: ""})
+  const [fetchs, setFetch] = useState({link: "", method: "", get: ""})
 
 
 
   let navigate = useNavigate()
 
 
-          useEffect(() => {
-          fetch(process.env.REACT_APP_API_LINK  + "getall/teams" )
-          .then((res) =>  res.json())
-          .then((data) =>  setTeam(data.data))
+    useEffect(() => {
+     
 
+      if (event.add ) {
+        setFetch({link: 'admin/add/add-team-to-competition/', method: 'POST',  })
+        fetch(process.env.REACT_APP_API_LINK  + 'getall/teams/'  )
+        .then((res) =>  res.json())
+        .then((data) =>  setTeam(data.data))
 
-          if (!typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + regionId.replaceAll('-',' '))
-            .then((res) =>  res.json())
-            .then((data) =>  setInputs({
-              name:data.name,
-              competitionId: data.name,
-              img: data?.logo[0]?.url
-              
-              
-            })
-          );
-          }   
-        
+    } else if (event.delete) {
+      setFetch({link: 'admin/delete/add-team-to-competition/', method: 'PATCH',  })
 
-      }, []);
-
-
-
-
-
-
-        useEffect(() => {
-
-          if (typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + regionId?.replaceAll('-',' '))
-            .then((res) =>  res.json())
-            .then((data) =>  setInputs({
-              name:data.name,
-              competitionId: data.name,
-              img: data?.logo[0]?.url
-              
-              
-            })
-          );
-          }       
-
-        if (event.add ) {
-      setFetch({link: 'admin/add/add-team-to-competition/', method: 'POST'  })
-    } else if (event.edit) {
-      setFetch({link: 'admin/edit/add-team-to-competition/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+      fetch(process.env.REACT_APP_API_LINK  + 'getall/teams/' + regionId  )
+      .then((res) =>  res.json())
+      .then((data) =>  setTeam(data.data))
 
     }
+        fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + regionId)
+        .then((res) =>  res.json())
+        .then((data) =>  setInputs({
+          name:data.name,
+          competitionId: data.name,
+          img: data?.logo[0]?.url
+          
+          
+        })
+      );
+
+
+
 
       }, []);
+
+      // fetch(process.env.REACT_APP_API_LINK  + fetchs.get )
+      // .then((res) =>  res.json())
+      // .then((data) =>  setTeam(data.data))
+      
+      
+  
+
         
 
 
 
-    const h1 = (event.add) ? "Add Team to Region" : (event.edit) ? "Edit Team Region" : "please try again later" ;  
+    const h1 = (event.add) ? "Add Team to Region" : (event.delete) ? "Delete Team in Region" : "please try again later" ;  
     
     
       const handleChange = (event) => {
@@ -1649,4 +1629,199 @@ const AdminTeam = ({event, typeId }) => {
     )
 }
 
-export {AdminTeam, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture}
+
+
+
+
+
+
+
+
+
+
+const AdminAddUserToTeam = ({event, regionId, typeId }) => {
+  const [data, setInputs] = useState({})
+  const [user, setUser] = useState([])
+
+
+  const [submitbtn, setSubmitBtn] = useState(false)
+
+  const [fetchs, setFetch] = useState({link: "", method: "", get: ""})
+
+
+
+  let navigate = useNavigate()
+
+
+    useEffect(() => {
+     
+
+      if (event.add ) {
+        setFetch({link: 'admin/add/add-user-to-team/', method: 'POST',  })
+        fetch(process.env.REACT_APP_API_LINK  + 'getall/user/'  )
+        .then((res) =>  res.json())
+        .then((data) =>  setUser(data.data))
+
+    } else if (event.delete) {
+      setFetch({link: 'admin/delete/add-user-to-team-competition/', method: 'PATCH',  })
+
+      fetch(process.env.REACT_APP_API_LINK  + 'getall/user/' + regionId  )
+      .then((res) =>  res.json())
+      .then((data) =>  setUser(data.data))
+
+    }
+        fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + regionId)
+        .then((res) =>  res.json())
+        .then((data) =>  setInputs({
+          name:data.name,
+          teamId: data.name,
+          img: data?.logo[0]?.url
+          
+          
+        })
+      );
+
+
+
+
+      }, []);
+
+
+
+
+    const h1 = (event.add) ? "Add User to Team" : (event.delete) ? "Delete User At OfTeam" : "please try again later" ;  
+    
+    
+      const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+
+      }
+
+
+
+
+          console.log(data, );
+    
+
+
+      const HandleSubmit = async (event) => {
+        event.preventDefault();
+        setSubmitBtn(!submitbtn)
+    
+        const formData = new FormData();
+      
+    
+
+    
+        formData.append('data',  JSON.stringify(data));
+    
+    
+    
+       const api = fetch(process.env.REACT_APP_API_LINK + fetchs.link, {
+        method: fetchs.method,
+        // credentials: "include",
+       // headers: {'Content-Type': "application/json", },
+        body:   formData
+        })
+        
+        .then((res) => {
+           if (res.status == 200) {
+          
+                navigate("/user"); 
+
+           } else {
+            setSubmitBtn(false);
+       
+           }
+
+           return res.json()
+        }).then(
+          data => {
+
+           
+            if (data.success == false) {
+               AlertError(data.message)
+
+               console.log(data.message);
+               
+            } else {
+                            // navigate("admin"); 
+
+            }
+          })
+
+
+        
+        .catch((e) => {
+          console.log(e);
+          setSubmitBtn(!submitbtn)
+          AlertError("error try again later")
+        })
+
+      }
+
+
+    return (            
+      <div className={Style.app}>
+
+
+      <div className={Style.top} >
+        <h1 > {h1} </h1>
+      </div>
+
+
+      <div className={Style.pimg} >
+
+{        data.img &&    <img src={data.img } /> }    
+
+      </div>
+
+
+        <form className={Style.form} onSubmit={HandleSubmit}>
+
+        <Inputs label={'team Id'} type={'text'} name={'teamId'} value={data.teamId} disabled={true} required={true}  />
+        
+
+
+           <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" >user</label>
+
+          <select id="user" name={"user"} onChange={handleChange} title="user" value={data.user} required > 
+          { data.user ?  null : <option value={""} > select a user  </option> }
+
+
+          {user.map((props) => (
+
+                        
+        <option key={props._id} value={props.name} > {props.name}  </option>
+ 
+
+
+                )   )   }
+    
+
+
+          </select>
+
+        </div>
+
+        <button className="submit" type="submit" disabled={submitbtn}> Submit</button> 
+
+        </form>
+
+
+
+
+
+
+
+    </div>
+
+    )
+}
+
+export {AdminTeam, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture, AdminAddUserToTeam}

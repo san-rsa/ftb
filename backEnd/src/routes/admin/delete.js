@@ -1,16 +1,24 @@
 require('dotenv').config()
+const User = require('../../models/user')
 const Banner = require('../../models/news/banner')
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt= require('jsonwebtoken')
 //const OTP = require('../../models/OTP')
-const otpGenerator = require("otp-generator");
-const User = require('../../models/user')
-// const Product = require('../models/product')
-const {auth, role} = require('../../middleware/mid')
+ const {auth, role, uploadMiddleware, deleteFixture, updateStanding, updateCupStanding, firstHalf} = require('../../middleware/mid')
 const cloudinary = require('../../connection/cloudinary')
-
+const News = require('../../models/news/news')
+const Competition = require('../../models/competition/competition')
+const Team = require('../../models/competition/team')
+const Player = require('../../models/competition/player')
+const Fixture = require('../../models/competition/fixture')
+const Result = require('../../models/competition/result')
+const Standing = require('../../models/competition/standing/standing')
+const Codeofconduct = require('../../models/news/codesofconduct')
+const CupStanding = require('../../models/competition/standing/cup')
+const Live = require('../../models/competition/live')
+const Sub_Region = require('../../models/competition/competition-location')
 
 
 
@@ -29,6 +37,85 @@ router.patch('/admin' , auth, role(process.env.ADMIN), async (req, res, next) =>
         return next(error);
     }
 });
+
+
+
+
+
+router.patch('/add-team-to-competition', async (req, res)=> {
+
+    const data = JSON.parse(req.body.data)
+     
+
+    try {
+        const {competitionId, team, }= data
+
+
+
+		if (!team || !competitionId ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+ 
+      
+        //check if use already exists?
+        const existingItem = await Competition.findOne({name: competitionId})
+        const existingTeam = await Team.findOne({name: team})
+
+
+
+        if(!existingItem || !existingTeam){
+            return res.status(400).json({
+                success: false,
+                message: "region or team not found"
+            })
+        }
+
+
+
+
+        existingItem.teams.pull(existingTeam.name)
+        existingTeam.regionId.pull(existingItem.name)
+
+
+
+
+
+        existingItem.save()
+        existingTeam.save()
+
+
+        console.log(existingItem, existingTeam);
+        
+
+
+
+
+
+
+
+
+
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+   
+            message: "successfully ✅ added"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+})
 
 
  

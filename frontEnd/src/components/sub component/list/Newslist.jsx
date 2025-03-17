@@ -7,13 +7,12 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 
 
-const News = ({img, head, body, id, link}) => {
+const News = ({img, head, body, }) => {
 
     const newsLink =head.replaceAll(' ','-')
 
     return (
-        <div className={Style.news}>
-            <Link to={ "/news/" + newsLink}>
+            <Link to={ "/news/" + newsLink} className={Style.news}>
             <div className={Style.news1}>
 
                 <div className={Style.img1} >
@@ -24,19 +23,18 @@ const News = ({img, head, body, id, link}) => {
                 <div className={Style.text1} >
                     
                     <div className={Style.head1}>
-                        <h2 >  {head} Premier League Player of the Week: The smiling assassin</h2>
+                        <h2 >  {head} </h2>
                     </div>
 
                     
                     <div className={Style.body1} >
-                        <p >  {body} bFrom fights at the Bridge to crumblings by the coast, it was a fascinating weekend of action in the Premier League. But our Player of the Week is … Bukayo Saka (Arsenal) In...bb</p>
+                        <p >  {body} </p>
                     </div>
                 </div>
 
 
                 </div>
             </Link>
-        </div>
 
     )
 }
@@ -44,13 +42,12 @@ const News = ({img, head, body, id, link}) => {
 
 
 
-const Mininews = ({img, head, link, id}) => {
+const Mininews = ({img, head, }) => {
 
     const newsLink =head.replaceAll(' ','-')
 
     return (
-        <div className={Style.newsm}>
-           <Link to={"/news/" + newsLink}>
+           <Link to={"/news/" + newsLink} className={Style.newsm}>
             <div className={Style.news2}>
 
 
@@ -63,7 +60,7 @@ const Mininews = ({img, head, link, id}) => {
                     <div className={Style.text2} >
                         
                         <div className={Style.head2}>
-                            <h2 >  {head} Premier League Player of the Week: The smiling assassin</h2>
+                            <h2 >  {head} </h2>
                         </div>
 
                     </div>
@@ -71,7 +68,7 @@ const Mininews = ({img, head, link, id}) => {
 
                 </div>
               </Link>
-        </div>
+  
 
     )
 }
@@ -84,9 +81,8 @@ const Mininews2 = ({img, head, link, id}) => {
     const newsLink =link.replaceAll(' ','-')
 
     return (
-        <div className={Style.newsm}>
-
-        <Link to={"/news/" + newsLink}>
+  
+        <Link to={"/news/" + newsLink} className={Style.newsm}>
         <div className={Style.news3}>
 
 
@@ -106,8 +102,7 @@ const Mininews2 = ({img, head, link, id}) => {
 
 
             </div>
-        </Link>        </div>
-
+        </Link>    
     )
 }
 
@@ -152,8 +147,7 @@ const Mininews3 = ({img, head,link, id}) => {
     const newsLink =head?.replaceAll(' ','-')
 
     return (
-        <div className={Style.newsm}>
-            <Link to={ "/news/" + newsLink }>
+            <Link to={ "/news/" + newsLink } className={Style.newsm}>
             <div className={Style.news3}>
 
 
@@ -166,7 +160,7 @@ const Mininews3 = ({img, head,link, id}) => {
                 <div className={Style.text3} >
                     
                     <div className={Style.head3}>
-                        <h2 > {head} Premier League Player of the Week: The smiling assassin</h2>
+                        <h2 > {head} </h2>
                     </div>
 
                 </div>
@@ -174,7 +168,6 @@ const Mininews3 = ({img, head,link, id}) => {
 
                 </div>
             </Link>
-        </div>
 
     )
 }
@@ -193,15 +186,10 @@ const MininewsEdit = ({img, head,  link }) => {
 
     const to = link.replaceAll(' ','-')
 
-    const tod = head.replaceAll(' ','-')
-
-
-    console.log(tod);
     
     return (
-        <div className={Style.newsm}>
            <Link to={ to}>
-            <div className={Style.news2}>
+            <div className={Style.news2} className={Style.newsm}>
 
 
  
@@ -221,7 +209,6 @@ const MininewsEdit = ({img, head,  link }) => {
 
                 </div>
               </Link>
-        </div>
 
     )
 }

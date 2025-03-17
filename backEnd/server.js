@@ -283,12 +283,12 @@ router.get('/', (req, res) => {
 app.use('/auth', user)
 app.use('/admin/add', adminadd)
 app.use('/admin/edit', adminedit)
-app.use('/admin/del', admindel)
+app.use('/admin/delete', admindel)
 app.use("/getall/", getall)
 app.use("/getone", getone)
 app.use("/add", add)
 app.use("/edit", edit)
-app.use("/del", del)
+app.use("/delete", del)
 
 
 

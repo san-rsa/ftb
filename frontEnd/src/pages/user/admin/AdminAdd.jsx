@@ -9,18 +9,14 @@ import { AdminAddTeamToRegion, AdminBanner, AdminFixture, AdminNews, AdminRegion
 
 
 const Add = ({}) => {
-    const [mode1, setEvent] = useState({add: false, edit: false, });
+    const [mode1, setEvent] = useState({add: false, edit: false, delete: false });
 
     const [mode2, setType] = useState({banner: false, news: false, region: false, user: false, "add-team-to-region": false, "sub-region": false,  });
     
-    const { event, type, typeId, matchId } = useParams()
+    const { event, type, matchId } = useParams()
 
-    const id =typeId?.replaceAll('-',' ')
+    const typeId = useParams().typeId?.replaceAll('-',' ')
 
-
-
-
-    console.log(useParams());
     
 
 
@@ -62,15 +58,15 @@ const Add = ({}) => {
 
             { mode2["sub-region"] && <AdminSubRegion event={mode1} typeId={typeId} />}
 
-           { mode2.fixture &&  <AdminFixture event={mode1} regionId={id} typeId={matchId}/> } 
+           { mode2.fixture &&  <AdminFixture event={mode1} regionId={typeId} typeId={matchId}/> } 
 
-           { mode2["add-team-to-region"] &&  <AdminAddTeamToRegion event={mode1} regionId={id} typeId={matchId}/> } 
+           { mode2["add-team-to-region"] &&  <AdminAddTeamToRegion event={mode1} regionId={typeId} /> } 
 
 
 
             { mode2.results && <AdminNews  event={mode1} typeId={typeId} />}
 
-            { mode2.team &&  <AdminTeam event={mode1} regionId={id} typeId={typeId}/> } 
+            { mode2.team &&  <AdminTeam event={mode1} regionId={typeId} typeId={typeId}/> } 
 
   {/* 
             { mode.squad && <TeamSquad />}
