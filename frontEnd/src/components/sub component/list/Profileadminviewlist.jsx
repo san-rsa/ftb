@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Style from "../../../styles/admin/Profile.module.css"
-import { useParams, Link, useNavigate } from "react-router-dom";
-import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
-import { ToastContainer, toast, Bounce } from 'react-toastify';
-import { TeamSquadListWithPositionEdit } from "./Teamviewlist";
-import { Mininews, MininewsEdit } from "./Newslist";
-import { CardList2, CardList4 } from "./Generallist";
+import { MininewsEdit } from "./Newslist";
+import { CardList4 } from "./Generallist";
 import { FixtureToEdit } from "./Tournamentlist";
 
 
 
 
-const AdminBannerList = ({teamid}) => {
+const AdminBannerList = () => {
 
     const [data, setData] = useState([])
    
@@ -81,7 +77,7 @@ const AdminBannerList = ({teamid}) => {
 
 
 
-const AdminNewsList = ({teamid}) => {
+const AdminNewsList = () => {
 
     const [data, setData] = useState([])
    
@@ -147,11 +143,7 @@ const AdminNewsList = ({teamid}) => {
 
 
 
-
-
-
-
-const AdminRegionList = ({teamid}) => {
+const AdminRegionList = () => {
 
     const [data, setData] = useState([])
    
@@ -217,7 +209,7 @@ const AdminRegionList = ({teamid}) => {
 
 
 
-const AdminSubRegionList = ({teamid}) => {
+const AdminSubRegionList = () => {
 
     const [data, setData] = useState([])
    
@@ -287,7 +279,7 @@ const AdminSubRegionList = ({teamid}) => {
 
 
 
-const AdminMatchRegionList = ({teamid}) => {
+const AdminMatchRegionList = () => {
 
     const [data, setData] = useState([])
    
@@ -386,12 +378,7 @@ const AdminMatchFixtureList = ({regionid}) => {
         <div className={Style.app}>
 
 
-
-            <div className={Style.list}  >  
-
-        <div className={Style.teamFix}>
-
-            <h2 > Next Fixtures </h2>
+            <h2 > Fixtures </h2>
 
 
 
@@ -473,20 +460,7 @@ const AdminMatchFixtureList = ({regionid}) => {
          
                       
 
-  </div>
-
-                    
-
-
-
-
-
-
-
-
-                    </div>
-
- 
+   
 
     )
 }
@@ -500,7 +474,7 @@ const AdminMatchFixtureList = ({regionid}) => {
 
 
 
-const AdminTeamList = ({teamid}) => {
+const AdminTeamList = () => {
 
     const [data, setData] = useState([])
    

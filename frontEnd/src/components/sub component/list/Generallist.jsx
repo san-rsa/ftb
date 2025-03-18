@@ -263,6 +263,7 @@ const CardList4 = ({logo, name, category, link}) => {
               <img src={logo} />
 
       </div>
+     
               
 
           

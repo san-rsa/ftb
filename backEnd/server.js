@@ -243,7 +243,9 @@ app.use(flash());
 
 app.use(
   fileUpload({
-    useTempFiles: true
+    useTempFiles: true,
+    debug: true,
+    tempFileDir: "/backEnd/tmp/"
   })
 );
 

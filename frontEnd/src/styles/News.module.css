@@ -60,7 +60,7 @@
 
 .news2, .news3 {
     text-align: left;
-    margin: 10px 15px 10px 0;
+    margin: 15px 15px 15px 0;
 
 }
 
@@ -99,7 +99,7 @@
 
 
 .head1, .head2, .head3 {
-    margin-bottom: 60px;
+    margin-bottom: auto;
     font-size: smaller;
 }
 

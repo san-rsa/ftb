@@ -188,8 +188,7 @@ const MininewsEdit = ({img, head,  link }) => {
 
     
     return (
-           <Link to={ to}>
-            <div className={Style.news2} className={Style.newsm}>
+           <Link to={ to} className={Style.news2}>
 
 
  
@@ -207,7 +206,6 @@ const MininewsEdit = ({img, head,  link }) => {
                     </div>
 
 
-                </div>
               </Link>
 
     )
