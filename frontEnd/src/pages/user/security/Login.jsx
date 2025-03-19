@@ -1,15 +1,17 @@
 import React, { useState, useEffect, createContext, useContext  } from "react";
 import Nav from "../../../components/sub component/Nav"
 import { Link, useNavigate } from "react-router-dom";
-import Style from "../../../styles/Login.module.css"
+import Style from "../../../styles/Security.module.css"
 import { ToastContainer, toast, Bounce } from 'react-toastify';
-import { Inputs } from "../../../components/sub component/list/Generallist";
+import { AlertError, Inputs } from "../../../components/sub component/list/Generallist";
 
 
 
 const Login = () => {
 
     const [data, setInputs] = useState({});
+    const [submitbtn, setSubmitBtn] = useState(false)
+  
 
     const navigate = useNavigate();
 
@@ -22,36 +24,68 @@ const Login = () => {
       setInputs(values => ({...values, [name]: value}))
     }
   
-    const  handleSubmit = async (event) => {
+     
+
+    const HandleSubmit = async (event) => {
       event.preventDefault();
+      setSubmitBtn(!submitbtn)
+  
+      const formData = new FormData();
+    
 
 
+      formData.append('data',  JSON.stringify(data));
+  
+  
+  
+     const api = fetch(process.env.REACT_APP_API_LINK + 'auth/login', {
+      method: 'POST',
+       credentials: "include",
+      //  headers: {'Content-Type': "application/json", },
+      body:   formData
+      })
+      
+      .then((res) => {           
+
+         if (res.status == 200) {
+
+ 
+          navigate("/user"); 
+
+         } else {
+          setSubmitBtn(false);
+     
+         }
+
+         return res.json()
+      }).then(
+        data => {
+          console.log(data.message, 'llk')       
+
+         
+          if (data.success == false) {
+             AlertError(data.message)
+
+             setSubmitBtn(false);
+             
+          } else {
+            //  navigate("/user"); 
+
+          }
+        }).catch((e) => {
+        console.log(e);
+        setSubmitBtn(false)
+        AlertError("error try again later")
+
+      })
+
+
+      
+  
+  
    
-    const api = await fetch(process.env.REACT_APP_API_LINK + 'auth/login/', {
-    method: 'POST',
-    credentials: "include",
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(data)
-     })
-     
-     if (api.status === 200) {
-      navigate("/user");
-    } else if (api.status === 403) {
-      toast.error('incorrect password or email ', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-        });
+    
     }
-     
-
-
 
      
      
@@ -80,7 +114,6 @@ const Login = () => {
     // setTokens(tokens);
 
 
-     console.log(api)
   
   
 
@@ -132,32 +165,29 @@ const Login = () => {
 
 
       
-    }
+    
 
 
     return (
-        <div>
+        <div className={Style.app}>
          <Nav />
-
-<form>
-        <div className="form">
 
             <h1> SIGN IN</h1>
 
-                <div className={Style.inp}>
+                <form onSubmit={HandleSubmit} >
                     
-            <Inputs name="email" type={"email"} onchange={handleChange} value={data.email} class={Style.email} label={"email"} />
-            <Inputs name="password" type={"password"} onchange={handleChange} value={data.password} class={Style.password} label={"password"} />
-                </div>
+            <Inputs name="email" type={"text"} onchange={handleChange} value={data.email} placeholder={"your email or username "} label={"email or username"} />
+            <Inputs name="password" type={"password"} onchange={handleChange} value={data.password} label={"password"} />
 
-            <button className="login" onClick={handleSubmit}> Log in</button> 
+            <button className="login" type="submit"> Log in</button> 
 
-            <h5 > <Link to={"/forgetpassword"}> forget Password</Link> </h5>
+            <h5 className={Style.forgetpass}> can't remember password click:  <Link to={"/forgetpassword"}> forget Password</Link> </h5>
 
 
-            <h3 > New here you can sign up <Link to={"/register"}> here now</Link> </h3>
-        </div>
-</form>
+            <h3 className={Style.alternate} > New here you can sign up <Link to={"/register"}> here now</Link> </h3>
+                     
+               </form>
+
             </div>
         
 

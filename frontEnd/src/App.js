@@ -145,11 +145,11 @@ function Links() {
         <Route path="/code-of-conduct" element={<Codeofconduct />} />
 
 
-        {/* <Route path="/login" element={<Login />}/>
+        <Route path="/login" element={<Login />}/>
         <Route path="/register" element={<Register />}/>
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
- */}
+
 
 
     </Routes>       

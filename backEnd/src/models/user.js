@@ -4,9 +4,15 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
-    name: {type: String, required: true, trim: true, lowercase: true },
 
-    email: {type: String, required: true, unique: true, lowercase: true,
+
+
+    name: { first:  {type: String, required: true, trim: true, lowercase: true }, last:  {type: String, required: true, trim: true, lowercase: true },},
+
+    username: {type: String, required: true, unique: true, trim: true, }, 
+
+
+    email: {type: String, required: true, unique: true, lowercase: true, trim: true,
 
         validate( value ) {
             if( !validator.isEmail( value )) {

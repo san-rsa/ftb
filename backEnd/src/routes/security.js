@@ -4,6 +4,7 @@ const express = require('express')
 const router = express.Router()
 const bycrypt = require('bcrypt')
 const jwt= require('jsonwebtoken')
+const cloudinary = require('../connection/cloudinary')
 const {auth, role} = require("../middleware/mid")
 const nodemailer = require("nodemailer");
 
@@ -14,25 +15,41 @@ const nodemailer = require("nodemailer");
 
 router.post('/register', async(req, res)=> {
     try {
-        const {fname, lname, email, password, phone, address,}= req.body
-        const name = fname + ' ' + lname
-        const role = 'user'
 
+      const data = JSON.parse(req.body.data)
+      const file = req.files.img 
+      const imgUrl = [] 
+        
+      const {fname, lname, email, password, phone, username,}= data
 
-        console.log(fname, lname, email, password, phone, address);
+      const fullname = {first: fname, last: lname}
+
+      if (!req.files) {
+          // No file was uploaded
+          return res.status(400).json({ error: "No file uploaded" });
+        }
+
+        console.log(fname, lname, email, password, phone, username);
         
 
         // Check if All Details are there or not
 
-		if (!name || !email || !password ) {
+		if (!fname || !lname || !email || !password ) {
 			return res.status(403).send({
 				success: false,
 				message: "All Fields are required",
 			});
 		}
 
+
         //check if use already exists?
-        const existingUser = await User.findOne({email})
+        const existingUser = await  User.findOne( { $or: [ {'email': email}, {'name':fullname}, {'username':username} ]}, );
+           // User.findOne({ $or: [ {email, name: fullname, username }]} )
+
+
+        console.log(existingUser);
+        
+
         if(existingUser){
             return res.status(400).json({
                 success: false,
@@ -41,13 +58,24 @@ router.post('/register', async(req, res)=> {
         }
 
 
+
+        const image = await cloudinary.uploader.upload(
+          file.tempFilePath,
+          { folder: 'user' },
+  
+        );
+  
+        imgUrl.push({url: image.secure_url,  imgId: image.public_id})
+  
+  
+
+
         const user = await User.create({
-            name, email, password, role,  phone, address 
+            name: fullname, email, password, phone, username, imgUrl: imgUrl[0]
         })
 
         user.save()
             // res.redirect("/login")
-        console.log(name, password, email, address )
 
         return res.status(200).json({
             success: true,
@@ -74,32 +102,37 @@ router.post('/login', async(req, res)=> {
 
     try {
         //data fetch
-        const {email, password} = req.body
+        const data = JSON.parse(req.body.data)
+
+        const {email, password} = data
         //validation on email and password
         if(!email || !password){
             return res.status(400).json({
                 success:false,
-                message: "Plz fill all the details carefully"
+                message: "Plz fill all the details"
             })
         }
         console.log(email, password)
 
         //check for registered User
-        let user= await  User.findOne({email})
+        let user= await User.findOne( { $or: [ {'email': email},  {'username':email} ]}, );
         //if user not registered or not found in database
         if(!user){
             return res.status(401).json({
                 success: false,
-                message: "You have to Signup First"
+                message: "You have to Signup First no user round"
             })
         }
    
         
 
        user.comparePassword(password, async function(err, isMatch) {
-        
+                    console.log(err, isMatch, );
+
         if(err) {
             //password donot matched
+
+
             return res.status(403).json({
                 success: false,
                 message: "Password incorrects⚠️"
@@ -126,7 +159,9 @@ router.post('/login', async(req, res)=> {
     
     
                 }
-                res.cookie("user", token, options
+                console.log(password, isMatch, process.env.JWT_SECRET, token); 
+
+              return  res.cookie("user", token, options
                 ).status(200).json({
                     success: true,
                     token,
@@ -142,7 +177,6 @@ router.post('/login', async(req, res)=> {
                 message: "incorect password "
           })
         }
-        console.log(password, isMatch, process.env.JWT_SECRET); 
     });
 
 
@@ -160,7 +194,10 @@ router.post('/login', async(req, res)=> {
 
 
 router.get("/autoLogin", (req, res, next) => {
-    const cookies = req.cookies.user //req.headers.cookie;    
+    const cookies = req.cookies.user //req.headers.cookie;
+    
+    console.log(cookies);
+    
 
 
   

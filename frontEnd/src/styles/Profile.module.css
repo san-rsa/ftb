@@ -81,9 +81,6 @@
     text-align: left;
 }
 
-label {
-    margin: auto 4%;
-}
 
 .other input , .name input{
     font-size: large;
@@ -333,9 +330,6 @@ input:disabled {
     text-align: left;
 }
 
-label {
-    margin: auto 4%;
-}
 
 
 .contact {
@@ -391,9 +385,7 @@ input::placeholder {
     text-align: left;
 }
 
-label {
-    margin: auto 4%;
-}
+
 
 .other input , .name input{
     font-size: large;
@@ -485,37 +477,7 @@ input:disabled {
        
       
     }
-        
-  
-    
-    
-    #info {display: block;}
-    #order {display: block;}
-    #tea {display: block; text-align: left;}
-    #admin {display: block; text-align: left;}
-    #user {display: block; text-align: left;}
-    #banner {display: block; text-align: left;}
-    #category {display: block; text-align: left;}
-
-    .name input, .contact input {
-        font-size: medium;
-        border-radius: 11px;
-        
-    
-    }
-    
-    .name div, .contact div {
-       
-    }
-    
-
-
-
-
-    #logout2{
-        display: contents;
-    }
-    
+          
 
 
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Style from "../../styles/Team.module.css"
 import Nav from "../../components/sub component/Nav"
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Overview, TeamAdmin, TeamFixtures, TeamNews, TeamResults,  } from "../../components/sub component/profileview";
@@ -17,17 +17,30 @@ const Profile = ({}) => {
     const [data, setData] = useState({})
 
     
-    const title = useParams().id
+  let navigate = useNavigate()
 
-    const link =title?.replaceAll('-',' ')
 
 
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + link)
-            .then((res) =>  res.json())
-            .then((data) => setData(data));
+        //     fetch(process.env.REACT_APP_API_LINK + 'auth/autoLogin/', {
+        //         method: 'GET',
+        //         credentials: "include",
+        //         headers: {'Content-Type': 'application/json'},
+        //          })
+                         
+        //     .then((res) => {
+        //         if (res.status !== 200) {
+        //             navigate("/login")
+
+ 
+        //         }
+ 
+        //  })
+                 
+            
+              
         }, []);
 
 
@@ -165,11 +178,11 @@ const Profile = ({}) => {
 
          <div className={Style.section} >
 
-            { mode.overview && <Overview id={link} />}
+            { mode.overview && <Overview  />}
 
-            { mode.news && <TeamNews id={link} />}
+            { mode.news && <TeamNews />}
 
-            { mode.admin && <TeamAdmin id={link} />}
+            { mode.admin && <TeamAdmin  />}
 
 
 
