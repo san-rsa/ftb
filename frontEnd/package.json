@@ -2,7 +2,7 @@
   "name": "football",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://football-api-alpha.vercel.app/",
+  "proxy": "https://football-api-alpha.vercel.app",
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
     "@coreui/coreui": "^5.1.0",
