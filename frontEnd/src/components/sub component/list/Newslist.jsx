@@ -47,9 +47,7 @@ const Mininews = ({img, head, }) => {
     const newsLink =head.replaceAll(' ','-')
 
     return (
-           <Link to={"/news/" + newsLink} className={Style.newsm}>
-            <div className={Style.news2}>
-
+           <Link to={"/news/" + newsLink} className={Style.news2}>
 
  
                     <div className={Style.img2} >
@@ -66,7 +64,6 @@ const Mininews = ({img, head, }) => {
                     </div>
 
 
-                </div>
               </Link>
   
 

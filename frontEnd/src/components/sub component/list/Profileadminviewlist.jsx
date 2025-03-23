@@ -538,4 +538,96 @@ const AdminTeamList = () => {
     )
 }
 
-export {AdminBannerList, AdminNewsList, AdminRegionList, AdminSubRegionList, AdminMatchRegionList, AdminMatchFixtureList, AdminTeamList } 
+
+
+
+
+
+
+
+
+
+
+const AdminAdminList = ({event}) => {
+
+    const [data, setData] = useState([])
+   
+
+
+    useEffect(() => {
+     
+      if (event.add ) {
+        fetch(process.env.REACT_APP_API_LINK  + 'getall/user/', {
+          method: "GET",
+          credentials: "include",
+          headers: {'Content-Type': 'application/json'},
+        }  )
+        .then((res) =>  res.json())
+        .then((data) =>  setData(data.data))
+
+    } else if (event.delete) {
+
+      fetch(process.env.REACT_APP_API_LINK  + 'getall/admin/', {
+        method: "GET",
+        credentials: "include",
+        headers: {'Content-Type': 'application/json'},
+      })
+      .then((res) =>  res.json())
+      .then((data) =>  setData(data.data))
+
+    }
+
+      
+      }, []);
+
+
+
+    
+
+
+
+
+    return (
+        <div className={Style.app}>
+
+
+
+            <div className={Style.list}  >  
+
+
+            {data.map((project) => (
+
+                        
+            <CardList4
+                name={project.name.first + " " + project.name.last}
+                logo={project.imgUrl?.url}
+                category={event.add ? "user" : event.delete ? "admin" : "error no category"}
+                link={"./../" + project._id}
+
+                />  
+
+
+            )   )   }
+
+
+         
+                      
+
+  </div>
+
+                    
+
+
+
+
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
+export {AdminBannerList, AdminNewsList, AdminRegionList, AdminSubRegionList, AdminAdminList, AdminMatchRegionList, AdminMatchFixtureList, AdminTeamList } 

@@ -15,7 +15,6 @@
 }
 
 .perone {
-    display: flex;
     text-align: left;
     display: inline-flex;
     word-break: break-all;
@@ -60,7 +59,9 @@
 
 .news2, .news3 {
     text-align: left;
-    margin: 15px 15px 15px 0;
+    margin: auto 15px 15px 15px;
+    width: 90%;
+    
 
 }
 
@@ -94,6 +95,7 @@
 .text1, .text2, .text3 {
     margin: 33px 10px auto 20px;
     font-size: smaller;
+    text-align: left;
 }
 
 
@@ -150,6 +152,18 @@
         display: block;
     }
 
+    .news2 {
+        display: flex;
+        width: 100%;
+        flex-direction: row-reverse;
+    }
+
+    .text2, .text3 {
+        margin: auto auto auto 0;
+        word-break: normal;
+
+    }
+
     .head1 {
         font-size: small;
     }
@@ -157,9 +171,11 @@
 
 
     .img2 {
-        float: right;
+        flex-shrink: 0;
         width:  120px;
         height: 80px;
+        margin: auto 10px;
+
     }
   
 
@@ -171,8 +187,4 @@
        
     }
 
-    .text2 {
-        word-break: normal;
-
-    }
  }

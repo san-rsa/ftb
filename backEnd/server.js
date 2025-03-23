@@ -259,6 +259,7 @@ const user = require('./src/routes/security')
 const adminadd = require('./src/routes/admin/add');
 const adminedit = require('./src/routes/admin/edit');
 const admindel = require('./src/routes/admin/delete');
+const getaccess = require('./src/routes/getaccess');
 const getall = require('./src/routes/getall');
 const getone = require('./src/routes/getone');
 const add = require('./src/routes/add');
@@ -285,6 +286,7 @@ app.use('/auth', user)
 app.use('/admin/add', adminadd)
 app.use('/admin/edit', adminedit)
 app.use('/admin/delete', admindel)
+app.use("/getaccess", getaccess)
 app.use("/getall/", getall)
 app.use("/getone", getone)
 app.use("/add", add)

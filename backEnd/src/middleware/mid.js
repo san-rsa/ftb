@@ -19,19 +19,21 @@ const Fixture = require("../models/competition/fixture");
 
 
 
-const auth = (req, res, next) => {
-  const token = req.cookies.user;
+const auth = async (req, res, next)  =>  {
+  const token = await req.cookies.user;
 
-  if (!token) {
-    return res.sendStatus(403).clearCookie("user");
-  }
   try {
+
+      if (!token) {
+     res.sendStatus(403).clearCookie("user");
+     next()
+  } else { 
     const data = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = data.id;
-    req.userRole = data.role;
-    return next();
+     next();
+  }
   } catch {
-    return res.sendStatus(403);
+    // res.sendStatus(403);
   }
 };
 
@@ -43,7 +45,7 @@ const role =  (role)  => async (req, res, next) => {
 
 
   try {
-    let user= await  User.findOne({_id: req.userId})
+    const user = await  User.findOne({_id: req.userId})
 
     
     if (user.role !== role) {

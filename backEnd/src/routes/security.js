@@ -123,23 +123,21 @@ router.post('/login', async(req, res)=> {
                 message: "You have to Signup First no user round"
             })
         }
+
+        const passwordMatch = await user.comparePassword(password);
+
+            console.log(passwordMatch, );
+
+        if (!passwordMatch) {
+          return res.status(401).json({ message: 'Incorrect password ⚠️' });
+        }
    
         
 
-       user.comparePassword(password, async function(err, isMatch) {
-                    console.log(err, isMatch, );
-
-        if(err) {
-            //password donot matched
 
 
-            return res.status(403).json({
-                success: false,
-                message: "Password incorrects⚠️"
-            })
-        }
 
-          if (isMatch == true) {
+          if (passwordMatch == true) {
             const token = await user.generateAuthToken()
  
 
@@ -159,7 +157,7 @@ router.post('/login', async(req, res)=> {
     
     
                 }
-                console.log(password, isMatch, process.env.JWT_SECRET, token); 
+                console.log(password, process.env.JWT_SECRET, token); 
 
               return  res.cookie("user", token, options
                 ).status(200).json({
@@ -177,7 +175,7 @@ router.post('/login', async(req, res)=> {
                 message: "incorect password "
           })
         }
-    });
+ 
 
 
     } catch (error) {
@@ -195,11 +193,6 @@ router.post('/login', async(req, res)=> {
 
 router.get("/autoLogin", (req, res, next) => {
     const cookies = req.cookies.user //req.headers.cookie;
-    
-    console.log(cookies);
-    
-
-
   
     // if we received no cookies then user needs to login.
     if (!cookies || cookies === null) {

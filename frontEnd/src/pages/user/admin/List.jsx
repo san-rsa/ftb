@@ -3,9 +3,10 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Style from "../../../styles/admin/Profile.module.css"
 import Nav from "../../../components/sub component/Nav"
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Footer from "../../../components/sub component/Footer";
-import { AdminBannerList, AdminMatchFixtureList, AdminMatchRegionList, AdminNewsList, AdminRegionList, AdminSubRegionList, AdminTeamList } from "../../../components/sub component/list/Profileadminviewlist";
+import { AdminAdminList, AdminBannerList, AdminMatchFixtureList, AdminMatchRegionList, AdminNewsList, AdminRegionList, AdminSubRegionList, AdminTeamList } from "../../../components/sub component/list/Profileadminviewlist";
+import { TeamAdminNewsList, TeamAdminPlayerList } from "../../../components/sub component/list/Teamadminviewlist";
 
 
 
@@ -17,13 +18,19 @@ import { AdminBannerList, AdminMatchFixtureList, AdminMatchRegionList, AdminNews
 const List = ({}) => {
     const [mode1, setEvent] = useState({add: false, edit: false, });
 
-    const [mode2, setType] = useState({banner: false, team:false, fixture: false, news: false, region: false, user: false, "sub-region": false, user: false  });
+    const [mode2, setType] = useState({banner: false, team: false, player: false, admin: false, fixture: false, news: false, region: false, user: false, "sub-region": false, user: false  });
+    
+    const [user, setUser] = useState({admin: false, team: false, })
+
+    const [team, setTeam] = useState()
+    
 
 
     
     const {event, type, typeId } = useParams()
 
-
+      let navigate = useNavigate()
+    
 
 
 
@@ -37,6 +44,60 @@ const List = ({}) => {
 
 
         }, []);
+
+
+
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + 'auth/autoLogin/', {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'},
+                 })
+                         
+            .then((res) => {
+                if (res.status !== 200) {
+                    navigate("/login")
+
+ 
+                } } )
+
+                fetch(process.env.REACT_APP_API_LINK + 'getaccess/admin/', {
+                    method: 'GET',
+                    credentials: "include",
+                    headers: {'Content-Type': 'application/json'},
+                     }).then((res) => {
+                    if (res.status === 200) {
+                        setUser({admin: true})
+    
+                    } 
+         })    
+
+
+         fetch(process.env.REACT_APP_API_LINK + 'getaccess/team/', {
+            method: 'GET',
+            credentials: "include",
+            headers: {'Content-Type': 'application/json'},
+             }).then((res) => {
+            if (res.status === 200) {
+                setUser({team: true})
+
+            } 
+
+ })  
+
+
+
+          fetch(process.env.REACT_APP_API_LINK + 'getaccess/user/team/', {
+            method: 'GET',
+            credentials: "include",
+            headers: {'Content-Type': 'application/json'},
+             }).then((res) =>  res.json())
+             .then((data) => setTeam(data.data.name));
+                 
+            
+              
+         },   []);
 
 
 
@@ -55,6 +116,10 @@ const List = ({}) => {
             { mode2.banner && <AdminBannerList  />}
 
             { mode2.news && <AdminNewsList  />}
+                        
+            { mode2.news ? user.admin ? <AdminNewsList  /> : user.team ?  <TeamAdminNewsList teamid={team} /> : null : null}
+            
+            { mode2.player ? user.admin ? null : user.team ?  <TeamAdminPlayerList teamid={team} /> : null : null}
 
             { mode2.region && <AdminRegionList   />}
             
@@ -65,6 +130,9 @@ const List = ({}) => {
            { mode2["add-team-to-region"] &&  <AdminRegionList  /> } 
 
            { mode2.user &&  <AdminTeamList  /> } 
+
+           { mode2.admin &&  <AdminAdminList event={mode1}  /> } 
+
 
 
            { mode2.team &&  <AdminTeamList /> } 

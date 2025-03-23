@@ -592,7 +592,7 @@ router.get('/:link/:team/fixtures/:year', async(req, res)=> {
 
 // user
 
-router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {
+router.get('/admin', auth,  async(req, res)=> {
 
   const data = await User.find({role: "admin"})
   
@@ -802,10 +802,36 @@ router.get('/teams', async(req, res)=> {
 router.get('/user', auth, async(req, res)=> {
 
   const user = await User.find({role: "user"})
-      res.status(200).json({
-        success: true,
-       data: user
-      })
+  if (user) {
+       return  res.status(200).json({
+          success: true,
+         data: user
+        })
+} else {
+  return  res.status(400).json({
+    success: false,
+   message: "please try again can't find user"
+  })
+}
+
+})
+
+
+
+router.get('/user/team/:id', auth, async(req, res)=> {
+
+  const user = await User.find({teamId: req.params.id})
+  if (user) {
+       return  res.status(200).json({
+          success: true,
+         data: user
+        })
+} else {
+  return  res.status(400).json({
+    success: false,
+   message: "please try again can't find user"
+  })
+}
 
 })
 

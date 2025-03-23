@@ -1658,19 +1658,27 @@ const AdminAddUserToTeam = ({event, regionId, typeId }) => {
 
       if (event.add ) {
         setFetch({link: 'admin/add/add-user-to-team/', method: 'POST',  })
-        fetch(process.env.REACT_APP_API_LINK  + 'getall/user/'  )
+        fetch(process.env.REACT_APP_API_LINK  + 'getall/user/', {
+          method: "GET",
+          credentials: "include",
+          headers: {'Content-Type': 'application/json'},
+        }  )
         .then((res) =>  res.json())
         .then((data) =>  setUser(data.data))
 
     } else if (event.delete) {
-      setFetch({link: 'admin/delete/add-user-to-team-competition/', method: 'PATCH',  })
+      setFetch({link: 'admin/delete/add-user-to-team/', method: 'PATCH',  })
 
-      fetch(process.env.REACT_APP_API_LINK  + 'getall/user/' + regionId  )
+      fetch(process.env.REACT_APP_API_LINK  + 'getall/user/team/' + regionId, {
+        method: "GET",
+        credentials: "include",
+        headers: {'Content-Type': 'application/json'},
+      })
       .then((res) =>  res.json())
       .then((data) =>  setUser(data.data))
 
     }
-        fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + regionId)
+        fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + regionId)
         .then((res) =>  res.json())
         .then((data) =>  setInputs({
           name:data.name,
@@ -1689,7 +1697,7 @@ const AdminAddUserToTeam = ({event, regionId, typeId }) => {
 
 
 
-    const h1 = (event.add) ? "Add User to Team" : (event.delete) ? "Delete User At OfTeam" : "please try again later" ;  
+    const h1 = (event.add) ? "Add User to Team" : (event.delete) ? "Delete User At Of Team" : "please try again later" ;  
     
     
       const handleChange = (event) => {
@@ -1797,7 +1805,7 @@ const AdminAddUserToTeam = ({event, regionId, typeId }) => {
           {user.map((props) => (
 
                         
-        <option key={props._id} value={props.name} > {props.name}  </option>
+        <option key={props._id} value={props._id} > {props.name.first + ' ' + props.name.last}  </option>
  
 
 
@@ -1824,4 +1832,150 @@ const AdminAddUserToTeam = ({event, regionId, typeId }) => {
     )
 }
 
-export {AdminTeam, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture, AdminAddUserToTeam}
+
+
+
+
+const AdminAddAdmin = ({event, regionId, typeId }) => {
+  const [data, setInputs] = useState({})
+  const [submitbtn, setSubmitBtn] = useState(false)
+  const [fetchs, setFetch] = useState({link: "", method: "", get: ""})
+  let navigate = useNavigate()
+
+
+    useEffect(() => {
+
+      if (event.add ) {
+        setFetch({link: 'admin/add/add-user-to-admin/', method: 'POST',  })
+
+    } else if (event.delete) {
+        setFetch({link: 'admin/delete/add-user-to-admin/', method: 'PATCH',  })
+
+    }
+        fetch(process.env.REACT_APP_API_LINK  + "getone/user/" + regionId, {
+          method: "GET",
+          credentials: "include",
+          headers: {'Content-Type': 'application/json'},
+        }  )
+        .then((res) =>  res.json())
+        .then((data) =>  setInputs({
+          name:data.name?.first + ' ' + data.name?.last,
+          _id: data._id,
+          img: data?.imgUrl?.url
+          
+          
+        })
+      );
+
+
+
+
+      }, []);
+
+
+
+
+    const h1 = (event.add) ? "Add User to Team" : (event.delete) ? "Delete User At Of Team" : "please try again later" ;  
+    const submit = (event.add) ? "Add to admin" : (event.delete) ? "Delete from admin" : "please try again later" ;  
+
+
+
+
+
+          console.log(data, );
+    
+
+
+      const HandleSubmit = async (event) => {
+        event.preventDefault();
+        setSubmitBtn(!submitbtn)
+    
+        const formData = new FormData();
+      
+    
+
+    
+        formData.append('data',  JSON.stringify(data));
+    
+    
+    
+       const api = fetch(process.env.REACT_APP_API_LINK + fetchs.link, {
+        method: fetchs.method,
+        // credentials: "include",
+       // headers: {'Content-Type': "application/json", },
+        body:   formData
+        })
+        
+        .then((res) => {
+           if (res.status == 200) {
+          
+                navigate("/user"); 
+
+           } else {
+            setSubmitBtn(false);
+       
+           }
+
+           return res.json()
+        }).then(
+          data => {
+
+           
+            if (data.success == false) {
+               AlertError(data.message)
+
+               console.log(data.message);
+               
+            } else {
+                            // navigate("admin"); 
+
+            }
+          })
+
+
+        
+        .catch((e) => {
+          console.log(e);
+          setSubmitBtn(!submitbtn)
+          AlertError("error try again later")
+        })
+
+      }
+
+
+    return (            
+      <div className={Style.app}>
+
+
+      <div className={Style.top} >
+        <h1 > {h1} </h1>
+      </div>
+
+
+      <div className={Style.pimg} >
+
+{        data.img &&    <img src={data.img } /> }    
+
+      </div>
+
+
+        <form className={Style.form} onSubmit={HandleSubmit}>
+
+        <Inputs label={'name'} type={'text'} name={'name'} value={data.name} disabled={true} required={true}  />
+        
+        <button className="submit" type="submit" disabled={submitbtn}> {submit}</button> 
+
+        </form>
+
+
+
+
+
+
+
+    </div>
+
+    )
+}
+
+export {AdminTeam, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture, AdminAddAdmin, AdminAddUserToTeam}

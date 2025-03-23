@@ -85,7 +85,7 @@ const Inputs = ({label, type, name, onchange, value, disabled, placeholder, requ
 
 const CardList = ({logo, name, category, to}) => {
 
-    const link = name.replaceAll(' ','-')
+    const link = name?.replaceAll(' ','-')
 
 
     return (

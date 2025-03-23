@@ -45,10 +45,13 @@ const userSchema = new mongoose.Schema({
     // paymentId: {type: String, required: true,
     // },
 
-    createdAt: {type: Date, default: Date.now },
+   teamId: {type: mongoose.Schema.Types.String, ref: "Team", },
 
-    role: { type: String, enum: ['user', process.env.ADMIN,], default: 'user' }
-})
+
+
+    role: { type: String, enum: ['user', process.env.ADMIN, process.env.TEAM], default: 'user' }
+}, { timestamps: true }
+)
 
 
 
@@ -78,18 +81,10 @@ userSchema.pre('save', async function(next) {
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();
 
-    // generate a salt
-     bcrypt.genSalt(10, function(err, salt) {
-        if (err) return next(err);
 
-        // hash the password using our new salt
-        bcrypt.hash(user.password, salt, function(err, hash) {
-            if (err) return next(err);
-            // override the cleartext password with the hashed one
-            user.password = hash;
-            next();
-        });
-    });
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+    next();
 });
 
 
@@ -101,13 +96,11 @@ userSchema.pre('findOneAndUpdate', async function (next) {
     }
     next();
   });
-     
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
-};
+
+
+userSchema.methods.comparePassword = async function (password) {
+    return bcrypt.compare(password, this.password);
+  };
      
 
 

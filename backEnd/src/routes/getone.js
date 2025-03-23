@@ -641,6 +641,15 @@ router.get('/user', auth, async (req, res, next) => {
 
 
 
+router.get('/user/:id', auth,  async(req, res)=> {
+
+
+  const data = await User.findOne({_id: req.params.id})
+  
+   res.status(200).json(data)
+})
+
+
 
 
 

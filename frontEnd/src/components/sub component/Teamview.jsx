@@ -660,12 +660,6 @@ const TeamAdmin = ({}) => {
 
     
 
-
-    
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
-
     
         useEffect(() => {
             fetch(process.env.REACT_APP_API_LINK + "getall/news")

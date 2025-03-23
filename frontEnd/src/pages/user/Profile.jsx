@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Style from "../../styles/Team.module.css"
+import Style from "../../styles/Profile.module.css"
 import Nav from "../../components/sub component/Nav"
 import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
-import { Overview, TeamAdmin, TeamFixtures, TeamNews, TeamResults,  } from "../../components/sub component/profileview";
+import { Overview, ProfileAdmin, TeamNews, } from "../../components/sub component/profileview";
 import Footer from "../../components/sub component/Footer";
+import { TeamAdmin } from "../../components/sub component/Teamview";
 
 
 
 
 const Profile = ({}) => {
     const [mode, setInputs] = useState({overview: true, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false, admin: false });
+
+    const [user, setUser] = useState({admin: false, team: false, })
+
 
     const [data, setData] = useState({})
 
@@ -24,24 +28,55 @@ const Profile = ({}) => {
 
 
         useEffect(() => {
-        //     fetch(process.env.REACT_APP_API_LINK + 'auth/autoLogin/', {
-        //         method: 'GET',
-        //         credentials: "include",
-        //         headers: {'Content-Type': 'application/json'},
-        //          })
+            fetch(process.env.REACT_APP_API_LINK + 'auth/autoLogin/', {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'},
+                 })
                          
-        //     .then((res) => {
-        //         if (res.status !== 200) {
-        //             navigate("/login")
+            .then((res) => {
+                if (res.status !== 200) {
+                    navigate("/login")
 
  
-        //         }
- 
-        //  })
+                } } )
+
+                fetch(process.env.REACT_APP_API_LINK + 'getaccess/admin/', {
+                    method: 'GET',
+                    credentials: "include",
+                    headers: {'Content-Type': 'application/json'},
+                     }).then((res) => {
+                    if (res.status === 200) {
+                        setUser({admin: true})
+    
+                    } 
+         })    
+
+
+         fetch(process.env.REACT_APP_API_LINK + 'getaccess/team/', {
+            method: 'GET',
+            credentials: "include",
+            headers: {'Content-Type': 'application/json'},
+             }).then((res) => {
+            if (res.status === 200) {
+                setUser({team: true})
+
+            } 
+
+ })  
+
+
+
+          fetch(process.env.REACT_APP_API_LINK + 'getone/user/', {
+            method: 'GET',
+            credentials: "include",
+            headers: {'Content-Type': 'application/json'},
+             }).then((res) =>  res.json())
+             .then((data) => setData(data));
                  
             
               
-        }, []);
+         },   []);
 
 
 
@@ -152,7 +187,7 @@ const Profile = ({}) => {
 
 
                         <div className={Style.name}>
-                        <h1 > <span > {data.head} </span> </h1>
+                        <h1 > <span > {data.name?.first + ' ' + data.name?.last} </span> </h1>
                         </div>    
 
 
@@ -167,7 +202,7 @@ const Profile = ({}) => {
                     <ul >
                         <li onClick={handleChange} >Overview</li>
                         <li onClick={handleChange}  >News</li>
-                        <li onClick={handleChange}  >Admin</li>
+                        { (user.admin || user.team ) ? <li onClick={handleChange}  >Admin</li> : null }
 
     
                     </ul>
@@ -178,11 +213,11 @@ const Profile = ({}) => {
 
          <div className={Style.section} >
 
-            { mode.overview && <Overview  />}
+            { mode.overview && <Overview info={data}  />}
 
             { mode.news && <TeamNews />}
 
-            { mode.admin && <TeamAdmin  />}
+            { mode.admin ? user.admin ? <ProfileAdmin  /> : user.team ? <TeamAdmin  /> : null : null }
 
 
 

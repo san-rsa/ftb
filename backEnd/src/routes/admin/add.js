@@ -329,6 +329,173 @@ router.post('/add-team-to-competition', async (req, res)=> {
 
 
 
+
+router.post('/add-user-to-team', async (req, res)=> {
+
+    const data = JSON.parse(req.body.data)
+     
+
+    try {
+        const {user, teamId, }= data
+
+
+
+		if (!teamId || !user ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required",
+			});
+		}
+
+ 
+      
+        //check if use already exists?
+        const existingUser = await User.findOne({_id: user})
+        const existingTeam = await Team.findOne({name: teamId})
+
+
+
+        if(!existingUser || !existingTeam){
+            return res.status(400).json({
+                success: false,
+                message: "region or team not found"
+            })
+        }
+
+
+        if(existingUser.teamId ){
+            return res.status(400).json({
+                success: false,
+                message: "user already has team"
+            })
+        }
+
+
+        if(existingTeam.userId.length > 2){
+            return res.status(400).json({
+                success: false,
+                message: "team has reached maximum user"
+            })
+        }
+        
+
+
+
+
+        existingUser.teamId = existingTeam.name
+
+        existingUser.role = "team"
+
+
+        existingTeam.userId.addToSet(existingUser._id)
+
+
+
+
+
+        existingUser.save()
+        existingTeam.save()
+
+
+        console.log(existingUser, existingTeam);
+        
+
+
+
+
+
+
+
+
+
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+   
+            message: "successfully ✅ added"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+})
+
+
+
+router.post('/add-user-to-admin', async (req, res)=> {
+
+    const data = JSON.parse(req.body.data)
+     
+
+    try {
+        const {_id, name }= data
+
+
+
+		if (!_id || !name ) {
+			return res.status(403).json({
+				success: false,
+				message: "All Fields are required please try again later",
+			});
+		}
+
+ 
+      
+        //check if use already exists?
+        const existingUser = await User.findOne({_id: _id})
+
+
+
+        if(!existingUser){
+            return res.status(400).json({
+                success: false,
+                message: "no user found"
+            })
+        }
+        
+
+        existingUser.role = process.env.ADMIN
+
+
+        existingUser.save()
+
+
+        console.log(existingUser, );
+        
+
+
+
+
+
+
+
+
+
+            // res.redirect("/login")
+
+        return res.status(200).json({
+            success: true,
+   
+            message: "successfully ✅ added"
+           
+        })  
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message : "registration failed"
+        })
+       
+   }  
+})
+
+
 router.post('/sub-competition', async (req, res)=> {
 
     const data = JSON.parse(req.body.data)

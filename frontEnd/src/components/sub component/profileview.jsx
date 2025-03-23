@@ -17,119 +17,81 @@ import { CardList2, CardList3, CardList3Edit } from "./list/Generallist";
 
 
 
-export function getbanner(setbanner) {
-        fetch(process.env.REACT_APP_API_LINK + "getall/banner", {
-            method: "GET",
-            credentials: "include",
-        })
-        .then((res) =>  res.json())
-        .then((data) => setbanner(data.data));
-            };
-
- export function getcategory(setcategory) { // category vv
-        fetch(process.env.REACT_APP_API_LINK + "getall/category",  {
-            method: "GET",
-            credentials: "include",
-          }) 
-        .then((res) =>  res.json())
-        .then((data) => setcategory(data.data));
-        };
-
-export function getproduct(setproduct) { // products tea vv
-        fetch(process.env.REACT_APP_API_LINK + "getall/product",  {
-            method: "GET",
-            credentials: "include",
-          }) 
-        .then((res) =>  res.json())
-        .then((data) => setproduct(data.data));
-    };
-
-export function getuser(setuser) { // all user vv
-        fetch(process.env.REACT_APP_API_LINK + "getall/user",  {
-            method: "GET",
-            credentials: "include",
-          }) 
-        .then((res) =>  res.json())
-        .then((data) => setuser(data.data));
-    };
-
-export function getadmin(setadmin) {
-        fetch(process.env.REACT_APP_API_LINK + "getall/admin", {
-      method: "GET",
-       credentials: "include",})
-        .then((res) =>  res.json())
-        .then((data) => setadmin(data.data));
-    };
-
+const Overview = ({info, }) => {
     
- export function getorder(setorder) { 
-        fetch(process.env.REACT_APP_API_LINK + "getall/order", {
-      method: "GET",
-       credentials: "include",})
-        .then((res) =>  res.json())
-        .then((data) => setorder(data.data));
-    };
-
- export function getoneuser(setInputs, setinfo) { // user one vv
-        fetch(process.env.REACT_APP_API_LINK + "getone/user", {
-        method: "GET",
-        credentials: "include",
-        })
-        .then((res) =>  res.json())
-        .then((data) =>{ return (setInputs({
-            "name": data.name,
-            "email": data.email,
-            "phone": data.phone,
-            "address": data?.address,
-            "password": data.password,
-        }), setinfo(data))});
-    };
-
-
-
-
-
-
-const Overview = ({id}) => {
+    const [fixture, setFixture] = useState([])
+    const [team, setTeam] = useState({})
+    const [result, setResult] = useState({})
+    const navigate = useNavigate();
     
-    const [news, setnews] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
-
     
 
-
-    useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getall/672a24205fa419f32c581933/standing/" + year)
-        .then((res) =>  res.json())
-        .then((data) => setStand(data.data));
-    }, []);
-
-
     
-
-
-    
-    const title = useParams().id
-
-    const link =title?.replaceAll('-',' ')
 
     
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news/team/" + id)
+            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'}, 
+        })
             .then((res) =>  res.json())
-            .then((data) => setnews(data.data));
+            .then((data) => setTeam(data.data));
         }, []);
 
+
+
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
+            fetch(process.env.REACT_APP_API_LINK + "getaccess/latest/fixture/",  {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'}, 
+        })
             .then((res) =>  res.json())
-            .then((data) => setotherTeams(data.data));
+            .then((data) => setFixture(data.data));
+        }, []);        
+        
+        
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'}, 
+        })
+            .then((res) =>  res.json())
+            .then((data) => setTeam(data.data));
         }, []);
+
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'}, 
+        })
+            .then((res) =>  res.json())
+            .then((data) => setTeam(data.data));
+        }, []);
+
+
+
+        const logout = async (event) => {
+       
+           
+            const api = await fetch(process.env.REACT_APP_API_LINK + 'auth/logout/', {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'},
+                 })
+                 
+                 if (api.status === 200) {
+                  navigate("/login");
+                } 
+              }
+
     
+        console.log(team);
+        
 
 
 
@@ -149,27 +111,23 @@ const Overview = ({id}) => {
         <div className={Style.overview}>
 
 
-            
-                    <div className={Style.teams} >
+            {  team ?  <div className={Style.teams} >
 
                         <h2 > Team</h2>
 
                     
                         <CardList
-                            name={"ebuawa"}
+                            name={team.name}
                             to={"team"}
                             category={"Team"}
-                            link={"ebuawa"}
-                            logo={data.imgUrl?.url}
-
+                       logo={team.logo && team?.logo[0]?.url} 
                         />
 
-                        </div>
+                        </div> : null }
 
 
         <div className={Style.layout} >
 
-                    <div className={Style.left} >
 
                     <div className={Style.matches}>
 
@@ -210,45 +168,37 @@ const Overview = ({id}) => {
                 
 
             
-        <div className={Style.fixture}>
+            {fixture.match &&         <div className={Style.fixture}>
 
             <h2 > Next Match </h2>
 
 
             <Fixture 
-                // Hname={props.home?.name}
-                // Hlogo={props.home?.logo[0].url}
-                // Hscore={props.home.homeScore}
 
-                // date={props.time.date}
-                // time={props.time.time}
+                 
+                Hname={fixture.match?.home?.name}
+                Hlogo={fixture.match?.home?.logo[0]?.url}
+                Hscore={fixture.match?.home?.homeScore}
 
-                // Ascore={props.away.awayScore}
-                // Alogo={props.away?.logo[0].url}
-                // Aname={props.away?.name}
+                date={fixture.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={fixture.match?.day?.time}
+
+                Ascore={fixture.match.away?.awayScore}
+                Alogo={fixture.match.away?.logo[0]?.url}
+                Aname={fixture.match.away?.name}
+
+               live={fixture.match?.live} start={fixture.match?.start} 
+               half={fixture.match?.half} minutes={fixture.match?.time.now}
 
 
-
-                Hname={'kkkkk'}
-                Hlogo={'00'}
-                Hscore={3}
-
-                date={'2/22/22'}
-                time={'4pm'}
-
-                Ascore={2}
-                Alogo={1}
-                Aname={'dddd'}
+               _id={fixture.match._id}
+               regionId={fixture.regionId}
 
             />  
 
 
 
 
-
-
-
-        </div>
+        </div> }
 
 
         </div>
@@ -257,20 +207,18 @@ const Overview = ({id}) => {
         
                                 <div className={Style.stats}> 
         
-                                    <h2 > KEY STATS</h2>
+                                    <h2 > INFO </h2>
         
                                     <div className={Style.bio}>
+                                        <PlayerBio topic={"First Name"} answer={info.name?.first} />  
+
+                                        <PlayerBio topic={"Last Name"} answer={info.name?.last} />   
+
+                                        <PlayerBio topic={"Username"} answer={info.username} />
         
-                                        <PlayerBio
-                                            topic={"Name"}
-                                            answer={"22"}
-                                        />
-        
-                                        <PlayerBio
-                                            topic={"Age"}
-                                            answer={"22"}
-                                        />
-        
+                                        <PlayerBio topic={"Email"} answer={info.email}  />  
+
+                                        <PlayerBio topic={"Phone"} answer={info.phone} />       
 
         
         
@@ -279,10 +227,10 @@ const Overview = ({id}) => {
                                     </div>
                                     
                                  </div>
-
-
-                    </div>
-
+            
+                 {/* <div id={Style.logout} > */}
+                    <button className={Style.logout} onClick={logout}> logout</button>
+                {/* </div> */}
 
         </div>
         </div>
@@ -324,21 +272,22 @@ const TeamNews = () => {
                     )   )   }
                     </div>
 
+                        <div className={Style.other_news} > 
 
                         {news.slice(1, 10).map((project) => (
 
-                        <div className={Styles.perone} key={project._id}> 
 
                         <Mininews
+                            key={project._id}
                             head={project.head}
                             img={project.imgUrl[0].url}
                             link={project.head}
                             />    
-                            </div>
 
 
                         )   )   }
                     
+                            </div>
 
                     </div>
 
@@ -349,211 +298,7 @@ const TeamNews = () => {
 
 
 
-const TeamFixtures = ({id}) => {
-    
-    const [fixtures, setfixtures] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
-
-    
-
-    
-
-
-    
-
-
-    
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
-            .then((res) =>  res.json())
-            .then((data) => setfixtures(data.data));
-        }, []);
-
-
-    
-
-
-
-
-    return (
-        <div className={Style.teamFix}>
-
-            <h2 > Next Fixtures </h2>
-
-
-
-                    <div className={Style.fix} >
-
-                    {fixtures.slice(0, 3).map((props) => (
-
-                                        
-        <div className={Style.fixture}>
-
-                        <Fixture 
-                             Hname={props.home?.name}
-                             Hlogo={props.home?.logo[0].url}
-                             Hscore={props.home?.homeScore}
-
-                             date={props.day?.date} time={props.day?.time}
-
-                             Ascore={props.away?.awayScore}
-                             Alogo={props.away?.logo[0].url}
-                             Aname={props.away?.name}
-
-                            live={props?.live} start={props?.start} 
-                            half={props?.half} minutes={props?.time?.now}
-
-
-                            _id={props._id}
-                            regionId={data.competition}
-
-
-                            />  
-
-
-
-
-
-
-
-                        </div>
-
-
-                    )   )   }
-                    </div>
-                    
-
-
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
-
-
-
-
-                    </div>
-
- 
-
-    )
-}
-
-
-
-const TeamResults = ({id}) => {
-    
-    const [fixtures, setfixtures] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
-
-    
-
-    
-
-
-
-
-    
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
-            .then((res) =>  res.json())
-            .then((data) => setfixtures(data.data));
-        }, []);
-
-
-    
-
-
-
-
-    return (
-        <div className={Style.teamRes}>
-
-            <h2 > Results </h2>
-
-
-
-                    <div className={Style.res} >
-
-                    {fixtures.slice(0, 3).map((props) => (
-
-                                        
-        <div className={Style.result}>
-                <Result 
-                Hname={props.home?.name}
-                Hlogo={props.home?.logo[0].url}
-                Hscore={props.home?.homeScore}
-
-                date={props.day?.date} time={props.day?.time}
-
-                Ascore={props.away?.awayScore}
-                Alogo={props.away?.logo[0].url}
-                Aname={props.away?.name}
-
-                live={props?.live} start={props?.start} 
-                half={props?.half} minutes={props?.time?.now}
-
-
-                _id={props._id}
-                regionId={data.competition}
-
-
-
-
-
-                /> 
-
-
-
-
-
-
-
-                        </div>
-
-
-                    )   )   }
-                    </div>
-                    
-
-
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
-
-
-
-
-                    </div>
-
- 
-
-    )
-}
-
-
-
-
-
-
-const TeamAdmin = ({}) => {
+const ProfileAdmin = ({}) => {
     
 
     return (
@@ -666,11 +411,26 @@ const TeamAdmin = ({}) => {
         <div className={Style.teamadminmenu} >
 
 
-            <h2 > User</h2>
+            <h2 > Add User To Team</h2>
 
             <div className={Style.teamadminmenulist} >
                 <CardList3Edit name={"User"} to={"add"} category={"add"} link={"user"} logo={faPlus} id={"list"} />  
                 <CardList3Edit name={"User"} to={"delete"} category={"delete"} link={"user"} logo={faPenToSquare} id={"list"} />  
+                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
+      
+            </div>
+            
+        </div>
+
+
+                <div className={Style.teamadminmenu} >
+
+
+            <h2 > Add Admin </h2>
+
+            <div className={Style.teamadminmenulist} >
+                <CardList3Edit name={"Admin"} to={"add"} category={"add"} link={"admin"} logo={faPlus} id={"list"} />  
+                <CardList3Edit name={"Admin"} to={"delete"} category={"delete"} link={"admin"} logo={faPenToSquare} id={"list"} />  
                 {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
       
             </div>
@@ -696,7 +456,7 @@ const TeamAdmin = ({}) => {
 }
 
 
-export { Overview, TeamNews, TeamFixtures, TeamResults, TeamAdmin }
+export { Overview, TeamNews, ProfileAdmin }
 
 
 

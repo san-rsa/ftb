@@ -8,32 +8,15 @@ import Home from "./pages/Home";
 import Codeofconduct from "./pages/Codeofconduct";
 
 
-
-import Login from "./pages/user/security/Login";
-import Register from "./pages/user/security/Register";
+import {Register, Login, ForgetPassword, ResetPassword,} from "./pages/user/security/Security";
 import Profile from "./pages/user/Profile";
-import ForgetPassword from "./pages/user/security/Forgetpassword";
-import ResetPassword from "./pages/user/security/Resetpassword";
-
 
 // import Admin from "./pages/user/admin/Admin";
 // import Addadmin from "./pages/admin/sub/admin/Add";
 // import Search from "./pages/admin/sub/ResultAdmin";
 
-// import Addbanner from "./pages/admin/sub/banner/Add";
-// import Editbanner from "./pages/admin/sub/banner/Edit";
-// import Addnews from "./pages/admin/sub/news/Add";
-// import Editnews from "./pages/admin/sub/news/Edit";
-// import Addcategory from "./pages/admin/sub/category/Add";
-// import Editcategory from "./pages/admin/sub/category/Edit";
 
-
-  import 'react-toastify/dist/ReactToastify.css';
-  // minified version is also included
-  // import 'react-toastify/dist/ReactToastify.min.css';
-
-
-
+import 'react-toastify/dist/ReactToastify.css';
 
 
 import "./styles/style.css"

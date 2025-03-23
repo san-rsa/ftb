@@ -11,11 +11,13 @@ const teamSchema = new mongoose.Schema({
 
     description: {type: String, },
 
-     playerId: [{type: mongoose.Schema.Types.String, ref: "Player", 
-      }],
+    playerId: [{type: mongoose.Schema.Types.String, ref: "Player", }],
 
 
-      regionId: [{type: mongoose.Schema.Types.String, ref: "Competition",   }, ],
+    regionId: [{type: mongoose.Schema.Types.String, ref: "Competition",   }, ],
+
+    userId: [{type: mongoose.Schema.Types.String, ref: "Team", }],
+      
 
 
       
