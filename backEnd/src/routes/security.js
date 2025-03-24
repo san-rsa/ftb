@@ -155,7 +155,7 @@ router.post('/login', async(req, res)=> {
                    // sameSite: "none",
                      // domain: 'https://footbal-alpha.vercel.app',
 
-			sameSite: 'strict
+			sameSite: 'strict' ,
 
 			
                     	 domain: 'footbal-alpha',
