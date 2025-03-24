@@ -152,8 +152,8 @@ router.post('/login', async(req, res)=> {
                     maxAge:   86400000, //10 * 24 * 60 * 60 * 1000,
                     httpOnly: true,  //It will make cookie not accessible on clinet side -> good way to keep hackers away
                     secure: process.env.NODE_ENV === "production",
-                // sameSite: "none",
-                //  domain: 'https://tea-alpha.vercel.app'
+                  //  sameSite: "none",
+                    domain: process.env.ORIGIN,
     
     
                 }
