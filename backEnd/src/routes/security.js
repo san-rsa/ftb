@@ -153,14 +153,14 @@ router.post('/login', async(req, res)=> {
                     httpOnly: true,  //It will make cookie not accessible on clinet side -> good way to keep hackers away
                   //  secure: process.env.NODE_ENV === "production",
                     sameSite: "none",
-                     // domain: 'https://footbal-alpha.vercel.app',
+                     domain: 'https://footbal-alpha.vercel.app',
 
 			// sameSite: 'strict' ,
 
 			
                     	// domain: 'footbal-alpha',
 
-			 domain: 'footbal-alpha.vercel.app',
+			// domain: 'footbal-alpha.vercel.app',
 
 
     				path: "/",
