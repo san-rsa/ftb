@@ -199,20 +199,14 @@ cloudinary.config({
 const corsOptions = {
   origin: process.env.ORIGIN,
   credentials: true,
-   methods: '',
   optionsSuccessStatus: 204,
-    methods: ['GET', 'POST', 'PUT', 'DELETE','HEAD','PATCH'],
   allowedHeaders: [   
       "set-cookie",
     "Access-Control-Allow-Origin",
-    
     "Access-Control-Allow-Credentials", 
       'Content-Type', 
       'Authorization', 
-      'X-Requested-With'
-  ],
-  credentials: true,
-  
+  ],  
 };
 
 
