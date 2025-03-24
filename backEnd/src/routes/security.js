@@ -160,7 +160,7 @@ router.post('/login', async(req, res)=> {
 			
                     	// domain: 'footbal-alpha',
 
-			 domain: '.footbal-alpha.vercel.app',
+			 domain: 'footbal-alpha.vercel.app',
 
 
     				path: "/",
