@@ -79,15 +79,6 @@
 }
 
 
-.layout {
-    display: grid;
-    grid-template-columns: auto 20%;
-    margin: 10px;
-    width: 100%;
-    text-align: left;
-
-}
-
 .list {
     text-align: left;
     margin: auto 10px;
@@ -103,26 +94,37 @@
 .matches {
     text-align: left;
     display: grid;
-    grid-template-columns: auto 50%;
+    grid-template-columns: repeat(2, 1fr);
 
 
 }
+
+
 
 .matches h2 {
     margin: 10px 0;
 }
 
-.result > div {
+.result, .fixture {
+    text-align: left;
+}
+
+.result > a {
     position: relative;
     top: 7px;
     text-align: left;
 }
 
-.result > div, .fixture > div {
+.result > a, .fixture > a {
 
     justify-items: flex-start;
 }
 
+
+.result  div, .fixture  div {
+    text-align: left;
+
+}
 
 
 /* team news */
@@ -140,6 +142,10 @@
 
 
 /* profile admin */
+
+.overview {
+    text-align: left;
+}
 
 .teamAdmin {
     text-align: left;
@@ -258,6 +264,12 @@
     .fix, .res, .squads, .bio {
         grid-template-columns: repeat(1, 1fr);
 
+    }
+
+
+    .result  div, .fixture  div {
+        text-align: center;
+    
     }
 }
 

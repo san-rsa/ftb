@@ -17,24 +17,22 @@ import { LineUp } from "../../../components/sub component/Matchview";
 const Fixture  =  ({})  =>  {
     const [mode, setInputs] = useState({home: true, away: true, });
 
-    const [data, setData] = useState({})
+    const [competition, setRegion] = useState({})
     const [data2, setData2] = useState([])
-    const [wishlist, setwish] = useState()
     const [set, setset] = useState('')
-    const [priced, setpriced] = useState(Number())
     const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight,});
 
     var width = window.innerWidth
     
-    const title = useParams().id
+    const {id, matchId} = useParams()
 
-    const link =title?.replaceAll('-',' ');
+    const region =id?.replaceAll('-',' ');
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
+            fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + region)
             .then((res) =>  res.json())
-            .then((data) => setData(data));
+            .then((data) => setRegion(data));
         }, []);
 
 
@@ -43,13 +41,9 @@ const Fixture  =  ({})  =>  {
             .then((res) =>  res.json())
             .then((data) => setData2(data.data));
         }, []);
+  
 
 
-        console.log(process.env.REACT_APP_API_LINK);
-        
-
-
-        console.log(data);
 
 
 

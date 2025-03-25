@@ -129,7 +129,7 @@ router.post('/login', async(req, res)=> {
             console.log(passwordMatch, );
 
         if (!passwordMatch) {
-          return res.status(401).json({ message: 'Incorrect password ⚠️' });
+          return res.status(401).json({success: false, message: 'Incorrect password ⚠️' });
         }
    
         

@@ -126,8 +126,6 @@ const Overview = ({info, }) => {
                         </div> : null }
 
 
-        <div className={Style.layout} >
-
 
                     <div className={Style.matches}>
 
@@ -168,7 +166,7 @@ const Overview = ({info, }) => {
                 
 
             
-            {fixture.match &&         <div className={Style.fixture}>
+            {fixture?.match &&         <div className={Style.fixture}>
 
             <h2 > Next Match </h2>
 
@@ -232,7 +230,6 @@ const Overview = ({info, }) => {
                     <button className={Style.logout} onClick={logout}> logout</button>
                 {/* </div> */}
 
-        </div>
         </div>
 
     )

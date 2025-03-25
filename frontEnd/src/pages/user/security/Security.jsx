@@ -56,6 +56,8 @@ const Login = () => {
 
          } else {
           setSubmitBtn(false);
+          AlertError(data.message)
+
      
          }
 

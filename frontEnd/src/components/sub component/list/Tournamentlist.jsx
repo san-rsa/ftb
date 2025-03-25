@@ -130,7 +130,6 @@ const Fixture = ({Hname, Hscore, Hlogo, date, time, Alogo, Ascore, Aname, _id, l
 
         <Link to={"/region/" + regionId + "/fixture/" + _id} className={Style.fixtures} >
 
-            <div className={Style.matchday}>
 
                 {/* <h2> Matchday 3</h2> */}
 
@@ -166,7 +165,6 @@ const Fixture = ({Hname, Hscore, Hlogo, date, time, Alogo, Ascore, Aname, _id, l
 
 
 
-     </div>
 
         </Link>
 
@@ -185,13 +183,6 @@ const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname, _id, regionId, half
 
         <Link to={"/region/" + regionId + "/result/" + _id} className={Style.results} >
 
-
-
-
-
-            <div className={Style.matchday}>
-{/* 
-                <h2> Matchday 3</h2> */}
 
                 <ul  className={Style.list}>
                 
@@ -226,7 +217,6 @@ const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname, _id, regionId, half
 
 
 
-     </div>
 
 
         </Link>
