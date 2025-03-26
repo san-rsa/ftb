@@ -10,7 +10,7 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 const MatchTeam = ({logo, name, }) => {
 
 
-    const link = name.replaceAll(' ','-')
+    const link = name?.replaceAll(' ','-')
 
 
     return (
@@ -41,7 +41,7 @@ const MatchTeam = ({logo, name, }) => {
 
 const MatchCompetition = ({logo, name,}) => {
 
-    const link = name.replaceAll(' ','-')
+    const link = name?.replaceAll(' ','-')
 
     return (
 
@@ -99,7 +99,7 @@ const MatchTime = ({day, time, }) => {
 
 
 
-const MatchScore = ({home, away, time, }) => {
+const MatchScore = ({home, away, time, half }) => {
 
     return (
         <div className={Style.matchday}>
@@ -116,6 +116,8 @@ const MatchScore = ({home, away, time, }) => {
                 
                 <div className={Style.head3}>
                     <h4 > {time} </h4>
+                    <h5 > {half} </h5>
+
                 </div>
 
             </div>

@@ -75,6 +75,11 @@ function Links() {
         <Route path="/region/:id/fixture/:matchId" element={<Fixture />}/>
         <Route path="/region/:id/result/:matchId" element={<Result />}/>
 
+        <Route path="/region/:id/fixture/:matchId/update" element={<Fixture />}/>
+        <Route path="/region/:id/fixture/:matchId/update/:type" element={<Fixture />}/>
+
+
+
 
 
         <Route path="/team/:id/:event/:type" element={<TeamAdd />}/>

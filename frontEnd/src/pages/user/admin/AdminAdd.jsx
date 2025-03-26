@@ -78,17 +78,22 @@ const Add = ({}) => {
  })  
 
 
-
-          fetch(process.env.REACT_APP_API_LINK + 'getaccess/user/team/', {
-            method: 'GET',
-            credentials: "include",
-            headers: {'Content-Type': 'application/json'},
-             }).then((res) =>  res.json())
-             .then((data) => setTeam(data.data.name));
-                 
             
               
          },   []);
+
+
+
+
+
+         if (user.team) {
+            fetch(process.env.REACT_APP_API_LINK + 'getaccess/user/team/', {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'},
+                 }).then((res) =>  res.json())
+                 .then((data) => setTeam(data.data.name));
+         }
 
 
         console.log(mode1, mode2, event, type, typeId);
@@ -109,9 +114,9 @@ const Add = ({}) => {
 
             { mode2.banner && <AdminBanner event={mode1} typeId={typeId} />}
 
-            { mode2.news ? user.admin ? <AdminNews  event={mode1} typeId={typeId} /> : user.team ?  <TeamAdminNews teamid={team} event={mode1} typeId={typeId} /> : null : null}
+            { mode2.news ? user.admin ? <AdminNews  event={mode1} typeId={typeId} /> : user.team ?  team ? <TeamAdminNews teamid={team} event={mode1} typeId={typeId} /> : null : null : null}
 
-            { mode2.player ? user.admin ? <AdminNews  event={mode1} typeId={typeId} /> : user.team ?  <TeamAdminPlayer teamid={team} event={mode1} typeId={typeId} /> : null : null}
+            { mode2.player ? user.admin ? <AdminNews  event={mode1} typeId={typeId} /> : user.team ? team ?  <TeamAdminPlayer teamid={team} event={mode1} typeId={typeId} /> : null : null : null}
 
 
             { mode2.region && <AdminRegion event={mode1} typeId={typeId} />}

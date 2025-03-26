@@ -84,23 +84,27 @@ const List = ({}) => {
 
             } 
 
- })  
-
-
-
-          fetch(process.env.REACT_APP_API_LINK + 'getaccess/user/team/', {
-            method: 'GET',
-            credentials: "include",
-            headers: {'Content-Type': 'application/json'},
-             }).then((res) =>  res.json())
-             .then((data) => setTeam(data.data.name));
-                 
+ })                 
             
               
          },   []);
 
 
+         if (user.team) {
+            fetch(process.env.REACT_APP_API_LINK + 'getaccess/user/team/', {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'},
+                 }).then((res) =>  res.json())
+                 .then((data) =>  setTeam(data.data.name));         
+                 
+                 
 
+         }
+
+
+
+         
 
     return (
         <div>
@@ -117,9 +121,9 @@ const List = ({}) => {
 
             { mode2.news && <AdminNewsList  />}
                         
-            { mode2.news ? user.admin ? <AdminNewsList  /> : user.team ?  <TeamAdminNewsList teamid={team} /> : null : null}
+            { mode2.news ? user.admin ? <AdminNewsList  /> : user.team ? team ? <TeamAdminNewsList teamid={team} /> : null : null : null}
             
-            { mode2.player ? user.admin ? null : user.team ?  <TeamAdminPlayerList teamid={team} /> : null : null}
+            { mode2.player ? user.admin ? null : user.team ? team ? <TeamAdminPlayerList teamid={team} /> : null : null :  null}
 
             { mode2.region && <AdminRegionList   />}
             

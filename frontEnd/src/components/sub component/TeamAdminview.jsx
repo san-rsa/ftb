@@ -174,7 +174,7 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
       </div>
 
 
-        <form className={Style.form} onClick={HandleSubmit}>
+        <form className={Style.form} onSubmit={HandleSubmit}>
 
         <Inputs label={'first name'} type={'text'} name={'fname'} onchange={handleChange} value={data.fname}  placeholder={'first name'} disabled={false} required={true}  />
         <Inputs label={'last name'} type={'text'} name={'lname'} onchange={handleChange} value={data.lname}  placeholder={'last name'} disabled={false} required={true}  />
@@ -191,7 +191,7 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
           <select id="position" name={"position"} onChange={handleChange} title="position" Value={data.position} >
 
-          { data.position ?  <option value={data.position} > {data.position}  </option> : <option value={""} > select a position  </option> }
+          { data.position ? null : <option value={""} > select a position  </option> }
 
 
 
@@ -204,23 +204,6 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
         </div>
 
-
-
-        {/* <div className={Style.select} >
-
-
-        <label >positions</label>
-
-          <select id="position" name={"position"} onChange={handleChange} title="positions" >
-
-              <option name={"position"} value={"foward"} > foward  </option>
-              <option name={"position"} value={"midfielder"} > midfielder  </option>
-              <option name={"position"} value={"defender"} > defender  </option>
-              <option name={"position"} value={"goalkeeper"} > goalkeeper  </option>
-
-          </select>
-
-        </div> */}
 
 
 
@@ -248,12 +231,6 @@ const TeamAdminPlayer = ({teamid, event, typeId }) => {
 
 
 
-
-
-
-
-
-
 const TeamAdminNews = ({teamid, event, typeId }) => {
   const [data, setInputs] = useState({})
   const [region, settRegion] = useState([])
@@ -270,15 +247,13 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
 
 
 
-
-        useEffect(() => {
+          useEffect(() => {
             fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + teamid)
             .then((res) =>  res.json())
             .then((data) =>  setInputs(values => ({...values, teamid: data.name}))
           );
 
         }, []);
-
 
 
         useEffect(() => {
@@ -294,7 +269,7 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
         useEffect(() => {
 
           if (typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + typeId.replaceAll('-',' '))
+            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + typeId)
             .then((res) =>  res.json())
             .then((data) =>  setInputs({
               head:data.head,
@@ -311,7 +286,7 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
         if (event.add ) {
       setFetch({link: 'admin/add/news/', method: 'POST'  })
     } else if (event.edit) {
-      setFetch({link: 'admin/edit/news/' + typeId.replaceAll('-',' '), method: 'PATCH'  })
+      setFetch({link: 'admin/edit/news/' + typeId, method: 'PATCH'  })
 
     }
 
@@ -366,11 +341,8 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
         
         .then((res) => {
            if (res.status == 200) {
-
-            const link =teamid.replaceAll(' ','-')
-
           
-                navigate("/team/"+ link + "/"); 
+                navigate("/user"); 
 
            } else {
             setSubmitBtn(false);
@@ -399,19 +371,8 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
         .catch((e) => {
           console.log(e);
           setSubmitBtn(!submitbtn)
-          toast.error('message', {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-            })
+          AlertError("error try again later")
 
-          let msg = "fail"
         })
 
 
@@ -440,14 +401,12 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
       </div>
 
 
-        <form className={Style.form} onClick={HandleSubmit} >
+        <form className={Style.form} onSubmit={HandleSubmit}>
 
         <Inputs label={'head'} type={'text'} name={'head'} onchange={handleChange} value={data.head}  placeholder={'head'} disabled={false} required={true}  />
         
-       
-       
-        <Inputs label={'team'} type={'text'} value={teamid} disabled={true} required={true}  />
 
+        <Inputs label={'team'} type={'text'} value={teamid} disabled={true} required={true}  />
 
        <div className={Style.select} >
 
@@ -455,7 +414,7 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
         <label rel="select" htmlFor="select" >region</label>
 
           <select id="region" name={"region"} onChange={handleChange} title="region" Value={data.region} > 
-          { data.region ?  <option value={data.region} > {data.region}  </option> : <option value={""} > select a region  </option> }
+          { data.region ? null : <option value={""} > select a region  </option> }
 
 
           {region.map((props) => (
@@ -491,17 +450,15 @@ const TeamAdminNews = ({teamid, event, typeId }) => {
         </div>
 
 
+        <button className="submit" type="submit" disabled={submitbtn}> Submit</button> 
 
-
-        <button className="submit"  disabled={submitbtn} type="submit"> Submit</button> 
+        
         </form>
 
     </div>
 
     )
 }
-
-
 
 
 

@@ -17,7 +17,7 @@ import { CardList2, CardList3, CardList3Edit } from "./list/Generallist";
 
 
 
-const Overview = ({info, }) => {
+const Overview = ({info, user }) => {
     
     const [fixture, setFixture] = useState([])
     const [team, setTeam] = useState({})
@@ -30,48 +30,26 @@ const Overview = ({info, }) => {
 
     
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
-                method: 'GET',
-                credentials: "include",
-                headers: {'Content-Type': 'application/json'}, 
-        })
-            .then((res) =>  res.json())
-            .then((data) => setTeam(data.data));
-        }, []);
-
-
-
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getaccess/latest/fixture/",  {
-                method: 'GET',
-                credentials: "include",
-                headers: {'Content-Type': 'application/json'}, 
-        })
-            .then((res) =>  res.json())
-            .then((data) => setFixture(data.data));
-        }, []);        
+            if (user.team) {
+                fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
+                    method: 'GET',
+                    credentials: "include",
+                    headers: {'Content-Type': 'application/json'}, 
+            })
+                .then((res) =>  res.json())
+                .then((data) => setTeam(data.data));
+    
+                fetch(process.env.REACT_APP_API_LINK + "getaccess/latest/fixture/",  {
+                    method: 'GET',
+                    credentials: "include",
+                    headers: {'Content-Type': 'application/json'}, 
+            })
+                .then((res) =>  res.json())
+                .then((data) => setFixture(data.data));
+            }
+        }, [user]);        
         
         
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
-                method: 'GET',
-                credentials: "include",
-                headers: {'Content-Type': 'application/json'}, 
-        })
-            .then((res) =>  res.json())
-            .then((data) => setTeam(data.data));
-        }, []);
-
-
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
-                method: 'GET',
-                credentials: "include",
-                headers: {'Content-Type': 'application/json'}, 
-        })
-            .then((res) =>  res.json())
-            .then((data) => setTeam(data.data));
-        }, []);
 
 
 
@@ -89,18 +67,7 @@ const Overview = ({info, }) => {
                 } 
               }
 
-    
-        console.log(team);
-        
-
-
-
-        // useEffect(() => {
-        //     fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
-        //     .then((res) =>  res.json())
-        //     .then((data) => setData(data));
-        // }, []);
-
+            
 
 
 
@@ -236,7 +203,7 @@ const Overview = ({info, }) => {
 }
 
 
-const TeamNews = () => {
+const ProfileNews = () => {
     
     const [news, setnews] = useState([])
      
@@ -453,7 +420,7 @@ const ProfileAdmin = ({}) => {
 }
 
 
-export { Overview, TeamNews, ProfileAdmin }
+export { Overview, ProfileNews, ProfileAdmin }
 
 
 

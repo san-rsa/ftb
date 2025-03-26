@@ -216,6 +216,8 @@ router.get('/:link/fixture/:id/', async(req, res)=> {
         
          const db = await Fixture.findOne({competition: link }).sort({year: 'desc'}).populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
 
+         console.log(db);
+         
     
           
         for (let i = 0; i < db.fixture.length; i++) {

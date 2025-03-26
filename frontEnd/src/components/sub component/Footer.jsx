@@ -206,13 +206,7 @@ const Footer = () => {
                 {social.map((p, id) => (
 
 
-                <SocialList 
-                    key={id}
-                    icon={p.icon}
-                    name={p.name}
-                    handle={p.handle}
-                    link={p.link}
-                />
+                <SocialList  key={id}  icon={p.icon}  name={p.name} handle={p.handle}  link={p.link} />
 
 
                 )   )   }
@@ -229,14 +223,10 @@ const Footer = () => {
                 <div className={Style.others}>
 
 
-                    {footerlist.map((p) => (
+                    {footerlist.map((p, id) => (
 
 
-                        <Footerlist 
-                        head={p.head}
-                        list={p.link} 
-
-                        /> 
+                        <Footerlist key={id} head={p.head} list={p.link}  /> 
 
 
                     )   )   }

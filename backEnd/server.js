@@ -199,15 +199,28 @@ cloudinary.config({
 const corsOptions = {
   origin: process.env.ORIGIN,
   credentials: true,
-  optionsSuccessStatus: 204,
+ // optionsSuccessStatus: 204, no
   allowedHeaders: [   
-      "set-cookie",
+    "set-cookie",
     "Access-Control-Allow-Origin",
     "Access-Control-Allow-Credentials", 
-      'Content-Type', 
-      'Authorization', 
+    'Content-Type', 
+    // 'Authorization', no
   ],  
 };
+
+
+// const corsOptions = {
+//   origin: process.env.ORIGIN,
+//   credentials: true,
+//   allowedHeaders: [
+//     "set-cookie",
+//     "Content-Type",
+//     "Access-Control-Allow-Origin",
+//     "Access-Control-Allow-Credentials"
+//   ],
+// };
+
 
 
 app.use(cors(corsOptions));
@@ -249,6 +262,8 @@ app.use(
     tempFileDir: "/tmp/"
   })
 );
+
+
 
 
 

@@ -47,9 +47,12 @@ const role =  (role)  => async (req, res, next) => {
   try {
     const user = await  User.findOne({_id: req.userId})
 
+    console.log(user, 55);
+
+
     
     if (user.role !== role) {
-      return res.status(403).json({ error: 'Forbidden' });
+      return res.status(403).json({ error: 'Forbidden no acces' });
     }
     
    return next();

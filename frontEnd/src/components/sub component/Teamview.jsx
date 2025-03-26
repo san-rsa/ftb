@@ -271,15 +271,7 @@ const TeamNews = ({id}) => {
     const [data, setData] = useState({})
 
 
-    
 
-    
-
-
-    
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
 
     
         useEffect(() => {
@@ -306,6 +298,9 @@ const TeamNews = ({id}) => {
 
 
                     <News
+                    
+                        key={project.head}
+
                         head={project.head}
                         img={project.imgUrl[0].url}
                         link={project.head}
@@ -321,8 +316,9 @@ const TeamNews = ({id}) => {
                         <div className={Styles.perone} key={project._id}> 
 
                         <Mininews
+                            key={project.head}
                             head={project.head}
-                            img={project.imgUrl.url}
+                            img={project.imgUrl[0].url}
                             link={project.head}
                             />    
                             </div>

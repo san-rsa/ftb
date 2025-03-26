@@ -7,7 +7,7 @@ import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Footer from "../../../components/sub component/Footer";
 import { CompetitionFixtures, CompetitionNews, CompetitionResults, CompetitionTable } from "../../../components/sub component/Competitionview";
-import { MatchCompetition, MatchEventAway, MatchEventHome, MatchTeam, MatchTime } from "../../../components/sub component/list/Matchlist";
+import { MatchCompetition, MatchEventAway, MatchEventHome, MatchScore, MatchTeam, MatchTime } from "../../../components/sub component/list/Matchlist";
 import { TeamSquadList } from "../../../components/sub component/list/Teamviewlist";
 import { LineUp } from "../../../components/sub component/Matchview";
 
@@ -16,9 +16,13 @@ import { LineUp } from "../../../components/sub component/Matchview";
 
 const Fixture  =  ({})  =>  {
     const [mode, setInputs] = useState({home: true, away: true, });
+    const [user, setUser] = useState({admin: false, team: false, })
+    
 
     const [competition, setRegion] = useState({})
     const [data2, setData2] = useState([])
+    const [match, setMatch] = useState({})
+
     const [set, setset] = useState('')
     const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight,});
 
@@ -33,14 +37,44 @@ const Fixture  =  ({})  =>  {
             fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + region)
             .then((res) =>  res.json())
             .then((data) => setRegion(data));
-        }, []);
-
-
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+  
+            fetch(process.env.REACT_APP_API_LINK + "getone/" + region + "/fixture/" + matchId)
             .then((res) =>  res.json())
-            .then((data) => setData2(data.data));
+            .then((data) => setMatch(data));
         }, []);
+
+
+        
+                useEffect(() => {
+        
+                        fetch(process.env.REACT_APP_API_LINK + 'getaccess/admin', {
+                            method: 'GET',
+                            credentials: "include",
+                            headers: {'Content-Type': 'application/json'},
+                             }).then((res) => {
+                            if (res.status === 200) {
+                                setUser({admin: true})
+            
+                            } 
+                 })    
+        
+        
+                 fetch(process.env.REACT_APP_API_LINK + 'getaccess/team', {
+                    method: 'GET',
+                    credentials: "include",
+                    headers: {'Content-Type': 'application/json'},
+                     }).then((res) => {
+                    if (res.status === 200) {
+                        setUser({team: true})
+        
+                    } 
+        
+         })  
+        
+                         
+                    
+                      
+                 },   []);
   
 
 
@@ -192,18 +226,27 @@ const Fixture  =  ({})  =>  {
 
                          <div className={Style.top}>
 
-                                    <MatchCompetition name={'agbedian'} logo={'77'} />
+                                <MatchCompetition name={competition.name} logo={competition.logo && competition.logo[0].url} />
 
                                 <div className={Style.head} >
 
 
                             
-                                <MatchTeam name={'arsenal '} logo={"rr"} />
+                                <MatchTeam name={match.match?.home.name} logo={match.match?.home.logo[0].url} />
 
 
-                                <MatchTime day={'fri 22, feb'} time={'2 pm'} />
+                                { match.match?.start ? <MatchScore home={match.match?.homeScore} away={match.match?.awayScore} 
+                                
+                                    time={ match.match?.live ? match.match?.time.now : null} half={match.match?.half} />
+                                 : <MatchTime day={match.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={match.match?.day?.time} />
+                                }
+                                <MatchTeam name={match.match?.away.name} logo={match.match?.away.logo[0].url} />
 
-                                <MatchTeam name={'man u '} logo={"rr"} />
+
+                                <hr />
+
+                                
+                                <button className={Style.update} > <Link to={"update"} > Update </Link> </button> 
 
                                 
 

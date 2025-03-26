@@ -5,9 +5,9 @@ import Nav from "../../components/sub component/Nav"
 import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
-import { Overview, ProfileAdmin, TeamNews, } from "../../components/sub component/profileview";
+import { Overview, ProfileAdmin, ProfileNews, } from "../../components/sub component/profileview";
 import Footer from "../../components/sub component/Footer";
-import { TeamAdmin } from "../../components/sub component/Teamview";
+import { TeamAdmin, TeamNews} from "../../components/sub component/Teamview";
 
 
 
@@ -41,7 +41,7 @@ const Profile = ({}) => {
  
                 } } )
 
-                fetch(process.env.REACT_APP_API_LINK + 'getaccess/admin/', {
+                fetch(process.env.REACT_APP_API_LINK + 'getaccess/admin', {
                     method: 'GET',
                     credentials: "include",
                     headers: {'Content-Type': 'application/json'},
@@ -53,7 +53,7 @@ const Profile = ({}) => {
          })    
 
 
-         fetch(process.env.REACT_APP_API_LINK + 'getaccess/team/', {
+         fetch(process.env.REACT_APP_API_LINK + 'getaccess/team', {
             method: 'GET',
             credentials: "include",
             headers: {'Content-Type': 'application/json'},
@@ -91,9 +91,7 @@ const Profile = ({}) => {
             
             setInputs(values => ({...values, [name]: true}))
           }
-        
-          console.log(mode);
-    
+            
     
     
 
@@ -213,9 +211,9 @@ const Profile = ({}) => {
 
          <div className={Style.section} >
 
-            { mode.overview && <Overview info={data}  />}
+            { mode.overview && <Overview info={data}  user={user } />}
 
-            { mode.news && <TeamNews />}
+            { mode.news ? user.admin ? <ProfileNews />  : user.team ? data.teamId ? <TeamNews id={data.teamId}  /> : null : null : null }
 
             { mode.admin ? user.admin ? <ProfileAdmin  /> : user.team ? <TeamAdmin  /> : null : null }
 

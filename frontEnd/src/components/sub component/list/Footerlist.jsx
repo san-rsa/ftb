@@ -36,9 +36,9 @@ const Footerlist = ({list, head, id}) => {
             <h4 > {head} </h4>
 
             <ul > 
-                {list.map((p) => (
+                {list.map((p, id ) => (
            
-                    <Link to={p.link}>
+                    <Link to={p.link} key={id}>
                     
                         <li > {p.list} </li>
                            
@@ -56,43 +56,4 @@ const Footerlist = ({list, head, id}) => {
 
 
 
-
-const Mininews2 = ({img, head, link, id}) => {
-
-    const newsLink =link.replaceAll(' ','-')
-
-    return (
-        <div className={Style.newsm}>
-
-        <Link to={"/news/" + newsLink}>
-        <div className={Style.news3}>
-
-
- 
-            <div className={Style.img3} >
-                <img src={ img} />
-            </div>
-
-            
-            <div className={Style.text3} >
-                
-                <div className={Style.head3}>
-                    <h2 > {head} Premier League Player of the Week: The smiling assassin</h2>
-                </div>
-
-            </div>
-
-
-            </div>
-        </Link>        </div>
-
-    )
-}
-
-
-
-
-
-
-
-export {SocialList, Footerlist, Mininews2,}
+export {SocialList, Footerlist, }

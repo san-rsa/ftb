@@ -34,6 +34,8 @@ router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {
 
     const user = await  User.findOne({_id: req.userId})
   
+    console.log(user, 55);
+
     if (user.role !== process.env.ADMIN) {
         return res.status(403).json({ error: 'Forbidden' });
     } else if (user.role == process.env.ADMIN ) {
@@ -47,6 +49,10 @@ router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {
 router.get('/team', auth, role(process.env.TEAM), async(req, res)=> {
 
   const user = await  User.findOne({_id: req.userId})
+
+
+  console.log(user, process.env.TEAM);
+  
 
   if (user.role !== process.env.TEAM) {
       return res.status(403).json({ error: 'Forbidden' });
@@ -92,7 +98,7 @@ router.get('/user/team', auth, async(req, res)=> {
 
 
 
-   router.get('/latest/fixture', auth, async(req, res)=> {
+router.get('/latest/fixture', auth, async(req, res)=> {
 
         
       const team = await  Team.findOne({userId: req.userId})
@@ -110,9 +116,6 @@ router.get('/user/team', auth, async(req, res)=> {
 
      const db = await Fixture.find({year: year.year}).sort('name').populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
 
-
-
-     
 
       
       for (let x = 0; x < db.length; x++) {
@@ -153,7 +156,7 @@ router.get('/user/team', auth, async(req, res)=> {
              success: true,
             data: latest[0]
            })
-     })
+})
 
 
 

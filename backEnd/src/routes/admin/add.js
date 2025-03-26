@@ -384,7 +384,7 @@ router.post('/add-user-to-team', async (req, res)=> {
 
         existingUser.teamId = existingTeam.name
 
-        existingUser.role = "team"
+        existingUser.role = process.env.TEAM
 
 
         existingTeam.userId.addToSet(existingUser._id)
@@ -397,7 +397,7 @@ router.post('/add-user-to-team', async (req, res)=> {
         existingTeam.save()
 
 
-        console.log(existingUser, existingTeam);
+        console.log(existingUser, existingTeam, 7);
         
 
 
@@ -413,7 +413,7 @@ router.post('/add-user-to-team', async (req, res)=> {
         return res.status(200).json({
             success: true,
    
-            message: "successfully ✅ added"
+            message: "successfully ✅ added", existingUser
            
         })  
     } catch (error) {
