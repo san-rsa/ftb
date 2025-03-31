@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Style from "../../styles/admin/Team.module.css"
+import Style from "../../styles/Matchupdate.module.css"
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
@@ -9,10 +9,18 @@ import { AlertError, Inputs } from "./list/Generallist";
 
 
 
-const AdminBanner = ({ event, typeId }) => {
+const AddMatchLineup = ({ competition, match, matchId, matchday }) => {
   const [data, setInputs] = useState({})
-  const [img, setFile] = useState({});
+  const [starting, setStarting] = useState([])
+  const [sub, setSub] = useState([])
+
+
+
   const [submitbtn, setSubmitBtn] = useState(false)
+  const [players, setPlayers] = useState([])   
+  const [team, setTeam] = useState({})   
+
+
 
   const [fetchs, setFetch] = useState({link: "", method: ""})
 
@@ -21,51 +29,56 @@ const AdminBanner = ({ event, typeId }) => {
   let navigate = useNavigate()
         
 
+  console.log(competition.name, match);
+  
 
 
-        useEffect(() => {
-          if (typeId) {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/banner/" + typeId)
+    useEffect(() => {
+
+            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/all-players",  {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'}, 
+        })
             .then((res) =>  res.json())
-            .then((data) =>  setInputs({
-              head:data.head,
-              body: data.body,
-              img: data.imgUrl?.url, 
-              
-              
-            })
-          ); 
+            .then((data) => setPlayers(data.data));
 
-          }       
+            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'}, 
+        })
+            .then((res) =>  res.json())
+            .then((data) => setTeam(data.data));
 
-        if (event.add ) {
-      setFetch({link: 'admin/add/banner/', method: 'POST'  })
-    } else if (event.edit) {
-      setFetch({link: 'admin/edit/banner/' + typeId, method: 'PATCH'  })
 
-    }
+
+            
+
 
       }, []);
         
 
+    const h1 = "please try again later" ;  
 
-
-    const h1 = (event.add) ? "Add Banner" : (event.edit) ? "Edit Banner" : "please try again later" ;  
+    console.log(starting, sub, players);
     
     
-      const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values => ({...values, [name]: value}))
+    
+      const handleChangeStarting = (event) => {
+       const name = event.target.name;
+       const value = event.target.value;
+        setStarting(values => ({...values, [name]: value}))
 
       }
+
+      const handleChangeSub = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+         setSub(values => ({...values, [name]: value}))
+ 
+       }
     
-      const handleFileChange = (event) => {
-        setFile(event.target.files)
-      };
-
-
-
     
 
 
@@ -75,20 +88,21 @@ const AdminBanner = ({ event, typeId }) => {
     
         const formData = new FormData();
       
+
+  
+       formData.append('starting',  JSON.stringify(starting));
+       formData.append('sub',  JSON.stringify(sub));
+       formData.append('action',  JSON.stringify("line-up"));
+       formData.append('matchday',  JSON.stringify(matchday));
+
+
+
     
-        Array.from(img).forEach(imgs => {
-    
-          formData.append('img', imgs);
-    
-      });
-    
-            formData.append('data',  JSON.stringify(data));
     
     
-    
-       const api = fetch(process.env.REACT_APP_API_LINK + fetchs.link, {
-        method: fetchs.method,
-        // credentials: "include",
+       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/fixture/" + matchId ,{ //fetchs.link, {
+        method: "PATCH", // fetchs.method,
+        credentials: "include",
        // headers: {'Content-Type': "application/json", },
         body:   formData
         })
@@ -100,7 +114,7 @@ const AdminBanner = ({ event, typeId }) => {
          
 
           
-                navigate("/user"); 
+                navigate("./../.."); 
 
            } else {
             setSubmitBtn(false);
@@ -157,25 +171,43 @@ const AdminBanner = ({ event, typeId }) => {
 
         <form className={Style.form} onSubmit={HandleSubmit}>
 
-        <Inputs label={'head'} type={'text'} name={'head'} onchange={handleChange} value={data.head}  placeholder={'headline'} disabled={false} required={true}  />
-        <Inputs label={'picture'} type={'file'} name={'picture'} onchange={handleFileChange} value={data.picture}  placeholder={'first name'} disabled={false} required={true}  />
+
+        <div className={Style.starting}> 
+            <h2> Starting</h2>
+
+                    { Array.from({ length: competition.substitute?.starting }, (_, i) => i + 1).map((props,) => (
+
+          
+        <div className={Style.select} key={props} >
 
 
+        <label rel="select" htmlFor="select" >player {props}</label>
+
+          <select id="starting" name={"player" + props } onChange={handleChangeStarting} required > 
+          { data.team ?  null : <option value={""} > select a player  </option> }
 
 
+          {players.map((props) => (
+
+                        
+        <option key={props._id} value={props._id} > {props.name?.first + " " + props.name?.last}  </option>
+ 
 
 
+                )   )   }
+    
 
-        
-       <div className={Style.textarea} >
 
-
-        <label rel="textarea" htmlFor="textarea" >article</label>
-
-        <textarea value={data.body} onChange={handleChange} name="body" placeholder="type your article here"  rows={7}> </textarea>
-
+          </select>
 
         </div>
+            
+
+            )              )}      
+        </div>
+    
+        
+
 
 
 
@@ -463,10 +495,7 @@ const AdminRegion = ({event, typeId }) => {
             .then((data) =>  setInputs({
               name:data.name,
               type: data.type,
-              img: data?.logo[0]?.url,
-              starting: data.substitute?.starting,
-              sub:  data.substitute?.sub
-
+              img: data?.logo[0]?.url
               
               
             })
@@ -592,10 +621,6 @@ const AdminRegion = ({event, typeId }) => {
 
         <Inputs label={'name'} type={'text'} name={'name'} onchange={handleChange} value={data.name}  placeholder={'name'} disabled={false} required={true}  />
         
-
-        <Inputs label={'starting lineup'} type={'number'} name={'starting'} onchange={handleChange} value={data.starting}  placeholder={'choose starting lineup'} disabled={false} required={true}  />
-
-        <Inputs label={'substitute lineup'} type={'number'} name={'sub'} onchange={handleChange} value={data.sub}  placeholder={'choose substitute lineup'} disabled={false} required={true}  />
 
        <div className={Style.select} >
 
@@ -1985,4 +2010,4 @@ const AdminAddAdmin = ({event, regionId, typeId }) => {
     )
 }
 
-export {AdminTeam, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture, AdminAddAdmin, AdminAddUserToTeam}
+export {AdminTeam, AdminNews, AddMatchLineup, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture, AdminAddAdmin, AdminAddUserToTeam}

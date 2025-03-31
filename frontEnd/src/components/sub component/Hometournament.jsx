@@ -103,16 +103,16 @@ const Results = () => {
             <h2 > Results</h2>
 
 
-            {data.result?.slice(0, 1)?.map((props) => (
+            {data.result?.slice(0, 1)?.map((prop) => (
 
                 <div  >
 
-                <h3 className={Style.day} > matchday:  {props.matchday} </h3>
+                <h3 className={Style.day} > matchday:  {prop.matchday} </h3>
 
 
                 
                     
-                { props.teams.map((props) => (
+                { prop.teams.map((props) => (
                     
                     <Result
                         Hname={props.home?.name}
@@ -121,6 +121,7 @@ const Results = () => {
 
                         date={props.time.date}
                         time={props.time.time}
+                        
 
                         Ascore={props.away.awayScore}
                         Alogo={props.away?.logo[0].url}

@@ -109,7 +109,7 @@ const Table = ({pos, w, d, l, pts, name, logo, pl, gd, ga, gs}) => {
 
 
 
-const Fixture = ({Hname, Hscore, Hlogo, date, time, Alogo, Ascore, Aname, _id, live, start, half, minutes, regionId,  }) => {
+const Fixture = ({Hname, Hscore, Hlogo, matchday, date, time, Alogo, Ascore, Aname, _id, live, start, half, minutes, regionId,  }) => {
 
     
     const Half = live ? minutes : half ;
@@ -128,7 +128,7 @@ const Fixture = ({Hname, Hscore, Hlogo, date, time, Alogo, Ascore, Aname, _id, l
     return (
 
 
-        <Link to={"/region/" + regionId + "/fixture/" + _id} className={Style.fixtures} >
+        <Link to={"/region/" + regionId + "/fixture/" + matchday + "/" +_id} className={Style.fixtures} >
 
 
                 {/* <h2> Matchday 3</h2> */}

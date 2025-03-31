@@ -28,7 +28,7 @@ const Fixture  =  ({})  =>  {
 
     var width = window.innerWidth
     
-    const {id, matchId} = useParams()
+    const {id, matchId, matchday} = useParams()
 
     const region =id?.replaceAll('-',' ');
 
@@ -37,6 +37,10 @@ const Fixture  =  ({})  =>  {
             fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + region)
             .then((res) =>  res.json())
             .then((data) => setRegion(data));
+
+            fetch(process.env.REACT_APP_API_LINK  + "getall/news/" )
+            .then((res) =>  res.json())
+            .then((data) => setData2(data.data));
   
             fetch(process.env.REACT_APP_API_LINK + "getone/" + region + "/fixture/" + matchId)
             .then((res) =>  res.json())

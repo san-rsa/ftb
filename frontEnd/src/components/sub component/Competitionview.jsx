@@ -155,6 +155,7 @@ const CompetitionFixtures = ({regionId}) => {
                              Hscore={props.home?.homeScore}
 
                              date={props.day?.date} time={props.day?.time}
+                             matchday={p.matchday}
 
                              Ascore={props.away?.awayScore}
                              Alogo={props.away?.logo[0].url}
@@ -270,6 +271,8 @@ const CompetitionResults = ({regionId}) => {
                 Hscore={props.home?.homeScore}
 
                 date={props.day?.date} time={props.day?.time}
+                matchday={p.matchday}
+
 
                 Ascore={props.away?.awayScore}
                 Alogo={props.away?.logo[0].url}

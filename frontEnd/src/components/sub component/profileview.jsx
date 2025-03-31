@@ -147,6 +147,8 @@ const Overview = ({info, user }) => {
 
                 date={fixture.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={fixture.match?.day?.time}
 
+                matchday={fixture.matchday}
+
                 Ascore={fixture.match.away?.awayScore}
                 Alogo={fixture.match.away?.logo[0]?.url}
                 Aname={fixture.match.away?.name}
