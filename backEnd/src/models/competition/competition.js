@@ -9,6 +9,8 @@ const Schema = new mongoose.Schema({
 
     type : {type: String,  enum:  ['league', 'cup', ] },
 
+    min: {ft: { type: Number,}, et: {type: Number,},},
+
 
 
     logo: [{url: {type: String, required: true}, imgId: {type: String, required: true} }],
@@ -16,10 +18,7 @@ const Schema = new mongoose.Schema({
 
     teams: [ {type: mongoose.Schema.Types.String, ref: "Team",   },  ],
 
-    
-
-
-
+    substitute: {starting: { type: Number,}, sub: {type: Number,}, },
 
 
     views: {type: Number, default: 0 },
@@ -32,6 +31,21 @@ const Schema = new mongoose.Schema({
 }, {
     timestamps: true
 })
+
+
+
+
+
+
+
+
+
+Schema.pre('findOne', async function (next) {
+    const user = this;
+    user.views = Number(user.views) + 1
+    
+    next();
+  });
 
 const Competition  = mongoose.model('Competition ', Schema)
 

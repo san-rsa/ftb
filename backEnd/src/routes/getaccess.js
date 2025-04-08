@@ -34,8 +34,6 @@ router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {
 
     const user = await  User.findOne({_id: req.userId})
   
-    console.log(user, 55);
-
     if (user.role !== process.env.ADMIN) {
         return res.status(403).json({ error: 'Forbidden' });
     } else if (user.role == process.env.ADMIN ) {
@@ -49,9 +47,6 @@ router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {
 router.get('/team', auth, role(process.env.TEAM), async(req, res)=> {
 
   const user = await  User.findOne({_id: req.userId})
-
-
-  console.log(user, process.env.TEAM);
   
 
   if (user.role !== process.env.TEAM) {
@@ -95,6 +90,42 @@ router.get('/user/team', auth, async(req, res)=> {
 
 
 
+router.get('/user/team/all-players', auth, async(req, res)=> {
+
+      
+  const team = await  Team.findOne({userId: req.userId})
+
+
+
+
+  if (!team) {
+    return res.status(404).json({ error: 'no team found' });
+
+  } else if (team) {
+
+      const data = await Player.find({teamId: team.name}).sort("name")
+    
+
+    if (!data) {
+      return res.status(404).json({ error: 'no players found' });
+
+    } else if (data) {
+      return  res.status(200).json({
+        success: true,
+       data: data
+      })
+    }
+
+
+
+
+  }
+
+})
+
+
+
+
 
 
 
@@ -113,6 +144,10 @@ router.get('/latest/fixture', auth, async(req, res)=> {
     const data = []
     
      const year = await Fixture.findOne().sort({year: 'desc'})
+
+     if (!year) {
+      return res.status(404).json({ error: 'no year found' });
+    } 
 
      const db = await Fixture.find({year: year.year}).sort('name').populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
 
@@ -140,11 +175,6 @@ router.get('/latest/fixture', auth, async(req, res)=> {
 
       const latest = _.orderBy(data, [item =>  item.match.day.date, item =>  item.match.day.time, ],);
 
-
-
-
-
-      console.log(latest[0], );
       
 
       
@@ -157,6 +187,15 @@ router.get('/latest/fixture', auth, async(req, res)=> {
             data: latest[0]
            })
 })
+
+
+
+
+
+
+
+
+
 
 
 

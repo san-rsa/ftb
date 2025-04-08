@@ -8,7 +8,7 @@ const jwt= require('jsonwebtoken')
 //const OTP = require('../../models/OTP')
 // const Product = require('../models/product')
 // const Product = require('../models/product')
- const {auth, role, uploadMiddleware, deleteFixture, updateStanding, updateCupStanding, secondHalf, extraTimeFirstHalf, extraTimeSecondHalf, firstHalf} = require('../../middleware/mid')
+ const {auth, role, uploadMiddleware, deleteFixture, updateStanding, updateCupStanding, secondHalf, extraTimeFirstHalf, extraTimeSecondHalf, firstHalf, hasDuplicatesInLineUp, hasDuplicatesInAllLineUp, checkLineUp} = require('../../middleware/mid')
  // const cloudinary = require("cloudinary");
 const cloudinary = require('../../connection/cloudinary')
 const News = require('../../models/news/news')
@@ -30,38 +30,24 @@ const Live = require('../../models/competition/live')
 
 
 
-router.patch('/:competition/fixture/:id',  async (req, res)=> {
+router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
 
-    const data = req.body  //JSON.parse(req.body.data)
+
+
+    const action = JSON.parse(req.body.action)
+    const matchday = JSON.parse(req.body.matchday)
+
+
+
+
+    
 
     try {
-        const {
-            matchday, homeStartingLineup, awayStartingLineup, homeSubLineup, awaySubLineup,
-            extraTime, start, end,
+        // const {extraTime, start, end, main, assist, team, motm }= data
+        const {id, competition, motm} = req.params
+        const lineup = {}
 
-            main, assist, action, team, 
-
-            motm
-
-
-         }= data
-        const {id, competition} = req.params
-
-        
-        console.log(data)
-
-        const lineup = {
-            starting: { home: homeStartingLineup, away: awayStartingLineup  },
-            sub: { home: homeSubLineup, away: awaySubLineup }
-        }
-
-
-
-
-
-
-
-		if (!id || !competition || homeStartingLineup < 11  || awayStartingLineup < 11) {
+		if (!id || !competition  ) {
 			return res.status(403).json({
 				success: false,
 				message: "All Fields are required",
@@ -69,29 +55,20 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
 		}
 
 
-
-
-     
-                const existing = await Fixture.findOne({_id: competition})
-
-                    
-               
+                const existing = await Fixture.findOne({competition}).sort({year: 'desc'})
             
                     if (existing) {
                         //---- Check if index exists ----
-        
+                        const userTeam = await Team.findOne({userId: req.userId}) 
+
+                        const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
+                        const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == id);
                             
-                            const Foundmatchday = existing.fixture.findIndex(item => item.matchday == matchday);
-                            const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == id);
-                            const Foundtime = existing.fixture[Foundmatchday].teams[Foundmatch].time.now;
 
-
-
-
-                            const timeline = {
-                                time: Foundtime, player: { main: main, assist: assist, },
-                                action: action, team: team, 
-                            }
+                            // const timeline = {
+                            //     time: Foundtime, player: { main: main, assist: assist, },
+                            //     action: action, team: team, 
+                            // }
 
 
 
@@ -100,8 +77,8 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
                         if (Foundmatchday == -1) {
                             
                             return  res.status(400).json({
-                                type: "failed",
-                                mgs: "matchday not found ",
+                                success: false,
+                                message: "matchday not found ",
           
                             })
                         }
@@ -109,72 +86,386 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
                         if (Foundmatchday !== -1) {
                            if (Foundmatch == -1) {
                             return  res.status(400).json({
-                                type: "failed",
-                                mgs: "match not found ",
+                                success: false,
+                                message: "match not found ",
           
                             })  }
 
 
-                            if (extraTime) {
-                                existing.fixture[Foundmatchday].teams[Foundmatch].time.first + extraTime
-                                existing.fixture[Foundmatchday].teams[Foundmatch].time.second + extraTime
-                                existing.fixture[Foundmatchday].teams[Foundmatch].time.firstET + extraTime
-                                existing.fixture[Foundmatchday].teams[Foundmatch].time.secondET + extraTime
-
-                            }
-
-
-
-                            if (start == "firstHalf") {
-                                firstHalf(existing._id, _id, matchday)
-                            }
-                            else if (start == "secondhalf") {
-
-                                secondHalf(existing._id, _id, matchday)
-
-                            }
-
-                            else if (start == "exratime") {
-                                extraTimeFirstHalf(existing._id, _id, matchday)
-
-                            } else if (start == "secondhalfextratime") {
-                                extraTimeSecondHalf(existing._id, _id, matchday)
-
-                            }
         
         
                         else if (Foundmatch !== -1 ) {
 
 
-                            if (action && main && team ) {
-                                await Fixture.findOneAndUpdate({_id: competition}, 
-                                    { 
-                                      "$push": {"fixture.$[day].teams.$[match]": {timeline: timeline,  }} 
-                                    },
-                                    { 
-                                      "arrayFilters": [
-                                        { "day.matchday": matchday },
-                                        {"match._id": id}
-    
-                                      ]
-                                    })   
-                            } else {
-                                await Fixture.findOneAndUpdate({_id: competition}, 
-                                { 
-                                  "$set": {"fixture.$[day].teams.$[match]": {$set: data, lineup: lineup, motm }} 
-                                },
-                                { 
-                                  "arrayFilters": [
-                                    { "day.matchday": matchday },
-                                    {"match._id": id}
 
-                                  ]
-                                })   
+
+                       const foundhome = existing.fixture[Foundmatchday].teams[Foundmatch].home
+                        const foundaway = existing.fixture[Foundmatchday].teams[Foundmatch].away
+
+                    if (action == "line-up") {
+
+                        const starting =  Object.values(JSON.parse(req.body.starting)).flat();
+                        const sub = Object.values(JSON.parse(req.body.sub)).flat();
+
+                        if (!starting || !sub) {
+                            return res.status(403).json({
+                                success: false,
+                                message: "All Fields are required in lineup",
+                            }); 
+                        } 
+
+                        checkLineUp(starting, sub, res)
+
+                  
+                       const homeStart = existing.fixture[Foundmatchday].teams[Foundmatch].lineup.starting.home 
+                       const homeSub = existing.fixture[Foundmatchday].teams[Foundmatch].lineup.sub.home 
+                       const awayStart = existing.fixture[Foundmatchday].teams[Foundmatch].lineup.starting.away
+                       const awaySub = existing.fixture[Foundmatchday].teams[Foundmatch].lineup.sub.away
+
+                       console.log(!homeStart.length);
+                       
+
+                        if (foundhome == String(userTeam._id)) {
+
+                            if (homeStart.length && homeSub.length) {
+                                    return res.status(403).json({
+                                        success: false,
+                                        message: "lineup has been set",
+                            }); 
+                            } else {
+                        existing.fixture[Foundmatchday].teams[Foundmatch].lineup.starting.home = starting
+                        existing.fixture[Foundmatchday].teams[Foundmatch].lineup.sub.home = sub
                             }
 
 
+                        } else if (foundaway == String(userTeam._id)) {
+
+                            
+                            if (awayStart.length && awaySub.length) {
+                                return res.status(403).json({
+                                    success: false,
+                                    message: "lineup has been set",
+                        }); 
+                        } else {
+                        existing.fixture[Foundmatchday].teams[Foundmatch].lineup.starting.away = starting
+                        existing.fixture[Foundmatchday].teams[Foundmatch].lineup.sub.away = sub
+
+                        }
+
+                        }                            
+                    }
+                    else if (action == "extra-time") {
+                        const data = JSON.parse(req.body.data)
+                        const extraTime  = Number(data.extraTime)
+                        
+                        existing.fixture[Foundmatchday].teams[Foundmatch].time.first = existing.fixture[Foundmatchday].teams[Foundmatch].time.first + extraTime
+                        existing.fixture[Foundmatchday].teams[Foundmatch].time.second = existing.fixture[Foundmatchday].teams[Foundmatch].time.second + extraTime
+                        existing.fixture[Foundmatchday].teams[Foundmatch].time.firstET = existing.fixture[Foundmatchday].teams[Foundmatch].time.firstET + extraTime
+                        existing.fixture[Foundmatchday].teams[Foundmatch].time.secondET = existing.fixture[Foundmatchday].teams[Foundmatch].time.secondET + extraTime
+                    } 
+                    else if (action == "start") {
+                        const data = JSON.parse(req.body.data)
+                        const start  = data.start
+
+                        const time = existing.fixture[Foundmatchday].teams[Foundmatch] = existing.fixture[Foundmatchday].teams[Foundmatch].time.now
+                        const live = existing.fixture[Foundmatchday].teams[Foundmatch] = existing.fixture[Foundmatchday].teams[Foundmatch].live
+                        const starts = existing.fixture[Foundmatchday].teams[Foundmatch] = existing.fixture[Foundmatchday].teams[Foundmatch].start
+
+                        
+                        // half : {type: String,  enum: ['full time', 'half time', 'full time AET', 'half time AET', 'live', "upcoming" ],  },
+                       
+                        
+                        
+                        
+                        
+
+                            if (start == "start game") {
+                             
+                                if (!starts && !live && time == 0) {
+                                     firstHalf(existing._id, id, matchday)
+                                } else {
+                                    return res.status(400).json({
+                                    success: false,
+                                    message: "first half has been played",
+              
+                                })
+                                }
+                            }
+                            else if (start == "second") {
+
+                                if (starts && !live && time == 45) {
+                                     secondHalf(existing._id, id, matchday)
+                                } else {
+                                    return res.status(400).json({
+                                    success: false,
+                                    message: "game has not start  ",
+              
+                                })
+                                }
 
 
+
+                            }
+
+                            else if (start == "extra time") {
+
+                                if (starts && !live && time == 90) {
+                                    extraTimeFirstHalf(existing._id, id, matchday)
+                                } else {
+                                    return  res.status(400).json({
+                                    success: false,
+                                    message: "second half hasn't not ended yet  ",
+              
+                                })
+                                }
+
+                            } else if (start == "extra time second half") {
+
+                                if (starts && !live && time == 105) {
+                                    extraTimeSecondHalf(existing._id, id, matchday)
+                                } else {
+                                     return res.status(400).json({
+                                    success: false,
+                                    message: "first half extra time hasn't not ended yet  ",
+              
+                                })
+                                }
+
+                            }
+
+                    } 
+
+                    else if (action == "end") {
+                        // const result =  async (req, res)=> {
+                        
+                            const data = JSON.parse(req.body.data)
+                        
+                            try {
+
+                        
+                                const {time, home, away, group, stage, referee, stadium, lineup  } = existing.fixture[Foundmatchday].teams[Foundmatch]
+
+                        
+                                const {competition, type, year} = existing
+                        
+                        
+                                                        
+                                if (!existing || !year || !id ) {
+                                    return res.status(403).json({
+                                        success: false,
+                                        message: "All Fields are required",
+                                    });
+                                }
+                        
+                        
+                                    const existingRes = await Result.findOne({competition, year})
+                        
+
+                                                            
+                                    const match = existing.fixture[Foundmatchday].teams[Foundmatch]
+                        
+                                            const result =  { matchday,
+                                            teams: match    // teams: [{home, time: [{date, time,}], away } ]
+                            
+                            }
+                        
+                        
+                        
+                                            
+                            // if (!match.start) {
+                              
+                            //         return res.status(403).json({
+                            //             success: false,
+                            //             message: "game hasn't start yet",
+                            //         });
+                                
+                            // }
+                                       
+                                    
+                                            if (existingRes) {
+                        
+                        
+                                                //---- Check if index exists ----
+                        
+                        
+
+                                                const FoundmatchdayRes = existingRes.result.findIndex(item => item.matchday == matchday);
+                                             
+                                                if (FoundmatchdayRes == -1) {
+                                                    
+                                                    existingRes.result.push(result)
+                                                                
+                                                }
+                                
+                                                if (FoundmatchdayRes !== -1) {
+                                                const FoundHome = existingRes.result[FoundmatchdayRes].teams.findIndex(item => item.home == String(home));
+                                                const Foundaway = existingRes.result[FoundmatchdayRes].teams.findIndex(item => item.away == String(away));
+                                
+                                
+                                                   if (FoundHome == -1 && Foundaway == -1) {
+                                
+                                                    existingRes.result[FoundmatchdayRes].teams.push(match ) 
+                                                    }
+                                
+                                
+                                                // else if (FoundHome !== -1 || Foundaway !== -1  ) {
+                                                    
+                                                //    return  res.status(400).json({
+                                                //         type: "failed",
+                                                //         mgs: "result added choose different fixtures ",
+                                  
+                                                //     })
+                                                //    }
+                                                   
+                                
+                                                }
+                                                            
+                                
+    
+                                                if (String(existingRes.type) == "league") {
+
+                                
+                                
+                                                 // deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
+                                
+                                
+                                                    updateStanding(Standing, competition, year, match.home, Number(match.homeScore), match.away, Number(match.awayScore), res )
+                                
+                                
+                                                  }
+                                                                
+                                                 else if (String(existingRes.type) == "cup") {
+                        
+                                                      if (String(match.stage) !== "knockout") {
+                                                    updateCupStanding(CupStanding, competition, year, match.home, Number(match.homeScore), match.away, Number(match.awayScore), match.group, res )
+                        
+                                                 
+                                                }
+                                
+                                
+                                                   deleteFixture(existing, Foundmatchday, Fixture, id)
+                                
+                                
+                                
+                                                }
+                                
+                                
+                                                const save = await existingRes.save();
+                        
+                                
+                                               return  res.status(200).json({
+                                                    type: "success",
+                                                    mgs: "Process successful",
+                                                    data: save
+                                                })
+                                
+                                
+                                
+                                            
+                        
+                                    }    else {
+                                    
+                                    
+                                
+                                        
+                                                const save = await Result.create({
+                                                    competition, year, result, type: String(type)
+                                                })
+                                                    // res.redirect("/login")
+                                
+                                                    
+                                                    if (String(save.type) == "league") {
+                                                        updateStanding(Standing, competition, year, match.home, Number(match.homeScore), match.away, Number(match.awayScore), res )
+                         
+                                                     }
+                        
+                                                     else if (String(save.type) == "cup") {
+                        
+                                                           if (String(stage) !== "knockout") {
+                                                            updateCupStanding(CupStanding, competition, year, match.home, Number(match.homeScore), match.away, Number(match.awayScore), match.group, res )
+                         
+                                                     }
+                                                     }
+                        
+                                                  
+                        
+                                                   
+                                                    deleteFixture(existing, Foundmatchday, Fixture, id)
+                                
+                                        
+                                                return res.status(200).json({
+                                                    success: true,
+                                                    save,
+                                                    message: "created successfully ✅"
+                                                   
+                                                })  
+                                            
+                                                
+                                            }
+                            } catch (error) {
+                                console.error(error)
+                                return res.status(500).json({
+                                    success: false,
+                                    message : "registration failed"
+                                })
+                               
+                           }  
+                        
+                        // }
+
+
+
+                       // result(req, res)
+                    }
+
+                    else {
+                        const data = JSON.parse(req.body.data);
+                        const {main, assist, }  = data
+
+
+                        
+
+
+                        const time = existing.fixture[Foundmatchday].teams[Foundmatch].time.now
+                        
+                        if (foundhome == String(userTeam._id)) {
+
+                        const timeline = {time, player: {main, assist}, action, team: 'home', }
+                    //    existing.fixture[Foundmatchday].teams[Foundmatch].timeline.push(timeline)
+
+
+                                    // await Fixture.findOneAndUpdate({_id: existing._id}, 
+                                    // { 
+                                    //   "$push": {"fixture.$[day].teams.$[match].timeline": timeline,  } 
+                                    // },
+                                    // { 
+                                    //   "arrayFilters": [
+                                    //     { "day.matchday": matchday },
+                                    //     {"match._id": id}
+    
+                                    //   ]})
+
+
+
+                            const timelines = existing.fixture[Foundmatchday].teams[Foundmatch].timeline
+        
+                                console.log(timelines);
+
+                            existing.fixture[Foundmatchday].teams[Foundmatch].timeline = [...timelines, timeline ] //.push(timeline)
+        
+                        
+                        } else if (foundaway == String(userTeam._id)) {
+
+                            const timeline = {time, player: {main, assist}, action, team: 'away', }
+
+                            const timelines = existing.fixture[Foundmatchday].teams[Foundmatch].timeline
+
+
+                            existing.fixture[Foundmatchday].teams[Foundmatch].timeline = [...timelines, timeline ] //.push(timeline)
+
+                        }     
+                        
+                       }
 
 
 
@@ -182,9 +473,9 @@ router.patch('/:competition/fixture/:id',  async (req, res)=> {
              
                     }      
 
-                        const save = await existing.save();
+                      const save = await existing.save();
                        return  res.status(200).json({
-                            type: "success",
+                        success: true,
                             mgs: "Process successful",
                             data: save
                         })

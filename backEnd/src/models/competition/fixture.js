@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const Schema = new mongoose.Schema({
 
-    competition: { type: mongoose.Schema.Types.String, ref: "Competition",
+    competition: { type: mongoose.Schema.Types.String,
     },
 
     year : {type: Number , required: true, } ,
@@ -27,9 +27,7 @@ const Schema = new mongoose.Schema({
 
                               
                               
-                              live : {type: Boolean, default: false },
-
-                              start : {type: Boolean, default: false },
+                            live : {type: Boolean, default: false }, start : {type: Boolean, default: false },
 
                                                             
                               time: { now: {type: Number, default: 0}, first: {type: Number , required: true, default: 45}, second: {type: Number , required: true, default: 90},  firstET: {type: Number , required: true, default: 105},  secondET: {type: Number , required: true, default: 120}}, 
@@ -48,7 +46,7 @@ const Schema = new mongoose.Schema({
               
                               lineup: {
                                   starting: {
-                                      home: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}],
+                                      home: [{type: mongoose.Schema.Types.ObjectId, ref: "Player", }],
                                       away: [{type: mongoose.Schema.Types.ObjectId, ref: "Player"}]
                                   },
               
@@ -63,13 +61,13 @@ const Schema = new mongoose.Schema({
                               motm: {type: mongoose.Schema.Types.ObjectId, ref: "Player"},
               
                               timeline: [{
-                                  time: {type: String}, 
+                                  time: {type: Number}, 
                                   player: {
                                       main: {type: mongoose.Schema.Types.ObjectId, ref: "Player"},
                                       assist: {type: mongoose.Schema.Types.ObjectId, ref: "Player"},
                                   },
               
-                                  action: {type: String,  enum: [ 'goal', 'red', "yellow", "sub", ],  },
+                                  action: {type: String,  enum: [ 'goal', 'red', "yellow", "substitution", ],  },
               
                                   team: {type: String,  enum: [ 'home', 'away'],  }, 
                               
@@ -84,13 +82,16 @@ const Schema = new mongoose.Schema({
               
                           
                        ]
-                      }]
+    }]
 
 
 
 }, {
     timestamps: true
 })
+
+
+// Schema.plugin(require('mongoose-autopopulate'));
 
 const Fixture = mongoose.model('Fixture', Schema)
 

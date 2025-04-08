@@ -26,7 +26,7 @@ const CompetitionNews = ({regionId}) => {
 
     
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+            fetch(process.env.REACT_APP_API_LINK + "getall/news/region/" + link)
             .then((res) =>  res.json())
             .then((data) => setnews(data.data));
         }, []);
@@ -51,7 +51,7 @@ const CompetitionNews = ({regionId}) => {
 
                     <News
                         head={project.head}
-                        img={project.imgUrl.url}
+                        img={project.imgUrl[0].url}
                         link={project.head}
                         />    
                         </div>
@@ -67,26 +67,14 @@ const CompetitionNews = ({regionId}) => {
 
                         <Mininews
                             head={project.head}
-                            img={project.imgUrl.url}
+                            img={project.imgUrl[0].url}
                             link={project.head}
                             />    
                             </div>
 
 
                         )   )   }
-                    
-
-
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
-
-
+                
 
 
                     </div>
@@ -117,7 +105,7 @@ const CompetitionFixtures = ({regionId}) => {
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/fixtures/" + year)
+            fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/fixtures")
             .then((res) =>  res.json())
             .then((data) => setData(data.data));
         }, []);
@@ -133,10 +121,10 @@ const CompetitionFixtures = ({regionId}) => {
 
             <h2 > Next Fixtures </h2>
 
-
-
-
-                    {show?.map((p) => (
+     
+              { data ? 
+                   <div> 
+           { show?.map((p) => (
 
                                         
         <div className={Style.fixture}>
@@ -154,7 +142,7 @@ const CompetitionFixtures = ({regionId}) => {
                              Hlogo={props.home?.logo[0].url}
                              Hscore={props.home?.homeScore}
 
-                             date={props.day?.date} time={props.day?.time}
+                             date={props.day?.date.slice(0, 10).replaceAll('-','/')} time={props.day?.time}
                              matchday={p.matchday}
 
                              Ascore={props.away?.awayScore}
@@ -177,7 +165,7 @@ const CompetitionFixtures = ({regionId}) => {
 
 
                         )
-                        ) }
+                        ) } 
                     </div>
 
 
@@ -193,18 +181,15 @@ const CompetitionFixtures = ({regionId}) => {
                     
 
 
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
-
                     <button  onClick={handleClick}> {showAll ? "Showless" : "showAll" } </button>
 
 
+
+
+ </div>
+
+
+              : <h1 > no fixtures availabe</h1>}
 
 
 
@@ -230,15 +215,15 @@ const CompetitionResults = ({regionId}) => {
     setShowAll(prevShowAll => !prevShowAll);
   }
 
-  const show = showAll ? data.fixture : data.fixture?.slice(0, 1);
+  const show = showAll ? data.result : data.result?.slice(0, 1);
 
 
     
-    useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/fixtures/" + year)
-        .then((res) =>  res.json())
-        .then((data) => setData(data.data));
-    }, []);
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/results")
+            .then((res) =>  res.json())
+            .then((data) => setData(data.data));
+        }, []);
 
 
     
@@ -252,6 +237,12 @@ const CompetitionResults = ({regionId}) => {
             <h2 > Latest Results </h2>
 
 
+
+            { data ? 
+
+            <div >       
+            
+           
                     {show?.map((p) => (
 
 
@@ -268,13 +259,13 @@ const CompetitionResults = ({regionId}) => {
                 <Result 
                 Hname={props.home?.name}
                 Hlogo={props.home?.logo[0].url}
-                Hscore={props.home?.homeScore}
+                Hscore={props?.homeScore}
 
                 date={props.day?.date} time={props.day?.time}
                 matchday={p.matchday}
 
 
-                Ascore={props.away?.awayScore}
+                Ascore={props?.awayScore}
                 Alogo={props.away?.logo[0].url}
                 Aname={props.away?.name}
 
@@ -314,9 +305,9 @@ const CompetitionResults = ({regionId}) => {
                     
                         <button  onClick={handleClick}> {showAll ? "Showless" : "showAll" } </button>
                     
+                         </div>
 
-
-
+                : <h1 > no results availabe</h1>}
 
 
                     </div>
@@ -330,7 +321,7 @@ const CompetitionResults = ({regionId}) => {
 
 const CompetitionTable = ({regionId}) => {
     
-    const [data, setData] = useState([])
+    const [data, setData] = useState({})
 
     const year = 2022 // new Date(2022).getFullYear()
 
@@ -344,7 +335,7 @@ const CompetitionTable = ({regionId}) => {
 
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getall/banner/")
+        fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/standing/" + year)
         .then((res) =>  res.json())
         .then((data) => setData(data.data));
     }, []);
@@ -363,45 +354,94 @@ const CompetitionTable = ({regionId}) => {
 
 
 
+            { data ? 
+
+
+
+                (data.type == "cup") ? 
+                                    <div className={Style.table} >
+
+                        <Tablehead />
+                    {data.group?.map((props, pos) => (
+                        <div key={pos} >  
+
+                        <h2 > group {props.group} </h2>
+
+                        {props.standing?.map((props, pos) => (
+
+                        <Table
+                        key={pos + 1}
+                         pos={pos + 1}
+                         name={props.teams?.name}
+                         logo={props.teams?.logo[0].url}
+                          w={props.stats?.win} 
+                          d={props.stats?.draw} 
+                          l={props.stats?.loss} 
+                          pts={props.stats?.points} 
+                          pl={props.stats?.played} 
+                          gd={props.stats?.gd} 
+                          ga={props.stats?.ga} 
+                          gs={props.stats?.gs}
+
+
+                        />    
+    
+    
+    
+    
+    
+                        )   )   }
+
+
+
+
+  </div>
+                    )   )   }
+                    </div> 
+
+                    : (data.type == "league") ?
+
 
                     <div className={Style.table} >
 
-                        <Tablehead />
-                    {data.map((props, pos) => (
+                    <Tablehead />
+            
+                    {data.standing?.map((props, pos) => (
+
+                    <Table
+                    key={pos + 1}
+                     pos={pos + 1}
+                     name={props.teams?.name}
+                     logo={props.teams?.logo[0].url}
+                      w={props.stats?.win} 
+                      d={props.stats?.draw} 
+                      l={props.stats?.loss} 
+                      pts={props.stats?.points} 
+                      pl={props.stats?.played} 
+                      gd={props.stats?.gd} 
+                      ga={props.stats?.ga} 
+                      gs={props.stats?.gs}
 
 
-                     <Table
-                        // key={pos + 1}
-                        //  pos={pos + 1}
-                        //  name={props.teams.name}
-                        //  logo={props.teams.logo[0].url}
-                        //   w={props.stats.win} 
-                        //   d={props.stats.draw} 
-                        //   l={props.stats.loss} 
-                        //   pts={props.stats.points} 
-                        //   pl={props.stats.played} 
-                        //   gd={props.stats.gd} 
-                        //   ga={props.stats.ga} 
-                        //   gs={props.stats.gs}
+                    />    
 
 
 
-                        pos={ 1}
-                        name={'teams.name'}
-                        logo={'props.teams.logo[0]'}
-                         w={2} 
-                         d={6} 
-                         l={4} 
-                         pts={9} 
-                         pl={0} 
-                         gd={7} 
-                         ga={7} 
-                         gs={3}
-                       />    
 
 
                     )   )   }
-                    </div>
+
+
+
+
+                </div>  : null
+
+
+
+                : <h1 > no table availabe</h1>}
+
+
+
                     
 
 

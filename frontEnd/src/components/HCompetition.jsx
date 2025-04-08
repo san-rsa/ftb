@@ -42,7 +42,7 @@ const Competition = () => {
 
 
                     
-            {data.map((p) => (
+            {data.slice(0, 5).map((p) => (
 
 
 
@@ -107,7 +107,7 @@ const Team = () => {
 
 
                     
-            {data.map((p) => (
+            {data.slice(0, 5).map((p) => (
 
 
 

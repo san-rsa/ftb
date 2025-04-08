@@ -16,6 +16,7 @@ const Standing = require("../models/competition/standing/standing");
 
 const {update} = require("./stats");
 const Fixture = require("../models/competition/fixture");
+const Competition = require("../models/competition/competition");
 
 
 
@@ -47,9 +48,6 @@ const role =  (role)  => async (req, res, next) => {
   try {
     const user = await  User.findOne({_id: req.userId})
 
-    console.log(user, 55);
-
-
     
     if (user.role !== role) {
       return res.status(403).json({ error: 'Forbidden no acces' });
@@ -67,8 +65,12 @@ const role =  (role)  => async (req, res, next) => {
 
   
    async function deleteFixture(fix, day, delAll, fixtureId) {
-    const deleteFix = fix.fixture[day]?.teams?.length
+    const deleteFix = fix.fixture[day].teams.length
     const deleteAllFix = fix.fixture.length
+
+
+
+    
 
 
     
@@ -76,10 +78,10 @@ const role =  (role)  => async (req, res, next) => {
 
 
 
-        console.log(deleteFix, deleteAllFix);
+        console.log(deleteFix, deleteAllFix, 'kkl',);
 
 
-        if (deleteFix === undefined || deleteFix == 0 || !Array.isArray(deleteFix) || !deleteFix) {
+        if (deleteFix === undefined || deleteFix == 0 || !deleteFix) {
             const id = fix.fixture[day]?._id
                 fix.fixture.pull(id)
 
@@ -91,13 +93,13 @@ const role =  (role)  => async (req, res, next) => {
 
 
         
-         if (deleteAllFix === undefined || deleteAllFix == 0 || !Array.isArray(deleteAllFix) || !deleteAllFix) {
+         if (deleteAllFix === undefined || deleteAllFix == 0  || !deleteAllFix) {
                 const id = fix._id
 
            await delAll.findByIdAndDelete(id)
 
-            console.log(id);
         }
+            console.log( fix);
 
        fix.save()
 
@@ -111,15 +113,16 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
 
 
 
+  
   try {
 
 
-  if (!competition || !h || !hms || !aws || !a) {
-    return res.status(403).json({
-      success: false,
-      message: "All Fields are required",
-    });
-  }
+  // if (!competition || !h || !hms || !aws || !a) {
+  //   return res.status(403).json({
+  //     success: false,
+  //     message: "All Fields are required",
+  //   });
+  // }
 
 
 
@@ -130,16 +133,12 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
 
       const stats = {win: 0, loss: 0, draw: 0, gd: 0, point: 0, play: 0,  }
 
-
-
-
   
           
      
   
           if (existing) {
               //---- Check if index exists ----
-              console.log(competition, year, h, hms, a, aws, group, );
 
               const FoundGroup = existing?.group.findIndex(item => item.group == group );
 
@@ -149,7 +148,6 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
 
   
   
-              console.log(FoundHome, Foundaway , 'hhhhhhhhhhhh');
               
 
               if (FoundGroup !== -1) {
@@ -187,7 +185,6 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
 
                 update(existing, group, h, hms, aws,a)
 
-                 console.log(existing, 'tt', );
 
             
               const save = await existing.save();
@@ -373,7 +370,7 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 
 
     existing.fixture[Foundmatchday].teams[Foundmatch].live = true
-
+    existing.fixture[Foundmatchday].teams[Foundmatch].start = true
     existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
 
 
@@ -388,7 +385,7 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
         time.now = time.now + 1;      
         
         
-       setTimeout(timer, 1000);
+       setTimeout(timer, 5000);
  
  
  
@@ -399,11 +396,14 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 
          existing.fixture[Foundmatchday].teams[Foundmatch].live = false
 
-         time.now = 45
-         time.first = 45
-         time.second = 90
-         time.firstET = 105
-         time.secondET = 120
+         const min = await Competition.findOne({name: existing.competition})
+
+
+         time.now = Number(min.min.ft ) 
+         time.first = Number(min.min.ft ) 
+         time.second = Number(min.min.ft ) + Number(min.min.ft)
+         time.firstET = Number(min.min.et ) 
+         time.secondET = Number(min.min.et ) + Number(min.min.et)
 
 
      }    
@@ -463,11 +463,16 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 
    existing.fixture[Foundmatchday].teams[Foundmatch].half = "full time"
 
-   time.now = 90
-   time.first = 45
-   time.second = 90
-   time.firstET = 105
-   time.secondET = 120
+   const min = await Competition.findOne({name: existing.competition})
+
+
+   time.now = Number(min.min.ft ) + Number(min.min.ft)
+   time.first = Number(min.min.ft ) 
+   time.second = Number(min.min.ft ) + Number(min.min.ft)
+   time.firstET = Number(min.min.et ) 
+   time.secondET = Number(min.min.et ) + Number(min.min.et)
+
+
 }    
 existing.save()
 } 
@@ -518,12 +523,14 @@ timer()
 
   existing.fixture[Foundmatchday].teams[Foundmatch].half = "half time AET"
 
-  time.now = 105
+        const min = await Competition.findOne({name: existing.competition})
 
-  time.first = 45
-  time.second = 90
-  time.firstET = 105
-  time.secondET = 120
+
+         time.now = Number(min.min.ft ) + Number(min.min.ft) + Number(min.min.et )
+         time.first = Number(min.min.ft ) 
+         time.second = Number(min.min.ft ) + Number(min.min.ft)
+         time.firstET = Number(min.min.et ) 
+         time.secondET = Number(min.min.et ) + Number(min.min.et)
 
 
    clearTimeout(timer)
@@ -583,11 +590,14 @@ timer()
    clearTimeout(timer)
 
 
-   time.now = 120
-   time.first = 45
-   time.second = 90
-   time.firstET = 105
-   time.secondET = 120
+   const min = await Competition.findOne({name: existing.competition})
+
+
+   time.now = Number(min.min.ft ) + Number(min.min.ft) +  Number(min.min.et ) +  Number(min.min.et )
+   time.first = Number(min.min.ft ) 
+   time.second = Number(min.min.ft ) + Number(min.min.ft)
+   time.firstET = Number(min.min.et ) 
+   time.secondET = Number(min.min.et ) + Number(min.min.et)
 
 
 }    
@@ -601,10 +611,54 @@ timer()
 
 
 
+  function hasDuplicatesInLineUp(array) {
+    return array.some((element, index) => array.indexOf(element) !== index);
+  }
+
+  function hasDuplicatesInAllLineUp(arr1, arr2) {
+    for (let i = 0; i <= arr1.length; i++) {
+        if (arr2.includes(arr1[i])) {
+            return true;
+        }
+    }    return false;
+
+}
+
+
+
+const checkLineUp = async (starting, sub, res ) => {
+  // do something
+
+  const checkStarting = hasDuplicatesInLineUp(starting)
+  const checkSub = hasDuplicatesInLineUp(sub)
+  const checkAllLineUp = hasDuplicatesInAllLineUp(starting, sub) 
+
+  console.log(checkAllLineUp);
+  
+
+  if (checkStarting) {
+    return res.status(400).json({
+        success: false,
+        message: "starting lineup has the same player",
+    })
+  } else if (checkSub) {
+    return res.status(400).json({
+        success: false,
+        message: "sub lineup has the same player",
+    })
+  } else if (checkAllLineUp) {
+    return res.status(400).json({
+        success: false,
+        message: "starting lineup has the same player in sub lineup",
+    })
+  }
+  
+  
+
+};
 
 
 
 
 
-
-module.exports = {  auth, role, deleteFixture, updateStanding, updateCupStanding, firstHalf, secondHalf, extraTimeFirstHalf, extraTimeSecondHalf};
+module.exports = {  auth, role, checkLineUp, hasDuplicatesInAllLineUp, hasDuplicatesInLineUp, deleteFixture, updateStanding, updateCupStanding, firstHalf, secondHalf, extraTimeFirstHalf, extraTimeSecondHalf};

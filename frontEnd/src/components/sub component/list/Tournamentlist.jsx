@@ -175,13 +175,13 @@ const Fixture = ({Hname, Hscore, Hlogo, matchday, date, time, Alogo, Ascore, Ana
 
 
 
-const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname, _id, regionId, half }) => {
+const Result = ({Hname, Hlogo, Hscore, Ascore, Alogo, Aname, _id, matchday, regionId, half }) => {
 
 
 
     return (
 
-        <Link to={"/region/" + regionId + "/result/" + _id} className={Style.results} >
+        <Link to={"/region/" + regionId + "/result/"  + matchday + "/" + _id} className={Style.results} >
 
 
                 <ul  className={Style.list}>

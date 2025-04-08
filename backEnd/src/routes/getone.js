@@ -214,9 +214,13 @@ router.get('/:link/fixture/:id/', async(req, res)=> {
            
         const data = {}
         
-         const db = await Fixture.findOne({competition: link }).sort({year: 'desc'}).populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
+         const db = await Fixture.findOne({competition: link }).sort({year: 'desc'})
+         .populate("fixture.teams.home", "name logo").populate("fixture.teams.away", "name logo")
+         .populate("fixture.teams.lineup.starting.home", "name picture position" ).populate("fixture.teams.lineup.sub.home", "name picture position" )
+         .populate("fixture.teams.lineup.starting.away", "name picture position" ).populate("fixture.teams.lineup.sub.away", "name picture position" )
+         .populate("fixture.teams.motm", "name picture position" )
+         .populate("fixture.teams.timeline.player.main", "name" ).populate("fixture.teams.timeline.player.assist", "name" )
 
-         console.log(db);
          
     
           
@@ -239,57 +243,45 @@ router.get('/:link/fixture/:id/', async(req, res)=> {
 })
 
 
-router.get('/:link/live/:id/:year', async(req, res)=> {
 
 
-          const { link, id, year} = req.params
-             
-          const data = {}
-          
-           const db = await Live.findOne({competition: link, year})
-      
-           if (!data) {
-            const year2 = year -1
-      
-            const data = await Live.findOne({competition: link, year: year2})
-      
-          for (let i = 0; i < db.live.length; i++) {
-      
-            const Foundmatch = db.live[i].teams.findIndex(item => item._id == id);
-      
-            if (Foundmatch !== -1 ) {
+router.get('/:link/result/:id/', async(req, res)=> {
+
+
+  const { link, id, } = req.params
+     
+  const data = {}
   
-              data.matchday = i + 1,
-              data.match = db.live[i].teams[Foundmatch]
-            }    
-          }
+   const db = await Result.findOne({competition: link }).sort({year: 'desc'})
+   .populate("result.teams.home", "name logo").populate("result.teams.away", "name logo")
+   .populate("result.teams.lineup.starting.home", "name picture position" ).populate("result.teams.lineup.sub.home", "name picture position" )
+   .populate("result.teams.lineup.starting.away", "name picture position" ).populate("result.teams.lineup.sub.away", "name picture position" )
+   .populate("result.teams.motm", "name picture position" )
+   .populate("result.teams.timeline.player.main", "name" ).populate("result.teams.timeline.player.assist", "name" )
+
+   
+
+    
+  for (let i = 0; i < db.result.length; i++) {
+
+      const Foundmatch = db.result[i].teams.findIndex(item => item._id == id);
+
+    if (Foundmatch !== -1 ) {
       
-           } else {
-            
-          for (let i = 0; i < db.live.length; i++) {
-      
-              const Foundmatch = db.live[i].teams.findIndex(item => item._id == id);
-      
-            if (Foundmatch !== -1 ) {
-      
-          data.matchday = i + 1,
-          data.match = db.live[i].teams[Foundmatch]
-  
-  
-  
-         }
-      
-          }
-         
-           }
-      
-      
-                res.status(200).json({
-                   success: true,
-                  data: data
-                 })
+  data.info = {competition: db.competition, year: db.year, matchday: db.result[i].matchday, type: db.type } 
+  data.match = db.result[i].teams[Foundmatch]
+
+
+
+    }
+  }
+
+
+        res.status(200).json(data)
 })
-  
+
+
+
 
 router.get('/news/:id', async (req, res, next) => {
 

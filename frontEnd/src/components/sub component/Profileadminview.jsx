@@ -382,7 +382,7 @@ const AdminNews = ({event, typeId }) => {
         </div>
 
 
-        <Inputs label={'picture'} type={'file'} name={'picture'} onchange={handleFileChange} value={data.picture}  placeholder={'first name'} disabled={false} required={true}  />
+        <Inputs label={'picture'} type={'file'} name={'picture'} onchange={handleFileChange} value={data.picture}  placeholder={'first name'} disabled={false} required={data.img ? false : true}  />
 
 
 
@@ -465,7 +465,9 @@ const AdminRegion = ({event, typeId }) => {
               type: data.type,
               img: data?.logo[0]?.url,
               starting: data.substitute?.starting,
-              sub:  data.substitute?.sub
+              sub:  data.substitute?.sub,
+              ft: data.min?.ft,
+              et: data.min?.et
 
               
               
@@ -596,6 +598,10 @@ const AdminRegion = ({event, typeId }) => {
         <Inputs label={'starting lineup'} type={'number'} name={'starting'} onchange={handleChange} value={data.starting}  placeholder={'choose starting lineup'} disabled={false} required={true}  />
 
         <Inputs label={'substitute lineup'} type={'number'} name={'sub'} onchange={handleChange} value={data.sub}  placeholder={'choose substitute lineup'} disabled={false} required={true}  />
+
+        <Inputs label={'match minutes'} type={'number'} name={'ft'} onchange={handleChange} value={data.ft}  placeholder={'match minutes'} disabled={false} required={true}  />
+
+        <Inputs label={'match minutes et'} type={'number'} name={'et'} onchange={handleChange} value={data.et}  placeholder={'match minutes extra time'} disabled={false} required={true}  />
 
        <div className={Style.select} >
 

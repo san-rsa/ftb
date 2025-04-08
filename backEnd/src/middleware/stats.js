@@ -95,7 +95,7 @@ function win(existing, groupName, teamId, ws, ls ) {
 
 
 
-    } else if (hma == aws ) {
+    } else if (hms == aws ) {
       draw(table, group, h, hms, aws )
       draw(table, group, a, hms, aws)
     }

@@ -5,8 +5,8 @@ import { CardList4 } from "./Generallist";
 import Nav from "../Nav";
 import Footer from "../Footer";
 import { useParams } from "react-router-dom";
-import { AdminAddAdmin, AdminAddUserToTeam } from "../Profileadminview";
-import { AddMatchLineup } from "../Matchupdate";
+import { AdminAddAdmin, AdminAddTeamToRegion, AdminAddUserToTeam } from "../Profileadminview";
+import { AddMatchEnd, AddMatchExtraTime, AddMatchGoal, AddMatchLineup, AddMatchRed, AddMatchStart, AddMatchSub, AddMatchYellow } from "../Matchupdate";
 
 
 
@@ -65,6 +65,10 @@ const MatchUpdateList = () => {
             <CardList4
                name={"substitution"} logo={""} category={"sub"} link={"substitution" } />  
 
+            <CardList4
+               name={"end"} logo={""} category={"end match"} link={"end" } />  
+
+
                       
 
   </div>
@@ -84,7 +88,7 @@ const MatchUpdateList = () => {
 const MatchUpdate = ({}) => {
 
     const [data, setData] = useState([])
-    const [mode2, setType] = useState({start: false, "extra-time": false, lineup: false, yellow: false, red: false, substitution: false, goal: false,   });
+    const [mode2, setType] = useState({start: false, end: false, "extra-time": false, lineup: false, yellow: false, red: false, substitution: false, goal: false,   });
     const [user, setUser] = useState({team: false, })    
     const [match, setMatch] = useState({})
 
@@ -143,17 +147,19 @@ const MatchUpdate = ({}) => {
                       
             { mode2.lineup &&  <AddMatchLineup competition={competition} match={match} matchId={matchId}  matchday={matchday} /> } 
 
-            { mode2.start &&  <AdminAddAdmin competition={competition} match={match}matchId={matchId}  matchday={matchday}  /> } 
+            { mode2.start &&  <AddMatchStart competition={competition} match={match}matchId={matchId}  matchday={matchday}  /> } 
 
-            { mode2["extra-time"] &&  <AdminAddAdmin competition={competition} match={match} matchId={matchId}  matchday={matchday} /> } 
+            { mode2["extra-time"] &&  <AddMatchExtraTime competition={competition} match={match} matchId={matchId}  matchday={matchday} /> } 
 
-            { mode2.red &&  <AdminAddAdmin competition={competition} match={match} matchId={matchId} matchday={matchday}  /> } 
+            { mode2.red &&  <AddMatchRed competition={competition} match={match} matchId={matchId} matchday={matchday}  /> } 
 
-            { mode2.yellow &&  <AdminAddAdmin competition={competition} match={match} matchId={matchId}  matchday={matchday} /> } 
+            { mode2.yellow &&  <AddMatchYellow competition={competition} match={match} matchId={matchId}  matchday={matchday} /> } 
 
-            { mode2.substitution &&  <AdminAddAdmin competition={competition} match={match} matchId={matchId} matchday={matchday}  /> } 
+            { mode2.substitution &&  <AddMatchSub competition={competition} match={match} matchId={matchId} matchday={matchday}  /> } 
 
-            { mode2.goal &&  <AdminAddAdmin competition={competition} match={match} matchId={matchId} matchday={matchday}  /> } 
+            { mode2.goal &&  <AddMatchGoal competition={competition} match={match} matchId={matchId} matchday={matchday}  /> } 
+
+            { mode2.end &&  <AddMatchEnd competition={competition} match={match} matchId={matchId} matchday={matchday}  /> } 
 
 
 

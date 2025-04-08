@@ -117,7 +117,11 @@ router.patch('/competition/:id', async (req, res)=> {
      
 
     try {
-        const {name, description, type}= data
+        const {name, description, type, starting, sub, ft, et }= data
+        const substitute = {starting, sub }
+        const min = {ft, et}
+
+
         const logo = []
 
         if (req.files) {
@@ -155,7 +159,7 @@ router.patch('/competition/:id', async (req, res)=> {
 
 
         const save = await Competition.findOneAndUpdate({name: req.params.id}, {
-            $set: data, logo: logo[0], type: type
+            $set: data, logo: logo[0], type: type, substitute: substitute, min
         }, { new: true });
             // res.redirect("/login")
 

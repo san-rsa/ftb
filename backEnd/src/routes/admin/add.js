@@ -190,10 +190,13 @@ router.post('/competition', async (req, res)=> {
      
 
     try {
-        const {name, description, type}= data
+        const {name, description, type, starting, sub, ft, et}= data
         const logo = []
 
 
+
+       const substitute = {starting, sub }
+       const min = {ft, et}
 
 
         console.log(data)
@@ -227,7 +230,7 @@ router.post('/competition', async (req, res)=> {
         }
 
         const save = await Competition.create({
-           name, type, description, logo: logo[0]
+           name, type, description, logo: logo[0], substitute, min
         })
             // res.redirect("/login")
 
@@ -604,7 +607,15 @@ router.post('/fixture',  async (req, res)=> {
      
                 const existing = await Fixture.findOne({competition, year})
 
-                const teams = {home, day: {date, time}, away, referee, stadium, group, stage }
+                const min = { 
+                    first: existingCompetition.min.ft, 
+                    second: existingCompetition.min.ft + existingCompetition.min.ft,  
+                    firstET: existingCompetition.min.et,  
+                    secondET: existingCompetition.min.et + existingCompetition.min.et
+                }
+
+
+                const teams = {home, day: {date, time}, time: min, away, referee, stadium, group, stage }
         
                             const fixture =  { matchday,
                             teams: teams   // teams: [{home, time: [{date, time,}], away } ]
@@ -702,163 +713,6 @@ router.post('/fixture',  async (req, res)=> {
    }  
 
 })
-
-
-
-
-
-router.post('/live',  async (req, res)=> {
-
-    const data = req.body  //JSON.parse(req.body.data)
-
-    try {
-        const {fixtureId, matchId, matchday, }= data
-
-
-
-        const existingFix = await Fixture.findById(fixtureId)
-
-        
-
-        const FoundmatchdayF = existingFix.fixture.findIndex(item => item.matchday == matchday);
-       const Foundtime = existingFix.fixture[FoundmatchdayF].teams.findIndex(item => item._id == matchId);
-
-
-
-        const {_id, time, home, away} = existingFix.fixture[FoundmatchdayF].teams[Foundtime]
-        const {competition, type, year} = existingFix
-
-
-        const teams = existingFix.fixture[FoundmatchdayF].teams[Foundtime]
-
-
-		if (!competition || !fixtureId || !matchId ) {
-			return res.status(403).json({
-				success: false,
-				message: "All Fields are required",
-			});
-		}
-
-
-            const existing = await Live.findOne({competition, year})
-
-
-
-            const live =  { matchday, teams: teams }
-
-
-                    if (existing) {
-
-
-
-
-
-                        const Foundmatchday = existing.live.findIndex(item => item.matchday == matchday)
-        
-            
-            
-                        
-            
-                        if (Foundmatchday == -1) {
-                            
-                            existing.live.push(live)
-        
-        
-                           //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
-        
-                        }
-        
-                        if (Foundmatchday !== -1) {
-                        const FoundHome = existing.live[Foundmatchday].teams.findIndex(item => item.home == String(home));
-                        const Foundaway = existing.live[Foundmatchday].teams.findIndex(item => item.away == String(away));
-        
-                                console.log(FoundHome, Foundaway, Foundmatchday);
-
-                           if (FoundHome == -1 && Foundaway == -1) {
-        
-                            console.log(FoundHome, teams );
-                            
-                                existing.live[Foundmatchday].teams.push(teams ) 
-
-
-                                //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res)
-        
-        
-           
-                            }
-        
-        
-                        else if (FoundHome !== -1 || Foundaway !== -1  ) {
-                            
-                           return  res.status(400).json({
-                                type: "failed",
-                                mgs: "live added choose different fixtures ",
-          
-                            })
-                           }
-                           console.log(existing.live[Foundmatchday].teams, 'tt', );
-                           
-        
-                        }
-                                    
-        
-        
-                        const save = await existing.save();
-
-        
-        
-                        firstHalf(existing._id, _id, matchday)
-        
-        
-                         //   deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
-
-                       return  res.status(200).json({
-                            type: "success",
-                            mgs: "Process successful",
-                            data: save
-                        })
-        
-
-            }    else {
-            
-            
-                
-                        const save = await Live.create({
-                            competition, year, live, type: String(type)
-                        })  
-                        
-
-                        firstHalf(save._id, _id, matchday)
-                        
-
-                    //    deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
-
-                
-                        return res.status(200).json({
-                            success: true,
-                            save,
-                            message: "created successfully ✅"
-                           
-                        })  
-                    
-                        
-                    }
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({
-            success: false,
-            message : "registration failed"
-        })
-       
-   }  
-
-})
-
-
-
-
-
-
 
 
 
@@ -1052,7 +906,7 @@ router.post('/player',   async (req, res)=> {
 
 router.post('/results',  async (req, res)=> {
 
-    const data = req.body  //JSON.parse(req.body.data)
+    const data = JSON.parse(req.body.data)
 
     try {
         const {fixtureId, matchId, matchday, homeScore, awayScore}= data
@@ -1179,10 +1033,10 @@ router.post('/results',  async (req, res)=> {
                         const save = await existing.save();
         
         
-                            deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
+                            // deleteFixture(existingFix, FoundmatchdayF, Fixture, matchId)
         
         
-                            updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
+                            // updateStanding(Standing, competition, year, home, homeScore, away, awayScore, res )
         
         
         
@@ -1301,7 +1155,7 @@ router.post('/results',  async (req, res)=> {
 
                         
                         if (String(stage) !== "knockout") {
-                            updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
+                         //   updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
 
                          }
         
@@ -1344,14 +1198,14 @@ router.post('/results',  async (req, res)=> {
         
                             
                             if (String(save.type) == "league") {
-                                updateStanding(Standing, competition, year, home, homeScore, away, awayScore, group, res )
+                             //  updateStanding(Standing, competition, year, home, homeScore, away, awayScore, group, res )
  
                              }
 
                              else if (String(save.type) == "cup") {
 
                                    if (String(stage) !== "knockout") {
-                                updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
+                               // updateCupStanding(CupStanding, competition, year, home, homeScore, away, awayScore, group, res )
  
                              }
                              }

@@ -22,14 +22,14 @@ const LineUp = ({data, type, team}) => {
                          <h3 > <span > {team} </span> {type} </h3>
 
 
-                        {data.map((project) => (
+                        {data?.map((project) => (
 
 
                         <TeamSquadList
-                            name={project.head}
-                            img={project.imgUrl.url}
-                            link={project.head}
-                            number={7}
+                            name={project.name?.first + " " + project.name?.last}
+                            img={project.picture?.url}
+                            pos={project?.position}
+                           // number={7}
                             />    
 
 

@@ -164,12 +164,12 @@ const MatchEventHome = ({img, name, assist, time,}) => {
 
             
         <div className={Style.stime} >
-                <h3 > {time} 2 </h3>
+                <h3 > {time}  </h3>
             </div>
         </div>            
         
         <div className={Style.time} >
-                <h3 > {time} 2 </h3>
+                <h3 > {time}  </h3>
             </div>
 
             {/* <h1 className={Style.time} > {time} 2 </h1> */}
@@ -192,7 +192,7 @@ const MatchEventAway = ({img, name, assist, time,}) => {
         <div className={Style.eventA} >
 
         <div className={Style.time} >
-                <h3 > {time} 2 </h3>
+                <h3 > {time} </h3>
             </div>
 
 
@@ -201,7 +201,7 @@ const MatchEventAway = ({img, name, assist, time,}) => {
 
 
         <div className={Style.stime} >
-                <h3 > {time} 2 </h3>
+                <h3 > {time}  </h3>
             </div>
 
 

@@ -16,40 +16,40 @@ import { LineUp } from "../../../components/sub component/Matchview";
 
 const Result  =  ({})  =>  {
     const [mode, setInputs] = useState({home: true, away: true, });
+    const [user, setUser] = useState({admin: false, team: false, })
+    
 
-    const [data, setData] = useState({})
+    const [competition, setRegion] = useState({})
     const [data2, setData2] = useState([])
-    const [wishlist, setwish] = useState()
+    const [match, setMatch] = useState({})
+
     const [set, setset] = useState('')
-    const [priced, setpriced] = useState(Number())
     const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight,});
 
     var width = window.innerWidth
     
-    const title = useParams().id
+    const {id, matchId, matchday} = useParams()
 
-    const link =title?.replaceAll('-',' ');
-
-
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
-            .then((res) =>  res.json())
-            .then((data) => setData(data));
-        }, []);
+    const region =id?.replaceAll('-',' ');
 
 
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
-            .then((res) =>  res.json())
-            .then((data) => setData2(data.data));
-        }, []);
 
 
-        console.log(process.env.REACT_APP_API_LINK);
-        
+            useEffect(() => {
+                fetch(process.env.REACT_APP_API_LINK  + "getone/competition/" + region)
+                .then((res) =>  res.json())
+                .then((data) => setRegion(data));
+    
+                fetch(process.env.REACT_APP_API_LINK  + "getall/news/" )
+                .then((res) =>  res.json())
+                .then((data) => setData2(data.data));
+      
+                fetch(process.env.REACT_APP_API_LINK + "getone/" + region + "/result/" + matchId)
+                .then((res) =>  res.json())
+                .then((data) => setMatch(data));
+            }, []);
 
 
-        console.log(data);
 
 
 
@@ -198,18 +198,21 @@ const Result  =  ({})  =>  {
 
                          <div className={Style.top}>
 
-                                    <MatchCompetition name={'agbedian'} logo={'77'} />
+                                <MatchCompetition name={competition.name} logo={competition.logo && competition.logo[0].url} />
 
                                 <div className={Style.head} >
 
 
-                            
-                                <MatchTeam name={'arsenal '} logo={"rr"} />
+                                <MatchTeam name={match.match?.home.name} logo={match.match?.home.logo[0].url} />
 
 
-                                <MatchScore home={'3'} away={'1'} time={'full time'} />
+                                
 
-                                <MatchTeam name={'man u '} logo={"rr"} />
+                                <MatchScore home={match.match?.homeScore} away={match.match?.awayScore}  time={ match.match?.live ? match.match?.time.now : null} half={match.match?.half} />
+                                
+                               
+                                <MatchTeam name={match.match?.away.name} logo={match.match?.away.logo[0].url} />
+
 
                                 
 

@@ -275,8 +275,17 @@ const Fixture  =  ({})  =>  {
 
                 <div className={Style.timeline}>
 
-                    <MatchEventHome name={"eeegg"} assist={"tttyjkkk yyyyrrr"} />
-                    <MatchEventAway name={"eeegg"} assist={"tttyjkkk yyyyrrr"} />
+                    
+                    
+
+                    {match.match?.timeline.map((props) => (
+                    
+                    (props.team == "home") ? <MatchEventHome time={props.time} name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
+                    (props.team == "away") ? <MatchEventAway time={props.time} name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :
+                    null
+                                        
+                    
+                    )   )   }    
 
                 </div>
 
@@ -308,9 +317,9 @@ const Fixture  =  ({})  =>  {
                     
                     <div className={Style.home} >
 
-                        <LineUp data={data2} type={"Starting"} team={"Home"} />
+                        <LineUp data={match.match?.lineup?.starting?.home} type={"Starting"} team={"Home"} />
 
-                        <LineUp data={data2} type={"Sub"} team={"Home"} />
+                        <LineUp data={match.match?.lineup?.sub?.home} type={"Sub"} team={"Home"} />
 
 
                     </div> }
@@ -320,11 +329,11 @@ const Fixture  =  ({})  =>  {
 
 
                    { mode.away && 
-                                       <div className={Style.away} >
+                    <div className={Style.away} >
 
-                        <LineUp data={data2} type={"Starting"} team={"Away"}/>
+                        <LineUp data={match.match?.lineup?.starting?.away} type={"Starting"} team={"Away"}/>
 
-                        <LineUp data={data2} type={"Sub"} team={"Away"} />
+                        <LineUp data={match.match?.lineup?.sub?.away} type={"Sub"} team={"Away"} />
 
 
                         </div>
