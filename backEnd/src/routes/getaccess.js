@@ -198,92 +198,6 @@ router.get('/latest/fixture', auth, async(req, res)=> {
 
 
 
-
-
-router.get('/:link/standing/:year', async(req, res)=> {
-
-
-  const {year, link} = req.params
- 
-  
- 
- 
-   const data = await Standing.findOne({competition: link, year}).populate({path: "standing", populate: {path: "teams"}})
-   
-  
-    if (!data) {
-
-      const years = year - 1
-
-      const data = await Standing.findOne({competition: link, year : years}).populate({path: "standing", populate: {path: "teams"}})
-
-
-      const sort = _.orderBy(data.standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);
-
-
-      data.standing = sort
-   
-   
-     
-     
-          res.status(200).json({
-             success: true,
-            data: data
-           })
-
-
-      
-    } else {
-          const sort = _.orderBy(data.standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);
-
-
-    data.standing = sort
- 
- 
-   
-   
-        res.status(200).json({
-           success: true,
-          data: data
-         })
-    }
-   })
-
-
-
-
-router.get('/teams', async(req, res)=> {
-
-  const data = await Team.find().sort("name")
-  
-       res.status(200).json({
-          success: true,
-         data: data
-        })
-  })
-
-
-
-
-
-
-  router.get('/teams/:id', async(req, res)=> {
-
-    const data = await Team.find({regionId: req.params.id}).sort("name")
-    
-         res.status(200).json({
-            success: true,
-           data: data
-          })
-    })
-
-
-
-
-
-
-
-
 router.get('/user', auth, async(req, res)=> {
 
   const user = await User.find({role: "user"})
@@ -329,11 +243,136 @@ router.get('/user/team/:id', auth, async(req, res)=> {
 
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
 
+
+//         non login route 
+
+
+
+
+router.get('/latest/fixture/team/:id', async(req, res)=> {
+
+        
+  const team = await  Team.findOne({name: req.params.id})
+
+
+  if (!team) {
+    return res.status(404).json({ error: 'no team found' });
+  }  
+
+
+
+const data = []
+
+ const year = await Fixture.findOne().sort({year: 'desc'})
+
+ if (!year) {
+  return res.status(404).json({ error: 'no year found' });
+} 
+
+ const db = await Fixture.find({year: year.year}).sort('name').populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
+
+
+  
+  for (let x = 0; x < db.length; x++) {
+
+    for (let i = 0; i < db[x].fixture.length; i++) {
+
+      const Foundmatch = db[x].fixture[i].teams.findIndex(item => item.home._id == String(team._id) || item.away._id == String(team._id));
+
+      if (Foundmatch !== -1 ) {
+
+        data.push({
+          regionId: db[x].competition,
+          matchday: i + 1,
+          match: db[x].fixture[i].teams[Foundmatch]
+        })
+      }
+
+    }
+
+  }
+
+
+  const latest = _.orderBy(data, [item =>  item.match.day.date, item =>  item.match.day.time, ],);
+
+  
+
+  
+
+
+ 
+ 
+      res.status(200).json({
+         success: true,
+        data: latest[0]
+       })
+})
+
+
+router.get('/latest/result/team/:id', async(req, res)=> {
+
+        
+  const team = await  Team.findOne({name: req.params.id})
+
+
+  if (!team) {
+    return res.status(404).json({ error: 'no team found' });
+  }  
+
+
+
+const data = []
+
+ const year = await Fixture.findOne().sort({year: 'desc'})
+
+ if (!year) {
+  return res.status(404).json({ error: 'no year found' });
+} 
+
+ const db = await Fixture.find({year: year.year}).sort('name').populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
+
+
+  
+  for (let x = 0; x < db.length; x++) {
+
+    for (let i = 0; i < db[x].fixture.length; i++) {
+
+      const Foundmatch = db[x].fixture[i].teams.findIndex(item => item.home._id == String(team._id) || item.away._id == String(team._id));
+
+      if (Foundmatch !== -1 ) {
+
+        data.push({
+          regionId: db[x].competition,
+          matchday: i + 1,
+          match: db[x].fixture[i].teams[Foundmatch]
+        })
+      }
+
+    }
+
+  }
+
+
+  const latest = _.orderBy(data, [item =>  item.match.day.date, item =>  item.match.day.time, ],);
+
+  
+
+  
+
+
+ 
+ 
+      res.status(200).json({
+         success: true,
+        data: latest[0]
+       })
+})
 
 
 

@@ -27,20 +27,14 @@ const Overview = ({id}) => {
     
 
 
-    useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getall/672a24205fa419f32c581933/standing/" + year)
-        .then((res) =>  res.json())
-        .then((data) => setStand(data.data));
-    }, []);
+    // useEffect(() => {
+    //     fetch(process.env.REACT_APP_API_LINK + "getall/672a24205fa419f32c581933/standing/" + year)
+    //     .then((res) =>  res.json())
+    //     .then((data) => setStand(data.data));
+    // }, []);
 
 
     
-
-
-    
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
 
     
         useEffect(() => {
@@ -53,6 +47,22 @@ const Overview = ({id}) => {
             fetch(process.env.REACT_APP_API_LINK + "getall/teams")
             .then((res) =>  res.json())
             .then((data) => setotherTeams(data.data));
+
+
+            fetch(process.env.REACT_APP_API_LINK + "getaccess/teams")
+            .then((res) =>  res.json())
+            .then((data) => setotherTeams(data.data));
+
+            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
+            .then((res) =>  res.json())
+            .then((data) => setotherTeams(data.data));
+
+            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
+            .then((res) =>  res.json())
+            .then((data) => setotherTeams(data.data));
+
+
+
         }, []);
     
 

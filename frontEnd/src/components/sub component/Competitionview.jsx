@@ -230,7 +230,7 @@ const CompetitionResults = ({regionId}) => {
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getyears/" + regionId + "/result/years")
+            fetch(process.env.REACT_APP_API_LINK + "getyear/" + regionId + "/result/years")
             .then((res) =>  res.json())
             .then((data) => setYears(data.data));
         }, []);
@@ -375,7 +375,7 @@ const CompetitionTable = ({regionId}) => {
 
     
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getyears/" + regionId + "/standing/years")
+        fetch(process.env.REACT_APP_API_LINK + "getyear/" + regionId + "/standing/years")
         .then((res) =>  res.json())
         .then((data) => setYears(data.data));
     }, []);
@@ -551,7 +551,7 @@ const CompetitionStats = ({regionId}) => {
 
     
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getyears/" + regionId + "/stats/years")
+        fetch(process.env.REACT_APP_API_LINK + "getyear/" + regionId + "/stats/years")
         .then((res) =>  res.json())
         .then((data) => setYears(data.data));
     }, []);

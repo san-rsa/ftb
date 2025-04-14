@@ -115,34 +115,6 @@ router.get('/sub-competition/:id', async (req, res) => {
 
 
 
-router.get('/fixtures/year/:id', async (req, res) => {
-
-
-  try {
-      const data = await Fixture.findOne({competition: req.params.id}).sort({year: 'desc'}).populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
-
-
-      if (data) {
-            
-        res.status(200).json(data);
-
-      } else {
-        res.status(404).json("not found");
-
-      }
-      console.log( data);
-
-
-
-  } catch (error) {
-
-    console.log(error, );
-    
-      res.status(500).json(error);
-  }
-})
-
-
 
   
 
@@ -275,60 +247,6 @@ router.get('/player/:id', async(req, res)=> {
 })
 
 
-router.get('/:link/result/:id/:year', async(req, res)=> {
-
-
-            const { link, id} = req.params
-           
-            let year = '2022' // new date().getFullYear()
-        
-            const data = {}
-            
-             const db = await Result.findOne({competition: link, year})
-        
-             if (!data) {
-              year = year -1
-        
-              const data = await Result.findOne({competition: link, year})
-        
-            for (let i = 0; i < db.result.length; i++) {
-        
-              const Foundmatch = db.result[i].teams.findIndex(item => item._id == id);
-        
-              if (Foundmatch !== -1 ) {
-    
-                data.matchday = i + 1,
-                data.match = db.result[i].teams[Foundmatch]
-              }    
-            }
-        
-             } else {
-              
-            for (let i = 0; i < db.result.length; i++) {
-        
-                const Foundmatch = db.result[i].teams.findIndex(item => item._id == id);
-        
-              if (Foundmatch !== -1 ) {
-        
-            data.matchday = i + 1,
-            data.match = db.result[i].teams[Foundmatch]
-    
-    
-    
-           }
-        
-            }
-           
-             }
-        
-        
-                  res.status(200).json({
-                     success: true,
-                    data: data
-                   })
-})
-
-
 router.get('/:link/stats/player/:id/:year', async(req, res)=> {
 
 
@@ -363,80 +281,6 @@ router.get('/:link/stats/player/:id/:year', async(req, res)=> {
  
 })
 
-
-
-router.get('/:link/stats/:team/:type/:year', async(req, res)=> {
-
-
-                const {link, year, type, team} = req.params
-               
-                
-                 const data = await Stat.findOne({competition: link, year}).populate({path: "stats", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
-               
-                 const stat = [];
-        
-               
-                 if (!data) {
-                  const years = year -1 ;
-               
-                   const data = await Stat.findOne({competition: link, year: years}).populate({path: "stats", populate: {path: "home"} }).populate({path: "fixture.teams", populate: {path: "away"}})
-               
-                   const sort = _.sortBy(data.stats, [type]);
-        
-                    for (let i = 0; i < sort.length; i++) {
-                      const filter1 = sort[i][type];
-                      const filter2 = sort[i].team;
-        
-        
-        
-                      if (filter1 !== 0 && filter2 == team) {
-                        stat.push({player: sort[i].player, team: sort[i].team, stat: filter1})
-                      }
-                      
-                    }
-        
-        
-        
-        
-                   data.stats = stat
-               
-                       
-                   return  res.status(200).json({
-                     success: true,
-                    data: data
-                   })
-                
-               
-                 } else {
-                      const sort = _.sortBy(data.fixture, [type]);
-        
-                      
-        
-                      
-                      for (let i = 0; i < sort.length; i++) {
-                        const filter1 = sort[i][type];
-                        const filter2 = sort[i].team;
-          
-          
-          
-                        if (filter1 !== 0 && filter2 == team) {
-                          stat.push({player: sort[i].player, team: sort[i].team, stat: filter1})
-                        }
-                        
-                      }
-        
-        
-        
-        
-                   data.stats = stat
-                 }
-                  
-                     return  res.status(200).json({
-                         success: true,
-                        data: data
-                       })
-               
-})
 
 
 router.get('/team/:id', async(req, res)=> {

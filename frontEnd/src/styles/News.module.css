@@ -30,7 +30,7 @@
 .news1 {
     display: grid;
     grid-template-columns: auto 40%;
-    border: 2px #2bff00 solid;
+    border: 2px gold solid;
     width: 100%;
     text-align: left;
     margin: auto;

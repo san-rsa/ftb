@@ -212,6 +212,26 @@ const Fixture  =  ({})  =>  {
     //    }
 
 
+    function timeline (props) {
+        if (props == 'goal'  ) {
+            return require("../../../img/goal.png") 
+        } else if (props ==   'red' ) {
+            return require("../../../img/red card.png") 
+
+        }
+
+        else if (props == "yellow" ) {
+            return require("../../../img/yellow card.png") 
+
+        } 
+        else if (props ==  "substitution") {
+            return require("../../../img/substitution.png") 
+
+        }
+
+    
+
+    }
 
     return (
         <div>
@@ -280,8 +300,8 @@ const Fixture  =  ({})  =>  {
 
                     {match.match?.timeline.map((props) => (
                     
-                    (props.team == "home") ? <MatchEventHome time={props.time} name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
-                    (props.team == "away") ? <MatchEventAway time={props.time} name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :
+                    (props.team == "home") ? <MatchEventHome time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
+                    (props.team == "away") ? <MatchEventAway time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :
                     null
                                         
                     

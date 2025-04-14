@@ -3,7 +3,7 @@
 .head {
     display: flex;
     margin: 50px auto ;
-    background-color: rgb(16, 19, 17);
+    background-image: repeating-linear-gradient(45deg, rgba(54, 158, 28, 0.205), rgba(223, 220, 22, 0.253) 10%, rgba(145, 11, 127, 0.363) 20%) ;
     padding: 100px 0;
 }
 
