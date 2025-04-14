@@ -187,7 +187,7 @@ async function updateCupStanding(table, competition, year, h, hms, a, aws, group
 
 
             
-              const save = await existing.save();
+               await existing.save();
 
               
 

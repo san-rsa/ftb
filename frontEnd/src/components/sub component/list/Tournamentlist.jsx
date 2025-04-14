@@ -105,6 +105,89 @@ const Table = ({pos, w, d, l, pts, name, logo, pl, gd, ga, gs}) => {
 
 
 
+const PlayerStatsHead = ({active}) => {
+
+
+    return (
+        <div className={Style.table}>
+            <div className={Style.standings}>
+
+                <ul >
+                    <li className={Style.head}> 
+                        <div className={Style.played} id={Style.played}>  <abbr > PL  </abbr> </div>
+ 
+
+                        <div className={Style.pts} id={Style.pts}>  <abbr > {active.toUpperCase()} </abbr> </div>
+
+                    </li>
+
+                </ul>
+
+
+
+
+
+     </div>
+        </div>
+
+    )
+}
+
+
+const PlayerStats = ({pos, pts, name, logo, pl, }) => {
+
+
+    const link = name?.replaceAll(' ','-')
+
+
+    return (
+
+        <Link to={"/player/" + link } className={Style.table} >  
+        
+                <div className={Style.table}>
+            <div className={Style.standings}>
+
+                           
+
+                 <div className={Style.teams}> 
+                    <li >  
+                        <div className={Style.info} >
+                            <div className={Style.pos}> <span>{pos}</span> </div>
+                            <div className={Style.dot}> <div>  </div></div>
+
+                            <div className={Style.team}>
+                                <span > <img src={logo}/> </span>
+                                <p> {name}</p>
+                            </div>
+
+                        </div>
+
+                        <div className={Style.head2}>
+                        <div className={Style.played} id={Style.played}>  <abbr > {pl}  </abbr> </div>
+
+                        <div className={Style.pts} id={Style.pts}>  <abbr > {pts} </abbr> </div>
+                        </div>
+
+
+                    </li>
+                 </div>
+
+
+            </div>
+        </div>
+        </Link>
+
+
+          
+
+
+
+
+
+ 
+
+    )
+}
 
 
 
@@ -295,4 +378,4 @@ const FixtureToEdit = ({Hname, Hscore, Hlogo, date, time, Alogo, Ascore, Aname, 
 
     )
 }
-export {Table, Fixture, Result, Tablehead, FixtureToEdit}
+export {Table, Fixture, Result, Tablehead, FixtureToEdit, PlayerStats, PlayerStatsHead}

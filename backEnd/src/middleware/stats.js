@@ -2,6 +2,19 @@ const Player = require("../models/competition/player");
 const Stat = require("../models/competition/stats");
 
 
+
+async function statsD (competition, year) {
+              const existing = await Stat.findOne({competition, year})
+                   if (existing) {
+                      return existing 
+                    } else {
+                       return  await Stat.create({
+                         competition,  year, 
+                        })
+                        }
+                                                   
+               }
+
 function win(existing, groupName, teamId, ws, ls ) {
     
     const group = existing.group.findIndex(item => item.group == String(groupName));
@@ -52,10 +65,6 @@ function win(existing, groupName, teamId, ws, ls ) {
   }
 
 
-
-
-
-
   function draw(existing, groupName,teamId, ws, ls) {
 
     const group = existing.group.findIndex(item => item.group == groupName);
@@ -102,48 +111,260 @@ function win(existing, groupName, teamId, ws, ls ) {
       
   };
 
+                                               async function updateStat (match, statsDb) {
+                                                    // lineup
+                                                if (match.lineup.starting.home.length !== 0) {
 
 
-async function updatePlayerPlayed(competition, year, playerId) {
+                                                    for (let i = 0; i < match.lineup.starting.home.length; i++) {
+                                                        const element = match.lineup.starting.home[i];
+    
+                                                        const existingPlayer = await Player.findOne({_id: element})        
+                                                        const stats = {player: element, team: existingPlayer.teamId, 
+                                                          
+                                                          played: 1, goal: 0, assist: 0, yellow: 0, red: 0, motm: 0, potm: 0, }
+                                                
+                                                      
+                                                                            
+                                                                          const Foundplayer = statsDb.stats.findIndex(item => item.player == element);
+                                                                        
+                                                                          console.log(Foundplayer);
+                                                                          
+                                                            
+                                                                        if (Foundplayer == -1) {
+                                                                            
+                                                                           statsDb.stats.push(stats)
+                                                                        }
+                                                        
+                                                                        if (Foundplayer !== -1) {
+                                                                         
+                                                                           statsDb.stats[Foundplayer].played = statsDb.stats[Foundplayer].played + 1;                           
+                                                        
+                                                                        }
+
+                                                        
+                                                    }         
+
+                                                }
+
+                                                if (match.lineup.starting.away.length !== 0) {
+                                                    for (let i = 0; i < match.lineup.starting.away.length; i++) {
+                                                        const element = match.lineup.starting.away[i];
+    
+                                                     // updatePlayerPlayed(statsDb, element)
+
+                                                     
+                                                             const existingPlayer = await Player.findOne({_id: element})        
+                                                             const stats = {player: element, team: existingPlayer.teamId, 
+                                                               
+                                                               played: 1, goal: 0, assist: 0, yellow: 0, red: 0, motm: 0, potm: 0, }
+                                                     
+                                                           
+                                                                                 
+                                                                               const Foundplayer = statsDb.stats.findIndex(item => item.player == element);
+                                                                             
+                                                                               console.log(Foundplayer);
+                                                                               
+                                                                 
+                                                                             if (Foundplayer == -1) {
+                                                                                 
+                                                                                statsDb.stats.push(stats)
+                                                                             }
+                                                             
+                                                                             if (Foundplayer !== -1) {
+                                                                              
+                                                                                statsDb.stats[Foundplayer].played = statsDb.stats[Foundplayer].played + 1;                           
+                                                             
+                                                                             }
+                                                                            
+                                                     
+
+
+                                                    }   
+
+                                                }
+
+                                                // .........................
+
+                                                
+
+                                                //  action stats
+
+
+
+
+                                                for (let i = 0; i < match.timeline.length; i++) {
+                                                    const element = match.timeline[i];
+
+                                                    if (element.action == "goal") {
+                                                       // updatePlayerGoal(statsDb, element.player.main)
+
+                                                       const existingPlayer = await Player.findOne({_id: element.player.main})
+                                                       const stats = {player: element.player.main, team: existingPlayer.teamId, 
+                                                         
+                                                         played: 0, goal: 1,   assist: 0,   yellow: 0,   red: 0,   motm: 0,   potm: 0,}
+                                                      
+                                                           
+                                                                       //---- Check if index exists ---- 
+                                                                           
+                                                                         const Foundplayer = statsDb.stats.findIndex(item => item.player == element.player.main);
+                                                                       
+                                                           
+                                                                       if (Foundplayer == -1) {
+                                                                           
+                                                                           statsDb.stats.push(stats)
+                                                                       }
+                                                       
+                                                                       if (Foundplayer !== -1) {
+                                                                        
+                                                                         statsDb.stats[Foundplayer].goal = statsDb.stats[Foundplayer].goal + 1;
+                                                                            
+                                                       
+                                                                       }
+                                                        
+                                                    if (element.player.assist) {
+                                                       // updatePlayerAssist(statsDb, element.player.assist)
+
+                                                       const existingPlayer = await Player.findOne({_id: element.player.assist})
+
+                                                       const stats = {player: element.player.assist, team: existingPlayer.teamId, 
+        
+                                                        played: 0, goal: 0, assist: 1, yellow: 0, red: 0, motm: 0, potm: 0,  }
+                                                   
+                                                                      //---- Check if index exists ---- 
+                                                                          
+                                                                        const Foundplayer = statsDb.stats.findIndex(item => item.player == element.player.assist);
+                                                                      
+                                                          
+                                                                      if (Foundplayer == -1) {
+                                                                          
+                                                                          statsDb.stats.push(stats)
+                                                                      }
+                                                      
+                                                                      if (Foundplayer !== -1) {
+                                                                       
+                                                                        statsDb.stats[Foundplayer].assist = statsDb.stats[Foundplayer].assist + 1;                         
+                                                      
+                                                                      }
+    
+                                                    }
+                                                    }
+                                                     else if (element.action == "red") {
+                                                       // updatePlayerRedCard(statsDb, element.player.main)
+
+                                                       const existingPlayer = await Player.findOne({_id: element.player.main})
+                                                       const stats = {player: element.player.main, team: existingPlayer.teamId, 
+                                                           
+                                                           played: 0,   goal: 0,   assist: 0,   yellow: 0,   red: 1,   motm: 0,   potm: 0,}
+                                                      
+                                                    
+                                                                           const Foundplayer = statsDb.stats.findIndex(item => item.player == element.player.main);
+                                                                         
+                                                             
+                                                                         if (Foundplayer == -1) {
+                                                                             
+                                                                             statsDb.stats.push(stats)
+                                                                         }
+                                                         
+                                                                         if (Foundplayer !== -1) {
+                                                                          
+                                                                           statsDb.stats[Foundplayer].red = statsDb.stats[Foundplayer].red + 1;
+                                                         
+                                                                            
+                                                         
+                                                                         }
+
+                                                    } 
+                                                    else if (element.action == "yellow") {
+                                                       // updatePlayerYellowCard(statsDb, element.player.main)
+
+                                                       const existingPlayer = await Player.findOne({_id: element.player.main})
+                                                       const stats = {player: element.player.main, team: existingPlayer.teamId, 
+                                                           
+                                                           played: 0,   goal: 0,   assist: 0,   yellow: 1,   red: 0,   motm: 0,   potm: 0,}
+                                                      
+                                                                         //---- Check if index exists ---- 
+                                                                             
+                                                                           const Foundplayer = statsDb.stats.findIndex(item => item.player == element.player.main);
+                                                                         
+                                                             
+                                                                         if (Foundplayer == -1) {
+                                                                             
+                                                                             statsDb.stats.push(stats)
+                                                                         }
+                                                         
+                                                                         if (Foundplayer !== -1) {
+                                                                          
+                                                                           statsDb.stats[Foundplayer].yellow = statsDb.stats[Foundplayer].yellow + 1;
+                                                         
+                                                                            
+                                                         
+                                                                         }
+
+                                                    } 
+                                                    else if (element.action == "substitution") {
+                                                      //  updatePlayerPlayed(statsDb, element.player.main)
+
+                                                          
+                                                      const existingPlayer = await Player.findOne({_id: element.player.main})        
+                                                      const stats = {player: element.player.main, team: existingPlayer.teamId, 
+                                                        
+                                                        played: 1, goal: 0, assist: 0, yellow: 0, red: 0, motm: 0, potm: 0, }
+                                              
+                                                    
+                                                                          
+                                                                        const Foundplayer = statsDb.stats.findIndex(item => item.player == element.player.main);
+                                                                      
+                                                                        console.log(Foundplayer);
+                                                                        
+                                                          
+                                                                      if (Foundplayer == -1) {
+                                                                          
+                                                                         statsDb.stats.push(stats)
+                                                                      }
+                                                      
+                                                                      if (Foundplayer !== -1) {
+                                                                       
+                                                                         statsDb.stats[Foundplayer].played = statsDb.stats[Foundplayer].played + 1;                           
+                                                      
+                                                                      }
+
+                                                    }
+                                                    else {return null}
+                                                }
+
+
+                                
+
+                                
+                                           //        deleteFixture(existing, Foundmatchday, Fixture, id)
+
+
+                                           statsDb.save()
+
+  
+
+                                                }
+
+
+async function updatePlayerPlayed(existing, playerId) {  //vvvvvvv
   
     try {
 
-
-		if (!year || !competition ) {
-			return res.status(403).json({
-				success: false,
-				message: "All Fields are required",
-			});
-		}
-
-
-        const existingPlayer = await Player.findOne({_id: playerId})
-
-        console.log(existingCompetition);
-        
-
-
+        const existingPlayer = await Player.findOne({_id: playerId})        
         const stats = {player: playerId, team: existingPlayer.teamId, 
           
-          played: 1,
-          goal: 0,
-          assist: 0,
-          yellow: 0,
-          red: 0,
-          motm: 0,
-          potm: 0, 
-      }
+          played: 1, goal: 0, assist: 0, yellow: 0, red: 0, motm: 0, potm: 0, }
+
+      
      
-            const existing = await Stat.findOne({competition, year})
-     
-                    
-               
-            
                     if (existing) {
                         //---- Check if index exists ---- 
                             
                           const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
                         
+                          console.log(Foundplayer);
+                          
             
                         if (Foundplayer == -1) {
                             
@@ -152,24 +373,14 @@ async function updatePlayerPlayed(competition, year, playerId) {
         
                         if (Foundplayer !== -1) {
                          
-                          existing.stats[Foundplayer].played = existing.stats[Foundplayer].played + 1;
-        
-                           console.log(existing, 'tt,' );
-                           
+                          existing.stats[Foundplayer].played = existing.stats[Foundplayer].played + 1;                           
         
                         }
-                               
-                         await existing.save()
-        
-        }
-                     else {
-            
-                
-                        await Stat.create({
-                            competition,  year, stats
-                        })
 
-                      }
+
+                        return existing 
+                                       
+        }
             
 
 
@@ -188,42 +399,17 @@ async function updatePlayerPlayed(competition, year, playerId) {
 }
 
 
-async function updatePlayerGoal(competition, year, playerId) {
+async function updatePlayerGoal(existing, playerId) {
   
   try {
 
 
-  if (!year || !competition ) {
-    return res.status(403).json({
-      success: false,
-      message: "All Fields are required",
-    });
-  }
-
-
       const existingPlayer = await Player.findOne({_id: playerId})
-
-      console.log(existingCompetition);
-      
-
-
       const stats = {player: playerId, team: existingPlayer.teamId, 
         
-        played: 0,
-        goal: 1,
-        assist: 0,
-        yellow: 0,
-        red: 0,
-        motm: 0,
-        potm: 0, 
-    }
-   
-          const existing = await Stat.findOne({competition, year})
-   
-                  
-             
+        played: 0, goal: 1,   assist: 0,   yellow: 0,   red: 0,   motm: 0,   potm: 0,}
+     
           
-                  if (existing) {
                       //---- Check if index exists ---- 
                           
                         const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
@@ -237,23 +423,10 @@ async function updatePlayerGoal(competition, year, playerId) {
                       if (Foundplayer !== -1) {
                        
                         existing.stats[Foundplayer].goal = existing.stats[Foundplayer].goal + 1;
-      
-                         console.log(existing, 'tt,' );
-                         
+                           
       
                       }
-                             
-                       await existing.save()
-      
-      }
-                   else {
-          
-              
-                      await Stat.create({
-                          competition,  year, stats
-                      })
-
-                    }
+                                   
           
 
 
@@ -272,72 +445,34 @@ async function updatePlayerGoal(competition, year, playerId) {
 }
 
 
-async function updatePlayerAssist(competition, year, playerId) {
+async function updatePlayerAssist(existing, playerId) {
   
   try {
 
 
-  if (!year || !competition ) {
-    return res.status(403).json({
-      success: false,
-      message: "All Fields are required",
-    });
-  }
 
-
-      const existingPlayer = await Player.findOne({_id: playerId})
-
-      console.log(existingCompetition);
-      
-
-
-      const stats = {player: playerId, team: existingPlayer.teamId, 
+      const existingPlayer = await Player.findOne({_id: element})
+      const stats = {player: element, team: existingPlayer.teamId, 
         
-        played: 0,
-        goal: 0,
-        assist: 1,
-        yellow: 0,
-        red: 0,
-        motm: 0,
-        potm: 0, 
-    }
+        played: 0, goal: 0, assist: 1, yellow: 0, red: 0, motm: 0, potm: 0,  }
    
-          const existing = await Stat.findOne({competition, year})
-   
-                  
-             
-          
-                  if (existing) {
                       //---- Check if index exists ---- 
                           
-                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+                        const Foundplayer = statsDb.stats.findIndex(item => item.player == element);
                       
           
                       if (Foundplayer == -1) {
                           
-                          existing.stats.push(stats)
+                          statsDb.stats.push(stats)
                       }
       
                       if (Foundplayer !== -1) {
                        
-                        existing.stats[Foundplayer].assist = existing.stats[Foundplayer].assist + 1;
-      
-                         console.log(existing, 'tt,' );
-                         
+                        statsDb.stats[Foundplayer].assist = statsDb.stats[Foundplayer].assist + 1;                         
       
                       }
-                             
-                       await existing.save()
+                                   
       
-      }
-                   else {
-          
-              
-                      await Stat.create({
-                          competition,  year, stats
-                      })
-
-                    }
           
 
 
@@ -356,73 +491,34 @@ async function updatePlayerAssist(competition, year, playerId) {
 }
 
 
-async function updatePlayerYellowCard(competition, year, playerId) {
+async function updatePlayerYellowCard(existing, playerId) {
   
   try {
 
-
-  if (!year || !competition ) {
-    return res.status(403).json({
-      success: false,
-      message: "All Fields are required",
-    });
-  }
-
-
-      const existingPlayer = await Player.findOne({_id: playerId})
-
-      console.log(existingCompetition);
-      
-
-
-      const stats = {player: playerId, team: existingPlayer.teamId, 
+    const existingPlayer = await Player.findOne({_id: element.player.main})
+    const stats = {player: element.player.main, team: existingPlayer.teamId, 
         
-        played: 0,
-        goal: 0,
-        assist: 0,
-        yellow: 1,
-        red: 0,
-        motm: 0,
-        potm: 0, 
-    }
+        played: 0,   goal: 0,   assist: 0,   yellow: 1,   red: 0,   motm: 0,   potm: 0,}
    
-          const existing = await Stat.findOne({competition, year})
-   
-                  
-             
-          
-                  if (existing) {
                       //---- Check if index exists ---- 
                           
-                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+                        const Foundplayer = statsDb.stats.findIndex(item => item.player == element.player.main);
                       
           
                       if (Foundplayer == -1) {
                           
-                          existing.stats.push(stats)
+                          statsDb.stats.push(stats)
                       }
       
                       if (Foundplayer !== -1) {
                        
-                        existing.stats[Foundplayer].yellow = existing.stats[Foundplayer].yellow + 1;
+                        statsDb.stats[Foundplayer].yellow = statsDb.stats[Foundplayer].yellow + 1;
       
-                         console.log(existing, 'tt,' );
                          
       
                       }
-                             
-                       await existing.save()
+                                   
       
-      }
-                   else {
-          
-              
-                      await Stat.create({
-                          competition,  year, stats
-                      })
-
-                    }
-          
 
 
   } catch (error) {
@@ -440,72 +536,32 @@ async function updatePlayerYellowCard(competition, year, playerId) {
 }
 
 
-async function updatePlayerRedCard(competition, year, playerId) {
+async function updatePlayerRedCard(existing, playerId) {
   
   try {
 
-
-  if (!year || !competition ) {
-    return res.status(403).json({
-      success: false,
-      message: "All Fields are required",
-    });
-  }
-
-
-      const existingPlayer = await Player.findOne({_id: playerId})
-
-      console.log(existingCompetition);
-      
-
-
-      const stats = {player: playerId, team: existingPlayer.teamId, 
+    const existingPlayer = await Player.findOne({_id: element.Player.main})
+    const stats = {player: element.Player.main, team: existingPlayer.teamId, 
         
-        played: 0,
-        goal: 0,
-        assist: 0,
-        yellow: 0,
-        red: 1,
-        motm: 0,
-        potm: 0, 
-    }
+        played: 0,   goal: 0,   assist: 0,   yellow: 0,   red: 1,   motm: 0,   potm: 0,}
    
-          const existing = await Stat.findOne({competition, year})
-   
-                  
-             
-          
-                  if (existing) {
-                      //---- Check if index exists ---- 
-                          
-                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
+ 
+                        const Foundplayer = existing.stats.findIndex(item => item.player == element.Player.main);
                       
           
                       if (Foundplayer == -1) {
                           
-                          existing.stats.push(stats)
+                          statsDb.stats.push(stats)
                       }
       
                       if (Foundplayer !== -1) {
                        
-                        existing.stats[Foundplayer].red = existing.stats[Foundplayer].red + 1;
+                        statsDb.stats[Foundplayer].red = statsDb.stats[Foundplayer].red + 1;
       
-                         console.log(existing, 'tt,' );
                          
       
                       }
-                             
-                       await existing.save()
-      
-      }
-                   else {
-          
-              
-                      await Stat.create({
-                          competition,  year, stats
-                      })
-
-                    }
+ 
           
 
 
@@ -524,26 +580,11 @@ async function updatePlayerRedCard(competition, year, playerId) {
 }
 
 
-async function updatePlayerManOfTheMatch(competition, year, playerId) {
+async function updatePlayerManOfTheMatch(existing, playerId) {
   
   try {
-
-
-  if (!year || !competition ) {
-    return res.status(403).json({
-      success: false,
-      message: "All Fields are required",
-    });
-  }
-
-
-      const existingPlayer = await Player.findOne({_id: playerId})
-
-      console.log(existingCompetition);
-      
-
-
-      const stats = {player: playerId, team: existingPlayer.teamId, 
+    const existingPlayer = await Player.findOne({_id: playerId})
+    const stats = {player: playerId, team: existingPlayer.teamId, 
         
         played: 0,
         goal: 0,
@@ -554,7 +595,6 @@ async function updatePlayerManOfTheMatch(competition, year, playerId) {
         potm: 0, 
     }
    
-          const existing = await Stat.findOne({competition, year})
    
                   
              
@@ -578,102 +618,8 @@ async function updatePlayerManOfTheMatch(competition, year, playerId) {
                          
       
                       }
-                             
-                       await existing.save()
-      
+                                   
       }
-                   else {
-          
-              
-                      await Stat.create({
-                          competition,  year, stats
-                      })
-
-                    }
-          
-
-
-  } catch (error) {
-      console.error(error)
-      return res.status(500).json({
-          success: false,
-          message : "registration failed"
-      })
-     
- }  
-
-
-
-
-}
-
-
-async function updatePlayerPlayerOfTheMatch(competition, year, playerId) {
-  
-  try {
-
-
-  if (!year || !competition ) {
-    return res.status(403).json({
-      success: false,
-      message: "All Fields are required",
-    });
-  }
-
-
-      const existingPlayer = await Player.findOne({_id: playerId})
-
-      console.log(existingCompetition);
-      
-
-
-      const stats = {player: playerId, team: existingPlayer.teamId, 
-        
-        played: 0,
-        goal: 0,
-        assist: 0,
-        yellow: 0,
-        red: 0,
-        motm: 0,
-        potm: 1, 
-    }
-   
-          const existing = await Stat.findOne({competition, year})
-   
-                  
-             
-          
-                  if (existing) {
-                      //---- Check if index exists ---- 
-                          
-                        const Foundplayer = existing.stats.findIndex(item => item.player == playerId);
-                      
-          
-                      if (Foundplayer == -1) {
-                          
-                          existing.stats.push(stats)
-                      }
-      
-                      if (Foundplayer !== -1) {
-                       
-                        existing.stats[Foundplayer].potm = existing.stats[Foundplayer].potm + 1;
-      
-                         console.log(existing, 'tt,' );
-                         
-      
-                      }
-                             
-                       await existing.save()
-      
-      }
-                   else {
-          
-              
-                      await Stat.create({
-                          competition,  year, stats
-                      })
-
-                    }
           
 
 
@@ -697,7 +643,8 @@ async function updatePlayerPlayerOfTheMatch(competition, year, playerId) {
 
 
 
-  module.exports = { update, updatePlayerPlayed, updatePlayerGoal, updatePlayerAssist, 
-    updatePlayerYellowCard, updatePlayerRedCard, updatePlayerManOfTheMatch, updatePlayerPlayerOfTheMatch, 
+
+  module.exports = { update, statsD, updatePlayerPlayed, updatePlayerGoal, updatePlayerAssist, updateStat,
+    updatePlayerYellowCard, updatePlayerRedCard, updatePlayerManOfTheMatch, // updatePlayerPlayerOfTheMatch, 
   
   };

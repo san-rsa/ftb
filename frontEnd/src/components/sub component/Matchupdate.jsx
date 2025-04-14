@@ -993,6 +993,7 @@ const AddMatchGoal = ({ competition, match, matchId, matchday }) => {
              } else if (substitute[i].team == "away") {
               
               playersIn.push(substitute[i].player.main._id)
+
               playersOut.push(substitute[i].player.assist._id)
       
              } 
@@ -1007,23 +1008,37 @@ const AddMatchGoal = ({ competition, match, matchId, matchday }) => {
       
         if (userT.home._id == team._id) {
 
-          const newArray1 =  player?.starting.home?.filter(item => !playersOut.includes(item._id));     
-          const newArray2 = player?.sub.home?.filter(item => !playersIn.includes(item._id));       
+          const newArray1 =  player?.starting?.home?.filter(item => !playersOut.includes(item._id)); 
+          
+          if (playersIn.length == 0) {
+            setPlayerIn( newArray1)
+
+          } else {
+            const newArray2 = player?.sub?.home?.filter(item => playersIn.includes(item._id));       
+          
       
+             const allP = [...newArray1, ...newArray2]
       
-          const allP = [...newArray1, ...newArray2]
-      
-               setPlayerIn( allP)
+              setPlayerIn( allP)
+          }
+
 
        } else if (userT.away._id == team._id) {
 
-        const newArray1 =  player?.starting.away?.starting.home?.filter(item => !playersOut.includes(item._id));     
-        const newArray2 = player?.sub.away?.sub.home?.filter(item => !playersIn.includes(item._id));       
-  
-        const allP = [...newArray1, ...newArray2]
+        const newArray1 =  player?.starting?.away?.filter(item => !playersOut.includes(item._id));     
+
+        if (playersIn.length == 0) {
+          setPlayerIn( newArray1)
+
+        } else {
+          const newArray2 = player?.sub?.away?.filter(item => playersIn.includes(item._id));       
+        
     
-             setPlayerIn(allP)
-         setSub("rr")
+           const allP = [...newArray1, ...newArray2]
+    
+            setPlayerIn( allP)
+        }
+    
 
        } 
       }  
@@ -1283,23 +1298,37 @@ const AddMatchYellow = ({ competition, match, matchId, matchday }) => {
       
         if (userT.home._id == team._id) {
 
-          const newArray1 =  player?.starting.home?.filter(item => !playersOut.includes(item._id));     
-          const newArray2 = player?.sub.home?.filter(item => !playersIn.includes(item._id));       
+          const newArray1 =  player?.starting?.home?.filter(item => !playersOut.includes(item._id)); 
+          
+          if (playersIn.length == 0) {
+            setPlayerIn( newArray1)
+
+          } else {
+            const newArray2 = player?.sub?.home?.filter(item => playersIn.includes(item._id));       
+          
       
+             const allP = [...newArray1, ...newArray2]
       
-          const allP = [...newArray1, ...newArray2]
-      
-               setPlayerIn( allP)
+              setPlayerIn( allP)
+          }
+
 
        } else if (userT.away._id == team._id) {
 
-        const newArray1 =  player?.starting.away?.starting.home?.filter(item => !playersOut.includes(item._id));     
-        const newArray2 = player?.sub.away?.sub.home?.filter(item => !playersIn.includes(item._id));       
-  
-        const allP = [...newArray1, ...newArray2]
+        const newArray1 =  player?.starting?.away?.filter(item => !playersOut.includes(item._id));     
+
+        if (playersIn.length == 0) {
+          setPlayerIn( newArray1)
+
+        } else {
+          const newArray2 = player?.sub?.away?.filter(item => playersIn.includes(item._id));       
+        
     
-             setPlayerIn(allP)
-         setSub("rr")
+           const allP = [...newArray1, ...newArray2]
+    
+            setPlayerIn( allP)
+        }
+    
 
        } 
       }  
@@ -1532,26 +1561,39 @@ const AddMatchRed = ({ competition, match, matchId, matchday }) => {
       
 
       
-      
         if (userT.home._id == team._id) {
 
-          const newArray1 =  player?.starting.home?.filter(item => !playersOut.includes(item._id));     
-          const newArray2 = player?.sub.home?.filter(item => !playersIn.includes(item._id));       
+          const newArray1 =  player?.starting?.home?.filter(item => !playersOut.includes(item._id)); 
+          
+          if (playersIn.length == 0) {
+            setPlayerIn( newArray1)
+
+          } else {
+            const newArray2 = player?.sub?.home?.filter(item => playersIn.includes(item._id));       
+          
       
+             const allP = [...newArray1, ...newArray2]
       
-          const allP = [...newArray1, ...newArray2]
-      
-               setPlayerIn( allP)
+              setPlayerIn( allP)
+          }
+
 
        } else if (userT.away._id == team._id) {
 
-        const newArray1 =  player?.starting.away?.starting.home?.filter(item => !playersOut.includes(item._id));     
-        const newArray2 = player?.sub.away?.sub.home?.filter(item => !playersIn.includes(item._id));       
-  
-        const allP = [...newArray1, ...newArray2]
+        const newArray1 =  player?.starting?.away?.filter(item => !playersOut.includes(item._id));     
+
+        if (playersIn.length == 0) {
+          setPlayerIn( newArray1)
+
+        } else {
+          const newArray2 = player?.sub?.away?.filter(item => playersIn.includes(item._id));       
+        
     
-             setPlayerIn(allP)
-         setSub("rr")
+           const allP = [...newArray1, ...newArray2]
+    
+            setPlayerIn( allP)
+        }
+    
 
        } 
       }  
@@ -1778,7 +1820,7 @@ const AddMatchEnd = ({ competition, match, matchId, matchday }) => {
          
 
           
-                navigate("./../../../../../result/" + matchday + "/" + matchId); 
+            //    navigate("./../../../../../result/" + matchday + "/" + matchId); 
 
            } else {
             setSubmitBtn(false);

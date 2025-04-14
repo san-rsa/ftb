@@ -44,8 +44,9 @@ ul {
     display: inline-flex;
 }
 
-.team img {
+.team  span {
     width: 20px;
+    height: 20px;
     margin-right: 5px;
 
 }
@@ -126,7 +127,6 @@ ul {
 /* fixtures */
 .fixtures span {
     display: inline-flex;
-    height: max-content;
 }
 
 .day {
@@ -157,8 +157,9 @@ time {
     margin: auto;
 }
 
-.logo img{
+.logo {
     width: 30px;
+    height: 30px;
 }
 
 .home {
@@ -179,6 +180,7 @@ time {
     padding: 0 6px;
     font-weight: bolder;
     font-size: larger;
+    margin: auto;
 }
 
  .fixtures:hover {

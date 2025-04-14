@@ -21,6 +21,8 @@ const Standing = require('../../models/competition/standing/standing')
 const Codeofconduct = require('../../models/news/codesofconduct')
 const CupStanding = require('../../models/competition/standing/cup')
 const Live = require('../../models/competition/live')
+const { updatePlayerPlayed, updatePlayerYellowCard, updatePlayerRedCard, updatePlayerGoal, updatePlayerAssist, statsD, updateStat } = require('../../middleware/stats')
+const Stat = require('../../models/competition/stats')
 
 
 
@@ -282,12 +284,56 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
                             // }
                                        
                                     
+                                                const statsDb = await Stat.findOne({competition, year}) ? await Stat.findOne({competition, year}) :  await Stat.create({
+                                                    competition,  year, 
+                                                })
+                                                
+                                                
+                                              //  const statsDb = await Stat.findOne({competition, year})  // await statsD(competition, year)
+                                                
+                                                
+                                                // async function () {
+                                                //      const existing = await Stat.findOne({competition, year})
+
+                                                //      if (existing) {
+                                                //         return existing 
+                                                //      } else {
+                                                //         return  await Stat.create({
+                                                //             competition,  year, 
+                                                //         })
+                                                //      }
+                                                    
+                                                // }
+
+
+
+                                            //     const stats = async function () {
+                                            //         const existing = await Stat.findOne({competition, year})
+
+                                            //         if (existing) {
+                                            //            return existing 
+                                            //         } else {
+                                            //            return  await Stat.create({
+                                            //                competition,  year, 
+                                            //            })
+                                            //         }
+                                                   
+                                            //    }
+
+                                            //    const statsD = await stats
+
+
+                                             //   const statsDb = await statsD
+
+
+
                                             if (existingRes) {
                         
                         
                                                 //---- Check if index exists ----
                         
-                        
+                                                const statsDb = await Stat.findOne({competition, year})  // await statsD(competition, year)
+
 
                                                 const FoundmatchdayRes = existingRes.result.findIndex(item => item.matchday == matchday);
                                              
@@ -338,17 +384,135 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
                         
                                                       if (String(match.stage) !== "knockout") {
                                                     updateCupStanding(CupStanding, competition, year, match.home, Number(match.homeScore), match.away, Number(match.awayScore), match.group, res )
-                        
+                                                                         
+                                                    console.log(  8088);
+
                                                  
                                                 }
+
+
+
+                                        //        async function updateStat (match, stats) {
+                                                    
+                                        //         if (match.lineup.starting.home.length !== 0) {
+
+
+                                        //             for (let i = 0; i < match.lineup.starting.home.length; i++) {
+                                        //                 const element = match.lineup.starting.home[i];
+    
+                                        //                 const existingPlayer = await Player.findOne({_id: element})        
+                                        //                 const stats = {player: element, team: existingPlayer.teamId, 
+                                                          
+                                        //                   played: 1, goal: 0, assist: 0, yellow: 0, red: 0, motm: 0, potm: 0, }
+                                                
+                                                      
+                                                                            
+                                        //                                   const Foundplayer = statsDb.stats.findIndex(item => item.player == element);
+                                                                        
+                                        //                                   console.log(Foundplayer);
+                                                                          
+                                                            
+                                        //                                 if (Foundplayer == -1) {
+                                                                            
+                                        //                                    statsDb.stats.push(stats)
+                                        //                                 }
+                                                        
+                                        //                                 if (Foundplayer !== -1) {
+                                                                         
+                                        //                                    statsDb.stats[Foundplayer].played = statsDb.stats[Foundplayer].played + 1;                           
+                                                        
+                                        //                                 }
+
+                                                        
+                                        //             }         
+
+                                        //         }
+
+                                        //         if (match.lineup.starting.away.length !== 0) {
+                                        //             for (let i = 0; i < match.lineup.starting.away.length; i++) {
+                                        //                 const element = match.lineup.starting.away[i];
+    
+                                        //              // updatePlayerPlayed(statsDb, element)
+
+                                                     
+                                        //                      const existingPlayer = await Player.findOne({_id: element})        
+                                        //                      const stats = {player: element, team: existingPlayer.teamId, 
+                                                               
+                                        //                        played: 1, goal: 0, assist: 0, yellow: 0, red: 0, motm: 0, potm: 0, }
+                                                     
+                                                           
+                                                                                 
+                                        //                                        const Foundplayer = statsDb.stats.findIndex(item => item.player == element);
+                                                                             
+                                        //                                        console.log(Foundplayer);
+                                                                               
+                                                                 
+                                        //                                      if (Foundplayer == -1) {
+                                                                                 
+                                        //                                         statsDb.stats.push(stats)
+                                        //                                      }
+                                                             
+                                        //                                      if (Foundplayer !== -1) {
+                                                                              
+                                        //                                         statsDb.stats[Foundplayer].played = statsDb.stats[Foundplayer].played + 1;                           
+                                                             
+                                        //                                      }
+                                                                            
+                                                     
+                                        //               console.log( statsDb, 80);
+
+
+                                        //             }   
+
+                                        //         }
+
+                                                
+                                        //         // for (let i = 0; i < match.timeline.length; i++) {
+                                        //         //     const element = match.timeline[i];
+
+                                        //         //     if (element.action == "goal") {
+                                        //         //         updatePlayerGoal(statsDb, element.player.main)
+                                                        
+                                        //         //     if (element.player.assist) {
+                                        //         //         updatePlayerAssist(statsDb, element.player.assist)
+    
+                                        //         //     }
+                                        //         //     } else if (element.action == "red") {
+                                        //         //         updatePlayerRedCard(statsDb, element.player.main)
+
+                                        //         //     } else if (element.action == "yellow") {
+                                        //         //         updatePlayerYellowCard(statsDb, element.player.main)
+
+                                        //         //     } else if (element.action == "substitution") {
+                                        //         //         updatePlayerPlayed(statsDb, element.player.main)
+
+                                        //         //     } else if (element) {
+                                                        
+                                        //         //     }  
+                                                    
+                                        //         // }
+
+
                                 
+
                                 
-                                                   deleteFixture(existing, Foundmatchday, Fixture, id)
-                                
-                                
-                                
+                                        //    //        deleteFixture(existing, Foundmatchday, Fixture, id)
+
+
+                                        //    statsDb.save()
+
+  
+
+                                        //         }
+
+                                                //  console.log( statsDb, 80);
+                                                 
+
+                                                    updateStat(match, statsDb)
+      
                                                 }
                                 
+                                                  // statsDb.save()
                                 
                                                 const save = await existingRes.save();
                         
@@ -390,7 +554,7 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
                                                   
                         
                                                    
-                                                    deleteFixture(existing, Foundmatchday, Fixture, id)
+                                                //    deleteFixture(existing, Foundmatchday, Fixture, id)
                                 
                                         
                                                 return res.status(200).json({
@@ -431,21 +595,14 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
                         if (foundhome == String(userTeam._id)) {
 
                         const timeline = {time, player: {main, assist}, action, team: 'home', }
-                    //    existing.fixture[Foundmatchday].teams[Foundmatch].timeline.push(timeline)
 
 
-                                    // await Fixture.findOneAndUpdate({_id: existing._id}, 
-                                    // { 
-                                    //   "$push": {"fixture.$[day].teams.$[match].timeline": timeline,  } 
-                                    // },
-                                    // { 
-                                    //   "arrayFilters": [
-                                    //     { "day.matchday": matchday },
-                                    //     {"match._id": id}
-    
-                                    //   ]})
 
 
+                        if (action == "goal") {
+                        existing.fixture[Foundmatchday].teams[Foundmatch].homeScore = existing.fixture[Foundmatchday].teams[Foundmatch].homeScore + 1
+
+                        }
 
                             const timelines = existing.fixture[Foundmatchday].teams[Foundmatch].timeline
         
@@ -457,6 +614,14 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
                         } else if (foundaway == String(userTeam._id)) {
 
                             const timeline = {time, player: {main, assist}, action, team: 'away', }
+
+
+
+                            
+                        if (action == "goal") {
+                            existing.fixture[Foundmatchday].teams[Foundmatch].awayScore = existing.fixture[Foundmatchday].teams[Foundmatch].awayScore + 1
+    
+                            }
 
                             const timelines = existing.fixture[Foundmatchday].teams[Foundmatch].timeline
 

@@ -6,7 +6,7 @@ import Styles from "../..//styles/News.module.css"
 import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
-import { Fixture, Result, Table, Tablehead } from "./list/Tournamentlist";
+import { Fixture, PlayerStats, PlayerStatsHead, Result, Table, Tablehead } from "./list/Tournamentlist";
 import News, { Mininews } from "./list/Newslist";
 import { Standing } from "./Hometournament";
 import { TeamList, TeamSquadList } from "./list/Teamviewlist";
@@ -205,7 +205,10 @@ const CompetitionFixtures = ({regionId}) => {
 const CompetitionResults = ({regionId}) => {
     
     const [data, setData] = useState([])
-    const year = 2023 // new Date(2022).getFullYear()
+    const [years, setYears] = useState([])
+
+    
+    const [year, setYear] = useState(0) // new Date(2022).getFullYear()
 
     
 
@@ -220,13 +223,25 @@ const CompetitionResults = ({regionId}) => {
 
     
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/results")
+            fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/results/" + year)
             .then((res) =>  res.json())
             .then((data) => setData(data.data));
+        }, [year]);
+
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getyears/" + regionId + "/result/years")
+            .then((res) =>  res.json())
+            .then((data) => setYears(data.data));
         }, []);
 
 
+        const handleChange = (event) => {
+            const value = event.target.value;
+            setYear( value)
     
+          }
+        
 
 
 
@@ -235,6 +250,22 @@ const CompetitionResults = ({regionId}) => {
         <div className={Style.teamRes}>
 
             <h2 > Latest Results </h2>
+
+       <div className={Style.select} >
+
+
+        <label rel="select" htmlFor="select" > year </label>
+
+          <select id="region" name={"year"} onChange={handleChange} value={year} > 
+          { year ?  null : <option value={0} > select year  </option> }
+
+          {years?.map((props) => (             
+             <option key={props._id} value={props.year} > {props.year}  </option>
+           )   )   }
+
+          </select>
+
+        </div>
 
 
 
@@ -322,8 +353,9 @@ const CompetitionResults = ({regionId}) => {
 const CompetitionTable = ({regionId}) => {
     
     const [data, setData] = useState({})
+    const [years, setYears] = useState([])
 
-    const year = 2022 // new Date(2022).getFullYear()
+    const [year, setYear] = useState(0) // new Date(2022).getFullYear()
 
 
 
@@ -338,11 +370,22 @@ const CompetitionTable = ({regionId}) => {
         fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/standing/" + year)
         .then((res) =>  res.json())
         .then((data) => setData(data.data));
-    }, []);
+    }, [year]);
 
 
     
+    useEffect(() => {
+        fetch(process.env.REACT_APP_API_LINK + "getyears/" + regionId + "/standing/years")
+        .then((res) =>  res.json())
+        .then((data) => setYears(data.data));
+    }, []);
 
+
+    const handleChange = (event) => {
+        const value = event.target.value;
+        setYear( value)
+
+      }
 
 
 
@@ -352,7 +395,19 @@ const CompetitionTable = ({regionId}) => {
             <h2 > Standing</h2>
 
 
+            <div className={Style.select} >
+            <label rel="select" htmlFor="select" > year </label>
 
+          <select id="region" name={"year"} onChange={handleChange} value={year} > 
+          { year ?  null : <option value={0} > select year  </option> }
+
+          {years?.map((props) => (             
+             <option key={props._id} value={props.year} > {props.year}  </option>
+           )   )   }
+
+          </select>
+
+        </div>
 
             { data ? 
 
@@ -434,7 +489,7 @@ const CompetitionTable = ({regionId}) => {
 
 
 
-                </div>  : null
+                </div>  : <h1 > no table availabe</h1>
 
 
 
@@ -465,4 +520,153 @@ const CompetitionTable = ({regionId}) => {
 }
 
 
-export {CompetitionNews, CompetitionFixtures, CompetitionResults, CompetitionTable, }
+
+
+
+
+const CompetitionStats = ({regionId}) => {
+    
+    const [data, setData] = useState({})
+    const [years, setYears] = useState([])
+
+    const [year, setYear] = useState(0) // new Date(2022).getFullYear()
+    const [type, setType] = useState("goal") // new Date(2022).getFullYear()
+
+
+
+
+    // useEffect(() => {
+    //     fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/standing/" + year)
+    //     .then((res) =>  res.json())
+    //     .then((data) => setData(data.data));
+    // }, []);
+
+
+    useEffect(() => {
+        fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/stats/" + type + "/" + year)
+        .then((res) =>  res.json())
+        .then((data) => setData(data.data));
+    }, [year, type]);
+
+
+    
+    useEffect(() => {
+        fetch(process.env.REACT_APP_API_LINK + "getyears/" + regionId + "/stats/years")
+        .then((res) =>  res.json())
+        .then((data) => setYears(data.data));
+    }, []);
+
+
+    const handleChange = (event) => {
+        const value = event.target.value;
+        setYear( value)
+
+      }
+
+      const handleChangeT = (event) => {
+        const value = event.target.value;
+        setType( value)
+
+      }
+
+
+
+    return (
+        <div className={Style.standing}>
+
+            <h2 > Standing</h2>
+
+
+            <div className={Style.select} >
+            <label rel="select" htmlFor="select" > year </label>
+
+          <select id="region" name={"year"} onChange={handleChange}  > 
+          { year ?  null : <option value={0} > select year  </option> }
+
+          {years?.map((props) => (             
+             <option key={props._id} value={props.year} > {props.year}  </option>
+           )   )   }
+
+          </select>
+
+        </div>
+
+
+
+        <div className={Style.select} >
+            <label rel="select" htmlFor="select" > type </label>
+
+          <select id="region" name={"type"} onChange={handleChangeT} defaultValue={"goal"} > 
+          { year ?  null : <option value={0} > select stats type  </option> }
+         
+             <option value={"played"} > played </option>
+             <option value={"goal"} > goal  </option>
+             <option value={"assist"} >  assist   </option>
+             <option value={"yellow"} > yellow  </option>
+             <option value={"red"} > red  </option>
+
+             <option value={"played goal assist yellow red"} > played goal assist yellow red  </option>
+
+      
+
+          </select>
+
+        </div>
+
+            { data ? 
+
+
+                 <div className={Style.table} >
+
+                    <PlayerStatsHead  active={type.slice(0,1)} />
+            
+                    {data.stats?.map((props, pos) => (
+
+                    <PlayerStats
+                    key={pos + 1}
+                     pos={pos + 1}
+                     name={props.player?.name.first + " " + props.player?.name.last}
+                     logo={props.player?.picture?.url}
+
+                      pts={ props?.[type] } 
+                      pl={props?.played} 
+                      
+
+
+                    />
+                    )   )   }
+
+
+
+
+                </div>
+
+
+
+                : <h1 > no table availabe</h1>}
+
+
+
+                    
+
+
+
+         
+
+                {/* <div className={Style.latestV} >
+                    <h2 > Latest Videos </h2>
+
+
+                </div> */}
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
+
+export {CompetitionNews, CompetitionFixtures, CompetitionResults, CompetitionTable, CompetitionStats }

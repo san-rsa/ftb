@@ -8,13 +8,13 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Topic } from "../../components/sub component/list/Newsviewlist";
 import { Overview, TeamFixtures, TeamNews, TeamResults, TeamSquad } from "../../components/sub component/Teamview";
 import Footer from "../../components/sub component/Footer";
-import { CompetitionFixtures, CompetitionNews, CompetitionResults, CompetitionTable } from "../../components/sub component/Competitionview";
+import { CompetitionFixtures, CompetitionNews, CompetitionResults, CompetitionStats, CompetitionTable } from "../../components/sub component/Competitionview";
 
 
 
 
 const Competition = ({})  => {
-    const [mode, setInputs] = useState({news: true, fixtures: false, results: false, table: false, transfer: false, official: false });
+    const [mode, setInputs] = useState({news: true, fixtures: false, stats: false, results: false, table: false, transfer: false, official: false });
 
     const [data, setData] = useState({})
   
@@ -82,7 +82,7 @@ const Competition = ({})  => {
                             <li onClick={handleChange} >Fixtures</li>
                             <li onClick={handleChange}  >Results</li>
                             <li onClick={handleChange}  >Table</li>
-                            {/* <li onClick={handleChange}  >Transfer</li> */}
+                            <li onClick={handleChange}  >Stats</li>
                             {/* <li onClick={handleChange}  >Official</li> */}
         
                         </ul>
@@ -110,6 +110,9 @@ const Competition = ({})  => {
             { mode.results && <CompetitionResults regionId={link}/>}
 
             { mode.table && <CompetitionTable regionId={link}/>}
+
+            { mode.stats && <CompetitionStats regionId={link}/>}
+
 
 
 

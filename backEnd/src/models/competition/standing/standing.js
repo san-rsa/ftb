@@ -10,6 +10,7 @@ const Schema = new mongoose.Schema({
     year : {type: Number  , required: true},
 
 
+    type : {type: String  , default: "league"},
 
 
 

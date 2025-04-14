@@ -17,6 +17,7 @@ const Live = require('../models/competition/live')
 const Player = require('../models/competition/player')
 const Team = require('../models/competition/team')
 const Sub_Region = require('../models/competition/competition-location')
+const Stat = require('../models/competition/stats')
 
 
 
@@ -143,68 +144,6 @@ router.get('/fixtures/year/:id', async (req, res) => {
 
 
 
-router.get('/:link/group-stage/:groupName/:year', async(req, res)=> {
-
-      const {year, link, groupName} = req.params
-     
-      
-       const data = await CupStanding.findOne({competition: link, year}).populate({path: "group.standing", populate: {path: "teams"}})
-  
-       const groups = []
-       
-      
-        if (!data) {
-    
-          const years = year - 1
-    
-          const data = await CupStanding.findOne({competition: link, year : years}).populate({path: "group.standing", populate: {path: "teams"}})
-    
-          const Foundgroup = data.group.findIndex(item => item.group == groupName);    
-              
-            const {group, standing} = data.group[Foundgroup]
-            
-            const stand =  _.orderBy(standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);
-
-            groups.push({group, standing: stand})
-  
-            console.log(stand);
-            
-  
-     
-
-       
-              data.group =  groups
-         
-         
-              res.status(200).json({
-                 success: true,
-                data: data
-               })
-    
-    
-          
-        } else {  
-  
-              const Foundgroup = data.group.findIndex(item => item.group == groupName);    
-              
-              const {group, standing} = data.group[Foundgroup]
-              
-              const stand =  _.orderBy(standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);
-  
-              groups.push({group, standing: stand})
-              
-  
-  
-              data.group =  groups
-     
-       
-       
-            res.status(200).json({
-               success: true,
-              data: data
-             })
-        }
-})
   
 
 router.get('/:link/fixture/:id/', async(req, res)=> {
@@ -390,122 +329,40 @@ router.get('/:link/result/:id/:year', async(req, res)=> {
 })
 
 
-router.get('/:link/stat/:player/:year', async(req, res)=> {
+router.get('/:link/stats/player/:id/:year', async(req, res)=> {
 
 
-                  const {link, year, player} = req.params
-                 
-                  
-                   const data = await Stat.findOne({competition: link, year}).populate({path: "stats", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
-                 
-                   const stat = [];
-          
-                 
-                   if (!data) {
-                    const years = year -1 ;
-                 
-                     const data = await Stat.findOne({competition: link, year: years}).populate({path: "stats", populate: {path: "home"} }).populate({path: "fixture.teams", populate: {path: "away"}})
-                 
-                     const Foundplayer = data.stats.findIndex(item => item.player == player);
-                          
-                     stat.push(data.stats[Foundplayer])
-          
-          
-                     data.stats = stat
-                 
-                         
-                     return  res.status(200).json({
-                       success: true,
-                      data: data
-                     })
-                  
-                 
-                   } else {
-          
-                        const Foundplayer = data.stats.findIndex(item => item.player == player);
-                          
-                        stat.push(data.stats[Foundplayer])
-          
-          
-          
-          
-                     data.stats = stat
-                   }
-                    
-                       return  res.status(200).json({
-                           success: true,
-                          data: data
-                         })
-                 
-})
+  const {link, year, id } = req.params
+
+    const data = await Stat.findOne({competition: link, year}) ? await Stat.findOne({competition: link, year}) :  await Stat.findOne({ competition: link, }).sort({year: 'desc'})
+ 
+       const name = id.split(" ");
+    
+       const fullname = {first: name[0], last: name[1] }
+     
+       const player = await Player.findOne({name: fullname,})
 
 
-router.get('/:link/stats/:type/:year', async(req, res)=> {
+       const found = data.stats.findIndex(item => item.player == String(player._id) );
 
-
-              const {link, year, type} = req.params
-             
-              
-               const data = await Stat.findOne({competition: link, year}).populate({path: "stats", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
-             
-               const stat = [];
-      
-             
-               if (!data) {
-                const years = year -1 ;
-             
-                 const data = await Stat.findOne({competition: link, year: years}).populate({path: "stats", populate: {path: "home"} }).populate({path: "fixture.teams", populate: {path: "away"}})
-             
-                 const sort = _.sortBy(data.stats, [type]);
-      
-                  for (let i = 0; i < sort.length; i++) {
-                    const filter = sort[i][type];
-      
-                    if (filter !== 0) {
-                      stat.push({player: sort[i].player, team: sort[i].team, stat: filter})
-                    }
-                    
-                  }
-      
-      
-      
-      
-                 data.stats = stat
-             
-                     
-                 return  res.status(200).json({
-                   success: true,
-                  data: data
-                 })
-              
-             
-               } else {
-                    const sort = _.sortBy(data.fixture, [type]);
-      
-                    
-      
-                    
-                  for (let i = 0; i < sort.length; i++) {
-                    const filter = sort[i][type];
-      
-                    if (filter !== 0) {
-                      stat.push({player: sort[i].player, team: sort[i].team, stat: filter})
-                    }
-                    
-                  }
-      
-      
-      
-      
-                 data.stats = stat
-               }
+       if (found == -1) {
                 
-                   return  res.status(200).json({
-                       success: true,
-                      data: data
-                     })
-             
+       return  res.status(404).json({
+        success: false,
+       data: "no stat found"
+      })
+       } else if (found !== -1) {
+        
+                
+       return  res.status(200).json({
+        success: true,
+       data: data.stats[found]
+      })
+       }
+
+ 
 })
+
 
 
 router.get('/:link/stats/:team/:type/:year', async(req, res)=> {

@@ -279,6 +279,7 @@ const admindel = require('./src/routes/admin/delete');
 const adminupdate = require('./src/routes/admin/update');
 const getaccess = require('./src/routes/getaccess');
 const getall = require('./src/routes/getall');
+const getyear = require('./src/routes/getyear');
 const getone = require('./src/routes/getone');
 const add = require('./src/routes/add');
 const edit = require('./src/routes/edit');
@@ -307,6 +308,7 @@ app.use('/admin/delete', admindel)
 app.use('/admin/update', adminupdate)
 app.use("/getaccess", getaccess)
 app.use("/getall/", getall)
+app.use("/getyear/", getyear)
 app.use("/getone", getone)
 app.use("/add", add)
 app.use("/edit", edit)
