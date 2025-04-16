@@ -1,6 +1,6 @@
 .footer {
     text-align: left;
-    background-color: rgb(151, 21, 168);
+    background-color: rgba(255, 217, 0, 0.5);
     padding: 0 10px;
 }
 
@@ -16,7 +16,7 @@
 }
 .social {
     display: inline-flex;
-    background-color:rgb(201, 172, 12);
+    background-color:#159936;
     padding: 5px 90px 5px 15px;
     margin: 15px 10px 15px 0;
     
@@ -24,8 +24,8 @@
 
 
 .social svg {
-    color: rgb(255, 238, 0);
-    background-color: rgb(192, 13, 177);
+    color: rgb(0, 0, 0);
+    background-color: gold;
     padding: 5px;
     border-radius: 50%;
 
@@ -34,6 +34,7 @@
 .social p {
   margin: 5px auto;  
   font-size: small;
+  color: gold;
 }
 
 .social h5 {

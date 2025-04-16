@@ -28,7 +28,7 @@ const Sub_Region = require('../models/competition/competition-location')
 
 
 
-// user
+// user role
 
 router.get('/admin', auth, role(process.env.ADMIN), async(req, res)=> {
 
@@ -103,7 +103,7 @@ router.get('/user/team/all-players', auth, async(req, res)=> {
 
   } else if (team) {
 
-      const data = await Player.find({teamId: team.name}).sort("name")
+      const data = await Player.find({teamId: team.name}).sort("name").select("name picture")
     
 
     if (!data) {
@@ -149,7 +149,7 @@ router.get('/latest/fixture', auth, async(req, res)=> {
       return res.status(404).json({ error: 'no year found' });
     } 
 
-     const db = await Fixture.find({year: year.year}).sort('name').populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
+     const db = await Fixture.find({year: year.year}).sort('name').populate("fixture.teams.home", "name logo" ).populate("fixture.teams.away", "name logo")
 
 
       
@@ -190,6 +190,64 @@ router.get('/latest/fixture', auth, async(req, res)=> {
 
 
 
+router.get('/latest/result', auth, async(req, res)=> {
+
+        
+  const team = await  Team.findOne({userId: req.userId})
+
+
+  if (!team) {
+    return res.status(404).json({ error: 'no team found' });
+  }  
+
+
+
+const data = []
+
+ const year = await Result.findOne().sort({year: 'desc'})
+
+ if (!year) {
+  return res.status(404).json({ error: 'no year found' });
+} 
+
+ const db = await Result.find({year: year.year}).sort('name').populate("result.teams.home", "name logo").populate("result.teams.away", "name logo")
+
+
+  
+  for (let x = 0; x < db.length; x++) {
+
+    for (let i = 0; i < db[x].result.length; i++) {
+
+      const Foundmatch = db[x].result[i].teams.findIndex(item => item.home._id == String(team._id) || item.away._id == String(team._id));
+
+      if (Foundmatch !== -1 ) {
+
+        data.push({
+          regionId: db[x].competition,
+          matchday: i + 1,
+          match: db[x].result[i].teams[Foundmatch]
+        })
+      }
+
+    }
+
+  }
+
+
+  const latest = _.orderBy(data, [item =>  item.match.day.date, item =>  item.match.day.time, ],["desc", "desc"]);
+
+  
+
+  
+
+
+ 
+ 
+      res.status(200).json({
+         success: true,
+        data: latest[0]
+       })
+})
 
 
 
@@ -200,7 +258,7 @@ router.get('/latest/fixture', auth, async(req, res)=> {
 
 router.get('/user', auth, async(req, res)=> {
 
-  const user = await User.find({role: "user"})
+  const user = await User.find({role: "user"}).select("-password")
   if (user) {
        return  res.status(200).json({
           success: true,
@@ -219,7 +277,7 @@ router.get('/user', auth, async(req, res)=> {
 
 router.get('/user/team/:id', auth, async(req, res)=> {
 
-  const user = await User.find({teamId: req.params.id})
+  const user = await User.find({teamId: req.params.id}).select("-password")
   if (user) {
        return  res.status(200).json({
           success: true,
@@ -271,11 +329,14 @@ const data = []
 
  const year = await Fixture.findOne().sort({year: 'desc'})
 
+
+ 
+
  if (!year) {
   return res.status(404).json({ error: 'no year found' });
 } 
 
- const db = await Fixture.find({year: year.year}).sort('name').populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
+ const db = await Fixture.find({year: year.year}).sort('name').populate("fixture.teams.home", "name logo" ).populate("fixture.teams.away", "name logo")
 
 
   
@@ -329,28 +390,28 @@ router.get('/latest/result/team/:id', async(req, res)=> {
 
 const data = []
 
- const year = await Fixture.findOne().sort({year: 'desc'})
+ const year = await Result.findOne().sort({year: 'desc'})
 
  if (!year) {
   return res.status(404).json({ error: 'no year found' });
 } 
 
- const db = await Fixture.find({year: year.year}).sort('name').populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
+ const db = await Result.find({year: year.year}).sort('name').populate("result.teams.home", "name logo").populate("result.teams.away", "name logo")
 
 
   
   for (let x = 0; x < db.length; x++) {
 
-    for (let i = 0; i < db[x].fixture.length; i++) {
+    for (let i = 0; i < db[x].result.length; i++) {
 
-      const Foundmatch = db[x].fixture[i].teams.findIndex(item => item.home._id == String(team._id) || item.away._id == String(team._id));
+      const Foundmatch = db[x].result[i].teams.findIndex(item => item.home._id == String(team._id) || item.away._id == String(team._id));
 
       if (Foundmatch !== -1 ) {
 
         data.push({
           regionId: db[x].competition,
           matchday: i + 1,
-          match: db[x].fixture[i].teams[Foundmatch]
+          match: db[x].result[i].teams[Foundmatch]
         })
       }
 
@@ -359,7 +420,7 @@ const data = []
   }
 
 
-  const latest = _.orderBy(data, [item =>  item.match.day.date, item =>  item.match.day.time, ],);
+  const latest = _.orderBy(data, [item =>  item.match.day.date, item =>  item.match.day.time, ],["desc", "desc"]);
 
   
 

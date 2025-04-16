@@ -6,16 +6,19 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Topic } from "../components/sub component/list/Newsviewlist";
-import { Overview, TeamAdmin, TeamFixtures, TeamNews, TeamResults, TeamSquad } from "../components/sub component/Teamview";
+import { Overview, TeamAdmin, TeamFixtures, TeamNews, TeamPlayerStats, TeamResults, TeamSquad } from "../components/sub component/Teamview";
 import Footer from "../components/sub component/Footer";
 
 
 
 
 const Team = ({}) => {
-    const [mode, setInputs] = useState({overview: true, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false, admin: false });
+    const [mode, setInputs] = useState({overview: true, stats: false, news: false, fixtures: false, results: false, squad: false, transfer: false, official: false, admin: false });
 
     const [data, setData] = useState({})
+
+    const [user, setUser] = useState({admin: false, team: false, })
+    
 
     
     const title = useParams().id
@@ -29,7 +32,22 @@ const Team = ({}) => {
             fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + link)
             .then((res) =>  res.json())
             .then((data) => setData(data));
-        }, []);
+
+
+            fetch(process.env.REACT_APP_API_LINK + 'getaccess/team', {
+                method: 'GET',
+                credentials: "include",
+                headers: {'Content-Type': 'application/json'},
+                 }).then((res) => {
+                if (res.status === 200) {
+                    setUser({team: true})
+    
+                } 
+
+
+            })
+
+        }, [link]);
 
 
 
@@ -39,13 +57,12 @@ const Team = ({}) => {
         const handleChange = (event) => {
             const name = event.target.innerHTML.toLowerCase();
     
-            setInputs({overview: false, news: false, fixtures: false, results: false, squad: false, admin: false, transfer: false, official: false });
+            setInputs({overview: false, stats: false, news: false, fixtures: false, results: false, squad: false, admin: false, transfer: false, official: false });
 
             
             setInputs(values => ({...values, [name]: true}))
           }
         
-          console.log(mode);
     
     
     
@@ -152,9 +169,9 @@ const Team = ({}) => {
                         <li onClick={handleChange} >Fixtures</li>
                         <li onClick={handleChange}  >Results</li>
                         <li onClick={handleChange}  >Squad</li>
-                        {/* <li onClick={handleChange}  >Transfer</li> */}
+                        <li onClick={handleChange}  >Stats</li>
                         {/* <li onClick={handleChange}  >Official</li> */}
-                        <li onClick={handleChange}  >Admin</li>
+                        { (user.admin || user.team ) ? <li onClick={handleChange}  >Admin</li> : null }
 
     
                     </ul>
@@ -183,7 +200,11 @@ const Team = ({}) => {
 
             { mode.squad && <TeamSquad id={link} />}
 
-            { mode.admin && <TeamAdmin id={link} />}
+            { mode.stats && <TeamPlayerStats id={link} />}
+
+
+            { mode.admin ? user.team ? <TeamAdmin  /> : null : null }
+            
 
 
 

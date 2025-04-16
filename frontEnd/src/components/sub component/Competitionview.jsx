@@ -19,21 +19,11 @@ const CompetitionNews = ({regionId}) => {
     
     const [news, setnews] = useState([])
 
-
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
-
-    
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news/region/" + link)
+            fetch(process.env.REACT_APP_API_LINK + "getall/news/region/" + regionId)
             .then((res) =>  res.json())
             .then((data) => setnews(data.data));
         }, []);
-
-
-    
-
 
 
 
@@ -88,9 +78,7 @@ const CompetitionNews = ({regionId}) => {
 
 const CompetitionFixtures = ({regionId}) => {
     
-    const [data, setData] = useState([])
-    const year = 2023 // new Date(2022).getFullYear()
-
+    const [data, setData] = useState({})
     
     const [showAll, setShowAll] = useState(false);
 
@@ -99,6 +87,8 @@ const CompetitionFixtures = ({regionId}) => {
     }
   
 
+    
+    console.log(data);
     
 
     
@@ -140,12 +130,12 @@ const CompetitionFixtures = ({regionId}) => {
                             <Fixture 
                              Hname={props.home?.name}
                              Hlogo={props.home?.logo[0].url}
-                             Hscore={props.home?.homeScore}
+                             Hscore={props.homeScore}
 
                              date={props.day?.date.slice(0, 10).replaceAll('-','/')} time={props.day?.time}
                              matchday={p.matchday}
 
-                             Ascore={props.away?.awayScore}
+                             Ascore={props.awayScore}
                              Alogo={props.away?.logo[0].url}
                              Aname={props.away?.name}
 
@@ -189,7 +179,7 @@ const CompetitionFixtures = ({regionId}) => {
  </div>
 
 
-              : <h1 > no fixtures availabe</h1>}
+             :  <h1 > no fixtures availabe</h1> }
 
 
 

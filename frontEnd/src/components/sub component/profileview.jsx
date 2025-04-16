@@ -46,6 +46,16 @@ const Overview = ({info, user }) => {
             })
                 .then((res) =>  res.json())
                 .then((data) => setFixture(data.data));
+
+
+
+                fetch(process.env.REACT_APP_API_LINK + "getaccess/latest/result/",  {
+                    method: 'GET',
+                    credentials: "include",
+                    headers: {'Content-Type': 'application/json'}, 
+            })
+                .then((res) =>  res.json())
+                .then((data) => setResult(data.data));
             }
         }, [user]);        
         
@@ -96,40 +106,41 @@ const Overview = ({info, user }) => {
 
                     <div className={Style.matches}>
 
-        <div className={Style.result} >
-
+        {result?.match &&         <div className={Style.result}>
+                
+        
             <h2 > Latest Results </h2>
 
 
             <Result
-                        // Hname={props.home?.name}
-                        // Hlogo={props.home?.logo[0].url}
-                        // Hscore={props.home.homeScore}
+                Hname={result?.match?.home?.name}
+                Hlogo={result?.match?.home?.logo[0]?.url}
+                Hscore={result?.match?.homeScore}
 
-                        // date={props.time.date}
-                        // time={props.time.time}
+                date={result?.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={result?.match?.day?.time}
 
-                        // Ascore={props.away.awayScore}
-                        // Alogo={props.away?.logo[0].url}
-                        // Aname={props.away?.name}
+                matchday={result?.matchday}
+
+                Ascore={result?.match?.awayScore}
+                Alogo={result?.match?.away?.logo[0]?.url}
+                Aname={result?.match?.away?.name}
+
+               live={result?.match?.live} start={result?.match?.start} 
+               half={result?.match?.half} minutes={result?.match?.time.now}
 
 
-
-                        Hname={'kkkkk'}
-                        Hlogo={'00'}
-                        Hscore={3}
-
-                        date={'2/22/22'}
-                        time={'4pm'}
-
-                        Ascore={2}
-                        Alogo={1}
-                        Aname={'dddd'}
+               _id={result?.match?._id}
+               regionId={result?.regionId}
 
                         
                         
                         />    
-        </div>
+    
+        
+        
+        
+        
+                </div> }
                 
 
             
@@ -143,13 +154,13 @@ const Overview = ({info, user }) => {
                  
                 Hname={fixture.match?.home?.name}
                 Hlogo={fixture.match?.home?.logo[0]?.url}
-                Hscore={fixture.match?.home?.homeScore}
+                Hscore={fixture.match?.homeScore}
 
                 date={fixture.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={fixture.match?.day?.time}
 
                 matchday={fixture.matchday}
 
-                Ascore={fixture.match.away?.awayScore}
+                Ascore={fixture.match?.awayScore}
                 Alogo={fixture.match.away?.logo[0]?.url}
                 Aname={fixture.match.away?.name}
 

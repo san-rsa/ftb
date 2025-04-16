@@ -6,7 +6,7 @@ import Styles from "../..//styles/News.module.css"
 import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart, faPlus, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
-import { Fixture, Result, Table, Tablehead } from "./list/Tournamentlist";
+import { Fixture, PlayerStats, PlayerStatsHead, Result, Table, Tablehead } from "./list/Tournamentlist";
 import News, { Mininews } from "./list/Newslist";
 import { Standing } from "./Hometournament";
 import { TeamList, TeamSquadList, TeamSquadListWithPosition } from "./list/Teamviewlist";
@@ -21,9 +21,11 @@ const Overview = ({id}) => {
     const [otherTeams, setotherTeams] = useState([])
     const [stand, setStand] = useState([])
     const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
-
+    const [fixture, setfixture] = useState({})
+    const [result, setResult] = useState({})
+    const [standing, setStanding] = useState({})
+    // const [data, setData] = useState({})
+    // const [data, setData] = useState({})
     
 
 
@@ -34,36 +36,33 @@ const Overview = ({id}) => {
     // }, []);
 
 
-    
 
-    
+
         useEffect(() => {
             fetch(process.env.REACT_APP_API_LINK + "getall/news/team/" + id)
             .then((res) =>  res.json())
             .then((data) => setnews(data.data));
-        }, []);
 
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
+            fetch(process.env.REACT_APP_API_LINK + "getaccess/latest/result/team/" + id)
             .then((res) =>  res.json())
-            .then((data) => setotherTeams(data.data));
+            .then((data) => setResult(data.data));
 
 
-            fetch(process.env.REACT_APP_API_LINK + "getaccess/teams")
+            fetch(process.env.REACT_APP_API_LINK + "getaccess/latest/fixture/team/" + id)
             .then((res) =>  res.json())
-            .then((data) => setotherTeams(data.data));
-
-            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
-            .then((res) =>  res.json())
-            .then((data) => setotherTeams(data.data));
+            .then((data) => setfixture(data.data));
 
             fetch(process.env.REACT_APP_API_LINK + "getall/teams")
             .then((res) =>  res.json())
             .then((data) => setotherTeams(data.data));
 
+            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
+            .then((res) =>  res.json())
+            .then((data) => setotherTeams(data.data));
 
 
-        }, []);
+
+        }, [id]);
     
 
 
@@ -90,89 +89,88 @@ const Overview = ({id}) => {
 
                     <div className={Style.matches}>
 
-        <div className={Style.result} >
 
+
+                    
+        {result?.match &&         <div className={Style.result}>
+                
+        
             <h2 > Latest Results </h2>
 
 
             <Result
-                        // Hname={props.home?.name}
-                        // Hlogo={props.home?.logo[0].url}
-                        // Hscore={props.home.homeScore}
+                Hname={result?.match?.home?.name}
+                Hlogo={result?.match?.home?.logo[0]?.url}
+                Hscore={result?.match?.homeScore}
 
-                        // date={props.time.date}
-                        // time={props.time.time}
+                date={result?.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={result?.match?.day?.time}
 
-                        // Ascore={props.away.awayScore}
-                        // Alogo={props.away?.logo[0].url}
-                        // Aname={props.away?.name}
+                matchday={result?.matchday}
+
+                Ascore={result?.match?.awayScore}
+                Alogo={result?.match?.away?.logo[0]?.url}
+                Aname={result?.match?.away?.name}
+
+               live={result?.match?.live} start={result?.match?.start} 
+               half={result?.match?.half} minutes={result?.match?.time.now}
 
 
-
-                        Hname={'kkkkk'}
-                        Hlogo={'00'}
-                        Hscore={3}
-
-                        date={'2/22/22'}
-                        time={'4pm'}
-
-                        Ascore={2}
-                        Alogo={1}
-                        Aname={'dddd'}
+               _id={result?.match?._id}
+               regionId={result?.regionId}
 
                         
                         
                         />    
-        </div>
+    
+        
+        
+        
+        
+                </div> }
                 
 
             
-        <div className={Style.fixture}>
+            
+            {fixture?.match &&         <div className={Style.fixture}>
 
             <h2 > Next Match </h2>
 
 
             <Fixture 
-                // Hname={props.home?.name}
-                // Hlogo={props.home?.logo[0].url}
-                // Hscore={props.home.homeScore}
 
-                // date={props.time.date}
-                // time={props.time.time}
+                 
+                Hname={fixture.match?.home?.name}
+                Hlogo={fixture.match?.home?.logo[0]?.url}
+                Hscore={fixture.match?.homeScore}
 
-                // Ascore={props.away.awayScore}
-                // Alogo={props.away?.logo[0].url}
-                // Aname={props.away?.name}
+                date={fixture.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={fixture.match?.day?.time}
+
+                matchday={fixture.matchday}
+
+                Ascore={fixture.match?.awayScore}
+                Alogo={fixture.match.away?.logo[0]?.url}
+                Aname={fixture.match.away?.name}
+
+               live={fixture.match?.live} start={fixture.match?.start} 
+               half={fixture.match?.half} minutes={fixture.match?.time.now}
 
 
-
-                Hname={'kkkkk'}
-                Hlogo={'00'}
-                Hscore={3}
-
-                date={'2/22/22'}
-                time={'4pm'}
-
-                Ascore={2}
-                Alogo={1}
-                Aname={'dddd'}
+               _id={fixture.match._id}
+               regionId={fixture.regionId}
 
             />  
 
 
 
 
-
-
-
-        </div>
+        </div> }
 
 
         </div>
 
 
 
-                <div className={Style.standing} >
+                {/* <div className={Style.standing} >
                     <h2 > Standing</h2>
 
 
@@ -200,7 +198,7 @@ const Overview = ({id}) => {
 
                 )   )   }
 
-                </div>
+                </div> */}
 
 
                 {/* <div className={Style.form} >
@@ -249,7 +247,7 @@ const Overview = ({id}) => {
                         <div className={Style.otherTeams} >
                         <h2 > Other teams</h2>
 
-                        {otherTeams.slice(1, 5).map((project) => (
+                        {otherTeams.filter(item => !id.includes(item.name)).slice(1, 5)?.map((project) => (
 
                             <div className={Style.perone} key={project._id}> 
 
@@ -276,12 +274,6 @@ const Overview = ({id}) => {
 const TeamNews = ({id}) => {
     
     const [news, setnews] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-
-
 
     
         useEffect(() => {
@@ -303,7 +295,12 @@ const TeamNews = ({id}) => {
 
 
 
-                    <div className={Style.top} >
+        {      news &&              
+
+
+
+            <div >
+                            <div className={Style.top} >
                     {news.slice(0, 1).map((project) => (
 
 
@@ -335,6 +332,12 @@ const TeamNews = ({id}) => {
 
 
                         )   )   }
+            </div>
+                    
+                    
+                    
+                    
+                    }
                     
 
 
@@ -361,26 +364,13 @@ const TeamNews = ({id}) => {
 
 const TeamFixtures = ({id}) => {
     
-    const [fixtures, setfixtures] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
+    const [fixture, setfixtures] = useState([])
+  
 
-    const year = 2022 // new Date(2022).getFullYear()
-
-    
-
-    
-
-
-    
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
 
     
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+            fetch(process.env.REACT_APP_API_LINK + "getall/team/" + id + "/fixtures")
             .then((res) =>  res.json())
             .then((data) => setfixtures(data.data));
         }, []);
@@ -397,31 +387,36 @@ const TeamFixtures = ({id}) => {
             <h2 > Next Fixtures </h2>
 
 
+            {fixture &&         
+            
+                                <div className={Style.fix} >
 
-                    <div className={Style.fix} >
-
-                    {fixtures.slice(0, 3).map((props) => (
+                    {fixture?.map((props) => (
 
                                         
         <div className={Style.fixture}>
 
-                        <Fixture 
-                             Hname={props.home?.name}
-                             Hlogo={props.home?.logo[0].url}
-                             Hscore={props.home?.homeScore}
+                            <Fixture 
+                             Hname={props.match?.home?.name}
+                             Hlogo={props.match?.home?.logo[0].url}
+                             Hscore={props.match?.homeScore}
 
-                             date={props.day?.date} time={props.day?.time}
+                             date={props.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={props.match?.day?.time}
+                             matchday={props.matchday}
 
-                             Ascore={props.away?.awayScore}
-                             Alogo={props.away?.logo[0].url}
-                             Aname={props.away?.name}
+                             Ascore={props.match?.awayScore}
+                             Alogo={props.match?.away?.logo[0].url}
+                             Aname={props.match?.away?.name}
 
-                            live={props?.live} start={props?.start} 
-                            half={props?.half} minutes={props?.time?.now}
+                            live={props.match?.live} start={props.match?.start} 
+                            half={props.match?.half} minutes={props.match?.time?.now}
 
 
-                            _id={props._id}
-                            regionId={data.competition}
+                            _id={props.match?._id}
+                            regionId={props.regionId}
+
+
+
 
 
                             />  
@@ -437,6 +432,11 @@ const TeamFixtures = ({id}) => {
 
                     )   )   }
                     </div>
+            
+            }
+
+
+
                     
 
 
@@ -463,12 +463,9 @@ const TeamFixtures = ({id}) => {
 
 const TeamResults = ({id}) => {
     
-    const [fixtures, setfixtures] = useState([])
-    const [otherTeams, setotherTeams] = useState([])
-    const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
+    const [results, setResults] = useState([])
+    const [year, setYear] = useState(0) // new Date(2022).getFullYear()
+    const [years, setYears] = useState([])
 
     
 
@@ -476,21 +473,29 @@ const TeamResults = ({id}) => {
 
 
     
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
-
-    
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+    useEffect(() => {
+        if (year) {
+            fetch(process.env.REACT_APP_API_LINK + "getall/team/" + id + "/results/" + year)
             .then((res) =>  res.json())
-            .then((data) => setfixtures(data.data));
-        }, []);
+            .then((data) => setResults(data.data));
+        }
+    }, [year]);
 
 
     
+            useEffect(() => {
+                fetch(process.env.REACT_APP_API_LINK + "getyear/result/years")
+                .then((res) =>  res.json())
+                .then((data) => { return (setYears(data.data), setYear(data.data[0])
+        )}     );
+            }, []);
 
 
+            const handleChange = (event) => {
+                const value = event.target.value;
+                setYear( value)
+        
+              }
 
 
     return (
@@ -499,36 +504,60 @@ const TeamResults = ({id}) => {
             <h2 > Results </h2>
 
 
+       <div className={Style.select} >
 
-                    <div className={Style.res} >
 
-                    {fixtures.slice(0, 3).map((props) => (
+        <label rel="select" htmlFor="select" > year </label>
+
+          <select id="region" name={"year"} onChange={handleChange} value={year} > 
+          { year ?  null : <option value={0} > select year  </option> }
+
+          {years?.map((props) => (             
+             <option key={props._id} value={props} > {props}  </option>
+           )   )   }
+
+          </select>
+
+        </div>
+
+
+        
+
+
+
+                     {results &&         
+            
+                                <div className={Style.res} >
+
+                    {results?.map((props) => (
 
                                         
-        <div className={Style.result}>
-                <Result 
-                Hname={props.home?.name}
-                Hlogo={props.home?.logo[0].url}
-                Hscore={props.home?.homeScore}
+        <div className={Style.rresult}>
 
-                date={props.day?.date} time={props.day?.time}
+                            <Result 
+                             Hname={props.match?.home?.name}
+                             Hlogo={props.match?.home?.logo[0].url}
+                             Hscore={props.match?.homeScore}
 
-                Ascore={props.away?.awayScore}
-                Alogo={props.away?.logo[0].url}
-                Aname={props.away?.name}
+                             date={props.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={props.match?.day?.time}
+                             matchday={props.matchday}
 
-                live={props?.live} start={props?.start} 
-                half={props?.half} minutes={props?.time?.now}
+                             Ascore={props.match?.awayScore}
+                             Alogo={props.match?.away?.logo[0].url}
+                             Aname={props.match?.away?.name}
 
-
-                _id={props._id}
-                regionId={data.competition}
+                            live={props.match?.live} start={props.match?.start} 
+                            half={props.match?.half} minutes={props.match?.time?.now}
 
 
+                            _id={props.match?._id}
+                            regionId={props.regionId}
 
 
 
-                /> 
+
+
+                            />  
 
 
 
@@ -541,11 +570,8 @@ const TeamResults = ({id}) => {
 
                     )   )   }
                     </div>
-                    
-
-
-
-         
+            
+            }
 
                 {/* <div className={Style.latestV} >
                     <h2 > Latest Videos </h2>
@@ -734,4 +760,186 @@ const TeamAdmin = ({}) => {
 }
 
 
-export {Overview, TeamNews, TeamFixtures, TeamResults, TeamSquad, TeamAdmin }
+
+
+
+
+
+
+
+
+
+
+
+const TeamPlayerStats = ({id}) => {
+    
+    const [data, setData] = useState({})
+    const [years, setYears] = useState([])
+
+    const [query, setQuery] = useState({type: "goal", year: 0}) // new Date(2022).getFullYear()
+
+    const [regions, setRegions] = useState([]) // new Date(2022).getFullYear()
+
+
+
+
+    // useEffect(() => {
+    //     fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/standing/" + year)
+    //     .then((res) =>  res.json())
+    //     .then((data) => setData(data.data));
+    // }, []);
+
+    console.log(query, regions[0]);
+    
+
+    useEffect(() => {
+        if (query.region) {
+                    fetch(process.env.REACT_APP_API_LINK + "getall/" + query.region + "/stats/team/"+ id +"/" + query.type + "/" + query.year)
+                    .then((res) =>  res.json())
+                    .then((data) => setData(data.data));
+        }
+    }, [query.region, query.year, query.type]);
+
+
+    
+    useEffect(() => {
+        if (query.region) {
+            fetch(process.env.REACT_APP_API_LINK + "getyear/" + query.region + "/stats/years")
+            .then((res) =>  res.json())
+            .then((data) => { return (setYears(data.data), setQuery(values => ({...values, year: data.data[0].year}))
+        )}     );
+        }
+    }, [query.region]);
+
+    useEffect(() => {
+        fetch(process.env.REACT_APP_API_LINK + "getyear/getregions/team/" + id )
+        .then((res) =>  res.json())
+        .then((data) =>  { return ( setRegions(data.data), setQuery(values => ({...values, region: data.data[0]}))
+    )}     );
+    }, []);
+
+
+    const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setQuery(values => ({...values, [name]: value}))
+
+      }
+
+
+
+
+
+    return (
+        <div className={Style.standing}>
+
+            <h2 > Stats</h2>
+
+
+            <div className={Style.select} >
+            <label rel="select" htmlFor="select" > region </label>
+
+          <select id="region" name={"region"} onChange={handleChange} value={query.region} > 
+          { query.region ?  null : <option value={0} > select region  </option> }
+
+          {regions?.map((props) => (             
+             <option key={props} value={props} > {props}  </option>
+           )   )   }
+
+          </select>
+
+        </div>
+
+
+            <div className={Style.select} >
+            <label rel="select" htmlFor="select" > year </label>
+
+          <select id="region" name={"year"} onChange={handleChange}value={query.year} > 
+          { query.year ?  null : <option value={0} > select year  </option> }
+
+          {years?.map((props) => (             
+             <option key={props._id} value={props.year} > {props.year}  </option>
+           )   )   }
+
+          </select>
+
+        </div>
+
+
+
+        <div className={Style.select} >
+            <label rel="select" htmlFor="select" > type </label>
+
+          <select id="region" name={"type"} onChange={handleChange} defaultValue={query.type} > 
+          { query.type ?  null : <option value={0} > select stats type  </option> }
+         
+             <option value={"played"} > played </option>
+             <option value={"goal"} > goal  </option>
+             <option value={"assist"} >  assist   </option>
+             <option value={"yellow"} > yellow  </option>
+             <option value={"red"} > red  </option>
+
+      
+
+          </select>
+
+        </div>
+
+            { data ? 
+
+
+                 <div className={Style.table} >
+
+                    <PlayerStatsHead  active={query.type?.slice(0,1)} />
+            
+                    {data.stats?.map((props, pos) => (
+
+                    <PlayerStats
+                    key={pos + 1}
+                     pos={pos + 1}
+                     name={props.player?.name.first + " " + props.player?.name.last}
+                     logo={props.player?.picture?.url}
+
+                      pts={ props?.[query.type] } 
+                      pl={props?.played} 
+                      
+
+
+                    />
+                    )   )   }
+
+
+
+
+                </div>
+
+
+
+                : <h1 > no table availabe</h1>}
+
+
+
+                    
+
+
+
+         
+
+                {/* <div className={Style.latestV} >
+                    <h2 > Latest Videos </h2>
+
+
+                </div> */}
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
+
+
+export {Overview, TeamNews, TeamFixtures, TeamResults, TeamSquad, TeamAdmin, TeamPlayerStats  }

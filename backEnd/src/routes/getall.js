@@ -32,22 +32,41 @@ const Sub_Region = require('../models/competition/competition-location')
 
 router.get('/banner', async(req, res)=> {
 
-const banner = await Banner.find().sort([['updatedAt', 'desc']]);
-     res.status(200).json({
-        success: true,
-       data: banner
-      })
+const data = await Banner.find().sort([['updatedAt', 'desc']]);
+  if (data) {
+
+    return  res.status(200).json({
+     success: true,
+    data: data
+   })
+  }
+
+  else {
+    return  res.status(404).json({
+    success: false,
+    data: "not found"
+    })
+  }
 })
 
 
 router.get('/codes-of-conduct', async(req, res)=> {
 
   const data = await Codeofconduct.find({}) //.sort("title")
-  
-       res.status(200).json({
-          success: true,
-         data: data
-        })
+  if (data) {
+
+    return  res.status(200).json({
+     success: true,
+    data: data
+   })
+  }
+
+  else {
+    return  res.status(404).json({
+    success: false,
+    data: "not found"
+    })
+  }
 })
 
 
@@ -57,10 +76,20 @@ router.get('/competition', async(req, res)=> {
 
     const data = await Competition.find().sort("name")
     
-         res.status(200).json({
-            success: true,
-           data: data
-          })
+    if (data) {
+
+      return  res.status(200).json({
+       success: true,
+      data: data
+     })
+    }
+  
+    else {
+      return  res.status(404).json({
+      success: false,
+      data: "not found"
+      })
+    }
 })
 
 
@@ -68,10 +97,20 @@ router.get('/sub-competition', async(req, res)=> {  // all
 
       const data = await Sub_Region.find().sort("name")
       
-           res.status(200).json({
-              success: true,
-             data: data
-            })
+      if (data) {
+
+        return  res.status(200).json({
+         success: true,
+        data: data
+       })
+      }
+    
+      else {
+        return  res.status(404).json({
+        success: false,
+        data: "not found"
+        })
+      }
 })
 
 
@@ -79,10 +118,21 @@ router.get(':link/sub-competition', async(req, res)=> {  // all in d region
 
   const data = await Sub_Region.find({regionId: req.params.link}).sort("name")
   
-       res.status(200).json({
-          success: true,
-         data: data
-        })
+
+  if (data) {
+
+    return  res.status(200).json({
+     success: true,
+    data: data
+   })
+  }
+
+  else {
+    return  res.status(404).json({
+    success: false,
+    data: "not found"
+    })
+  }
 })
 
 
@@ -99,13 +149,21 @@ router.get('/:link/fixtures/', async(req, res)=> { // all in d region
    if (data) {
        const sort = _.sortBy(data.fixture, ['matchday']);
    data.fixture = sort
- 
-  }
    
-      return  res.status(200).json({
+         return  res.status(200).json({
           success: true,
          data: data
         })
+  }
+
+  else {
+    return  res.status(404).json({
+      success: false,
+     data: "not found"
+    })
+  }
+   
+
 
 })
 
@@ -119,11 +177,13 @@ router.get('/team/:id/fixtures', async(req, res)=> { // all in d region  team
   const data = []
   
    const year = await Fixture.findOne().sort({year: 'desc'})
+   console.log(year);
+   
 
    if (year) {
     const team = await  Team.findOne({name: id})
     
-    const db = await Fixture.find({year: year.year}).sort('name').populate({path: "fixture.teams", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
+     const db = await Fixture.find({year: year.year}).sort('name').populate("fixture.teams.home", "name logo" ).populate("fixture.teams.away", "name logo")
     
 
 
@@ -148,18 +208,26 @@ router.get('/team/:id/fixtures', async(req, res)=> { // all in d region  team
 
    } 
 
+        if (data) {
 
-   
-   
-        const latest = _.orderBy(data, [item =>  item.match.day.date, item =>  item.match.day.time, ],);
-   
-         
+                const latest = _.orderBy(data, [item =>  item.match.day.date, item =>  item.match.day.time, ],);
 
 
-        res.status(200).json({
+
+          return  res.status(200).json({
            success: true,
           data: latest
          })
+        }
+
+        else {
+          return  res.status(404).json({
+          success: false,
+          data: "not found"
+          })
+        }
+   
+        
 })
 
 
@@ -171,6 +239,19 @@ router.get('/:link/stats/team/:id/:type/:year', async(req, res)=> {
     
         const db = await Stat.findOne({competition: link, year}) ? await Stat.findOne({competition: link, year}).populate("stats.player") :  await Stat.findOne({ competition: link, }).sort({year: 'desc'}).populate("stats.player")
      
+        const db2 = async function () {
+          const data = await Stat.findOne({competition: link, year}).populate("stats.player")
+          if (data) {
+              return data
+          } else {
+
+           // const data = await Stat.findOne({competition: link, year}).populate("stats.player")
+
+
+              return  await Stat.findOne({ competition: link, }).sort({year: 'desc'}).populate("stats.player")
+          }   
+  
+        }
         const data = []
 
 
@@ -216,29 +297,24 @@ router.get('/:link/stats/:type/:year', async(req, res)=> {
 
     const data = await Stat.findOne({competition: link, year}) ? await Stat.findOne({competition: link, year}).populate("stats.player") :  await Stat.findOne({ competition: link, }).sort({year: 'desc'}).populate("stats.player")
  
-  
-  // const data = await Stat.findOne({competition: link, year}).populate({path: "stats", populate: {path: "home"}  }).populate({path: "fixture.teams", populate: {path: "away"}})
  
- 
-    console.log(data);
-    
-
+    if (data) {
         const sort = _.orderBy(data.stats, [item =>  item[type], ], ['desc', ]);
 
 
-        
-
-
-
-
-
-     data.stats = sort
-   
-    
-       return  res.status(200).json({
-           success: true,
-          data: data
-         })
+       data.stats = sort
+      return  res.status(200).json({
+       success: true,
+      data: data
+     })
+    }
+  
+    else {
+      return  res.status(404).json({
+      success: false,
+      data: "not found"
+      })
+    }
  
 })
 
@@ -250,11 +326,20 @@ router.get('/:link/stats/:type/:year', async(req, res)=> {
 router.get('/players', async(req, res)=> {
 
         const data = await Player.find({}) //.sort("title")
-        
-             res.status(200).json({
-                success: true,
-               data: data
-              })
+        if (data) {
+
+          return  res.status(200).json({
+           success: true,
+          data: data
+         })
+        }
+      
+        else {
+          return  res.status(404).json({
+          success: false,
+          data: "not found"
+          })
+        }
 })
 
 
@@ -267,14 +352,20 @@ router.get('/players/:team', async(req, res)=> {
 
           const data = await Player.find({teamId: team.name}).sort("name.first")
 
+          if (data) {
 
-          console.log(team, data);
-          
-          
-               res.status(200).json({
-                  success: true,
-                 data: data
-                })
+            return  res.status(200).json({
+             success: true,
+            data: data
+           })
+          }
+        
+          else {
+            return  res.status(404).json({
+            success: false,
+            data: "not found"
+            })
+          }
 })
 
 
@@ -283,12 +374,22 @@ router.get('/players/:team', async(req, res)=> {
 
 router.get('/news', async(req, res)=> {
 
-    const news = await News.find({}).sort([['updatedAt', 'desc']]);
+    const data = await News.find({}).sort([['updatedAt', 'desc']]);
     
-         res.status(200).json({
-            success: true,
-           data: news
-          })
+    if (data) {
+
+      return  res.status(200).json({
+       success: true,
+      data: data
+     })
+    }
+  
+    else {
+      return  res.status(404).json({
+      success: false,
+      data: "not found"
+      })
+    }
 })
 
 
@@ -297,23 +398,43 @@ router.get('/news', async(req, res)=> {
 
 router.get('/news/team/:id', async(req, res)=> {
 
-      const news = await News.find({ref_Team: req.params.id}).sort([['updatedAt', 'desc']]);
+      const data = await News.find({ref_Team: req.params.id}).sort([['updatedAt', 'desc']]);
       
-           res.status(200).json({
-              success: true,
-             data: news
-            })
+      if (data) {
+
+        return  res.status(200).json({
+         success: true,
+        data: data
+       })
+      }
+    
+      else {
+        return  res.status(404).json({
+        success: false,
+        data: "not found"
+        })
+      }
 })
 
 
 router.get('/news/region/:id', async(req, res)=> {
 
-        const news = await News.find({ref_Region: req.params.id}).sort([['updatedAt', 'desc']]);
+        const data = await News.find({ref_Region: req.params.id}).sort([['updatedAt', 'desc']]);
         
-             res.status(200).json({
-                success: true,
-               data: news
-              })
+        if (data) {
+
+          return  res.status(200).json({
+           success: true,
+          data: data
+         })
+        }
+      
+        else {
+          return  res.status(404).json({
+          success: false,
+          data: "not found"
+          })
+        }
 })
 
 
@@ -357,66 +478,83 @@ router.get('/:link/results/:year', async(req, res)=> {
     })
   
    }
+
+  else {
+    return  res.status(404).json({
+    success: false,
+    data: "not found"
+    })
+  }
     
 
  
  })
 
+ 
+
+router.get('/team/:id/results/:year', async(req, res)=> { // all in d region  team
 
 
-
-router.get('/:link/:team/results/:year', async(req, res)=> {
-
-
-    const { link, team} = req.params
+  const {year, id} = req.params
+ 
+  const data = []
+  
+   const yearDb = await Result.findOne().sort({year: 'desc'})
    
-    let year = '2022' // new date().getFullYear()
 
-    const data = []
+
+    const team = await  Team.findOne({name: id})
     
-     const db = await Result.findOne({competition: link, year})
+     const db = await( (await Result.find({year: year})).length !== 0) ? await Result.find({year: year}).populate("result.teams.home", "name logo" ).populate("result.teams.away", "name logo") : await Result.find({year: yearDb.year}).populate("result.teams.home", "name logo" ).populate("result.teams.away", "name logo")
 
-     if (!data) {
-      year = year -1
 
-      const data = await Result.findOne({competition: link, year})
 
-    for (let i = 0; i < db.result.length; i++) {
+       console.log(db, year, yearDb.year);
 
-      const Foundmatch = db.result[i].teams.findIndex(item => item.home == team || item.away == team);
 
-      if (Foundmatch !== -1 ) {
 
-        data.push({
-          matchday: i + 1,
-          match: db.result[i].teams[Foundmatch]
-        })
-      }    
-    }
-     
+         for (let x = 0; x < db.length; x++) {
+   
+           for (let i = 0; i < db[x].result.length; i++) {
+   
+             const Foundmatch = db[x].result[i].teams.findIndex(item => item.home._id == String(team._id) || item.away._id == String(team._id));
+       
 
-     } else {
-      
-    for (let i = 0; i < db.result.length; i++) {
+             if (Foundmatch !== -1 ) {
+       
+               data.push({
+                 regionId: db[x].competition,
+                 matchday: i + 1,
+                 match: db[x].result[i].teams[Foundmatch]
+               })
+             }
+       
+           }
+   
+         }
 
-      const Foundmatch = db.result[i].teams.findIndex(item => item.home == team || item.away == team);
+   
 
-      if (Foundmatch !== -1 ) {
+        if (data) {
 
-        data.push({
-          matchday: i + 1,
-          match: db.result[i].teams[Foundmatch]
-        })
-      }
+                const latest = _.orderBy(data, [item =>  item.match.day.date, item =>  item.match.day.time, ],);
 
-    }
 
-     }
-     
-          res.status(200).json({
-             success: true,
-            data: data
-           })
+
+          return  res.status(200).json({
+           success: true,
+          data: latest
+         })
+        }
+
+        else {
+          return  res.status(404).json({
+          success: false,
+          data: "not found"
+          })
+        }
+   
+        
 })
 
 
@@ -429,12 +567,10 @@ router.get('/:link/standing/:year', async(req, res)=> {
   const region = await Competition.findOne({name: link,})
 
   if (region.type == "league") {
-   const data = await Standing.findOne({competition: link, year}).populate("standing.teams")
-   
+   const data = await Standing.findOne({competition: link, year}) ? await Standing.findOne({competition: link, year}).populate("standing.teams") : await Standing.findOne({competition: link,}).sort({year: 'desc'}).populate("standing.teams")
   
-    if (!data) {
+    if (data) {
 
-      const data = await Standing.findOne({competition: link,}).sort({year: 'desc'}).populate("standing.teams")
       const sort = _.orderBy(data.standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);
 
       data.standing = sort
@@ -449,32 +585,26 @@ router.get('/:link/standing/:year', async(req, res)=> {
 
       
     } else {
+   
+          return  res.status(404).json({
+          success: false,
+          data: "not found"
+          })
         
-      const sort = _.orderBy(data.standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);
-
-
-      data.standing = sort
-      data.type = region.type
-
- 
-        res.status(200).json({
-           success: true,
-          data: data
-         })
     }
 
     
   } 
   
   else if (region.type == "cup") {
-    const data = await CupStanding.findOne({competition: link, year}).populate({path: "group.standing", populate: {path: "teams"}})
+    const data = await CupStanding.findOne({competition: link, year}) ? await CupStanding.findOne({competition: link, year}).populate("group.standing.teams") : await CupStanding.findOne({competition: link, }).sort({year: 'desc'}).populate("group.standing.teams")
+
 
     const groups = []
     
    
-     if (!data) {
+     if (data) {
   
-       const data = await CupStanding.findOne({competition: link, }).sort({year: 'desc'}).populate("group.standing.teams")
        const sort = _.orderBy(data.group, [item =>  item.group, ], ['asc'], );
  
  
@@ -489,10 +619,7 @@ router.get('/:link/standing/:year', async(req, res)=> {
        }
     
            data.group =  groups
-           data.type = region.type
       
-               console.log(data.type);
-
            res.status(200).json({
               success: true,
              data: data
@@ -501,38 +628,12 @@ router.get('/:link/standing/:year', async(req, res)=> {
  
        
      } else {
-           const sort = _.orderBy(data.group, [item =>  item.group, ], [ 'asc']);
 
-
-         for (let i = 0; i < sort.length; i++) {
-           
-           const {group, standing} = sort[i]
-           
-           
-          const stand =  _.orderBy(standing, [item =>  item.stats.points, item =>  item.stats.gd, item =>  item.stats.gs, item =>  item.stats.ga], ['desc', 'desc', 'desc', 'asc']);
-
-           groups.push({group, standing: stand})
-
-        
-           
-         }
-           
- 
-
-         
- 
-
-     data.group =  groups
-     data.type = region.type
-
-
-  
+      return  res.status(404).json({
+      success: false,
+      data: "not found"
+      })
     
-    
-         res.status(200).json({
-            success: true,
-           data: data
-          })
      }
   }
   
@@ -547,10 +648,20 @@ router.get('/teams', async(req, res)=> {
 
   const data = await Team.find().sort("name")
   
-       res.status(200).json({
-          success: true,
-         data: data
-        })
+  if (data) {
+
+    return  res.status(200).json({
+     success: true,
+    data: data
+   })
+  }
+
+  else {
+    return  res.status(404).json({
+    success: false,
+    data: "not found"
+    })
+  }
   })
 
 
@@ -561,11 +672,20 @@ router.get('/teams', async(req, res)=> {
   router.get('/teams/:id', async(req, res)=> {
 
     const data = await Team.find({regionId: req.params.id}).sort("name")
-    
-         res.status(200).json({
-            success: true,
-           data: data
-          })
+    if (data) {
+
+      return  res.status(200).json({
+       success: true,
+      data: data
+     })
+    }
+  
+    else {
+      return  res.status(404).json({
+      success: false,
+      data: "not found"
+      })
+    }
     })
 
 
@@ -582,10 +702,20 @@ router.get('/admin', auth,  async(req, res)=> {
 
   const data = await User.find({role: "admin"})
   
-   res.status(200).json({
-    success: true,
-   data: data
-  })
+  if (data) {
+
+    return  res.status(200).json({
+     success: true,
+    data: data
+   })
+  }
+
+  else {
+    return  res.status(404).json({
+    success: false,
+    data: "not found"
+    })
+  }
 })
 
 router.get('/user', auth, async(req, res)=> {

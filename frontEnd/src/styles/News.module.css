@@ -2,7 +2,7 @@
     text-align: left;
     margin: 0;
     padding: 15px;
-    background-color: rgb(56, 59, 59);
+    background-color: rgb(34, 24, 39);
  }
  
  .news {
@@ -21,7 +21,7 @@
     word-wrap: break-word;
     margin-bottom: 30px;
     width: 25%;
-    margin: auto;
+    margin: 10px auto;
   }
 
 

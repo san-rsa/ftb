@@ -29,12 +29,67 @@ const Sub_Region = require('../models/competition/competition-location')
 
 
 
+
+router.get('/result/years', async(req, res)=> {
+
+
+  const  data = []
+    
+    const db = await Result.find().select("year").sort({year: "desc"})
+
+    for (let i = 0; i < db.length; i++) {
+      const element = db[i].year;
+
+      if (!data.includes(element)) {
+         data.push(element);
+     }      
+    }
+ 
+ 
+         res.status(200).json({
+            success: true,
+           data: data
+          })
+ })
+
+
+ router.get('/standing/years', async(req, res)=> {
+
+
+   const  data = []
+     
+     const db = await Standing.find().select("year").sort({year: "desc"})
+ 
+     for (let i = 0; i < db.length; i++) {
+       const element = db[i].year;
+ 
+       if (!data.includes(element)) {
+          data.push(element);
+      }      
+     }
+  
+  
+          res.status(200).json({
+             success: true,
+            data: data
+           })
+  })
+
+
+
+
+
+
+
+
+
+
 router.get('/:link/stats/years', async(req, res)=> {
 
 
   const { link, } = req.params
    
-   const db = await Stat.find({competition: link,}).select("year")
+   const db = await Stat.find({competition: link,}).select("year").sort({year: "desc"})
 
 
         res.status(200).json({
@@ -49,7 +104,7 @@ router.get('/:link/stats/years', async(req, res)=> {
 
   const { link, } = req.params
    
-   const db = await Result.find({competition: link,}).select("year")
+   const db = await Result.find({competition: link,}).select("year").sort({year: "desc"})
 
 
         res.status(200).json({
@@ -66,7 +121,7 @@ router.get('/:link/standing/years', async(req, res)=> {
   const region = await Competition.findOne({name: link,})
 
   if (region.type == "league") {
-   const data = await Standing.find({competition: link, }).select("year")
+   const data = await Standing.find({competition: link, }).select("year").sort({year: "desc"})
    
 
         res.status(200).json({
@@ -80,7 +135,7 @@ router.get('/:link/standing/years', async(req, res)=> {
   else if (region.type == "cup") {
        
 
-   const data = await CupStanding.find({competition: link, }).select("year")
+   const data = await CupStanding.find({competition: link, }).select("year").sort({year: "desc"})
  
            res.status(200).json({
               success: true,
@@ -100,10 +155,12 @@ router.get('/:link/standing/years', async(req, res)=> {
 
 
 
+
+
 // d rest not years 
 
 
-router.get('/getallregion/player/:id', async(req, res)=> {
+router.get('/getregions/player/:id', async(req, res)=> {
 
    const name = req.params.id.split(" ");
 
@@ -119,7 +176,7 @@ router.get('/getallregion/player/:id', async(req, res)=> {
  
          res.status(200).json({
             success: true,
-           data: data
+           data: data.regionId
           })
  
      
@@ -130,7 +187,7 @@ router.get('/getallregion/player/:id', async(req, res)=> {
 
 
 
- router.get('/getallregion/team/:id', async(req, res)=> {
+ router.get('/getregions/team/:id', async(req, res)=> {
 
 
    const data = await Team.findOne({name: req.params.id, }).select("regionId")
@@ -141,7 +198,7 @@ router.get('/getallregion/player/:id', async(req, res)=> {
  
          res.status(200).json({
             success: true,
-           data: data
+           data: data.regionId
           })
  
      

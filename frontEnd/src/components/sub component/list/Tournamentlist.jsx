@@ -117,7 +117,7 @@ const PlayerStatsHead = ({active}) => {
                         <div className={Style.played} id={Style.played}>  <abbr > PL  </abbr> </div>
  
 
-                        <div className={Style.pts} id={Style.pts}>  <abbr > {active.toUpperCase()} </abbr> </div>
+                        <div className={Style.pts} id={Style.pts}>  <abbr > {active?.toUpperCase()} </abbr> </div>
 
                     </li>
 
