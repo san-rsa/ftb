@@ -34,7 +34,12 @@ const CompetitionNews = ({regionId}) => {
 
 
 
-                    <div className={Style.top} >
+            { (news !== "not found") ?                     
+            
+            <div >    
+            
+            
+            <div className={Style.top} >
                     {news.slice(0, 1).map((project) => (
 
                     <div className='' key={project._id}> 
@@ -64,7 +69,10 @@ const CompetitionNews = ({regionId}) => {
 
 
                         )   )   }
-                
+                        
+                        
+                        </div>
+                : <h1 > no news availabe</h1>  }
 
 
                     </div>
@@ -87,9 +95,6 @@ const CompetitionFixtures = ({regionId}) => {
     }
   
 
-    
-    console.log(data);
-    
 
     
 
@@ -112,7 +117,7 @@ const CompetitionFixtures = ({regionId}) => {
             <h2 > Next Fixtures </h2>
 
      
-              { data ? 
+              { (data !== "not found" ) ? 
                    <div> 
            { show?.map((p) => (
 
@@ -198,7 +203,7 @@ const CompetitionResults = ({regionId}) => {
     const [years, setYears] = useState([])
 
     
-    const [year, setYear] = useState(0) // new Date(2022).getFullYear()
+    const [year, setYear] = useState() // new Date(2022).getFullYear()
 
     
 
@@ -213,16 +218,19 @@ const CompetitionResults = ({regionId}) => {
 
     
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/results/" + year)
-            .then((res) =>  res.json())
-            .then((data) => setData(data.data));
+            if (year) {
+                fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/results/" + year)
+                .then((res) =>  res.json())
+                .then((data) => setData(data.data));
+            }
         }, [year]);
 
 
         useEffect(() => {
             fetch(process.env.REACT_APP_API_LINK + "getyear/" + regionId + "/result/years")
             .then((res) =>  res.json())
-            .then((data) => setYears(data.data));
+            .then((data) =>  { return (setYears(data.data), setYear(data?.data ? data.data[0] : null)
+            )}    );
         }, []);
 
 
@@ -232,6 +240,8 @@ const CompetitionResults = ({regionId}) => {
     
           }
         
+          console.log(data);
+          
 
 
 
@@ -250,7 +260,7 @@ const CompetitionResults = ({regionId}) => {
           { year ?  null : <option value={0} > select year  </option> }
 
           {years?.map((props) => (             
-             <option key={props._id} value={props.year} > {props.year}  </option>
+             <option key={props} value={props} > {props}  </option>
            )   )   }
 
           </select>
@@ -259,7 +269,7 @@ const CompetitionResults = ({regionId}) => {
 
 
 
-            { data ? 
+            {  (data.length !== 0  )  ? 
 
             <div >       
             
@@ -357,9 +367,11 @@ const CompetitionTable = ({regionId}) => {
 
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/standing/" + year)
-        .then((res) =>  res.json())
-        .then((data) => setData(data.data));
+        if (year) {
+            fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/standing/" + year)
+            .then((res) =>  res.json())
+            .then((data) => setData(data.data));
+        }
     }, [year]);
 
 
@@ -367,7 +379,8 @@ const CompetitionTable = ({regionId}) => {
     useEffect(() => {
         fetch(process.env.REACT_APP_API_LINK + "getyear/" + regionId + "/standing/years")
         .then((res) =>  res.json())
-        .then((data) => setYears(data.data));
+        .then((data) => { return (setYears(data.data), setYear(data?.data ? data.data[0] : null)
+        )} );
     }, []);
 
 
@@ -392,14 +405,14 @@ const CompetitionTable = ({regionId}) => {
           { year ?  null : <option value={0} > select year  </option> }
 
           {years?.map((props) => (             
-             <option key={props._id} value={props.year} > {props.year}  </option>
+             <option key={props} value={props} > {props}  </option>
            )   )   }
 
           </select>
 
         </div>
 
-            { data ? 
+            {  (data !== "not found" )  ? 
 
 
 
@@ -519,7 +532,7 @@ const CompetitionStats = ({regionId}) => {
     const [data, setData] = useState({})
     const [years, setYears] = useState([])
 
-    const [year, setYear] = useState(0) // new Date(2022).getFullYear()
+    const [year, setYear] = useState() // new Date(2022).getFullYear()
     const [type, setType] = useState("goal") // new Date(2022).getFullYear()
 
 
@@ -532,10 +545,16 @@ const CompetitionStats = ({regionId}) => {
     // }, []);
 
 
+    console.log(year, data, years);
+    
+
+
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/stats/" + type + "/" + year)
-        .then((res) =>  res.json())
-        .then((data) => setData(data.data));
+        if (year) {
+            fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/stats/" + type + "/" + year)
+            .then((res) =>  res.json())
+            .then((data) => setData(data.data));
+        }
     }, [year, type]);
 
 
@@ -543,7 +562,8 @@ const CompetitionStats = ({regionId}) => {
     useEffect(() => {
         fetch(process.env.REACT_APP_API_LINK + "getyear/" + regionId + "/stats/years")
         .then((res) =>  res.json())
-        .then((data) => setYears(data.data));
+        .then((data) => { return (setYears(data.data), setYear(data?.data ? data.data[0] : null)
+        )} );
     }, []);
 
 
@@ -564,7 +584,7 @@ const CompetitionStats = ({regionId}) => {
     return (
         <div className={Style.standing}>
 
-            <h2 > Standing</h2>
+            <h2 > Stats</h2>
 
 
             <div className={Style.select} >
@@ -574,7 +594,7 @@ const CompetitionStats = ({regionId}) => {
           { year ?  null : <option value={0} > select year  </option> }
 
           {years?.map((props) => (             
-             <option key={props._id} value={props.year} > {props.year}  </option>
+             <option key={props} value={props} > {props}  </option>
            )   )   }
 
           </select>
@@ -582,6 +602,11 @@ const CompetitionStats = ({regionId}) => {
         </div>
 
 
+
+
+
+            { (  years !== undefined || year !== null ) ? 
+            <div> 
 
         <div className={Style.select} >
             <label rel="select" htmlFor="select" > type </label>
@@ -602,10 +627,6 @@ const CompetitionStats = ({regionId}) => {
           </select>
 
         </div>
-
-            { data ? 
-
-
                  <div className={Style.table} >
 
                     <PlayerStatsHead  active={type.slice(0,1)} />
@@ -626,28 +647,15 @@ const CompetitionStats = ({regionId}) => {
                     />
                     )   )   }
 
-
+            </div>
 
 
                 </div>
 
 
 
-                : <h1 > no table availabe</h1>}
+                : <h1 > no stats availabe</h1>}
 
-
-
-                    
-
-
-
-         
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
 
 
 

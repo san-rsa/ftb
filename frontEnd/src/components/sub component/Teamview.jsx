@@ -103,7 +103,7 @@ const Overview = ({id}) => {
                 Hlogo={result?.match?.home?.logo[0]?.url}
                 Hscore={result?.match?.homeScore}
 
-                date={result?.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={result?.match?.day?.time}
+                date={result?.match?.day?.date?.slice(0, 10).replaceAll('-','/')} time={result?.match?.day?.time}
 
                 matchday={result?.matchday}
 
@@ -143,7 +143,7 @@ const Overview = ({id}) => {
                 Hlogo={fixture.match?.home?.logo[0]?.url}
                 Hscore={fixture.match?.homeScore}
 
-                date={fixture.match?.day?.date.slice(0, 10).replaceAll('-','/')} time={fixture.match?.day?.time}
+                date={fixture.match?.day?.date?.slice(0, 10).replaceAll('-','/')} time={fixture.match?.day?.time}
 
                 matchday={fixture.matchday}
 
@@ -207,12 +207,22 @@ const Overview = ({id}) => {
 
                 </div> */}
 
-                <div className={Style.latestN} >
+
+
+                {/* <div className={Style.latestV} >
+                    <h2 > Latest Videos </h2>
+
+
+                </div> */}
+
+
+
+                {(news !== "not found") &&     <div className={Style.latestN} >
                     <h2 > Latest News</h2>
 
 
                     <div className={Style.news} >
-                        {news.slice(0, 5).map((project) => (
+                        {news?.slice(0, 5)?.map((project) => (
 
                         <div className={Styles.perone} key={project._id}> 
 
@@ -230,13 +240,7 @@ const Overview = ({id}) => {
 
 
 
-                </div>
-
-                {/* <div className={Style.latestV} >
-                    <h2 > Latest Videos </h2>
-
-
-                </div> */}
+                </div>}
 
 
 
@@ -247,7 +251,7 @@ const Overview = ({id}) => {
                         <div className={Style.otherTeams} >
                         <h2 > Other teams</h2>
 
-                        {otherTeams.filter(item => !id.includes(item.name)).slice(1, 5)?.map((project) => (
+                        {otherTeams.filter(item => !id.includes(item.name))?.slice(1, 5)?.map((project) => (
 
                             <div className={Style.perone} key={project._id}> 
 
@@ -295,35 +299,33 @@ const TeamNews = ({id}) => {
 
 
 
-        {      news &&              
+            {(news !== "not found") ?                     
+            
+            <div >    
+            
+            
+            <div className={Style.top} >
+                    {news?.slice(0, 1).map((project) => (
 
-
-
-            <div >
-                            <div className={Style.top} >
-                    {news.slice(0, 1).map((project) => (
-
+                    <div className='' key={project._id}> 
 
                     <News
-                    
-                        key={project.head}
-
                         head={project.head}
                         img={project.imgUrl[0].url}
                         link={project.head}
                         />    
+                        </div>
 
 
                     )   )   }
                     </div>
 
 
-                        {news.slice(1, 10).map((project) => (
+                        {news?.slice(1, 10).map((project) => (
 
                         <div className={Styles.perone} key={project._id}> 
 
                         <Mininews
-                            key={project.head}
                             head={project.head}
                             img={project.imgUrl[0].url}
                             link={project.head}
@@ -332,12 +334,12 @@ const TeamNews = ({id}) => {
 
 
                         )   )   }
-            </div>
-                    
-                    
-                    
-                    
-                    }
+                        
+                        
+                        </div>
+                : <h1 > no news availabe</h1>  }
+
+
                     
 
 
@@ -387,8 +389,9 @@ const TeamFixtures = ({id}) => {
             <h2 > Next Fixtures </h2>
 
 
-            {fixture &&         
+            {(fixture.length !== 0) ?         
             
+            <div >
                                 <div className={Style.fix} >
 
                     {fixture?.map((props) => (
@@ -432,7 +435,7 @@ const TeamFixtures = ({id}) => {
 
                     )   )   }
                     </div>
-            
+              </div> : <h1 > no fixtures availabe</h1> 
             }
 
 
@@ -525,7 +528,9 @@ const TeamResults = ({id}) => {
 
 
 
-                     {results &&         
+                {(results.length !== 0 ) ?    
+                
+                <div >  
             
                                 <div className={Style.res} >
 
@@ -569,9 +574,9 @@ const TeamResults = ({id}) => {
 
 
                     )   )   }
-                    </div>
-            
-            }
+                    
+             </div>
+                </div> : <h1 > no results availabe</h1>}
 
                 {/* <div className={Style.latestV} >
                     <h2 > Latest Videos </h2>
@@ -602,6 +607,8 @@ const TeamSquad = ({id}) => {
 
     
 
+    console.log(data);
+    
     
 
 
@@ -654,12 +661,20 @@ const TeamSquad = ({id}) => {
 
 
 
+            { (data !== "not found" ) ?
 
+                <div> 
+                    
                     <TeamSquadListWithPosition pos={"Goalkeeper"} data={data} />
                     <TeamSquadListWithPosition pos={"Defender"} data={data} />
                     <TeamSquadListWithPosition pos={"Midfielder"} data={data} />
                     <TeamSquadListWithPosition pos={"Foward"} data={data} />
 
+                </div>
+                : <h1 > no player availabe</h1>}
+                               
+                               
+            
 
 
 
@@ -776,7 +791,7 @@ const TeamPlayerStats = ({id}) => {
     const [data, setData] = useState({})
     const [years, setYears] = useState([])
 
-    const [query, setQuery] = useState({type: "goal", year: 0}) // new Date(2022).getFullYear()
+    const [query, setQuery] = useState({type: "goal", }) // new Date(2022).getFullYear()
 
     const [regions, setRegions] = useState([]) // new Date(2022).getFullYear()
 
@@ -789,11 +804,10 @@ const TeamPlayerStats = ({id}) => {
     //     .then((data) => setData(data.data));
     // }, []);
 
-    console.log(query, regions[0]);
     
 
     useEffect(() => {
-        if (query.region) {
+        if (query.region && query.year) {
                     fetch(process.env.REACT_APP_API_LINK + "getall/" + query.region + "/stats/team/"+ id +"/" + query.type + "/" + query.year)
                     .then((res) =>  res.json())
                     .then((data) => setData(data.data));
@@ -806,7 +820,7 @@ const TeamPlayerStats = ({id}) => {
         if (query.region) {
             fetch(process.env.REACT_APP_API_LINK + "getyear/" + query.region + "/stats/years")
             .then((res) =>  res.json())
-            .then((data) => { return (setYears(data.data), setQuery(values => ({...values, year: data.data[0].year}))
+            .then((data) => { return (setYears(data.data), setQuery(values => ({...values, year: data.data? data.data[0]: null}))
         )}     );
         }
     }, [query.region]);
@@ -858,7 +872,7 @@ const TeamPlayerStats = ({id}) => {
           { query.year ?  null : <option value={0} > select year  </option> }
 
           {years?.map((props) => (             
-             <option key={props._id} value={props.year} > {props.year}  </option>
+             <option key={props} value={props} > {props}  </option>
            )   )   }
 
           </select>
@@ -867,11 +881,14 @@ const TeamPlayerStats = ({id}) => {
 
 
 
+  { (  years !== undefined &&  query.region !== undefined ) ? 
+            <div> 
+
         <div className={Style.select} >
             <label rel="select" htmlFor="select" > type </label>
 
-          <select id="region" name={"type"} onChange={handleChange} defaultValue={query.type} > 
-          { query.type ?  null : <option value={0} > select stats type  </option> }
+          <select id="region" name={"type"} onChange={handleChange} defaultValue={"goal"} > 
+          { query.year ?  null : <option value={0} > select stats type  </option> }
          
              <option value={"played"} > played </option>
              <option value={"goal"} > goal  </option>
@@ -879,18 +896,16 @@ const TeamPlayerStats = ({id}) => {
              <option value={"yellow"} > yellow  </option>
              <option value={"red"} > red  </option>
 
+             <option value={"played goal assist yellow red"} > played goal assist yellow red  </option>
+
       
 
           </select>
 
         </div>
-
-            { data ? 
-
-
                  <div className={Style.table} >
 
-                    <PlayerStatsHead  active={query.type?.slice(0,1)} />
+                    <PlayerStatsHead  active={query.type.slice(0,1)} />
             
                     {data.stats?.map((props, pos) => (
 
@@ -908,14 +923,16 @@ const TeamPlayerStats = ({id}) => {
                     />
                     )   )   }
 
-
+            </div>
 
 
                 </div>
 
 
 
-                : <h1 > no table availabe</h1>}
+                : <h1 > no stats availabe</h1>}
+
+
 
 
 

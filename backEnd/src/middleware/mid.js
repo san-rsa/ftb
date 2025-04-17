@@ -385,7 +385,7 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
         time.now = time.now + 1;      
         
         
-       setTimeout(timer, 5000);
+       setTimeout(timer, 60000);
  
  
  
@@ -451,7 +451,7 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
   
   
   
- setTimeout(timer, 1000);
+ setTimeout(timer, 60000);
 
 
 
@@ -513,7 +513,7 @@ timer()
   
   
   
- setTimeout(timer, 1000);
+ setTimeout(timer, 60000);
 
 
 
@@ -576,7 +576,7 @@ timer()
   
   
   
- setTimeout(timer, 1000);
+ setTimeout(timer, 60000);
 
 
 

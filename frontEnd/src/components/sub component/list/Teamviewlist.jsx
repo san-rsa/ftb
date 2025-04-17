@@ -152,7 +152,7 @@ const TeamSquadListWithPosition =  ({data, pos, number,})  => {
                         {
 
 
-                    data.map((props) => (
+                    data?.map((props) => (
 
                      props.position == pos.toLowerCase() && 
                      
@@ -210,7 +210,7 @@ const TeamSquadListWithPositionEdit =  ({data, pos, number,})  => {
                         {
 
 
-                    data.map((props) => (
+                    data?.map((props) => (
 
                      props.position == pos.toLowerCase() && 
                      

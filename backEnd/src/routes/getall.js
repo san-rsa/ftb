@@ -33,7 +33,7 @@ const Sub_Region = require('../models/competition/competition-location')
 router.get('/banner', async(req, res)=> {
 
 const data = await Banner.find().sort([['updatedAt', 'desc']]);
-  if (data) {
+  if (data.length !== 0) {
 
     return  res.status(200).json({
      success: true,
@@ -53,7 +53,7 @@ const data = await Banner.find().sort([['updatedAt', 'desc']]);
 router.get('/codes-of-conduct', async(req, res)=> {
 
   const data = await Codeofconduct.find({}) //.sort("title")
-  if (data) {
+  if (data.length !== 0) {
 
     return  res.status(200).json({
      success: true,
@@ -76,7 +76,7 @@ router.get('/competition', async(req, res)=> {
 
     const data = await Competition.find().sort("name")
     
-    if (data) {
+    if (data.length !== 0) {
 
       return  res.status(200).json({
        success: true,
@@ -97,7 +97,7 @@ router.get('/sub-competition', async(req, res)=> {  // all
 
       const data = await Sub_Region.find().sort("name")
       
-      if (data) {
+      if (data.length !== 0) {
 
         return  res.status(200).json({
          success: true,
@@ -238,20 +238,6 @@ router.get('/:link/stats/team/:id/:type/:year', async(req, res)=> {
       const {link, year, type, id } = req.params
     
         const db = await Stat.findOne({competition: link, year}) ? await Stat.findOne({competition: link, year}).populate("stats.player") :  await Stat.findOne({ competition: link, }).sort({year: 'desc'}).populate("stats.player")
-     
-        const db2 = async function () {
-          const data = await Stat.findOne({competition: link, year}).populate("stats.player")
-          if (data) {
-              return data
-          } else {
-
-           // const data = await Stat.findOne({competition: link, year}).populate("stats.player")
-
-
-              return  await Stat.findOne({ competition: link, }).sort({year: 'desc'}).populate("stats.player")
-          }   
-  
-        }
         const data = []
 
 
@@ -326,7 +312,7 @@ router.get('/:link/stats/:type/:year', async(req, res)=> {
 router.get('/players', async(req, res)=> {
 
         const data = await Player.find({}) //.sort("title")
-        if (data) {
+        if (data.length !== 0) {
 
           return  res.status(200).json({
            success: true,
@@ -352,7 +338,7 @@ router.get('/players/:team', async(req, res)=> {
 
           const data = await Player.find({teamId: team.name}).sort("name.first")
 
-          if (data) {
+          if (data.length !== 0) {
 
             return  res.status(200).json({
              success: true,
@@ -376,7 +362,7 @@ router.get('/news', async(req, res)=> {
 
     const data = await News.find({}).sort([['updatedAt', 'desc']]);
     
-    if (data) {
+    if (data.length !== 0) {
 
       return  res.status(200).json({
        success: true,
@@ -400,7 +386,7 @@ router.get('/news/team/:id', async(req, res)=> {
 
       const data = await News.find({ref_Team: req.params.id}).sort([['updatedAt', 'desc']]);
       
-      if (data) {
+      if (data.length !== 0) {
 
         return  res.status(200).json({
          success: true,
@@ -421,7 +407,7 @@ router.get('/news/region/:id', async(req, res)=> {
 
         const data = await News.find({ref_Region: req.params.id}).sort([['updatedAt', 'desc']]);
         
-        if (data) {
+        if (data.length !== 0) {
 
           return  res.status(200).json({
            success: true,
@@ -648,7 +634,7 @@ router.get('/teams', async(req, res)=> {
 
   const data = await Team.find().sort("name")
   
-  if (data) {
+  if (data.length !== 0) {
 
     return  res.status(200).json({
      success: true,
@@ -672,7 +658,7 @@ router.get('/teams', async(req, res)=> {
   router.get('/teams/:id', async(req, res)=> {
 
     const data = await Team.find({regionId: req.params.id}).sort("name")
-    if (data) {
+    if (data.length !== 0) {
 
       return  res.status(200).json({
        success: true,
