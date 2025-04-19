@@ -174,6 +174,34 @@ const connectDB = require("./src/connection/db");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 
+const http = require('http');
+const socketIO = require('socket.io');
+
+// live 
+const server = http.createServer(app);
+const io = socketIO(server, {
+  cors:{
+    cors: {
+      origin: process.env.ORIGIN
+    }
+  }
+})
+
+
+io.on('connection', (socket) => {
+  console.log('A user is connected');
+
+  socket.on('message', (message) => {
+    console.log(`message from ${socket.id} : ${message}`);
+  })
+
+  socket.on('disconnect', () => {
+    console.log(`socket ${socket.id} disconnected`);
+  })
+})
+
+ module.exports = {io};
+
 
 // const auth = require("./src/connection/auth")
 
@@ -325,8 +353,14 @@ app.use("/delete", del)
 
 var port = process.env.PORT || 8000;
 app.set("port", port);
-app.listen(port, () => {
+
+server.listen(port, () => {
   console.log("Server running at port " + port);
 });
+
+
+// app.listen(port, () => {
+//   console.log("Server running at port " + port);
+// });
 
 module.exports = app;

@@ -10,6 +10,7 @@ import { CompetitionFixtures, CompetitionNews, CompetitionResults, CompetitionTa
 import { MatchCompetition, MatchEventAway, MatchEventHome, MatchScore, MatchTeam, MatchTime } from "../../../components/sub component/list/Matchlist";
 import { TeamSquadList } from "../../../components/sub component/list/Teamviewlist";
 import { LineUp } from "../../../components/sub component/Matchview";
+import { io } from 'socket.io-client'
 
 
 
@@ -46,6 +47,31 @@ const Fixture  =  ({})  =>  {
             .then((res) =>  res.json())
             .then((data) => setMatch(data));
         }, []);
+
+
+
+        useEffect(() => {
+            const socket = io('ws://' + process.env.REACT_APP_API_LINK_SOCKET)
+        
+            socket.on('connnection', () => {
+              console.log('connected to server');
+            })
+        
+            socket.on('match updated' + matchId, (update) => {
+              setMatch(update )
+              console.log(update);
+              
+            })
+        
+            socket.on('message', (message) => {
+              console.log(message);
+            })
+        
+            socket.on('disconnect', () => {
+              console.log('Socket disconnecting');
+            })
+        
+          }, [])
 
 
         
@@ -85,6 +111,8 @@ const Fixture  =  ({})  =>  {
 
 
 
+                 console.log(match);
+                 
 
 
 
@@ -270,8 +298,8 @@ const Fixture  =  ({})  =>  {
                                 <hr />
 
                                 
-                                <button className={Style.update} > <Link to={"update"} > Update </Link> </button> 
-
+                { user.team ?   <button className={Style.update} > <Link to={"update"} > Update </Link> </button> : null
+                }
                                 
 
                                     
@@ -298,7 +326,7 @@ const Fixture  =  ({})  =>  {
                     
                     
 
-                    {match.match?.timeline.map((props) => (
+                    {match.match?.timeline?.slice()?.reverse()?.map((props) => (
                     
                     (props.team == "home") ? <MatchEventHome time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
                     (props.team == "away") ? <MatchEventAway time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :

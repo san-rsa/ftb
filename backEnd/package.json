@@ -57,6 +57,7 @@
     "react-dom": "",
     "session": "^0.1.0",
     "slugify": "",
+    "socket.io": "^4.8.1",
     "stripe": "^16.9.0",
     "styled-components": "",
     "supervisor": "^0.12.0",

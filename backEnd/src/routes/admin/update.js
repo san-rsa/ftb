@@ -23,6 +23,7 @@ const CupStanding = require('../../models/competition/standing/cup')
 const Live = require('../../models/competition/live')
 const { updatePlayerPlayed, updatePlayerYellowCard, updatePlayerRedCard, updatePlayerGoal, updatePlayerAssist, statsD, updateStat } = require('../../middleware/stats')
 const Stat = require('../../models/competition/stats')
+const { io } = require('../../../server')
 
 
 
@@ -38,6 +39,10 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
 
     const action = JSON.parse(req.body.action)
     const matchday = JSON.parse(req.body.matchday)
+    const data = {}
+    const found = {}
+
+
 
 
 
@@ -58,6 +63,7 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
 
 
                 const existing = await Fixture.findOne({competition}).sort({year: 'desc'})
+
             
                     if (existing) {
                         //---- Check if index exists ----
@@ -97,6 +103,11 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
         
         
                         else if (Foundmatch !== -1 ) {
+
+                            found.matchday = Foundmatchday
+                            found.match = Foundmatch  
+                                
+    
 
 
 
@@ -169,9 +180,12 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
                         const data = JSON.parse(req.body.data)
                         const start  = data.start
 
-                        const time = existing.fixture[Foundmatchday].teams[Foundmatch] = existing.fixture[Foundmatchday].teams[Foundmatch].time.now
-                        const live = existing.fixture[Foundmatchday].teams[Foundmatch] = existing.fixture[Foundmatchday].teams[Foundmatch].live
-                        const starts = existing.fixture[Foundmatchday].teams[Foundmatch] = existing.fixture[Foundmatchday].teams[Foundmatch].start
+                        const time = existing.fixture[Foundmatchday].teams[Foundmatch].time.now
+                        const live = existing.fixture[Foundmatchday].teams[Foundmatch].live
+                        const starts = existing.fixture[Foundmatchday].teams[Foundmatch].start
+
+                        const region = await Competition.findOne({name: competition})
+
 
                         
                         // half : {type: String,  enum: ['full time', 'half time', 'full time AET', 'half time AET', 'live', "upcoming" ],  },
@@ -195,7 +209,8 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
                             }
                             else if (start == "second") {
 
-                                if (starts && !live && time == 45) {
+
+                                if (starts && !live && time == region.min.ft  ) {
                                      secondHalf(existing._id, id, matchday)
                                 } else {
                                     return res.status(400).json({
@@ -211,7 +226,7 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
 
                             else if (start == "extra time") {
 
-                                if (starts && !live && time == 90) {
+                                if (starts && !live && time == region.min.ft * 2) {
                                     extraTimeFirstHalf(existing._id, id, matchday)
                                 } else {
                                     return  res.status(400).json({
@@ -223,7 +238,7 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
 
                             } else if (start == "extra time second half") {
 
-                                if (starts && !live && time == 105) {
+                                if (starts && !live && time == region.min.et) {
                                     extraTimeSecondHalf(existing._id, id, matchday)
                                 } else {
                                      return res.status(400).json({
@@ -638,7 +653,27 @@ router.patch('/:competition/fixture/:id', auth, async (req, res)=> {
              
                     }      
 
-                      const save = await existing.save();
+                    const save = await existing.save();
+
+                    if (save) {
+                        const db = await Fixture.findOne({competition }).sort({year: 'desc'})
+                         .populate("fixture.teams.home", "name logo").populate("fixture.teams.away", "name logo")
+                         .populate("fixture.teams.lineup.starting.home", "name picture position" ).populate("fixture.teams.lineup.sub.home", "name picture position" )
+                         .populate("fixture.teams.lineup.starting.away", "name picture position" ).populate("fixture.teams.lineup.sub.away", "name picture position" )
+                         .populate("fixture.teams.motm", "name picture position" )
+                         .populate("fixture.teams.timeline.player.main", "name" ).populate("fixture.teams.timeline.player.assist", "name" )
+                
+
+                        data.info = {competition: db.competition, year: db.year, matchday: db.fixture[found.matchday].matchday, type: db.type } 
+                        data.match = db.fixture[found.matchday].teams[found.match]
+                
+
+                        // const timelines = existing.fixture[].teams[Foundmatch].timeline
+
+                    }
+
+                    io.emit('match updated' + id, data)
+
                        return  res.status(200).json({
                         success: true,
                             mgs: "Process successful",

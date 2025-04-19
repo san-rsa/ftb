@@ -17,6 +17,7 @@ const Standing = require("../models/competition/standing/standing");
 const {update} = require("./stats");
 const Fixture = require("../models/competition/fixture");
 const Competition = require("../models/competition/competition");
+const { io } = require("../../server");
 
 
 
@@ -346,28 +347,45 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 }
 
 
+// time
+
+async function updateMinutes (matchId, existing, Foundmatchday, Foundmatch) {
+  const data = {}
+  if (existing) {
+     
+    data.info = {competition: existing.competition, year: existing.year, matchday: existing.fixture[Foundmatchday].matchday, type: existing.type } 
+    data.match = existing.fixture[Foundmatchday].teams[Foundmatch]
+                       console.log('rrrrt', data.match.time);
+
+              }
+
+              
+  
+                 await   io.emit('match updated' + matchId, data)
+}
+
+
 
 
   const firstHalf = async (id, matchId, day, ) => {
-    // do something
+
+   const timer = async () => {
 
     const existing = await Fixture.findById(id)
-
-
-    
-
+    .populate("fixture.teams.home", "name logo").populate("fixture.teams.away", "name logo")
+    .populate("fixture.teams.lineup.starting.home", "name picture position" ).populate("fixture.teams.lineup.sub.home", "name picture position" )
+    .populate("fixture.teams.lineup.starting.away", "name picture position" ).populate("fixture.teams.lineup.sub.away", "name picture position" )
+    .populate("fixture.teams.motm", "name picture position" )
+    .populate("fixture.teams.timeline.player.main", "name" ).populate("fixture.teams.timeline.player.assist", "name" )
+      
 
 
     const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
     const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
 
-
-
     const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
 
-    console.log(id, existing, time);
-
-
+  //  console.log(id, existing, time);
 
     existing.fixture[Foundmatchday].teams[Foundmatch].live = true
     existing.fixture[Foundmatchday].teams[Foundmatch].start = true
@@ -375,39 +393,70 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
 
 
 
-
-
-   const timer = async () => {
-
             if (time.now <= time.first) {
         // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
          
         time.now = time.now + 1;      
         
-        
+
+               console.log(time);
+               
        setTimeout(timer, 60000);
- 
+
+               existing.save()
+
+
+       
+             updateMinutes (matchId, existing, Foundmatchday, Foundmatch) 
+
+       
+                     
+         
+
  
  
      } else {
-         clearTimeout(timer)
+
+  
 
          existing.fixture[Foundmatchday].teams[Foundmatch].half = "half time"
 
          existing.fixture[Foundmatchday].teams[Foundmatch].live = false
 
+         
+      //  existing.fixture[Foundmatchday].teams[Foundmatch].start = false // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
          const min = await Competition.findOne({name: existing.competition})
 
 
-         time.now = Number(min.min.ft ) 
+         time.now =  Number(min.min.ft ) 
          time.first = Number(min.min.ft ) 
          time.second = Number(min.min.ft ) + Number(min.min.ft)
          time.firstET = Number(min.min.et ) 
          time.secondET = Number(min.min.et ) + Number(min.min.et)
 
+         console.log(time);
+
+
+
+         updateMinutes (matchId, existing, Foundmatchday, Foundmatch) 
+
+
+         existing.save()
+
+          
+          clearTimeout(timer)
+
+   
+
+
 
      }    
-     existing.save()
+
+
+
+
+     
     } 
 
     timer()
@@ -425,23 +474,29 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
   const secondHalf = async (id, matchId, day, ) => {
     // do something
 
-    const existing = await Fixture.findById(id)
-
-
-
-    const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
-    const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
-
-
-
-    const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
-
-    existing.fixture[Foundmatchday].teams[Foundmatch].live = true
-
-    existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
-
-
     const timer = async () => {
+
+      const existing = await Fixture.findById(id)
+      .populate("fixture.teams.home", "name logo").populate("fixture.teams.away", "name logo")
+      .populate("fixture.teams.lineup.starting.home", "name picture position" ).populate("fixture.teams.lineup.sub.home", "name picture position" )
+      .populate("fixture.teams.lineup.starting.away", "name picture position" ).populate("fixture.teams.lineup.sub.away", "name picture position" )
+      .populate("fixture.teams.motm", "name picture position" )
+      .populate("fixture.teams.timeline.player.main", "name" ).populate("fixture.teams.timeline.player.assist", "name" )
+        
+  
+  
+      const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
+      const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+  
+      const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
+  
+    //  console.log(id, existing, time);
+  
+      existing.fixture[Foundmatchday].teams[Foundmatch].live = true
+      existing.fixture[Foundmatchday].teams[Foundmatch].start = true
+      existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
+  
+  
 
       if (time.now <= time.second) {
    
@@ -450,13 +505,14 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
   console.log("rrrrrr", time);
   
   
+  updateMinutes (matchId, existing, Foundmatchday, Foundmatch) 
+
   
  setTimeout(timer, 60000);
 
 
 
 } else {
-   clearTimeout(timer)
 
 
    existing.fixture[Foundmatchday].teams[Foundmatch].live = false
@@ -469,11 +525,17 @@ async function updateStanding(table, competition, year, h, hms, a, aws, res, nex
    time.now = Number(min.min.ft ) + Number(min.min.ft)
    time.first = Number(min.min.ft ) 
    time.second = Number(min.min.ft ) + Number(min.min.ft)
-   time.firstET = Number(min.min.et ) 
-   time.secondET = Number(min.min.et ) + Number(min.min.et)
+   time.firstET = Number(min.min.ft ) + Number(min.min.ft) + Number(min.min.et ) 
+   time.secondET = Number(min.min.ft ) + Number(min.min.ft) + Number(min.min.et ) + Number(min.min.et)
+
+   updateMinutes ( matchId, existing, Foundmatchday, Foundmatch) 
+
+   clearTimeout(timer)
 
 
 }    
+
+
 existing.save()
 } 
 
@@ -486,24 +548,29 @@ timer()
   const extraTimeFirstHalf = async (id, matchId, day, ) => {
     // do something
 
-    const existing = await Fixture.findById(id)
-
-
-
-    const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
-    const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
-
-
-
-    const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
-
-    existing.fixture[Foundmatchday].teams[Foundmatch].live = true
-
-    existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
-
-
     const timer = async () => {
 
+      const existing = await Fixture.findById(id)
+      .populate("fixture.teams.home", "name logo").populate("fixture.teams.away", "name logo")
+      .populate("fixture.teams.lineup.starting.home", "name picture position" ).populate("fixture.teams.lineup.sub.home", "name picture position" )
+      .populate("fixture.teams.lineup.starting.away", "name picture position" ).populate("fixture.teams.lineup.sub.away", "name picture position" )
+      .populate("fixture.teams.motm", "name picture position" )
+      .populate("fixture.teams.timeline.player.main", "name" ).populate("fixture.teams.timeline.player.assist", "name" )
+        
+  
+  
+      const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
+      const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+  
+      const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
+  
+    //  console.log(id, existing, time);
+  
+      existing.fixture[Foundmatchday].teams[Foundmatch].live = true
+      existing.fixture[Foundmatchday].teams[Foundmatch].start = true
+      existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
+  
+  
       if (time.now <= time.firstET) {
   // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
    
@@ -512,6 +579,8 @@ timer()
   console.log("rrrrrr", time);
   
   
+  updateMinutes (matchId, existing, Foundmatchday, Foundmatch) 
+
   
  setTimeout(timer, 60000);
 
@@ -529,13 +598,20 @@ timer()
          time.now = Number(min.min.ft ) + Number(min.min.ft) + Number(min.min.et )
          time.first = Number(min.min.ft ) 
          time.second = Number(min.min.ft ) + Number(min.min.ft)
-         time.firstET = Number(min.min.et ) 
-         time.secondET = Number(min.min.et ) + Number(min.min.et)
+         time.firstET = Number(min.min.ft ) + Number(min.min.ft) + Number(min.min.et ) 
+         time.secondET = Number(min.min.ft ) + Number(min.min.ft) + Number(min.min.et ) + Number(min.min.et)
 
 
+         console.log("rruuuuuuu", time);
    clearTimeout(timer)
+        await updateMinutes ( matchId, existing, Foundmatchday, Foundmatch) 
+
+
 }    
 existing.save()
+
+
+
 } 
 
 timer()
@@ -548,25 +624,30 @@ timer()
   const extraTimeSecondHalf = async (id, matchId, day, ) => {
     // do something
 
-    const existing = await Live.findById(id)
-
-
-
-    const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
-    const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
-
-
-
-    const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
-
-
-    existing.fixture[Foundmatchday].teams[Foundmatch].live = true
-
-    existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
-
 
     const timer = async () => {
 
+      const existing = await Fixture.findById(id)
+      .populate("fixture.teams.home", "name logo").populate("fixture.teams.away", "name logo")
+      .populate("fixture.teams.lineup.starting.home", "name picture position" ).populate("fixture.teams.lineup.sub.home", "name picture position" )
+      .populate("fixture.teams.lineup.starting.away", "name picture position" ).populate("fixture.teams.lineup.sub.away", "name picture position" )
+      .populate("fixture.teams.motm", "name picture position" )
+      .populate("fixture.teams.timeline.player.main", "name" ).populate("fixture.teams.timeline.player.assist", "name" )
+        
+  
+  
+      const Foundmatchday = existing.fixture.findIndex(item => item.matchday == day);
+      const Foundmatch = existing.fixture[Foundmatchday].teams.findIndex(item => item._id == String(matchId));
+  
+      const time = existing.fixture[Foundmatchday].teams[Foundmatch].time
+  
+    //  console.log(id, existing, time);
+  
+      existing.fixture[Foundmatchday].teams[Foundmatch].live = true
+      existing.fixture[Foundmatchday].teams[Foundmatch].start = true
+      existing.fixture[Foundmatchday].teams[Foundmatch].half = "live"
+  
+  
       if (time.now <= time.second) {
   // Models.post.Post.findOneAndUpdate({ _id: res._id }, { $inc: { 'time.now': 1 } }, {new: true })
    
@@ -574,7 +655,8 @@ timer()
   
   console.log("rrrrrr", time);
   
-  
+  updateMinutes (matchId, existing, Foundmatchday, Foundmatch) 
+
   
  setTimeout(timer, 60000);
 
@@ -598,6 +680,9 @@ timer()
    time.second = Number(min.min.ft ) + Number(min.min.ft)
    time.firstET = Number(min.min.et ) 
    time.secondET = Number(min.min.et ) + Number(min.min.et)
+
+   updateMinutes (matchId, existing, Foundmatchday, Foundmatch) 
+
 
 
 }    
