@@ -6,6 +6,7 @@ import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { Topic } from "../components/sub component/list/Newsviewlist";
+import Footer from "../components/sub component/Footer";
 
 
 
@@ -14,17 +15,17 @@ const News = ({}) => {
 
     const [data, setData] = useState({})
     const [wishlist, setwish] = useState()
+        const [othernews, setotherNews] = useState([])
+    
     const [set, setset] = useState('')
     const [priced, setpriced] = useState(Number())
 
 
 
 
-    
-    const title = useParams().id
 
 
-    const link =title.replaceAll('-',' ')
+    let link = useParams().id?.replaceAll('-',' ')
 
 
 
@@ -34,7 +35,11 @@ const News = ({}) => {
             fetch(process.env.REACT_APP_API_LINK  + "getone/news/"+ link)
             .then((res) =>  res.json())
             .then((data) => setData(data));
-        }, []);
+
+            fetch(process.env.REACT_APP_API_LINK + "getall/news")
+            .then((res) =>  res.json())
+            .then((data) => setotherNews(data.data));
+        }, [link]);
 
 
         console.log(data);
@@ -115,7 +120,7 @@ const News = ({}) => {
         
         <div className={Style.img}>
                 {/* <img src={info?.imgUrl} alt=""/> */}
-                <img src={data.imgUrl?.url}/>
+                <img src={data?.imgUrl ? data.imgUrl[0]?.url : null}/>
 
         </div>
 
@@ -140,13 +145,16 @@ const News = ({}) => {
 
 
         <div className={Style.relatedNews}>
-            <h3 > RELATED NEWS</h3>
+            <h3 > OTHER NEWS</h3>
 
-  
-                <Topic 
-                    head={data.head}
-                    link={data.head} 
-                />
+                        {othernews.filter(item => !link.includes(item.head))?.slice(1, 5)?.map((project) => (
+
+
+                            <Topic head={project.head} key={project.head}
+                                />    
+
+
+                        )   )   }
 
         </div>
 
@@ -157,6 +165,8 @@ const News = ({}) => {
 
 
      </div>
+
+     <Footer />
         </div>
 
     )

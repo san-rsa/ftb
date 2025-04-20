@@ -20,14 +20,14 @@ const Description = ({}) => {
 
 
     
-    const link = useParams().id
+    let link = useParams().id
 
 
         useEffect(() => {
             fetch(process.env.REACT_APP_API_LINK  + "getone/news/"+ link)
             .then((res) =>  res.json())
             .then((data) => setData(data));
-        }, []);
+        }, [link]);
 
         // useEffect(() => {
         //     fetch(process.env.REACT_APP_API_LINK  + "getall/product")

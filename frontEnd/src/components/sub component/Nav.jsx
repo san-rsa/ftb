@@ -64,11 +64,16 @@ const Nav = () => {
 
 
                        <div className={Style.menu} >
-                        
-                       <Link to={"/regions"}>
-                       {/* <img src={require("../../logo.png")} /> */}
-                       <h3 id={Style.navh1}> Regions</h3>
-                       </Link>
+           
+                      <Link to={"/regions"}> <h3 id={Style.navh1}> Regions</h3> </Link>
+          
+                      <Link to={"/teams"}> <h3 id={Style.navh1}> Teams</h3> </Link>
+                       
+                       
+                       
+                       
+                       
+                       {/* <Link to={"/"}>
           
                                          {/*  <Link to={"/"}>
                        <h3 id={Style.navh1}> Matches </h3>
@@ -86,11 +91,9 @@ const Nav = () => {
           { burger &&  
                        <div className={Style.navmenu} >
                         
-                        <Link to={"/regions"}>
-                       {/* <img src={require("../../logo.png")} /> */}
-                       <h3 id={Style.navh1}> Regions</h3>
-                       </Link>
+                        <Link to={"/regions"}> <h3 id={Style.navh1}> Regions</h3> </Link>
           
+                       <Link to={"/teams"}> <h3 id={Style.navh1}> Teams</h3> </Link>
                        {/* <Link to={"/"}>
                        <h3 id={Style.navh1}> Matches </h3>
                        </Link>

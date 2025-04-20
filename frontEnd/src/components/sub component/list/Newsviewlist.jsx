@@ -9,7 +9,7 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 const Topic = ({head, id, link}) => {
 
-    const newsLink =link?.replaceAll(' ','-')
+    const newsLink =head?.replaceAll(' ','-')
 
     return (
        <Link to={"/news/" + newsLink}>
@@ -28,7 +28,7 @@ const Topic = ({head, id, link}) => {
 
 const Mininews = ({img, head, link, id}) => {
 
-    const newsLink =link.replaceAll(' ','-')
+    const newsLink =head?.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
@@ -45,7 +45,7 @@ const Mininews = ({img, head, link, id}) => {
                     <div className={Style.text2} >
                         
                         <div className={Style.head2}>
-                            <h2 >  {head} Premier League Player of the Week: The smiling assassin</h2>
+                            <h2 >  {head} </h2>
                         </div>
 
                     </div>
@@ -63,7 +63,7 @@ const Mininews = ({img, head, link, id}) => {
 
 const Mininews2 = ({img, head, link, id}) => {
 
-    const newsLink =link.replaceAll(' ','-')
+    const newsLink =head?.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
@@ -81,7 +81,7 @@ const Mininews2 = ({img, head, link, id}) => {
             <div className={Style.text3} >
                 
                 <div className={Style.head3}>
-                    <h2 > {head} Premier League Player of the Week: The smiling assassin</h2>
+                    <h2 > {head} </h2>
                 </div>
 
             </div>
@@ -131,7 +131,7 @@ const Minivideo = ({img, head, link, body}) => {
 
 const Mininews3 = ({img, head,link, id}) => {
 
-    const newsLink =link?.replaceAll(' ','-')
+    const newsLink =head?.replaceAll(' ','-')
 
     return (
         <div className={Style.newsm}>
@@ -148,7 +148,7 @@ const Mininews3 = ({img, head,link, id}) => {
                 <div className={Style.text3} >
                     
                     <div className={Style.head3}>
-                        <h2 > {head} Premier League Player of the Week: The smiling assassin</h2>
+                        <h2 > {head} </h2>
                     </div>
 
                 </div>

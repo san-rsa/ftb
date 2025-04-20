@@ -68,18 +68,18 @@ const Footer = () => {
             head : "Quick links",
             link: [
                 {
-                    list: "all matches",
-                    link: "/ffff"
+                    list: "code of conducts",
+                    link: "/code-of-conduct"
                 },
 
                 {
-                    list: "all matches",
-                    link: "/ffff"
+                    list: "all teams",
+                    link: "/teams"
                 },
 
                 {
-                    list: "all matches",
-                    link: "/ffff"
+                    list: "all regions",
+                    link: "/regions"
                 },
             ]
         },

@@ -11,7 +11,7 @@ import { CardList2 } from "../components/sub component/list/Generallist";
 
 
 
-const Competitions = ({}) => {
+const Competitions = () => {
 
     const [data, setdata] = useState([])
 
@@ -63,7 +63,60 @@ const Competitions = ({}) => {
 }
 
 
+const Teams = ({}) => {
+
+    const [data, setdata] = useState([])
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
+            .then((res) =>  res.json())
+            .then((data) => setdata(data.data));
+        }, []);
 
 
 
-export default Competitions
+    return (
+        <div className={Style.competitions}>
+         <Nav />
+
+         <h3 > All Teams </h3>
+            <div className={Style.allregions}>
+
+
+                
+            {data?.map((p) => (
+
+            <CardList2 
+                        name={p.name}
+                        to={"team"}
+                        category={"Region"}
+                        logo={p.logo[0]?.url}
+
+                    />  
+
+
+  
+
+
+            )   )   }
+
+
+
+
+
+
+     </div>
+
+
+        <Footer />
+        </div>
+
+    )
+}
+
+
+
+
+
+
+export {Competitions, Teams }

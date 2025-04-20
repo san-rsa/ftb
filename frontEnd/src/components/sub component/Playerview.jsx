@@ -15,54 +15,23 @@ import { CardList } from "./list/Generallist";
 
 
 
-const Info = ({}) => {
+const Info = ({info}) => {
     
     const [news, setnews] = useState([])
     const [otherTeams, setotherTeams] = useState([])
     const [stand, setStand] = useState([])
-    const [data, setData] = useState({})
-
-    const year = 2022 // new Date(2022).getFullYear()
-
-    
+    const [team, setData] = useState({})
 
 
-    useEffect(() => {
-        fetch(process.env.REACT_APP_API_LINK + "getall/672a24205fa419f32c581933/standing/" + year)
-        .then((res) =>  res.json())
-        .then((data) => setStand(data.data));
-    }, []);
-
-
-    
-
-
-    
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
-
-    
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/news")
-            .then((res) =>  res.json())
-            .then((data) => setnews(data.data));
-        }, []);
-
-        useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
-            .then((res) =>  res.json())
-            .then((data) => setotherTeams(data.data));
-        }, []);
     
 
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
+            fetch(process.env.REACT_APP_API_LINK  + "getone/team/" + info.teamId)
             .then((res) =>  res.json())
             .then((data) => setData(data));
-        }, []);
+        }, [info.teamId]);
 
 
 
@@ -83,11 +52,8 @@ const Info = ({}) => {
 
                     
                         <CardList 
-                            name={"ebuawa"}
-                            to={"team"}
-                            category={"Team"}
-                            link={"ebuawa"}
-                            logo={data.imgUrl?.url}
+                            name={team.name} to={"team"} category={"Team"}
+                            logo={team.logo ? team.logo[0]?.url : null}
 
                         />
 
@@ -104,19 +70,19 @@ const Info = ({}) => {
 
                                 <PlayerBio
                                     topic={"Age"}
-                                    answer={"22"}
+                                    answer={ new Date().getFullYear() - info?.dob?.slice(0, 4) + " years"}
                                 />
 
-                                <PlayerBio
+                                {/* <PlayerBio
                                     topic={"Country"}
                                     answer={"22"}
-                                />
+                                /> */}
 
                                 <PlayerBio
                                     topic={"Position"}
-                                    answer={"22"}
+                                    answer={info.position}
                                 />
-
+{/* 
                                 <PlayerBio
                                     topic={"Height"}
                                     answer={"22"}
@@ -130,7 +96,7 @@ const Info = ({}) => {
                                 <PlayerBio
                                     topic={"Jersey number"}
                                     answer={"22"}
-                                />
+                                /> */}
 
 
 
@@ -149,25 +115,68 @@ const Info = ({}) => {
 }
 
 
-const Season = ({}) => {
+const Season = ({info}) => {
     
     const [news, setnews] = useState([])
     const [otherTeams, setotherTeams] = useState([])
     const [stand, setStand] = useState([])
     const [data, setData] = useState({})
 
-    const year = 2022 // new Date(2022).getFullYear()
 
+
+        const [years, setYears] = useState([])
     
-
+        const [query, setQuery] = useState({type: "goal", }) // new Date(2022).getFullYear()
     
-
-
+        const [regions, setRegions] = useState([]) // new Date(2022).getFullYear()
     
-    const title = useParams().id
-
-    const link =title.replaceAll('-',' ')
-
+    
+    
+    
+        // useEffect(() => {
+        //     fetch(process.env.REACT_APP_API_LINK + "getall/" + regionId + "/standing/" + year)
+        //     .then((res) =>  res.json())
+        //     .then((data) => setData(data.data));
+        // }, []);
+    
+        
+    
+        useEffect(() => {
+            if (query.region && query.year) {
+                        fetch(process.env.REACT_APP_API_LINK + "getone/" + query.region + "/stats/player/"+ info._id + "/" + query.year)
+                        .then((res) =>  res.json())
+                        .then((data) => setData(data.data));
+            }
+        }, [query.region, query.year,]);
+    
+    
+        
+        useEffect(() => {
+            if (query.region) {
+                fetch(process.env.REACT_APP_API_LINK + "getyear/" + query.region + "/stats/years")
+                .then((res) =>  res.json())
+                .then((data) => { return (setYears(data.data), setQuery(values => ({...values, year: data.data? data.data[0]: null}))
+            )}     );
+            }
+        }, [query.region]);
+    
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getyear/getregions/player/" + info._id )
+            .then((res) =>  res.json())
+            .then((data) =>  { return ( setRegions(data.data), setQuery(values => ({...values, region: data?.data ? data?.data[0] : null}))
+        )}     );
+        }, []);
+    
+    
+        const handleChange = (event) => {
+            const name = event.target.name;
+            const value = event.target.value;
+            setQuery(values => ({...values, [name]: value}))
+    
+          }
+    
+    
+    
     
         useEffect(() => {
             fetch(process.env.REACT_APP_API_LINK + "getall/news")
@@ -186,48 +195,70 @@ const Season = ({}) => {
 
             <div className={Style.stats}>
                                
+
+            
+                        <div className={Style.select} >
+                        <label rel="select" htmlFor="select" > region </label>
+            
+                      <select id="region" name={"region"} onChange={handleChange} value={query.region} > 
+                      { query.region ?  null : <option value={0} > select region  </option> }
+            
+                      {regions?.map((props) => (             
+                         <option key={props} value={props} > {props}  </option>
+                       )   )   }
+            
+                      </select>
+            
+                    </div>
+            
+            
+                        <div className={Style.select} >
+                        <label rel="select" htmlFor="select" > year </label>
+            
+                      <select id="region" name={"year"} onChange={handleChange}value={query.year} > 
+                      { query.year ?  null : <option value={0} > select year  </option> }
+            
+                      {years?.map((props) => (             
+                         <option key={props} value={props} > {props}  </option>
+                       )   )   }
+            
+                      </select>
+            
+                    </div>
                                
+           
             <h2 > KEY STATS</h2>
 
+            { (  years !== undefined &&  query.region !== undefined && data?.length !== 0 ) ? 
+ 
 
             <div className={Style.stat}>
 
 
-                    <PlayerBio
-                    topic={"Appearances"}
-                    answer={"22"}
-                    />
+                    <PlayerBio topic={"Appearances"} answer={data.played }  />
 
-                    <PlayerBio
-                    topic={"Goals"}
-                    answer={"22"}
-                    />
+                    <PlayerBio topic={"Goals"} answer={data.goal } />
 
-                    <PlayerBio
-                    topic={"Assists"}
-                    answer={"22"}
-                    />
+                    <PlayerBio topic={"Assists"} answer={data.assist} />
 
-                    <PlayerBio
-                    topic={"Yellow cards"}
-                    answer={"22"}
-                    />
+                    <PlayerBio topic={"Yellow cards"} answer={data.yellow } />
 
-                    <PlayerBio
-                    topic={"Red cards"}
-                    answer={"22"}
-                    />
+                    <PlayerBio topic={"Red cards"} answer={data.red } />
 
-                    <PlayerBio
-                    topic={"Jersey number"}
-                    answer={"22"}
-                    />
+                    {/* <PlayerBio topic={"Jersey number"} answer={data.motm   potm} /> */}
 
 
 
 
 
-                    </div>
+            </div>
+
+
+                : <h1 > no stats availabe</h1>}
+
+
+
+
             </div>
 
 

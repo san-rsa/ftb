@@ -25,7 +25,6 @@ import Video from "./pages/Video";
 import Team from "./pages/Team";
 import Player from "./pages/Player";
 
-import Competitions from "./pages/Competitions";
 import Competition from "./pages/competition/Competition";
 
 import Fixtures from "./pages/competition/Fixtures";
@@ -46,6 +45,7 @@ import AdminAdd from "./pages/user/admin/AdminAdd";
 import TeamAdminList from "./pages/user/adminteam/List";
 import AdminList from "./pages/user/admin/List";
 import { MatchUpdate, MatchUpdateList } from "./components/sub component/list/Matchupdateviewlist";
+import { Competitions, Teams } from "./pages/ListsAll";
 
 
 
@@ -65,7 +65,10 @@ function Links() {
         <Route path="/video/:id" element={<Video />}/>
         <Route path="/news/:id" element={<News />}/>
 
+        <Route path="/teams" element={<Teams />}/>
         <Route path="/team/:id" element={<Team />}/>
+
+
         <Route path="/player/:id" element={<Player />}/>
 
 

@@ -14,11 +14,7 @@ import Footer from "../components/sub component/Footer";
 
 const Team = ({}) => {
     const [mode, setInputs] = useState({info: true, season: false, });
-
     const [data, setData] = useState({})
-    const [wishlist, setwish] = useState()
-    const [set, setset] = useState('')
-    const [priced, setpriced] = useState(Number())
 
 
 
@@ -32,13 +28,12 @@ const Team = ({}) => {
 
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getone/news/" + link)
+            fetch(process.env.REACT_APP_API_LINK  + "getone/player/" + link)
             .then((res) =>  res.json())
             .then((data) => setData(data));
         }, []);
 
 
-        console.log(process.env.REACT_APP_API_LINK);
         
 
 
@@ -140,14 +135,14 @@ const Team = ({}) => {
 
                         <div className={Style.img}>
                             {/* <img src={info?.imgUrl} alt=""/> */}
-                            <img src={data.imgUrl?.url}/>
+                            <img src={data.picture?.url}/>
 
                         </div>
                             
 
 
                         <div className={Style.name}>
-                        <h1 > <span > {data.head} </span> </h1>
+                        <h1 > <span > {data.name?.first + " " + data.name?.last} </span> </h1>
                         </div>    
 
 
@@ -183,10 +178,10 @@ const Team = ({}) => {
                 </div>
 
          <div className={Style.section} >
+            { mode.info && <Info info={data ? data : null}/>}
 
-            { mode.info && <Info />}
-
-            { mode.season && <Season />}
+      
+            { mode.season && <Season info={data ? data : null}/>}
 
             {/* { mode.fixtures && <TeamFixtures />}
 

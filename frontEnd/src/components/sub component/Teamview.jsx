@@ -56,9 +56,7 @@ const Overview = ({id}) => {
             .then((res) =>  res.json())
             .then((data) => setotherTeams(data.data));
 
-            fetch(process.env.REACT_APP_API_LINK + "getall/teams")
-            .then((res) =>  res.json())
-            .then((data) => setotherTeams(data.data));
+
 
 
 
@@ -881,7 +879,7 @@ const TeamPlayerStats = ({id}) => {
 
 
 
-  { (  years !== undefined &&  query.region !== undefined ) ? 
+  { (  years !== undefined &&  query.region !== undefined && data.stats?.length !== 0 ) ? 
             <div> 
 
         <div className={Style.select} >

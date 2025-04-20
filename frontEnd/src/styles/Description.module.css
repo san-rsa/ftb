@@ -17,9 +17,10 @@ h3, h4 {
 
 .head {
     position: relative;
-    border: 2px #2bff00 solid;
+    border: 2px gold solid;
     width: 100%;
     display: grid;
+    margin: 10px auto;
     grid-template-columns: auto 70%;
     
 }
@@ -51,7 +52,7 @@ h3, h4 {
 
 .headline h1 span {
     display: block;
-    width: 600px;
+    text-shadow: 10px 4px 20px black;
 }
 
 
@@ -72,7 +73,7 @@ h3, h4 {
 .news {
     position: relative;
     width: 100%;
-    margin-top: 30px;
+    margin: 30px auto;
     text-align: left;
     display: grid;
     grid-template-columns: auto 25%;
@@ -81,6 +82,7 @@ h3, h4 {
 
 .article {
     margin-left: 20px;
+    white-space: break-spaces;  
 }
 
 .topics {
@@ -88,6 +90,13 @@ h3, h4 {
     font-weight: bolder;
 }
 
+.relatedNews {
+    margin: 0 10px;
+    border: 2px gold solid;
+    padding: 0 5px;
+  /* background-color: #171818; */
+
+}
 
 
 

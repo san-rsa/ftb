@@ -250,14 +250,8 @@ router.get('/:link/standing/years', async(req, res)=> {
 
 
 router.get('/getregions/player/:id', async(req, res)=> {
-
-   const name = req.params.id.split(" ");
-
-   const fullname = {first: name[0], last: name[1] }
  
-   const player = await Player.findOne({name: fullname,})
- 
-   const data = await Team.findOne({name: player.teamId, }).select("regionId")
+   const data = await Team.findOne({playerId: req.params.id, }).select("regionId")
 
 
    if (data) {

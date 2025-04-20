@@ -254,14 +254,7 @@ router.get('/:link/stats/player/:id/:year', async(req, res)=> {
 
     const data = await Stat.findOne({competition: link, year}) ? await Stat.findOne({competition: link, year}) :  await Stat.findOne({ competition: link, }).sort({year: 'desc'})
  
-       const name = id.split(" ");
-    
-       const fullname = {first: name[0], last: name[1] }
-     
-       const player = await Player.findOne({name: fullname,})
-
-
-       const found = data.stats.findIndex(item => item.player == String(player._id) );
+       const found = data.stats.findIndex(item => item.player == String(id) );
 
        if (found == -1) {
                 
