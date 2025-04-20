@@ -321,21 +321,23 @@ const Fixture  =  ({})  =>  {
 
                 <h2 > Timeline</h2>
 
-                <div className={Style.timeline}>
+                { (match.match?.timeline?.length !== 0) ?
+                                    <div className={Style.timeline}>
 
                     
                     
 
-                    {match.match?.timeline?.slice()?.reverse()?.map((props) => (
-                    
-                    (props.team == "home") ? <MatchEventHome time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
-                    (props.team == "away") ? <MatchEventAway time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :
-                    null
-                                        
-                    
-                    )   )   }    
-
-                </div>
+                                    {match.match?.timeline?.slice()?.reverse()?.map((props) => (
+                                    
+                                    (props.team == "home") ? <MatchEventHome time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
+                                    (props.team == "away") ? <MatchEventAway time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :
+                                    null
+                                                        
+                                    
+                                    )   )   }    
+                
+                                </div> :   <h1 > no timeline availabe</h1>
+                }
 
 
             </div>
@@ -361,23 +363,29 @@ const Fixture  =  ({})  =>  {
 
 
 
-                    { mode.home &&                   
-                    
-                    <div className={Style.home} >
+                    { mode.home ?                  
+                      (match.match?.lineup?.starting?.home?.length !== 0 && match.match?.lineup?.sub?.home?.length !== 0) ?
+                        <div className={Style.home} >
 
                         <LineUp data={match.match?.lineup?.starting?.home} type={"Starting"} team={"Home"} />
 
                         <LineUp data={match.match?.lineup?.sub?.home} type={"Sub"} team={"Home"} />
 
 
-                    </div> }
+                    </div> 
+                          :   <h1 > no lineup availabe</h1> : null
+                }
+
+
+
+                    
 
 
 
 
-
-                   { mode.away && 
-                    <div className={Style.away} >
+                    { mode.away ?                  
+                      (match.match?.lineup?.starting?.away?.length !== 0 && match.match?.lineup?.sub?.away?.length !== 0) ?
+                       <div className={Style.away} >
 
                         <LineUp data={match.match?.lineup?.starting?.away} type={"Starting"} team={"Away"}/>
 
@@ -385,9 +393,8 @@ const Fixture  =  ({})  =>  {
 
 
                         </div>
-
-                   }
-
+                          :   <h1 > no lineup availabe</h1> : null
+                }
 
 
                    </div>

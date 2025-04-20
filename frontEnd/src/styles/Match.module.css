@@ -295,6 +295,14 @@
     margin: auto 10px;
 }
 
+.matchday {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+
 
 
 /* standing */
