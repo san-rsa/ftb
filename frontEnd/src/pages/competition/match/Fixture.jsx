@@ -51,7 +51,7 @@ const Fixture  =  ({})  =>  {
 
 
         useEffect(() => {
-            const socket = io('ws://' + process.env.REACT_APP_API_LINK_SOCKET)
+            const socket = io(process.env.REACT_APP_API_LINK)
         
             socket.on('connnection', () => {
               console.log('connected to server');
