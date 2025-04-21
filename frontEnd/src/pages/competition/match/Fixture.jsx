@@ -51,7 +51,8 @@ const Fixture  =  ({})  =>  {
 
 
         useEffect(() => {
-            const socket = io(process.env.REACT_APP_API_LINK)
+            const socket = io("ws://"+  process.env.REACT_APP_API_LINK_SOCKET)
+          //( "ws://football-api-alpha.vercel.app" ) //"ws://"+  process.env.REACT_APP_API_LINK_SOCKET)
         
             socket.on('connnection', () => {
               console.log('connected to server');
