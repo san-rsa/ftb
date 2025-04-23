@@ -1,5 +1,6 @@
 .coc {
     transition: 2s;
+    background-color: #4c5e58;
 }
 
 .coclist {
@@ -16,6 +17,7 @@
 
 .head h3 {
     display: inline;
+    color: gold;
 
 }
 
@@ -30,6 +32,7 @@
 .section .head {
     background-color: rgb(12, 43, 48);
     padding: 1px 20px;
+    font-style: oblique;
 
 }
 
@@ -45,5 +48,7 @@
     /* font-weight: 900; */
     font-style: normal;
     font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(2 88 101 / 64%);
+    color: #ffec87;
     white-space: pre-wrap;
 }

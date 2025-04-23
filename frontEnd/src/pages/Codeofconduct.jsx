@@ -5,6 +5,7 @@ import Nav from "../components/sub component/Nav"
 import { useParams, Link } from "react-router-dom";
 import {  faX, faHeart, faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
+import Footer from "../components/sub component/Footer";
 
 
 
@@ -80,13 +81,11 @@ const Codeofconduct = ({}) => {
 
 
             <div className={Style.coclist}>
-                <h2 > codes of conduct</h2>
 
-
-                <div className={`${Style.section} ` } >
+                <div className={`${Style.section} ${isActive.players && Style.active}` } >
 
                 <div className={`${Style.head} ${isActive.players && Style.active}`} onClick={activate}>
-                    <h3 > Players</h3>
+                    <h3 > {"Players".toUpperCase()}</h3>
 
                     {isActive.players ? <FontAwesomeIcon icon={faArrowUp } /> :  <FontAwesomeIcon icon={faArrowDown } />} 
 
@@ -107,7 +106,7 @@ const Codeofconduct = ({}) => {
                 <div className={`${Style.section} ` }>
 
                 <div className={`${Style.head} ${isActive.coaches && Style.active}`} onClick={activate}>
-                    <h3 > Coaches</h3>
+                    <h3 > {"Coaches".toUpperCase()}</h3>
 
                     {isActive.coaches ? <FontAwesomeIcon icon={faArrowUp } /> :  <FontAwesomeIcon icon={faArrowDown } />} 
 
@@ -128,7 +127,7 @@ const Codeofconduct = ({}) => {
                 <div className={`${Style.section} ` }>
 
                     <div className={`${Style.head} ${isActive.clubs && Style.active}`} onClick={activate}>
-                        <h3 > Clubs</h3>
+                        <h3 > {"Clubs".toUpperCase()}</h3>
 
                         {isActive.clubs ? <FontAwesomeIcon icon={faArrowUp } /> :  <FontAwesomeIcon icon={faArrowDown } />} 
 
@@ -164,7 +163,7 @@ const Codeofconduct = ({}) => {
                 <div className={`${Style.section} ` }>
 
                 <div className={`${Style.head} ${isActive.refrees && Style.active}`} onClick={activate}>
-                    <h3 > Refrees</h3>
+                    <h3 > {"Refrees".toUpperCase()}</h3>
 
                     {isActive.refrees ? <FontAwesomeIcon icon={faArrowUp } /> :  <FontAwesomeIcon icon={faArrowDown } />} 
 
@@ -200,7 +199,7 @@ const Codeofconduct = ({}) => {
                 <div className={`${Style.section} ` }>
 
                 <div className={`${Style.head} ${isActive.fans && Style.active}`} onClick={activate}>
-                    <h3 > Fans</h3>
+                    <h3 > {"Fans".toUpperCase()}</h3>
 
                     {isActive.fans ? <FontAwesomeIcon icon={faArrowUp } /> :  <FontAwesomeIcon icon={faArrowDown } />} 
 
@@ -236,7 +235,7 @@ const Codeofconduct = ({}) => {
 <div className={`${Style.section} ` }>
 
 <div className={`${Style.head} ${isActive.communities && Style.active}`} onClick={activate}>
-    <h3 > Communities</h3>
+    <h3 > {"Communities".toUpperCase()}</h3>
 
     {isActive.communities ? <FontAwesomeIcon icon={faArrowUp } /> :  <FontAwesomeIcon icon={faArrowDown } />} 
 
@@ -281,6 +280,8 @@ const Codeofconduct = ({}) => {
 
 
      </div>
+
+     <Footer />
         </div>
 
     )
