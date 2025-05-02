@@ -30,13 +30,13 @@ const MatchUpdateList = () => {
 
                         
             <CardList4
-                name={"lineups"} logo={ require("../../../img/tactics1.png")} category={"line-up"} link={"lineup" } />  
+                name={"lineups"} logo={ require("../../../img/match/tactics1.png")} category={"line-up"} link={"lineup" } />  
 
             <CardList4
-                name={"start"} logo={require("../../../img/whistle.png")} category={"begin"} link={"start" } /> 
+                name={"start"} logo={require("../../../img/match/whistle.png")} category={"begin"} link={"start" } /> 
 
             <CardList4
-                name={"extra time"} logo={require("../../../img/extra time1.png")} category={"injury time"} link={"extra-time" } />  
+                name={"extra time"} logo={require("../../../img/match/extra time1.png")} category={"injury time"} link={"extra-time" } />  
 
            {/* <CardList4
                 name={"lineups"} logo={""} category={"line-up"} link={"lineup" } />  
@@ -53,20 +53,20 @@ const MatchUpdateList = () => {
 
 
             <CardList4
-               name={"goal"} logo={require("../../../img/goal1.png")} category={"goal"} link={"goal" } />  
+               name={"goal"} logo={require("../../../img/match/goal1.png")} category={"goal"} link={"goal" } />  
 
 
             <CardList4
-               name={"yellow card"} logo={require("../../../img/yellow card.png")} category={"foul"} link={"yellow" } /> 
+               name={"yellow card"} logo={require("../../../img/match/yellow card.png")} category={"foul"} link={"yellow" } /> 
 
             <CardList4
-               name={"red card"} logo={require("../../../img/red card.png")} category={"foul"} link={"red" } /> 
+               name={"red card"} logo={require("../../../img/match/red card.png")} category={"foul"} link={"red" } /> 
 
             <CardList4
-               name={"substitution"} logo={require("../../../img/substitution1.png")} category={"sub"} link={"substitution" } />  
+               name={"substitution"} logo={require("../../../img/match/substitution1.png")} category={"sub"} link={"substitution" } />  
 
             <CardList4
-               name={"end"} logo={require("../../../img/whistle1.png")} category={"end match"} link={"end" } />  
+               name={"end"} logo={require("../../../img/match/whistle1.png")} category={"end match"} link={"end" } />  
 
 
                       

@@ -181,18 +181,15 @@ const Result  =  ({})  =>  {
 
     function timeline (props) {
         if (props == 'goal'  ) {
-            return require("../../../img/goal.png") 
+            return require("../../../img/match/goal.png") 
         } else if (props ==   'red' ) {
-            return require("../../../img/red card.png") 
+            return require("../../../img/match/red card.png") 
 
-        }
+        } else if (props == "yellow" ) {
+            return require("../../../img/match/yellow card.png") 
 
-        else if (props == "yellow" ) {
-            return require("../../../img/yellow card.png") 
-
-        } 
-        else if (props ==  "substitution") {
-            return require("../../../img/substitution.png") 
+        } else if (props ==  "substitution") {
+            return require("../../../img/match/substitution.png") 
 
         }
 

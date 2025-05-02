@@ -12,17 +12,8 @@ import Footer from "../components/sub component/Footer";
 
 const Codeofconduct = ({}) => {
 
-    const [data, setData] = useState({})
-    const [isActive, setActive] = useState({players: false, coaches: false, clubs: false, spectators: false, refrees: false, fans: false, communities: false});  
-    const [icon, setIcon] = useState(faArrowDown)
-  
-
-
-
-
-    
-    const link = useParams().id
-
+    const [data, setData] = useState([])
+    const [isActive, setActive] = useState({players: false, coaches: false, clubs: false, spectators: false, refrees: false, fans: false, communities: false});    
 
         useEffect(() => {
             fetch(process.env.REACT_APP_API_LINK  + "getall/codes-of-conduct")
@@ -46,13 +37,20 @@ const Codeofconduct = ({}) => {
             const classlist = e.target?.classList[1]
 
 
-            console.log(e);
+            console.log(e,name, isActive, classlist);
 
             if (classlist == "Codeofconduct_active__Fuymx" ) {
 
                 setActive(values => ({...values, [name]: false}))
             } else {
+              
                 setActive({players: false, coaches: false, clubs: false, spectators: false, refrees: false, fans: false, communities: false});  
+
+                data.map((props, ) => (
+                    setActive(values => ({...values, [props.title]: false}))
+                    )   )  
+
+                    console.log( isActive,);
 
 
                 setActive(values => ({...values, [name]: true}))
@@ -63,7 +61,7 @@ const Codeofconduct = ({}) => {
             
         }
     
-        console.log(data);
+      //  console.log(data);
         
  
 
@@ -82,24 +80,30 @@ const Codeofconduct = ({}) => {
 
             <div className={Style.coclist}>
 
-                <div className={`${Style.section} ${isActive.players && Style.active}` } >
 
-                <div className={`${Style.head} ${isActive.players && Style.active}`} onClick={activate}>
-                    <h3 > {"Players".toUpperCase()}</h3>
+                {data?.map((props, pos) => (
 
-                    {isActive.players ? <FontAwesomeIcon icon={faArrowUp } /> :  <FontAwesomeIcon icon={faArrowDown } />} 
+                <div key={props.title} className={`${Style.section} ${isActive[props.title.toLowerCase()] ? Style.active : null } ${Style[props.title?.toLowerCase()]}` } >
+
+                <div className={`${Style.head} ${isActive[props.title?.toLowerCase()] && Style.active }`} onClick={activate}>
+                    <h3 > {props.title.toUpperCase()}</h3>
+
+                    {isActive[props.title?.toLowerCase()] ? <FontAwesomeIcon icon={faArrowUp } /> :  <FontAwesomeIcon icon={faArrowDown } />} 
+
+                </div>
+
+
+                    {isActive[props.title?.toLowerCase()] ? 
+                    
+                    <div className={Style.body} >  <p> {props.body} </p> </div>: null } 
+
+
+
 
                 </div>
 
 
-                    { isActive.players && 
-                    <p> {data[0]?.body}
-                    </p>}
-
-
-
-
-                </div>
+                )   )   }
 
 
 
