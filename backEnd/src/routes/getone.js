@@ -46,11 +46,11 @@ router.get('/banner/:id',  async (req, res, next) => {
 })
 
 
-router.get('/codes-of-conduct/:id', auth, async (req, res, next) => {
+router.get('/code-of-conduct/:id', async (req, res, next) => {
 
 
       try {
-          const data = await Codeofconduct.findById(req.params.id)
+          const data = await Codeofconduct.findOne({title: req.params.id})
 
 
           if (data) {

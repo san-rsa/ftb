@@ -3,7 +3,7 @@ import Style from "../../../styles/Team.module.css"
 import Nav from "../../../components/sub component/Nav"
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Footer from "../../../components/sub component/Footer";
-import { AdminAddAdmin, AdminAddTeamToRegion, AdminAddUserToTeam, AdminBanner, AdminFixture, AdminNews, AdminRegion, AdminSubRegion, AdminTeam } from "../../../components/sub component/Profileadminview";
+import { AdminAddAdmin, AdminAddTeamToRegion, AdminAddUserToTeam, AdminBanner, AdminCodeOfConduct, AdminFixture, AdminNews, AdminRegion, AdminSubRegion, AdminTeam } from "../../../components/sub component/Profileadminview";
 import { TeamAdminNews, TeamAdminPlayer } from "../../../components/sub component/TeamAdminview";
 
 
@@ -113,6 +113,10 @@ const Add = ({}) => {
          <div className={Style.section} >
 
             { mode2.banner && <AdminBanner event={mode1} typeId={typeId} />}
+
+
+            { mode2["code-of-conduct"] && <AdminCodeOfConduct event={mode1} typeId={typeId} />}
+
 
             { mode2.news ? user.admin ? <AdminNews  event={mode1} typeId={typeId} /> : user.team ?  team ? <TeamAdminNews teamid={team} event={mode1} typeId={typeId} /> : null : null : null}
 

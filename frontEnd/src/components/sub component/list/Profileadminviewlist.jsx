@@ -74,7 +74,66 @@ const AdminBannerList = () => {
 
 
 
+const AdminCodeOfConductList = () => {
 
+    const [data, setData] = useState([])
+   
+
+
+
+        useEffect(() => {
+            fetch(process.env.REACT_APP_API_LINK + "getall/code-of-conduct/" )
+            .then((res) =>  res.json())
+            .then((data) => setData(data.data));
+        }, []);
+
+
+
+    
+
+
+
+
+    return (
+        <div className={Style.app}>
+
+
+
+
+
+         
+                    <div className={Style.newsgrid} >
+
+
+
+                {data.map((project) => (
+
+                        
+            <MininewsEdit
+                head={project.title}
+                // img={project.imgUrl[0].url}
+                
+
+                />  
+
+
+            )   )   }
+                    
+
+                    </div>
+
+
+
+
+
+
+
+                    </div>
+
+ 
+
+    )
+}
 
 
 const AdminNewsList = () => {
@@ -630,4 +689,4 @@ const AdminAdminList = ({event}) => {
 
     )
 }
-export {AdminBannerList, AdminNewsList, AdminRegionList, AdminSubRegionList, AdminAdminList, AdminMatchRegionList, AdminMatchFixtureList, AdminTeamList } 
+export {AdminBannerList, AdminCodeOfConductList, AdminNewsList, AdminRegionList, AdminSubRegionList, AdminAdminList, AdminMatchRegionList, AdminMatchFixtureList, AdminTeamList } 

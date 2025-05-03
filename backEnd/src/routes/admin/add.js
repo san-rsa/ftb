@@ -125,9 +125,9 @@ router.post('/banner',  async (req, res)=> {
 
 
 
-router.post('/codes-of-conduct', async (req, res)=> {
+router.post('/code-of-conduct', async (req, res)=> {
 
-    const data = req.body
+    const data = JSON.parse(req.body.data)
       
     
 

@@ -50,7 +50,7 @@ const data = await Banner.find().sort([['updatedAt', 'desc']]);
 })
 
 
-router.get('/codes-of-conduct', async(req, res)=> {
+router.get('/code-of-conduct', async(req, res)=> {
 
   const data = await Codeofconduct.find({}) //.sort("title")
   if (data.length !== 0) {

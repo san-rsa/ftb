@@ -189,6 +189,156 @@ const AdminBanner = ({ event, typeId }) => {
 }
 
 
+const AdminCodeOfConduct = ({ event, typeId }) => {
+  const [data, setInputs] = useState({})
+  const [img, setFile] = useState({});
+  const [submitbtn, setSubmitBtn] = useState(false)
+
+  const [fetchs, setFetch] = useState({link: "", method: ""})
+
+
+
+  let navigate = useNavigate()
+        
+
+
+
+        useEffect(() => {
+          if (typeId) {
+            fetch(process.env.REACT_APP_API_LINK  + "getone/code-of-conduct/" + typeId)
+            .then((res) =>  res.json())
+            .then((data) =>  setInputs({
+              title:data.title,
+              body: data.body,
+             
+              
+            })
+          ); 
+
+          }       
+
+        if (event.add ) {
+      setFetch({link: 'admin/add/code-of-conduct/', method: 'POST'  })
+    } else if (event.edit) {
+      setFetch({link: 'admin/edit/code-of-conduct/' + typeId, method: 'PATCH'  })
+
+    }
+
+      }, []);
+        
+
+
+
+    const h1 = (event.add) ? "Add Code Of Conduct" : (event.edit) ? "Edit Code Of Conduct" : "please try again later" ;  
+    
+    
+      const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+
+      }
+       
+
+
+      const HandleSubmit = async (event) => {
+        event.preventDefault();
+        setSubmitBtn(!submitbtn)
+    
+        const formData = new FormData();
+      
+    
+            formData.append('data',  JSON.stringify(data));
+    
+    
+    
+       const api = fetch(process.env.REACT_APP_API_LINK + fetchs.link, {
+        method: fetchs.method,
+        // credentials: "include",
+       // headers: {'Content-Type': "application/json", },
+        body:   formData
+        })
+        
+        .then((res) => {           
+
+           if (res.status == 200) {
+
+         
+
+          
+                navigate("/user"); 
+
+           } else {
+            setSubmitBtn(false);
+       
+           }
+
+           return res.json()
+        }).then(
+          data => {
+            console.log(data.message, 'llk')       
+
+           
+            if (data.success == false) {
+               AlertError(data.message)
+
+               setSubmitBtn(false);
+               
+            } else {
+              //  navigate("/user"); 
+
+            }
+          }).catch((e) => {
+          console.log(e);
+          setSubmitBtn(false)
+          AlertError("error try again later")
+
+        })
+
+
+        
+    
+    
+     
+      
+      }
+
+
+
+    return (            
+      <div className={Style.app}>
+
+
+      <div className={Style.top} >
+        <h1 > {h1} </h1>
+      </div>
+
+        <form className={Style.form} onSubmit={HandleSubmit}>
+
+        <Inputs label={'title'} type={'text'} name={'title'} onchange={handleChange} value={data.title}  placeholder={'title'} disabled={false} required={true}  />
+
+        
+       <div className={Style.textarea} >
+
+
+        <label rel="textarea" htmlFor="textarea" >article</label>
+
+        <textarea value={data.body} onChange={handleChange} name="body" placeholder="type your article here"  rows={7}> </textarea>
+
+
+        </div>
+
+
+
+        <button className="submit" type="submit"  disabled={submitbtn}> Submit</button> 
+
+        </form>
+
+    </div>
+
+    )
+}
+
 
 const AdminNews = ({event, typeId }) => {
   const [data, setInputs] = useState({})
@@ -1991,4 +2141,4 @@ const AdminAddAdmin = ({event, regionId, typeId }) => {
     )
 }
 
-export {AdminTeam, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture, AdminAddAdmin, AdminAddUserToTeam}
+export {AdminTeam, AdminCodeOfConduct, AdminNews, AdminBanner, AdminRegion, AdminSubRegion, AdminAddTeamToRegion, AdminFixture, AdminAddAdmin, AdminAddUserToTeam}

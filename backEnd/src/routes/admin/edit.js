@@ -65,9 +65,9 @@ const Sub_Region = require('../../models/competition/competition-location')
 
 
 
-router.patch('/codes-of-conduct/:id', async (req, res)=> {
+router.patch('/code-of-conduct/:id', async (req, res)=> {
 
-    const data = req.body
+    const data = JSON.parse(req.body.data)
 
     try {
         const {title, body}= data
@@ -92,7 +92,7 @@ router.patch('/codes-of-conduct/:id', async (req, res)=> {
 
         return res.status(200).json({
             success: true,
-            savw,
+            save,
             message: " successfully ✅"
            
         })  

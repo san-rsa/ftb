@@ -294,6 +294,19 @@ const ProfileAdmin = ({}) => {
         </div>
 
 
+        <div className={Style.teamadminmenu} >
+
+            <h2 > Code Of Conduct</h2>
+
+            <div className={Style.teamadminmenulist} >
+                <CardList3 name={"Code Of Conduct"} to={"add"} category={"add"} link={"code-of-conduct"} logo={faPlus} />  
+                <CardList3Edit name={"Code Of Conduct"} to={"edit"} category={"edit"} link={"code-of-conduct"} logo={faPenToSquare} id={"list"} />  
+                {/* <CardList3 name={"ebuawa"} to={"region"} category={"delete"} link={"ebuawa"} logo={faTrash} />   */}
+      
+            </div>
+        </div>
+
+
                 
         <div className={Style.teamadminmenu} >
             <h2 > News</h2>

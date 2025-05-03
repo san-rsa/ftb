@@ -181,11 +181,11 @@ const Mininews3 = ({img, head,link, id}) => {
 
 const MininewsEdit = ({img, head,  link }) => {
 
-    const to = link.replaceAll(' ','-')
+    const to = head?.replaceAll(' ','-')
 
     
     return (
-           <Link to={ to} className={Style.news2}>
+           <Link to={ "./../" +  to} className={Style.news2}>
 
 
  
