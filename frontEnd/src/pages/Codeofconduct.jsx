@@ -16,7 +16,7 @@ const Codeofconduct = ({}) => {
     const [isActive, setActive] = useState({players: false, coaches: false, clubs: false, spectators: false, refrees: false, fans: false, communities: false});    
 
         useEffect(() => {
-            fetch(process.env.REACT_APP_API_LINK  + "getall/codes-of-conduct")
+            fetch(process.env.REACT_APP_API_LINK  + "getall/code-of-conduct")
             .then((res) =>  res.json())
             .then((data) => setData(data.data));
         }, []);
