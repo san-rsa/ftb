@@ -96,7 +96,8 @@ const Overview = ({id}) => {
             <h2 > Latest Results </h2>
 
 
-            <Result
+            <div className={Style.tres} >
+                            <Result
                 Hname={result?.match?.home?.name}
                 Hlogo={result?.match?.home?.logo[0]?.url}
                 Hscore={result?.match?.homeScore}
@@ -118,7 +119,8 @@ const Overview = ({id}) => {
 
                         
                         
-                        />    
+                        /> 
+            </div>
     
         
         
@@ -133,6 +135,8 @@ const Overview = ({id}) => {
 
             <h2 > Next Match </h2>
 
+
+            <div className={Style.tfix} >
 
             <Fixture 
 
@@ -157,6 +161,8 @@ const Overview = ({id}) => {
                regionId={fixture.regionId}
 
             />  
+        </div >
+
 
 
 
@@ -397,6 +403,9 @@ const TeamFixtures = ({id}) => {
                                         
         <div className={Style.fixture}>
 
+                        <div className={Style.tfix} >
+
+
                             <Fixture 
                              Hname={props.match?.home?.name}
                              Hlogo={props.match?.home?.logo[0].url}
@@ -421,6 +430,9 @@ const TeamFixtures = ({id}) => {
 
 
                             />  
+
+                        </div >
+
 
 
 
@@ -537,6 +549,11 @@ const TeamResults = ({id}) => {
                                         
         <div className={Style.rresult}>
 
+
+                        <div className={Style.tres} >
+
+
+
                             <Result 
                              Hname={props.match?.home?.name}
                              Hlogo={props.match?.home?.logo[0].url}
@@ -560,7 +577,10 @@ const TeamResults = ({id}) => {
 
 
 
-                            />  
+                            /> 
+
+                </div >
+ 
 
 
 

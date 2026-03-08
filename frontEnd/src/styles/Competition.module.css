@@ -1,8 +1,13 @@
 /* list */
+.app {
+    text-align: left;
+    background-color: #000;
+}
 
 .competion, .competitions {
     text-align: left;
     margin-left: auto;
+    background-color: #000;
 }
 
 .competitions h3 {
@@ -83,9 +88,7 @@
 
 }
 
-.app {
-    text-align: left;
-}
+
 
 
 .head {

@@ -150,6 +150,7 @@ time {
 .fixtures {
     text-align: center;
     margin: auto;
+    background-color: #1a1a1a;
 }
 
 .list {
@@ -202,6 +203,9 @@ time {
 
 /* result */
 
+.results {
+    background-color: #1a1a1a;
+}
 .score {
     border:  2px rgb(212, 196, 255) solid;
     padding: 5px 15px;
