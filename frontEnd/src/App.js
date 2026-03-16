@@ -44,7 +44,7 @@ import AdminAdd from "./pages/user/admin/AdminAdd";
 
 import TeamAdminList from "./pages/user/adminteam/List";
 import AdminList from "./pages/user/admin/List";
-import { MatchUpdate, MatchUpdateList } from "./components/sub component/list/Matchupdateviewlist";
+import { MatchUpdate, MatchUpdateList, ResultUpdate, ResultUpdateList } from "./components/sub component/list/Matchupdateviewlist";
 import { Competitions, Teams } from "./pages/ListsAll";
 
 
@@ -81,6 +81,10 @@ function Links() {
 
         <Route path="/region/:id/fixture/:matchday/:matchId/update" element={<MatchUpdateList />}/>
         <Route path="/region/:id/fixture/:matchday/:matchId/update/:type" element={<MatchUpdate />}/>
+
+
+        <Route path="/region/:id/result/:matchday/:matchId/update" element={<ResultUpdateList />}/>
+        <Route path="/region/:id/result/:matchday/:matchId/update/:type" element={<ResultUpdate />}/>
 
 
 

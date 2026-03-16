@@ -52,7 +52,36 @@ const Result  =  ({})  =>  {
 
 
 
-
+                            useEffect(() => {
+                    
+                                    fetch(process.env.REACT_APP_API_LINK + 'getaccess/admin', {
+                                        method: 'GET',
+                                        credentials: "include",
+                                        headers: {'Content-Type': 'application/json'},
+                                         }).then((res) => {
+                                        if (res.status === 200) {
+                                            setUser({admin: true})
+                        
+                                        } 
+                             })    
+                    
+                    
+                             fetch(process.env.REACT_APP_API_LINK + 'getaccess/team', {
+                                method: 'GET',
+                                credentials: "include",
+                                headers: {'Content-Type': 'application/json'},
+                                 }).then((res) => {
+                                if (res.status === 200) {
+                                    setUser({team: true})
+                    
+                                } 
+                    
+                     })  
+                    
+                                     
+                                
+                                  
+                             },   []);
 
 
 
@@ -234,10 +263,12 @@ const Result  =  ({})  =>  {
                                     
                                
                                 
+                           
                                 </div>
 
     
-         
+              { user.team ?   <button className={Style.update} > <Link to={"update"} > Update </Link> </button> : null
+                                                }
          
       
   
@@ -258,9 +289,10 @@ const Result  =  ({})  =>  {
 
                                     {match.match?.timeline?.slice()?.reverse()?.map((props) => (
                                     
-                                    (props.team == "home") ? <MatchEventHome time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
-                                    (props.team == "away") ? <MatchEventAway time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :
-                                    null
+                                   
+                                    (props.team == "home") ? <MatchEventHome time={props.time.time + ((props.time?.et !== 0) ? '+' + props.time?.et : null)} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
+                                    (props.team == "away") ? <MatchEventAway time={props.time.time + ((props.time?.et !== 0) ? '+' + props.time?.et : null)} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :
+                                       null
                                                         
                                     
                                     )   )   }    

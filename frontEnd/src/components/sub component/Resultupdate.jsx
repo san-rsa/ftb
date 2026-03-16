@@ -9,7 +9,7 @@ import { AlertError, Inputs } from "./list/Generallist";
 
 
 
-const AddMatchLineup = ({ competition, match, matchId, matchday }) => {
+const AddMatchResultLineup = ({ competition, match, matchId, matchday }) => {
   const [data, setInputs] = useState({})
   const [starting, setStarting] = useState([])
   const [sub, setSub] = useState([])
@@ -97,7 +97,7 @@ const AddMatchLineup = ({ competition, match, matchId, matchday }) => {
     
     
     
-       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/fixture/" + matchId ,{ //fetchs.link, {
+       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/result/" + matchId ,{ //fetchs.link, {
         method: "PATCH", // fetchs.method,
         credentials: "include",
        // headers: {'Content-Type': "application/json", },
@@ -254,341 +254,7 @@ const AddMatchLineup = ({ competition, match, matchId, matchday }) => {
 
 
 
-
-// live et
-
-const AddMatchExtraTime = ({ competition, match, matchId, matchday }) => {
-
-  const [data, setInputs] = useState({})
-
-  const [submitbtn, setSubmitBtn] = useState(false)
-  const [team, setTeam] = useState({})   
-
-
-
-  const [fetchs, setFetch] = useState({link: "", method: ""})
-
-
-
-  let navigate = useNavigate()
-        
-  
-
-
-    useEffect(() => {
-
-            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
-                method: 'GET',
-                credentials: "include",
-                headers: {'Content-Type': 'application/json'}, 
-        })
-            .then((res) =>  res.json())
-            .then((data) => setTeam(data.data));
-
-
-
-            
-
-
-      }, []);
-        
-
-    const h1 = "Add Extra Time" ;  
-    
-    
-    
-      const handleChange = (event) => {
-       const name = event.target.name;
-       const value = event.target.value;
-        setInputs(values => ({...values, [name]: value}))
-
-      }    
-    
-
-
-      const HandleSubmit = async (event) => {
-        event.preventDefault();
-        setSubmitBtn(!submitbtn)
-    
-        const formData = new FormData();
-      
-
-       formData.append('data',  JSON.stringify(data));
-       formData.append('action',  JSON.stringify("extra-time"));
-       formData.append('matchday',  JSON.stringify(matchday));
-
-
-
-    
-    
-    
-       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/fixture/" + matchId ,{ //fetchs.link, {
-        method: "PATCH", // fetchs.method,
-        credentials: "include",
-       // headers: {'Content-Type': "application/json", },
-        body:   formData
-        })
-        
-        .then((res) => {           
-
-           if (res.status == 200) {
-
-         
-
-          
-                navigate("./../.."); 
-
-           } else {
-            setSubmitBtn(false);
-       
-           }
-
-           return res.json()
-        }).then(
-          data => {
-            console.log(data.message, 'llk')       
-
-           
-            if (data.success == false) {
-               AlertError(data.message)
-
-               setSubmitBtn(false);
-               
-            } else {
-              //  navigate("/user"); 
-
-            }
-          }).catch((e) => {
-          console.log(e);
-          setSubmitBtn(false)
-          AlertError("error try again later")
-
-        })
-
-
-        
-    
-    
-     
-      
-      }
-
-
-
-    return (            
-      <div className={Style.app}>
-
-
-      <div className={Style.top} >
-        <h1 > {h1} </h1>
-      </div>
-
-
-      <div className={Style.pimg} >
-
-{        team.logo &&    <img src={team.logo[0].url } /> }    
-
-      </div>
-
-
-        <form className={Style.form} onSubmit={HandleSubmit}>
-
-    
-
-        <Inputs label={'add extra time'} type={'Number'} name={'extraTime'} onchange={handleChange} value={data.extra}  placeholder={'add extra time'} disabled={false} required={true}  />
-
-        <button className="submit" type="submit"  disabled={submitbtn}> Submit</button> 
-
-        </form>
-
-    </div>
-
-    )
-}
-
-
-// edit for live
-
-const AddMatchStart = ({ competition, match, matchId, matchday }) => {
-  const [data, setInputs] = useState({})
-  const [submitbtn, setSubmitBtn] = useState(false)
-  const [team, setTeam] = useState({})   
-
-
-
-  let navigate = useNavigate()
-        
-  
-
-
-    useEffect(() => {
-
-            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
-                method: 'GET',
-                credentials: "include",
-                headers: {'Content-Type': 'application/json'}, 
-        })
-            .then((res) =>  res.json())
-            .then((data) => setTeam(data.data));
-
-
-
-            
-
-
-      }, []);
-        
-
-    const h1 = "Start Match" ;  
-
-    
-
-      const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-         setInputs(values => ({...values, [name]: value}))
- 
-       }
-    
-    
-
-
-      const HandleSubmit = async (event) => {
-        event.preventDefault();
-        setSubmitBtn(!submitbtn)
-    
-        const formData = new FormData();
-      
-
-       formData.append('data',  JSON.stringify(data));
-       formData.append('action',  JSON.stringify("start"));
-       formData.append('matchday',  JSON.stringify(matchday));
-
-
-
-  
-    
-       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/fixture/" + matchId ,{ //fetchs.link, {
-        method: "PATCH", // fetchs.method,
-        credentials: "include",
-       // headers: {'Content-Type': "application/json", },
-        body:   formData
-        })
-        
-        .then((res) => {           
-
-           if (res.status == 200) {
-
-         
-
-          
-                navigate("./../.."); 
-
-           } else {
-            setSubmitBtn(false);
-       
-           }
-
-           return res.json()
-        }).then(
-          data => {
-            console.log(data.message, 'llk')       
-
-           
-            if (data.success == false) {
-               AlertError(data.message)
-
-               setSubmitBtn(false);
-               
-            } else {
-              //  navigate("/user"); 
-
-            }
-          }).catch((e) => {
-          console.log(e);
-          setSubmitBtn(false)
-          AlertError("error try again later")
-
-        })
-
-
-        
-    
-    
-     
-      
-      }
-
-      console.log(data);
-      
-
-
-    return (            
-      <div className={Style.app}>
-
-
-      <div className={Style.top} >
-        <h1 > {h1} </h1>
-      </div>
-
-
-      <div className={Style.pimg} >
-
-{        team.logo &&    <img src={team.logo[0].url } /> }    
-
-      </div>
-
-
-        <form className={Style.form} onSubmit={HandleSubmit}>
-
-
-
-        <div className={Style.select} >
-
-
-        <label rel="select" htmlFor="select" >start type  </label>
-
-          <select id="start" name={"start"} onChange={handleChange} required > 
-          { data.start ?  null : <option value={""} > start type  </option> }
-
-            <option value={"start game"} > Start Game  </option>
-
-
-            {/* <option value={"second"} > Start Second Half  </option> */}
-
-
-          {/* {(competition.type == "cup" ) ? 
-          <div >
-              <option value={"extra time"} > Start Extra Time </option>
-              <option value={"extra time second half"} > Start Extra Time Second Half  </option> 
-          </div>
-          : null}  */}
-
-
- 
-    
-
-
-          </select>
-
-        </div>
-            
-    
-        <button className="submit" type="submit"  disabled={submitbtn}> Submit</button> 
-
-        </form>
-
-    </div>
-
-    )
-}
-
-
-
-
-
-
-const AddMatchSub = ({ competition, match, matchId, matchday }) => {
+const AddMatchResultSub = ({ competition, match, matchId, matchday }) => {
   const [data, setInputs] = useState({})
   const [submitbtn, setSubmitBtn] = useState(false)
   const [team, setTeam] = useState({}) 
@@ -793,7 +459,7 @@ const AddMatchSub = ({ competition, match, matchId, matchday }) => {
     
     
     
-       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/fixture/" + matchId ,{ //fetchs.link, {
+       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/result/" + matchId ,{ //fetchs.link, {
         method: "PATCH", // fetchs.method,
         credentials: "include",
        // headers: {'Content-Type': "application/json", },
@@ -933,7 +599,7 @@ const AddMatchSub = ({ competition, match, matchId, matchday }) => {
 
 
 
-const AddMatchGoal = ({ competition, match, matchId, matchday }) => {
+const AddMatchResultGoal = ({ competition, match, matchId, matchday }) => {
   const [data, setInputs] = useState({})
   const [submitbtn, setSubmitBtn] = useState(false)
   const [team, setTeam] = useState({})   
@@ -1086,7 +752,7 @@ const AddMatchGoal = ({ competition, match, matchId, matchday }) => {
     
     
     
-       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/fixture/" + matchId ,{ //fetchs.link, {
+       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/result/" + matchId ,{ //fetchs.link, {
         method: "PATCH", // fetchs.method,
         credentials: "include",
        // headers: {'Content-Type': "application/json", },
@@ -1230,7 +896,7 @@ const AddMatchGoal = ({ competition, match, matchId, matchday }) => {
 
 
 
-const AddMatchYellow = ({ competition, match, matchId, matchday }) => {
+const AddMatchResultYellow = ({ competition, match, matchId, matchday }) => {
   const [data, setInputs] = useState({})
   const [submitbtn, setSubmitBtn] = useState(false)
   const [team, setTeam] = useState({})   
@@ -1382,7 +1048,7 @@ const AddMatchYellow = ({ competition, match, matchId, matchday }) => {
     
     
     
-       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/fixture/" + matchId ,{ //fetchs.link, {
+       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/result/" + matchId ,{ //fetchs.link, {
         method: "PATCH", // fetchs.method,
         credentials: "include",
        // headers: {'Content-Type': "application/json", },
@@ -1502,7 +1168,7 @@ const AddMatchYellow = ({ competition, match, matchId, matchday }) => {
 
 
 
-const AddMatchRed = ({ competition, match, matchId, matchday }) => {
+const AddMatchResultRed = ({ competition, match, matchId, matchday }) => {
   const [data, setInputs] = useState({})
   const [submitbtn, setSubmitBtn] = useState(false)
   const [team, setTeam] = useState({})   
@@ -1653,7 +1319,7 @@ const AddMatchRed = ({ competition, match, matchId, matchday }) => {
     
     
     
-       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/fixture/" + matchId ,{ //fetchs.link, {
+       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/result/" + matchId ,{ //fetchs.link, {
         method: "PATCH", // fetchs.method,
         credentials: "include",
        // headers: {'Content-Type': "application/json", },
@@ -1771,151 +1437,4 @@ const AddMatchRed = ({ competition, match, matchId, matchday }) => {
 
 
 
-const AddMatchEnd = ({ competition, match, matchId, matchday }) => {
-  const [data, setInputs] = useState({})
-  const [submitbtn, setSubmitBtn] = useState(false)
-  const [team, setTeam] = useState({}) 
-
-
-
-
-  let navigate = useNavigate()
-
-
-    useEffect(() => {
-
-            fetch(process.env.REACT_APP_API_LINK + "getaccess/user/team/",  {
-                method: 'GET',
-                credentials: "include",
-                headers: {'Content-Type': 'application/json'}, 
-        })
-            .then((res) =>  res.json())
-            .then((data) => setTeam(data.data));
-      }, []);
-
-
-  
-
-    const h1 = "End Match" ;  
-
-    
-
-
-
-
-
-
-
-
-       const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-         setInputs(values => ({...values, [name]: value}))
- 
-       }
-    
-    
-
-
-      const HandleSubmit = async (event) => {
-        event.preventDefault();
-        setSubmitBtn(!submitbtn)
-    
-        const formData = new FormData();
-      
-
-  
-       formData.append('data',  JSON.stringify(data));
-       formData.append('action',  JSON.stringify("end"));
-       formData.append('matchday',  JSON.stringify(matchday));
-
-
-
-    
-    
-    
-       const api = fetch(process.env.REACT_APP_API_LINK + "admin/update/" +  competition.name + "/fixture/" + matchId ,{ //fetchs.link, {
-        method: "PATCH", // fetchs.method,
-        credentials: "include",
-       // headers: {'Content-Type': "application/json", },
-        body:   formData
-        })
-        
-        .then((res) => {           
-
-           if (res.status == 200) {
-
-         
-
-          
-            //    navigate("./../../../../../result/" + matchday + "/" + matchId); 
-
-           } else {
-            setSubmitBtn(false);
-       
-           }
-
-           return res.json()
-        }).then(
-          data => {
-            console.log(data.message, 'llk')       
-
-           
-            if (data.success == false) {
-               AlertError(data.message)
-
-               setSubmitBtn(false);
-               
-            } else {
-              //  navigate("/user"); 
-
-            }
-          }).catch((e) => {
-          console.log(e);
-          setSubmitBtn(false)
-          AlertError("error try again later")
-
-        })
-
-
-        
-    
-    
-     
-      
-      }
-
-
-
-    return (            
-      <div className={Style.app}>
-
-
-      <div className={Style.top} >
-        <h1 > {h1} </h1>
-      </div>
-
-
-      <div className={Style.pimg} >
-
-{        team.logo &&    <img src={team.logo[0].url } /> }    
-
-      </div>
-
-
-        <form className={Style.form} onSubmit={HandleSubmit}>
-
-          
-
-
-        <button className="submit" type="submit"  disabled={submitbtn}> End Match</button> 
-
-        </form>
-
-    </div>
-
-    )
-}
-
-
-export { AddMatchEnd, AddMatchLineup, AddMatchExtraTime, AddMatchStart, AddMatchGoal, AddMatchSub, AddMatchRed, AddMatchYellow }
+export { AddMatchResultLineup, AddMatchResultGoal, AddMatchResultSub, AddMatchResultRed, AddMatchResultYellow }

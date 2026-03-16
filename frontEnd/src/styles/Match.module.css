@@ -87,7 +87,7 @@
     display: grid;
     grid-template-areas: "home timeline away";
     text-align: left;
-    grid-template-columns: 18rem 2rem 18rem;
+    grid-template-columns: 18rem 4rem 18rem;
 
 }
 

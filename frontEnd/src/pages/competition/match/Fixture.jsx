@@ -327,8 +327,8 @@ const Fixture  =  ({})  =>  {
 
                                     {match.match?.timeline?.slice()?.reverse()?.map((props) => (
                                     
-                                    (props.team == "home") ? <MatchEventHome time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
-                                    (props.team == "away") ? <MatchEventAway time={props.time} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :
+                                    (props.team == "home") ? <MatchEventHome time={props.time.time + ((props.time?.et !== 0) ? '+' + props.time?.et : null)} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} />  :
+                                    (props.team == "away") ? <MatchEventAway time={props.time.time + ((props.time?.et !== 0) ? '+' + props.time?.et : null)} img={timeline(props.action) } name={ props.player?.main.name?.last?.slice(0,1) + ". "+ props.player?.main.name?.first } assist={props.player?.assist ? props.player?.assist?.name?.last?.slice(0,1) + ". "+ props.player?.assist?.name?.first : null} /> :
                                     null
                                                         
                                     
